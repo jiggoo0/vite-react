@@ -1,16 +1,13 @@
 // ✅ src/Home/Secret.tsx — พื้นที่เฉพาะผู้ใช้ที่เข้าสู่ระบบ
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 /**
- * 🌐 ประเภทข้อมูลผู้ใช้จากระบบ Auth (จำลองจาก localStorage)
+ * 🌐 ประเภทข้อมูลผู้ใช้ตามโครงสร้างจริงจาก users.ts
  */
 type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: "admin" | "user" | "guest";
+  username: string;
+  role?: "admin" | "user";
 };
 
 /**
@@ -52,10 +49,7 @@ const Secret: React.FC = () => {
     return (
       typeof data === "object" &&
       data !== null &&
-      typeof data.id === "number" &&
-      typeof data.name === "string" &&
-      typeof data.email === "string" &&
-      ["admin", "user", "guest"].includes(data.role)
+      typeof data.username === "string"
     );
   };
 
@@ -76,14 +70,16 @@ const Secret: React.FC = () => {
       <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 space-y-6">
         <h1 className="text-2xl font-bold text-primary">🎯 พื้นที่รับงานเฉพาะสมาชิก</h1>
         <p className="text-gray-600">
-          ยินดีต้อนรับ <span className="font-semibold">{user?.name}</span> 👋
+          ยินดีต้อนรับ <span className="font-semibold">{user?.username}</span> 👋
         </p>
         <p className="text-gray-700">
           หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้ว คุณสามารถจัดการงานของคุณจากที่นี่
         </p>
         <div className="text-sm text-gray-500">
-          📧 <span className="font-medium">{user?.email}</span> / 🔐 สิทธิ์:{" "}
-          <span className="badge badge-outline capitalize">{user?.role}</span>
+          🔐 สิทธิ์:
+          <span className="badge badge-outline capitalize ml-2">
+            {user?.role ?? "user"}
+          </span>
         </div>
       </div>
     </section>

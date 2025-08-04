@@ -1,5 +1,3 @@
-// ✅ src/Home/components/Portfolio/ui/PortfolioCTA.tsx — ปุ่ม CTA สำหรับ Portfolio
-
 "use client";
 
 import { FC } from "react";
@@ -11,8 +9,7 @@ interface PortfolioCTAProps {
 
 /**
  * 📣 PortfolioCTA
- * - ปุ่ม CTA ลิงก์ไปยังโปรเจกต์หรือดูเพิ่มเติม
- * - ใช้ภายในรายการ Portfolio
+ * - ปุ่มลิงก์ดูรายละเอียดโปรเจกต์ (เปิดใหม่ในแท็บใหม่)
  */
 const PortfolioCTA: FC<PortfolioCTAProps> = ({ href }) => {
   return (
@@ -20,6 +17,7 @@ const PortfolioCTA: FC<PortfolioCTAProps> = ({ href }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="ดูเพิ่มเติมเกี่ยวกับโปรเจกต์นี้"
       className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
     >
       ดูเพิ่มเติม

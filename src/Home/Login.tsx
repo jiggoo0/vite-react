@@ -1,27 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
-import bcrypt from "bcryptjs"; // <-- import bcryptjs
+import bcrypt from "bcryptjs";
 
 import { users } from "@/data/users";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const user = users.find((u) => u.email === email);
+    const user = users.find((u) => u.username === username);
     if (!user) {
       setError("ไม่พบผู้ใช้นี้ในระบบ");
       return;
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       setError("รหัสผ่านไม่ถูกต้อง");
       return;
@@ -30,7 +30,8 @@ const Login = () => {
     localStorage.setItem("user", JSON.stringify(user));
     setError(null);
 
-    navigate(user.role === "admin" ? "/admin" : "/secret");
+    // 🔧 ปรับตาม role ที่คุณใช้จริง (ถ้าไม่มี role ให้ลบ if)
+    navigate("/secret");
   };
 
   return (
@@ -47,16 +48,15 @@ const Login = () => {
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">อีเมล</label>
+            <label htmlFor="username" className="block text-sm font-medium">ชื่อผู้ใช้</label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="username"
               required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="input input-bordered w-full"
-              placeholder="your@email.com"
+              placeholder="admin2517"
             />
           </div>
 

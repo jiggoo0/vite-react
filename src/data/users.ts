@@ -1,96 +1,57 @@
-// ✅ src/data/users.ts — ใช้งานจริง
+// src/data/users.ts
 
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  role: "admin" | "user";
-}
+type UserRecord = {
+  username: string;
+  passwordHash: string;
+};
 
-export const users: User[] = [
+export const users: UserRecord[] = [
   {
-    id: 1,
-    name: "admin2517@jp.com",
-    email: "admin2517@jp.com",
-    password: "$2b$10$XAbGG/NKTVN9XyRl2ddBVueAawqRbAK3XeiJTzyP/ntFB3t6X0pLW",
-    role: "admin"
+    username: "admin2517",
+    passwordHash: "$2b$10$JxHy/WZSYUxpKmcgOhqQ/uEabX7AsJ/Fp.lFSdUTJWIZI/a5sdqk6",
   },
   {
-    id: 2,
-    name: "JPKYETONKEY201@jp.com",
-    email: "JPKYETONKEY201@jp.com",
-    password: "$2b$10$XrN7bEkSoFVmrJeKfHAPDuogDNgy2lT7sRUpjkoEMfbkM8xRcqHye",
-    role: "user"
+    username: "JPKYETONKEY201",
+    passwordHash: "$2b$10$O2vf5nhqQHrF1blftgGY9eXjChyoIC5huk0AfsfNolBQOhfvXfm/m",
   },
   {
-    id: 3,
-    name: "JPKYETONKEY222@jp.com",
-    email: "JPKYETONKEY222@jp.com",
-    password: "$2b$10$CY.OmbDRDeM/3XYn6jStIOpa3E6jw9qxiwUDyNwqdnrzPWlYHOuRG",
-    role: "user"
+    username: "JPKYETONKEY222",
+    passwordHash: "$2b$10$s3o/tzHgGQlfucTMGoQ/6uRDkkmTWSs/cjZWuEHwVIhNY6fUAYdf2",
   },
   {
-    id: 4,
-    name: "JPKYETONKEY233@jp.com",
-    email: "JPKYETONKEY233@jp.com",
-    password: "$2b$10$DTmjwNfcmGkViYXmHV3wCewiIB/aNadAqOb1ez/xroXHvZw2BJTE6",
-    role: "user"
+    username: "JPKYETONKEY233",
+    passwordHash: "$2b$10$vPOg6RUBrzJkZXuq2V/mruy.KLiGE7jiGRjTikvzRVxxBlfSkwohe",
   },
   {
-    id: 5,
-    name: "JPKYETONKEY244@jp.com",
-    email: "JPKYETONKEY244@jp.com",
-    password: "$2b$10$Uyf6qkUFHWSIxy.nTfMMoOqkMuZT9I2FEpvt5gGeE8FxnB5MeH7LC",
-    role: "user"
+    username: "JPKYETONKEY244",
+    passwordHash: "$2b$10$38tnius.R9FWUY6s10u6v.PVq9eQaFEuSRaWv1/KegtL7XPJsr3u6",
   },
   {
-    id: 6,
-    name: "JPKYETONKEY255@jp.com",
-    email: "JPKYETONKEY255@jp.com",
-    password: "$2b$10$6UCrrn/G2LlYlfSaeqStWu6/JiERLIvwMEbVpbqHGS2KlVcX4hRI6",
-    role: "user"
+    username: "JPKYETONKEY255",
+    passwordHash: "$2b$10$08/xggMRgU7zPYzHAstEj.yv8qcupXEdPPL73g2j8KedmdOrI19Py",
   },
   {
-    id: 7,
-    name: "JPKYETONKEY266@jp.com",
-    email: "JPKYETONKEY266@jp.com",
-    password: "$2b$10$a7dID5roA5oISAjp/lksJuu2xK0fxvTzaAXV5BNbvzDLLofqk3yuG",
-    role: "user"
+    username: "JPKYETONKEY266",
+    passwordHash: "$2b$10$B9jZ0Ix.U.Z9D4WXl5Nt3ueAqzoGUzfPmSUNyFGBykwOh9VRh7p.y",
   },
   {
-    id: 8,
-    name: "JPKYETONKEY277@jp.com",
-    email: "JPKYETONKEY277@jp.com",
-    password: "$2b$10$n7onXyNh8xueHceD3u6zGe5OESgnFCFtYM4sY/WC9PHp1RIqVm5MW",
-    role: "user"
+    username: "JPKYETONKEY277",
+    passwordHash: "$2b$10$cdFQE6rWPEg8C68ijY5mo.JJEYJraKGVyuyNoEvkDuyiS1Rvvtjr.",
   },
   {
-    id: 9,
-    name: "JPKYETONKEY288@jp.com",
-    email: "JPKYETONKEY288@jp.com",
-    password: "$2b$10$VJ2aKkbD3fMS28XmCgRPd.LDidsMs2J0MFS7QbhvTqlLEhmXAy/D6",
-    role: "user"
+    username: "JPKYETONKEY288",
+    passwordHash: "$2b$10$RVBdKLnWm5W4jaSmZUCjSeFvLwAu8idCtukKXULme8XYSgGj.xsK6",
   },
   {
-    id: 10,
-    name: "JPKYETONKEY299@jp.com",
-    email: "JPKYETONKEY299@jp.com",
-    password: "$2b$10$JNvmfIGYVp5ZmT0limHm9.stMBadUSeJkGIHU7T4ty0a9DN2DZx0W",
-    role: "user"
+    username: "JPKYETONKEY299",
+    passwordHash: "$2b$10$qFZI8vi/2873cUhZ/kQUNeIqZJuUMWJVBYeoWDeMLi91QUTNVNUSC",
   },
   {
-    id: 11,
-    name: "JPKYETONKEY300@jp.com",
-    email: "JPKYETONKEY300@jp.com",
-    password: "$2b$10$b49EgrjSHe1Lo9Jgi8qaU.mMzGJBFFaDQUtVIvSEOwWDxpX.TDuk2",
-    role: "user"
+    username: "JPKYETONKEY300",
+    passwordHash: "$2b$10$9kxpYDEa5pTN4HzJEWH3JuNZGZPbqvAFK9TFMXnww3xB59H5H1uSe",
   },
   {
-    id: 12,
-    name: "JPusertest01@jp.com",
-    email: "JPusertest01@jp.com",
-    password: "$2b$10$Kuv2TDqjC7RUE3fPPt4Z5OJl75bHpK/fmJt5X7PRvYqK74oyYeBlu",
-    role: "user"
-  }
+    username: "JPusertest01",
+    passwordHash: "$2b$10$aK2dopNowwAM6oB0gBNy2.b1BklIuyWT02aFCxFFyNVxd.UeuAReW",
+  },
 ];

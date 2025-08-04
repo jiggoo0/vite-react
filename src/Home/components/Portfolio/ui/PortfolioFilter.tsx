@@ -1,8 +1,6 @@
-// ✅ src/Home/components/Portfolio/ui/PortfolioFilter.tsx — ตัวกรองหมวดผลงาน
-
 "use client";
 
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import clsx from "clsx";
 
 interface PortfolioFilterProps {
@@ -13,16 +11,20 @@ interface PortfolioFilterProps {
 
 /**
  * 🎛️ PortfolioFilter — ปุ่มกรองหมวด Portfolio
- *
  * - แสดงปุ่มกรองตามหมวดหมู่ที่เป็นไปได้
- * - ใช้สำหรับ filter portfolioItems by category
  * - รองรับ active state และ accessibility (aria-pressed)
  */
 const PortfolioFilter: FC<PortfolioFilterProps> = ({
   categories,
   activeCategory,
-  onChange
+  onChange,
 }) => {
+  // Memoize onClick handler factory to avoid inline arrow function in render
+  const handleClick = useCallback(
+    (category: string) => () => onChange(category),
+    [onChange]
+  );
+
   return (
     <div
       role="group"
@@ -33,9 +35,9 @@ const PortfolioFilter: FC<PortfolioFilterProps> = ({
         <button
           key={category}
           type="button"
-          onClick={() => onChange(category)}
+          onClick={handleClick(category)}
           className={clsx(
-            "px-4 py-2 text-sm font-medium rounded-full border transition-all duration-200",
+            "px-4 py-2 text-sm font-medium rounded-full border transition duration-200",
             activeCategory === category
               ? "bg-primary text-white border-primary shadow"
               : "bg-base-100 text-base-content border-neutral-300 hover:bg-base-200"

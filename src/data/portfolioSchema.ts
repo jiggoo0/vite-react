@@ -1,4 +1,3 @@
-// ✅ src/data/portfolioSchema.ts
 import { z } from "zod";
 
 /**
@@ -16,7 +15,7 @@ export const PortfolioItemSchema = z.object({
     "Mobile App",
     "Graphic"
   ]),
-  image: z.string().min(1, { message: "Image path is required" }), // ✅ ปรับจาก .url() เป็น .string().min(1)
+  image: z.string().min(1, { message: "Image path is required" }), // ปรับจาก .url() เป็น .string().min(1)
   description: z.string().optional(),
   link: z.string().url().optional()
 });

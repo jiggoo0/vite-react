@@ -1,19 +1,12 @@
-// ✅ src/data/portfolioItems.ts — Production-Ready Portfolio Items
-
 export type PortfolioItem = {
   id: string;
   title: string;
   category: "Website" | "Dashboard" | "Landing Page" | "Mobile App" | "Graphic";
-  image: string; // ใช้ path แบบ internal (ไม่ต้องเป็น URL เต็ม)
+  image: string;
   description?: string;
-  link?: string; // ถ้ามีจะถูก validate ด้วย .url() จาก zod schema
+  link?: string;
 };
 
-/**
- * 📁 พอร์ตผลงาน JP Visual & Docs
- * - แสดงตัวอย่างผลงานในแต่ละหมวด
- * - รองรับระบบฟิลเตอร์ + CTA
- */
 export const portfolioItems: readonly PortfolioItem[] = [
   {
     id: "1",
