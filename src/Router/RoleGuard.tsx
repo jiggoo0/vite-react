@@ -7,11 +7,18 @@ interface RoleGuardProps {
   children: ReactNode;
 }
 
-// 🛡️ Guard route by role (e.g., ['admin'])
+/**
+ * 🛡️ RoleGuard — ป้องกัน route ตามสิทธิ์ผู้ใช้
+ *
+ * - ใช้ร่วมกับ `useAuth()` hook
+ * - หากไม่ได้ login → redirect ไป /login
+ * - หากสิทธิ์ไม่ถูกต้อง → redirect ไป /403 หรือแสดงข้อความปฏิเสธ
+ */
 const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
   const { isAuthenticated, role, loading } = useAuth();
   const location = useLocation();
 
+  // 🌀 ระหว่างโหลดข้อมูล auth
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -20,20 +27,18 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
     );
   }
 
+  // 🚫 ไม่ได้ login → ไป /login
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // ⛔ ไม่มีสิทธิ์ → ไปหน้า 403 (หรือ redirect กลับหน้าแรกก็ได้)
   if (!allowedRoles.includes(role)) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen text-error text-center px-4">
-        <h1 className="text-4xl font-bold mb-2">403</h1>
-        <p className="text-lg mb-4">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</p>
-        <Navigate to="/" replace />
-      </div>
-    );
+    return <Navigate to="/403" replace />;
+    // หรือใช้ return <Navigate to="/" replace /> เพื่อไปหน้าแรกแทน
   }
 
+  // ✅ มีสิทธิ์ → render route
   return <>{children}</>;
 };
 

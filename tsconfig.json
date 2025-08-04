@@ -1,17 +1,10 @@
 {
   "compilerOptions": {
-    // ✅ Target ECMAScript version
     "target": "ES2020",
-
-    // ✅ Use ECMAScript modules and native ESM import
     "module": "ESNext",
     "moduleResolution": "Bundler",
-
-    // ✅ Output as ESM, suitable for Vite + modern browsers
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-
-    // ✅ Allow module imports with aliases
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"],
@@ -26,27 +19,18 @@
       "@router/*": ["Router/*"],
       "@home/*": ["Home/*"]
     },
-
-    // ✅ Output settings
     "outDir": "./dist",
     "rootDir": "./src",
-
-    // ✅ Strict type-checking
     "strict": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-
-    // ✅ Module interop & import flexibility
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
-
-    // ✅ Enable incremental builds
     "incremental": true,
     "skipLibCheck": true
   },
-
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

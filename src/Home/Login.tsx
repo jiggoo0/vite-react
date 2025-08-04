@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
+import bcrypt from "bcryptjs"; // <-- import bcryptjs
 
 import { users } from "@/data/users";
 
-/**
- * 🔐 Login Page — สำหรับเข้าสู่ระบบด้วยอีเมล + รหัสผ่าน (mock-only)
- */
 const Login = () => {
   const navigate = useNavigate();
 
@@ -14,10 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * 🧠 handleLogin — ตรวจสอบผู้ใช้และบันทึกลง localStorage
-   */
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const user = users.find((u) => u.email === email);
@@ -26,17 +21,15 @@ const Login = () => {
       return;
     }
 
-    // 🚫 แทนที่ comparePassword เพราะไม่ใช้ bcryptjs ใน frontend
-    if (password !== user.password) {
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
       setError("รหัสผ่านไม่ถูกต้อง");
       return;
     }
 
-    // ✅ Auth success: Save to localStorage
     localStorage.setItem("user", JSON.stringify(user));
     setError(null);
 
-    // 🧭 Navigate by role
     navigate(user.role === "admin" ? "/admin" : "/secret");
   };
 
@@ -53,11 +46,8 @@ const Login = () => {
         )}
 
         <form onSubmit={handleLogin} className="space-y-5">
-          {/* 📧 Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">
-              อีเมล
-            </label>
+            <label htmlFor="email" className="block text-sm font-medium">อีเมล</label>
             <input
               type="email"
               id="email"
@@ -70,11 +60,8 @@ const Login = () => {
             />
           </div>
 
-          {/* 🔒 Password */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">
-              รหัสผ่าน
-            </label>
+            <label htmlFor="password" className="block text-sm font-medium">รหัสผ่าน</label>
             <input
               type="password"
               id="password"
@@ -87,10 +74,7 @@ const Login = () => {
             />
           </div>
 
-          {/* 🔐 Login Button */}
-          <button type="submit" className="btn btn-primary w-full">
-            เข้าสู่ระบบ
-          </button>
+          <button type="submit" className="btn btn-primary w-full">เข้าสู่ระบบ</button>
         </form>
       </div>
     </section>

@@ -16,17 +16,17 @@ import type { PortfolioItem } from "@/data/portfolioItems";
  * - ใช้ร่วมกับ PortfolioCTA เพื่อให้ผู้ใช้ดูงานเพิ่มเติม
  */
 const PortfolioGallery: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
-
   const categories: readonly string[] = [
-    "All",
     ...Array.from(new Set(portfolioItems.map((item) => item.category))),
   ];
 
-  const filteredItems: readonly PortfolioItem[] =
-    activeCategory === "All"
-      ? portfolioItems
-      : portfolioItems.filter((item) => item.category === activeCategory);
+  const [activeCategory, setActiveCategory] = useState<string>(
+    categories[0] || ""
+  );
+
+  const filteredItems: readonly PortfolioItem[] = portfolioItems.filter(
+    (item) => item.category === activeCategory
+  );
 
   return (
     <section

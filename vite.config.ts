@@ -1,31 +1,22 @@
-// ✅ vite.config.ts - Proper TypeScript Syntax
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// Handle __dirname for ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Shortcut to /src subfolders
-const src = (dir: string) => path.resolve(__dirname, 'src', dir);
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': src(''),
-      '@assets': src('assets'),
-      '@styles': src('styles'),
-      '@data': src('data'),
-      '@components': src('components'),
-      '@common': src('utils/common'),
-      '@utils': src('utils'),
-      '@hooks': src('hooks'),
-      '@layout': src('Layout'),
-      '@router': src('Router'),
-      '@home': src('Home'),
+      "@": path.resolve(__dirname, "src"),
+      "@common": path.resolve(__dirname, "src/utils/common"),
+      "@utils": path.resolve(__dirname, "src/utils"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
+      "@layout": path.resolve(__dirname, "src/Layout"),
+      "@router": path.resolve(__dirname, "src/Router"),
+      "@home": path.resolve(__dirname, "src/Home"),
+      "@components": path.resolve(__dirname, "src/components"),
+      "@assets": path.resolve(__dirname, "src/assets"),
+      "@styles": path.resolve(__dirname, "src/styles"),
+      "@data": path.resolve(__dirname, "src/data"),
     },
   },
 });

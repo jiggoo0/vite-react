@@ -1,51 +1,54 @@
-// ✅ src/Home/components/Services/FeatureAwards.tsx — ความแข็งแกร่งที่ลูกค้าไว้วางใจ JP Visual & Docs
-
 "use client";
 
 import { FC } from "react";
-import { motion } from "framer-motion";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, ShieldCheck, Award } from "lucide-react";
 
 /**
  * 🏆 FeatureAwards
  *
- * - แสดงความแข็งแกร่งเฉพาะทางที่ลูกค้าเลือกใช้เรา
- * - ใช้ก่อน Section รายการบริการ (Services)
- * - รองรับ animation และ a11y ครบถ้วน
+ * - แสดงรางวัลหรือการรับรองคุณภาพที่ลูกค้าเชื่อถือ
+ * - เพิ่มความน่าเชื่อถือให้กับบริการ
+ * - รองรับ A11y, Dark Mode และ Responsive
  */
-
-const awards: readonly string[] = [
-  "ประสบการณ์ตรงในสายสีเทามากกว่า 8 ปี",
-  "รู้ทันทุกช่องโหว่ทางเอกสาร และปรับตามบริบทได้จริง",
-  "ไม่ถามเยอะ ไม่จุกจิก พร้อมลุยตั้งแต่นาทีแรก",
-  "ส่งงานเร็วที่สุดในตลาด ใช้ระบบช่วยหลังบ้านลดเวลารอ"
+const awards = [
+  {
+    icon: <BadgeCheck className="h-6 w-6 text-primary" aria-hidden="true" />,
+    title: "การันตีความสำเร็จลูกค้า",
+    description: "มีลูกค้าอนุมัติจริงมากกว่า 4,000 รายทั่วประเทศ",
+  },
+  {
+    icon: <ShieldCheck className="h-6 w-6 text-primary" aria-hidden="true" />,
+    title: "ความปลอดภัยของข้อมูล",
+    description: "จัดเก็บและใช้งานข้อมูลภายใต้นโยบายความปลอดภัยสูงสุด",
+  },
+  {
+    icon: <Award className="h-6 w-6 text-primary" aria-hidden="true" />,
+    title: "บริการมืออาชีพ",
+    description: "ทีมงานมีประสบการณ์ตรงกับธนาคารและสถานทูต",
+  },
 ];
 
 const FeatureAwards: FC = () => {
   return (
-    <motion.ul
-      aria-label="ความแข็งแกร่งที่ลูกค้าไว้วางใจ"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+    <div
+      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      aria-labelledby="awards-title"
+      role="list"
     >
-      {awards.map((text, index) => (
-        <li
+      {awards.map((award, index) => (
+        <div
           key={index}
+          className="flex items-start space-x-4 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm"
           role="listitem"
-          className="flex items-start gap-3 rounded-2xl border border-neutral-800 bg-neutral-900/80 p-4 shadow-md"
         >
-          <BadgeCheck
-            className="mt-1 h-5 w-5 shrink-0 text-primary"
-            strokeWidth={2.2}
-            aria-hidden="true"
-          />
-          <p className="text-sm text-white leading-relaxed">{text}</p>
-        </li>
+          <div className="shrink-0">{award.icon}</div>
+          <div>
+            <h4 className="text-base font-semibold text-base-content">{award.title}</h4>
+            <p className="text-sm text-base-content/70">{award.description}</p>
+          </div>
+        </div>
       ))}
-    </motion.ul>
+    </div>
   );
 };
 

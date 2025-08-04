@@ -1,5 +1,3 @@
-// ✅ src/Home/components/Services/ui/ComingSoonServiceCard.tsx — Production-Ready Coming Soon Service Card
-
 "use client";
 
 import { FC } from "react";
@@ -12,6 +10,7 @@ interface ComingSoonServiceCardProps {
 
 /**
  * 🚧 ComingSoonServiceCard
+ *
  * - แสดงบริการที่ยังไม่เปิดใช้งาน
  * - ใช้ animation ลื่นไหล พร้อมแสดง badge "เร็ว ๆ นี้"
  * - รองรับ accessibility เต็มรูปแบบ
@@ -35,10 +34,12 @@ const ComingSoonServiceCard: FC<ComingSoonServiceCardProps> = ({ service }) => {
         decoding="async"
       />
 
-      {/* 📝 รายละเอียด */}
+      {/* 📝 รายละเอียดบริการ */}
       <div className="mt-4 space-y-1">
         <h3 className="text-base font-semibold text-white">{service.title}</h3>
-        <p className="text-sm text-base-content/70 leading-relaxed">{service.description}</p>
+        <p className="text-sm text-base-content/70 leading-relaxed">
+          {service.description}
+        </p>
       </div>
 
       {/* 🟡 Badge "เร็ว ๆ นี้" */}

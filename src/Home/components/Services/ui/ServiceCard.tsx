@@ -1,9 +1,6 @@
-// ✅ src/Home/components/Services/ui/ServiceCard.tsx — Production-Ready Service Card
-
 "use client";
 
 import { FC } from "react";
-import { motion } from "framer-motion";
 import { ServiceType } from "@/data/services";
 
 interface ServiceCardProps {
@@ -11,37 +8,44 @@ interface ServiceCardProps {
 }
 
 /**
- * ✅ ServiceCard
- * - แสดงบริการที่เปิดให้ใช้งานจริง
- * - มีรูปภาพ, คำอธิบาย, ราคา
- * - ใช้ animation ลื่นไหล และรองรับ A11y เต็มรูปแบบ
+ * 🧩 ServiceCard
+ *
+ * - แสดงบริการที่พร้อมใช้งาน
+ * - ใช้งานได้ใน Section, Grid, Modal ฯลฯ
+ * - รองรับ Dark mode และ Mobile responsive
+ * - ใช้ร่วมกับ `ComingSoonServiceCard` ได้
  */
 const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4 shadow-md"
+    <article
+      className="relative overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-md"
       aria-label={`บริการ: ${service.title}`}
     >
-      {/* 📷 ภาพบริการ */}
+      {/* 📷 รูปภาพบริการ */}
       <img
         src={service.image}
         alt={service.altText}
-        className="h-40 w-full rounded-xl object-cover brightness-90"
         loading="lazy"
         decoding="async"
+        className="h-48 w-full object-cover rounded-t-2xl"
       />
 
-      {/* 📝 เนื้อหา */}
-      <div className="mt-4 space-y-1">
-        <h3 className="text-base font-semibold text-white">{service.title}</h3>
-        <p className="text-sm text-base-content/70 leading-relaxed">{service.description}</p>
-        <p className="text-sm text-primary font-medium mt-1">{service.price}</p>
+      {/* 📋 เนื้อหาบริการ */}
+      <div className="space-y-2 p-4">
+        <h3 className="text-lg font-semibold text-base-content">{service.title}</h3>
+        <p className="text-sm text-base-content/70 leading-relaxed">
+          {service.description}
+        </p>
+        <p className="text-sm font-medium text-green-600">{service.price}</p>
+
+        {/* 🟡 Coming Soon Note (fallback safeguard) */}
+        {!service.available && service.comingSoonNote && (
+          <span className="inline-block rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+            🚧 {service.comingSoonNote}
+          </span>
+        )}
       </div>
-    </motion.article>
+    </article>
   );
 };
 

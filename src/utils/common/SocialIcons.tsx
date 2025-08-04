@@ -1,40 +1,44 @@
-// ✅ src/utils/common/SocialIcons.tsx
+// ✅ src/utils/common/SocialIcons.tsx — Compact Social Icon Links
 
 import { FC } from "react";
 import { Facebook, Instagram, Youtube, Globe } from "lucide-react";
 
 /**
- * 🌐 SocialIcons — แสดงชุดลิงก์โซเชียลไอคอนแบบ compact
+ * 🌐 SocialIcons
  *
- * - ใช้ไอคอนจาก Lucide
- * - Tailwind รองรับการปรับแต่งขนาด/สี
+ * - แสดงชุดลิงก์ไอคอนโซเชียล
+ * - ใช้ Lucide icon + Tailwind + A11y
+ * - สามารถฝังใน Footer / Hero / Contact ได้
  */
 const SocialIcons: FC = () => {
   const links = [
     {
       href: "https://facebook.com/jpvisual",
       label: "Facebook",
-      icon: Facebook
+      icon: Facebook,
     },
     {
       href: "https://instagram.com/jpvisual",
       label: "Instagram",
-      icon: Instagram
+      icon: Instagram,
     },
     {
       href: "https://youtube.com/@jpvisual",
       label: "YouTube",
-      icon: Youtube
+      icon: Youtube,
     },
     {
       href: "https://jpvisual.com",
       label: "เว็บไซต์หลัก",
-      icon: Globe
-    }
+      icon: Globe,
+    },
   ];
 
   return (
-    <div className="flex gap-4">
+    <nav
+      className="flex items-center gap-4"
+      aria-label="ลิงก์โซเชียลมีเดียของ JP Visual"
+    >
       {links.map(({ href, label, icon: Icon }) => (
         <a
           key={label}
@@ -42,12 +46,12 @@ const SocialIcons: FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="text-base-content hover:text-primary transition"
+          className="text-base-content hover:text-primary transition-colors duration-200"
         >
-          <Icon className="w-5 h-5" />
+          <Icon className="w-5 h-5" aria-hidden="true" />
         </a>
       ))}
-    </div>
+    </nav>
   );
 };
 

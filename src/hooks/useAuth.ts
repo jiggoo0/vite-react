@@ -1,71 +1,45 @@
-// ✅ src/hooks/useAuth.ts — จัดการสถานะผู้ใช้ + Logout
+import { useState, useEffect } from "react";
 
-import { useEffect, useState } from "react";
+type Role = "admin" | "user" | "guest";
+type User = { id: number; name: string; role: Role };
 
-/**
- * 🌐 ประเภทของผู้ใช้ในระบบ
- */
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: "admin" | "user" | "guest";
-};
-
-/**
- * 🔐 useAuth — Hook สำหรับจัดการสถานะผู้ใช้
- *
- * - ใช้ใน Route Guards, Navbar, หรือ Component ที่ต้องรู้สถานะผู้ใช้
- * - จำลองระบบ Auth โดยใช้ localStorage เก็บข้อมูล
- */
-export function useAuth() {
+export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
-  /**
-   * ✅ โหลดสถานะผู้ใช้จาก localStorage เมื่อ component mount
-   */
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
+    const stored = localStorage.getItem("user");
+    if (stored) {
       try {
-        const parsedUser = JSON.parse(storedUser) as User;
-
-        // ตรวจสอบข้อมูลพื้นฐานเบื้องต้นก่อนใช้งานจริง
+        const parsed = JSON.parse(stored);
         if (
-          typeof parsedUser.id === "number" &&
-          typeof parsedUser.name === "string" &&
-          typeof parsedUser.email === "string" &&
-          ["admin", "user", "guest"].includes(parsedUser.role)
+          typeof parsed === "object" &&
+          parsed !== null &&
+          typeof parsed.id === "number" &&
+          typeof parsed.name === "string" &&
+          ["admin", "user", "guest"].includes(parsed.role)
         ) {
-          setUser(parsedUser);
+          setUser(parsed);
         } else {
-          console.warn("⚠️ ข้อมูลผู้ใช้ไม่ถูกต้อง:", parsedUser);
           localStorage.removeItem("user");
         }
-      } catch (error) {
-        console.error("⚠️ ไม่สามารถอ่านข้อมูลผู้ใช้จาก localStorage:", error);
+      } catch {
         localStorage.removeItem("user");
       }
     }
-
     setLoading(false);
   }, []);
 
-  /**
-   * 🔓 Logout — เคลียร์ข้อมูลผู้ใช้ออกจากระบบ
-   */
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
   };
 
   return {
-    user,
+    loading,
     isAuthenticated: !!user,
     role: user?.role ?? "guest",
-    loading,
-    logout
+    user,
+    logout,
   };
-}
+};

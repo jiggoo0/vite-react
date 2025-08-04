@@ -2,10 +2,10 @@
 
 import { FC, ReactNode } from "react";
 
-interface SectionContainerProps {
+type SectionContainerProps = {
   /** 👶 Content ที่อยู่ภายใน Container */
   children: ReactNode;
-}
+};
 
 /**
  * 📦 SectionContainer
@@ -15,8 +15,10 @@ interface SectionContainerProps {
  * - รองรับ responsive padding (mobile → desktop)
  * - ใช้คู่กับ `<section className="py-16">` เป็นต้น
  */
-const SectionContainer: FC<SectionContainerProps> = ({ children }) => {
-  return <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>;
-};
+const SectionContainer: FC<SectionContainerProps> = ({ children }) => (
+  <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {children}
+  </div>
+);
 
 export default SectionContainer;

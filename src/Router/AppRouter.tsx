@@ -1,10 +1,12 @@
-// src/Router/AppRouter.tsx
+// ✅ src/Router/AppRouter.tsx — Production-Ready with Guard & Structure (No 404)
 
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
-// Layouts & Wrappers
+// Layouts
 import Layout from "@/Layout/Layout";
+
+// Utils & Enhancer
 import ScrollToTop from "@/utils/common/ScrollToTop";
 import FallbackLoader from "@/utils/common/FallbackLoader";
 import ErrorBoundary from "@/utils/common/ErrorBoundary";
@@ -18,60 +20,60 @@ const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const Secret = lazy(() => import("@/Home/Secret"));
 const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
-const NotFound = lazy(() => import("@/utils/common/404"));
+const Forbidden = lazy(() => import("@/utils/common/403")); // ✅ Optional
 
-const AppRouter: FC = () => (
-  <>
-    {/* Scroll to top on route change */}
-    <ScrollToTop />
+const AppRouter: FC = () => {
+  return (
+    <>
+      <ScrollToTop />
 
-    {/* Error boundary for route tree */}
-    <ErrorBoundary>
-      <Suspense fallback={<FallbackLoader />}>
-        <Routes>
-          {/* Public Routes */}
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="form" element={<CustomerAssessmentForm />} />
-          </Route>
+      <ErrorBoundary>
+        <Suspense fallback={<FallbackLoader />}>
+          <Routes>
+            {/* 🟢 Public */}
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="login" element={<Login />} />
+              <Route path="form" element={<CustomerAssessmentForm />} />
+            </Route>
 
-          {/* Authenticated Routes */}
-          <Route
-            element={
-              <GuardRoutes>
-                <Layout />
-              </GuardRoutes>
-            }
-          >
-            <Route path="secret" element={<Secret />} />
-          </Route>
-
-          {/* Role-Based Admin Routes */}
-          <Route
-            path="admin"
-            element={
-              <RoleGuard allowedRoles={["admin"]}>
-                <Layout />
-              </RoleGuard>
-            }
-          >
+            {/* 🔒 Protected */}
             <Route
-              index
               element={
-                <div className="p-6 text-xl font-semibold text-white">
-                  🛠️ Admin Dashboard
-                </div>
+                <GuardRoutes>
+                  <Layout />
+                </GuardRoutes>
               }
-            />
-          </Route>
+            >
+              <Route path="secret" element={<Secret />} />
+            </Route>
 
-          {/* 404 Fallback */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </ErrorBoundary>
-  </>
-);
+            {/* 🛡️ Admin Role */}
+            <Route
+              path="admin"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <Layout />
+                </RoleGuard>
+              }
+            >
+              <Route
+                index
+                element={
+                  <div className="p-6 text-xl font-semibold text-white">
+                    🛠️ Admin Dashboard
+                  </div>
+                }
+              />
+            </Route>
+
+            {/* 🚫 Forbidden (403) */}
+            <Route path="403" element={<Forbidden />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
+    </>
+  );
+};
 
 export default AppRouter;

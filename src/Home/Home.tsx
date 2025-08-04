@@ -1,12 +1,10 @@
-// ✅ src/Home/Home.tsx — หน้าแรก JP Visual & Docs พร้อมใช้งานจริงระดับ Production
-
 "use client";
 
 import { FC } from "react";
 
 import Hero from "@home/components/Hero/Hero";
 import About from "@home/components/About/About";
-import ServicesSection from "@home/components/Services/ServicesSection";
+import { ServicesSection } from "@home/components/Services";
 import PortfolioGallery from "@home/components/Portfolio/PortfolioGallery";
 import SectionContainer from "@common/SectionContainer";
 
@@ -25,7 +23,11 @@ const Home: FC = () => {
       </section>
 
       {/* 👤 About Section */}
-      <section id="about" aria-labelledby="about-title" className="scroll-mt-20 py-16 md:py-24">
+      <section
+        id="about"
+        aria-labelledby="about-title"
+        className="scroll-mt-20 py-16 md:py-24"
+      >
         <SectionContainer>
           <About />
         </SectionContainer>

@@ -1,59 +1,32 @@
-// ✅ src/Home/components/Services/ServicesSection.tsx — Production-Ready Services Overview
-
-"use client";
+// ✅ src/Home/components/Services/ServicesSection.tsx — Section รวมบริการทั้งหมดของ JP Visual & Docs
 
 import { FC } from "react";
 import { jpServices } from "@/data/services";
 import ServiceCard from "./ui/ServiceCard";
 import ComingSoonServiceCard from "./ui/ComingSoonServiceCard";
-import FeatureList from "./FeatureList";
-import FeatureAwards from "./FeatureAwards";
+import SectionContainer from "@/utils/common/SectionContainer"; // ✅ path จริงตามโปรเจกต์
 
 /**
- * ✅ ServicesSection — Section รายการบริการของ JP Visual & Docs
- *
- * - FeatureList: จุดแข็งของระบบ JP ที่พัฒนาขึ้นเอง
- * - FeatureAwards: สิ่งที่ลูกค้ามักชื่นชม
- * - แสดงบริการทั้ง "พร้อมใช้งาน" และ "Coming Soon"
+ * 🧩 ServicesSection
+ * - แสดงทั้งบริการที่พร้อมให้บริการ และ Coming Soon
+ * - ใช้ร่วมกับ UI Card 2 ประเภท: ServiceCard และ ComingSoonServiceCard
+ * - ใช้ Grid responsive รองรับ 1–3 คอลัมน์
  */
 const ServicesSection: FC = () => {
-  const availableServices = jpServices.filter((service) => service.available);
-  const comingSoonServices = jpServices.filter((service) => !service.available);
+  const availableServices = jpServices.filter((s) => s.available);
+  const comingSoonServices = jpServices.filter((s) => !s.available);
 
   return (
-    <div className="space-y-16" aria-labelledby="services-section">
-      {/* 🔰 Feature 1: ความสามารถของระบบ */}
-      <section aria-label="ความสามารถของระบบหลังบ้าน JP-System">
-        <FeatureList />
-      </section>
-
-      {/* 🔰 Feature 2: จุดที่ลูกค้ามักเลือกใช้เรา */}
-      <section aria-label="เหตุผลที่ลูกค้าไว้วางใจ JP Visual & Docs">
-        <FeatureAwards />
-      </section>
-
-      {/* 🎯 บริการพร้อมใช้งาน */}
-      {availableServices.length > 0 && (
-        <section aria-label="บริการที่พร้อมให้บริการ">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {availableServices.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 🚧 บริการที่ยังไม่เปิดตัว */}
-      {comingSoonServices.length > 0 && (
-        <section aria-label="บริการใหม่ที่กำลังจะมา">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {comingSoonServices.map((service) => (
-              <ComingSoonServiceCard key={service.id} service={service} />
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
+    <SectionContainer>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {availableServices.map((service) => (
+          <ServiceCard key={service.id} service={service} />
+        ))}
+        {comingSoonServices.map((service) => (
+          <ComingSoonServiceCard key={service.id} service={service} />
+        ))}
+      </div>
+    </SectionContainer>
   );
 };
 

@@ -1,11 +1,14 @@
-// ✅ src/utils/common/SectionWrapper.tsx
+// ✅ src/utils/common/SectionWrapper.tsx — Standardized Section Container
 
-import { cn } from "@/utils/cn";
 import { FC, PropsWithChildren } from "react";
+import { cn } from "@/utils/cn";
 
 /**
- * 🧱 SectionWrapper — ใช้ครอบ Section ให้มี padding + responsive layout
- * - ใช้ควบคุม spacing / width ในแต่ละ Section
+ * 🧱 SectionWrapper
+ *
+ * - ใช้สำหรับจัดระยะขอบแนวนอนและความกว้างของ Section
+ * - ปรับให้ responsive ได้โดยใช้ Tailwind utility classes
+ * - ใช้ร่วมกับแต่ละ Section เช่น Hero, Services, Features ฯลฯ
  */
 const SectionWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
