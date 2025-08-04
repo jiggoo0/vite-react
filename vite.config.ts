@@ -1,35 +1,31 @@
-// ✅ vite.config.ts — Vite Configuration for JP Visual & Docs
+// ✅ vite.config.ts - Proper TypeScript Syntax
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
-import { fileURLToPath } from "url";
-
+// Handle __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const src = (dir: string) => path.resolve(__dirname, "src", dir);
+// Shortcut to /src subfolders
+const src = (dir: string) => path.resolve(__dirname, 'src', dir);
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": src(""),
-      "@assets": src("assets"),
-      "@styles": src("styles"),
-      "@data": src("data"),
-      "@components": src("components"),
-      "@common": src("utils/common"),
-      "@utils": src("utils"),
-      "@hooks": src("hooks"),
-      "@layout": src("Layout"),
-      "@router": src("Router"),
-      "@home": src("Home")
-    }
+      '@': src(''),
+      '@assets': src('assets'),
+      '@styles': src('styles'),
+      '@data': src('data'),
+      '@components': src('components'),
+      '@common': src('utils/common'),
+      '@utils': src('utils'),
+      '@hooks': src('hooks'),
+      '@layout': src('Layout'),
+      '@router': src('Router'),
+      '@home': src('Home'),
+    },
   },
-  build: {
-    outDir: "dist", // ✅ Ensure Vercel or other CI tools target correct output
-    sourcemap: false, // แนะนำสำหรับ production
-    emptyOutDir: true
-  }
 });

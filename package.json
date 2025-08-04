@@ -1,24 +1,13 @@
 {
   "name": "vite-react",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
-  "author": "jiggo0@outlook.co.th",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jiggoo0/vite-react"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "clean": "pnpm dlx rimraf dist .turbo .next .vercel node_modules pnpm-lock.yaml"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
@@ -26,8 +15,8 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.536.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.62.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.7.1",
@@ -35,24 +24,23 @@
     "zod": "^4.0.14"
   },
   "devDependencies": {
-    "@eslint/js": "^9.32.0",
-    "@types/react": "^18.3.23",
-    "@types/react-dom": "^18.3.7",
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^24.1.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
-    "@vercel/static-build": "^2.7.17",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.21",
-    "daisyui": "3.8.0",
-    "eslint": "^9.32.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^15.15.0",
+    "daisyui": "^5.0.50",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "3.4.3",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.38.0",
-    "vercel": "^44.7.0",
-    "vite": "^7.0.6"
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1"
   }
 }
