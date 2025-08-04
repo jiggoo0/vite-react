@@ -26,5 +26,10 @@ export default defineConfig({
       "@router": src("Router"),
       "@home": src("Home")
     }
+  },
+  build: {
+    outDir: "dist", // ✅ Ensure Vercel or other CI tools target correct output
+    sourcemap: false, // แนะนำสำหรับ production
+    emptyOutDir: true
   }
 });
