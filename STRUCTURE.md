@@ -87,7 +87,7 @@
 - utils/
   - cn.ts
   - common/
-    - 404.tsx
+    - 403.tsx
     - BackToTop.tsx
     - ChatWidget.tsx
     - DisclaimerModal.tsx

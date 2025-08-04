@@ -1,8 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertCircle } from "lucide-react";
 import bcrypt from "bcryptjs";
-
 import { users } from "@/data/users";
 
 const Login = () => {
@@ -27,10 +25,13 @@ const Login = () => {
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify(user));
-    setError(null);
+    // เก็บเฉพาะข้อมูลที่ไม่ลับใน localStorage
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ username: user.username, role: user.role })
+    );
 
-    // 🔧 ปรับตาม role ที่คุณใช้จริง (ถ้าไม่มี role ให้ลบ if)
+    setError(null);
     navigate("/secret");
   };
 
@@ -41,40 +42,30 @@ const Login = () => {
 
         {error && (
           <div className="flex items-center gap-2 p-3 text-red-700 bg-red-100 rounded-md">
-            <AlertCircle className="w-5 h-5" />
-            <span>{error}</span>
+            {error}
           </div>
         )}
 
         <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium">ชื่อผู้ใช้</label>
-            <input
-              type="text"
-              id="username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="input input-bordered w-full"
-              placeholder="admin2517"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium">รหัสผ่าน</label>
-            <input
-              type="password"
-              id="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input input-bordered w-full"
-              placeholder="********"
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-full">เข้าสู่ระบบ</button>
+          <input
+            type="text"
+            placeholder="ชื่อผู้ใช้"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input input-bordered w-full"
+            required
+          />
+          <input
+            type="password"
+            placeholder="รหัสผ่าน"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input input-bordered w-full"
+            required
+          />
+          <button type="submit" className="btn btn-primary w-full">
+            เข้าสู่ระบบ
+          </button>
         </form>
       </div>
     </section>

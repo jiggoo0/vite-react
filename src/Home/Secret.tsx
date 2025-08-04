@@ -1,18 +1,11 @@
-// ✅ src/Home/Secret.tsx — พื้นที่เฉพาะผู้ใช้ที่เข้าสู่ระบบ
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-/**
- * 🌐 ประเภทข้อมูลผู้ใช้ตามโครงสร้างจริงจาก users.ts
- */
 type User = {
   username: string;
-  role?: "admin" | "user";
+  role: "admin" | "user";
 };
 
-/**
- * 🔐 Secret — แสดงเฉพาะผู้ใช้ที่เข้าสู่ระบบเท่านั้น
- */
 const Secret: React.FC = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -22,40 +15,29 @@ const Secret: React.FC = () => {
     const storedUser = localStorage.getItem("user");
 
     if (!storedUser) {
-      redirectToLogin();
+      navigate("/login", { replace: true });
       return;
     }
 
     try {
       const parsed = JSON.parse(storedUser);
-      if (isValidUser(parsed)) {
+      if (
+        typeof parsed === "object" &&
+        parsed !== null &&
+        typeof parsed.username === "string" &&
+        ["admin", "user"].includes(parsed.role)
+      ) {
         setUser(parsed);
       } else {
         throw new Error("Invalid user object");
       }
-    } catch (err) {
-      console.warn("⚠️ Invalid user object in localStorage:", err);
+    } catch {
       localStorage.removeItem("user");
-      redirectToLogin();
+      navigate("/login", { replace: true });
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  /**
-   * 🔎 Type Guard — ตรวจสอบความถูกต้องของ object ที่โหลดมา
-   */
-  const isValidUser = (data: any): data is User => {
-    return (
-      typeof data === "object" &&
-      data !== null &&
-      typeof data.username === "string"
-    );
-  };
-
-  const redirectToLogin = () => {
-    navigate("/login", { replace: true });
-  };
+  }, [navigate]);
 
   if (loading) {
     return (
@@ -77,9 +59,7 @@ const Secret: React.FC = () => {
         </p>
         <div className="text-sm text-gray-500">
           🔐 สิทธิ์:
-          <span className="badge badge-outline capitalize ml-2">
-            {user?.role ?? "user"}
-          </span>
+          <span className="badge badge-outline capitalize ml-2">{user?.role}</span>
         </div>
       </div>
     </section>

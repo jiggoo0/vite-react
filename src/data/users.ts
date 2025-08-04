@@ -1,57 +1,70 @@
-// src/data/users.ts
+// ✅ src/data/users.ts
 
-type UserRecord = {
+export type UserRecord = {
   username: string;
   passwordHash: string;
+  role: "admin" | "user";
 };
 
 export const users: UserRecord[] = [
   {
     username: "admin2517",
-    passwordHash: "$2b$10$JxHy/WZSYUxpKmcgOhqQ/uEabX7AsJ/Fp.lFSdUTJWIZI/a5sdqk6",
+    passwordHash: "$2b$10$yBndt/jIQJRuIKhDu3aa3eW02ir8r7B9iqR2FU0guNGQBpf2z1ckG",
+    role: "admin",
   },
   {
     username: "JPKYETONKEY201",
-    passwordHash: "$2b$10$O2vf5nhqQHrF1blftgGY9eXjChyoIC5huk0AfsfNolBQOhfvXfm/m",
+    passwordHash: "$2b$10$32.sKnH9oZ7t5GCegKKuAuqGnQH1S.aux4VD6RKzoE3HQUItiJX3K",
+    role: "user",
   },
   {
     username: "JPKYETONKEY222",
-    passwordHash: "$2b$10$s3o/tzHgGQlfucTMGoQ/6uRDkkmTWSs/cjZWuEHwVIhNY6fUAYdf2",
+    passwordHash: "$2b$10$QJ9l9nZzKghu3CaAub.H0OYl/lw62UBBmkTf32eoNrgfE/606XpiW",
+    role: "user",
   },
   {
     username: "JPKYETONKEY233",
-    passwordHash: "$2b$10$vPOg6RUBrzJkZXuq2V/mruy.KLiGE7jiGRjTikvzRVxxBlfSkwohe",
+    passwordHash: "$2b$10$CDsBXi19D9q4FJh6DO4fMe4o4K66HSyiSG.xto2CYstAbYdJzMGDO",
+    role: "user",
   },
   {
     username: "JPKYETONKEY244",
-    passwordHash: "$2b$10$38tnius.R9FWUY6s10u6v.PVq9eQaFEuSRaWv1/KegtL7XPJsr3u6",
+    passwordHash: "$2b$10$DF4xKxihxMavXXr9R6pLKe5BMKwjpMS/FaKJRUqZ9asotTL7a./GC",
+    role: "user",
   },
   {
     username: "JPKYETONKEY255",
-    passwordHash: "$2b$10$08/xggMRgU7zPYzHAstEj.yv8qcupXEdPPL73g2j8KedmdOrI19Py",
+    passwordHash: "$2b$10$.gv2rHakGGltCSMrKRksl.sE4MiCm1J5/gMJFTkI.m0lHdBgTpBcC",
+    role: "user",
   },
   {
     username: "JPKYETONKEY266",
-    passwordHash: "$2b$10$B9jZ0Ix.U.Z9D4WXl5Nt3ueAqzoGUzfPmSUNyFGBykwOh9VRh7p.y",
+    passwordHash: "$2b$10$k3z7mX/B.maFXn/SG4FxU.qmT1Q6t.9gITf0SkpgcbzGLR8HZfmRy",
+    role: "user",
   },
   {
     username: "JPKYETONKEY277",
-    passwordHash: "$2b$10$cdFQE6rWPEg8C68ijY5mo.JJEYJraKGVyuyNoEvkDuyiS1Rvvtjr.",
+    passwordHash: "$2b$10$YpjHqDJr2ZI3SH6zgIqeBu6lZf2GY8Wq6B3onreYxZb7aW5FkVS12",
+    role: "user",
   },
   {
     username: "JPKYETONKEY288",
-    passwordHash: "$2b$10$RVBdKLnWm5W4jaSmZUCjSeFvLwAu8idCtukKXULme8XYSgGj.xsK6",
+    passwordHash: "$2b$10$XzSvg7C6oiw7VBg/F3Sm6.PGZdRYmqMCgpaWW2/oDSCMR0YLoqxre",
+    role: "user",
   },
   {
     username: "JPKYETONKEY299",
-    passwordHash: "$2b$10$qFZI8vi/2873cUhZ/kQUNeIqZJuUMWJVBYeoWDeMLi91QUTNVNUSC",
+    passwordHash: "$2b$10$S46f5SwjsmljVHutDVKdouH2k3YKxBlu4iDHrR6qLSz06dd.n9QHi",
+    role: "user",
   },
   {
     username: "JPKYETONKEY300",
-    passwordHash: "$2b$10$9kxpYDEa5pTN4HzJEWH3JuNZGZPbqvAFK9TFMXnww3xB59H5H1uSe",
+    passwordHash: "$2b$10$rZutGZdGX1Q.R/TVJRyn2Ou6DFXrN.I231zOdsIdCwtAXkVhnIyAe",
+    role: "user",
   },
   {
     username: "JPusertest01",
-    passwordHash: "$2b$10$aK2dopNowwAM6oB0gBNy2.b1BklIuyWT02aFCxFFyNVxd.UeuAReW",
+    passwordHash: "$2b$10$pO2ldcu7K28PF2F82Vw0e.6XA1MRQZVw1JYzvT3g5v/hVRAe8nz8u",
+    role: "user",
   },
 ];

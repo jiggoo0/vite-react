@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-type Role = "admin" | "user" | "guest";
-type User = { id: number; name: string; role: Role };
+type Role = "admin" | "user";
+type User = { username: string; role: Role };
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -15,9 +15,8 @@ export const useAuth = () => {
         if (
           typeof parsed === "object" &&
           parsed !== null &&
-          typeof parsed.id === "number" &&
-          typeof parsed.name === "string" &&
-          ["admin", "user", "guest"].includes(parsed.role)
+          typeof parsed.username === "string" &&
+          ["admin", "user"].includes(parsed.role)
         ) {
           setUser(parsed);
         } else {
@@ -38,7 +37,7 @@ export const useAuth = () => {
   return {
     loading,
     isAuthenticated: !!user,
-    role: user?.role ?? "guest",
+    role: user?.role ?? "user",
     user,
     logout,
   };
