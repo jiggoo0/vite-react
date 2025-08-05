@@ -1,39 +1,43 @@
-// ✅ src/Router/GuardRoutes.tsx — Route Guard สำหรับผู้ใช้ที่เข้าสู่ระบบเท่านั้น
+// src/Router/GuardRoutes.tsx
 
-import { FC, ReactNode } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { FC, ReactNode, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GuardRoutesProps {
   children: ReactNode;
 }
 
-/**
- * 🔐 GuardRoutes
- *
- * - ตรวจสอบว่าเข้าสู่ระบบหรือยัง
- * - ถ้ายังไม่ login → redirect ไป /login พร้อมเก็บ path ปัจจุบันไว้
- * - รองรับ loading UX ขณะรอ auth state
- */
 const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
-  const location = useLocation();
+  const navigate = useNavigate();
 
-  // ⏳ รอ auth ตรวจสอบ
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <span className="loading loading-spinner text-primary" />
-      </div>
-    );
-  }
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
 
-  // 🚫 ไม่ได้ login → ส่งไป /login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
+    if (!stored) {
+      navigate("/login", { replace: true });
+      return;
+    }
 
-  // ✅ login แล้ว → render children
+    try {
+      const parsed = JSON.parse(stored);
+      if (
+        typeof parsed !== "object" ||
+        parsed === null ||
+        !("username" in parsed) ||
+        !("role" in parsed) ||
+        typeof (parsed as any).username !== "string" ||
+        !["admin", "user"].includes((parsed as any).role)
+      ) {
+        localStorage.removeItem("user");
+        navigate("/login", { replace: true });
+      }
+    } catch {
+      localStorage.removeItem("user");
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
+
+  // Render children only if user is valid
   return <>{children}</>;
 };
 

@@ -1,5 +1,3 @@
-// ✅ src/Router/AppRouter.tsx — Production-Ready with Guard & Structure (No 404)
-
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -18,9 +16,9 @@ import RoleGuard from "@/Router/RoleGuard";
 // Pages (Lazy Loaded)
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
-const Secret = lazy(() => import("@/Home/Secret"));
+const SecretPage = lazy(() => import("@/Home/SecretPage"));
 const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
-const Forbidden = lazy(() => import("@/utils/common/403")); // ✅ Optional
+const Forbidden = lazy(() => import("@/utils/common/403"));
 
 const AppRouter: FC = () => {
   return (
@@ -45,7 +43,7 @@ const AppRouter: FC = () => {
                 </GuardRoutes>
               }
             >
-              <Route path="secret" element={<Secret />} />
+              <Route path="secret" element={<SecretPage />} />
             </Route>
 
             {/* 🛡️ Admin Role */}

@@ -1,7 +1,11 @@
+// src/hooks/useAuth.ts
+
 import { useState, useEffect } from "react";
 
-type Role = "admin" | "user";
-type User = { username: string; role: Role };
+export type User = {
+  username: string;
+  role: "admin" | "user";
+};
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -9,6 +13,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
+
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
@@ -26,8 +31,14 @@ export const useAuth = () => {
         localStorage.removeItem("user");
       }
     }
+
     setLoading(false);
   }, []);
+
+  const login = (userData: User) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
+  };
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -35,10 +46,10 @@ export const useAuth = () => {
   };
 
   return {
+    user,
     loading,
     isAuthenticated: !!user,
-    role: user?.role ?? "user",
-    user,
+    login,
     logout,
   };
 };
