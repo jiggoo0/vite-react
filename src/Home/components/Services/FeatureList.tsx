@@ -20,21 +20,36 @@ const features: string[] = [
 
 const FeatureList: FC = () => {
   return (
-    <ul
-      className="space-y-3"
-      role="list"
-      aria-label="รายการจุดเด่นของบริการทั้งหมด"
+    <section
+      aria-labelledby="feature-list-title"
+      role="region"
+      className="mt-8"
     >
-      {features.map((feature, index) => (
-        <li key={index} className="flex items-start space-x-3" role="listitem">
-          <CheckCircleIcon
-            className="mt-0.5 h-5 w-5 text-green-500"
-            aria-hidden="true"
-          />
-          <span className="text-base text-base-content/80">{feature}</span>
-        </li>
-      ))}
-    </ul>
+      <h3 id="feature-list-title" className="sr-only">
+        จุดเด่นของบริการ
+      </h3>
+
+      <ul
+        className="space-y-3"
+        role="list"
+        aria-label="รายการจุดเด่นของบริการทั้งหมด"
+      >
+        {features.map((feature, index) => (
+          <li
+            key={index}
+            className="flex items-start space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/80 rounded-md p-1 transition-all"
+            role="listitem"
+            tabIndex={0}
+          >
+            <CheckCircleIcon
+              className="mt-0.5 h-5 w-5 text-green-500 shrink-0"
+              aria-hidden="true"
+            />
+            <span className="text-base text-base-content/80">{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 };
 

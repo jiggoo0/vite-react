@@ -1,5 +1,3 @@
-// ✅ src/Home/components/Services/Services.tsx — Wrapper สำหรับ Section บริการ JP Visual & Docs
-
 "use client";
 
 import { FC } from "react";
@@ -25,6 +23,12 @@ const Services: FC = () => {
       <h2 id="services-title" className="sr-only">
         บริการของเรา
       </h2>
+
+      {/* 🌟 Background Decoration (optional aesthetic) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 -left-10 -z-10 w-[500px] rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-[120px] opacity-40"
+      />
 
       {/* 🧩 บริการทั้งหมด */}
       <ServicesSection />

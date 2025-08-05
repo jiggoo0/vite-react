@@ -1,5 +1,3 @@
-// ✅ src/Home/components/About/ui/AboutQuote.tsx — Production-Ready Quote Component
-
 "use client";
 
 import { motion } from "framer-motion";

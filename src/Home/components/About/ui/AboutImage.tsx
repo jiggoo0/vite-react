@@ -1,5 +1,3 @@
-// ✅ src/Home/components/About/ui/AboutImage.tsx — Production-Ready
-
 "use client";
 
 import { motion } from "framer-motion";

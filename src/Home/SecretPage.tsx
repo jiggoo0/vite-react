@@ -1,5 +1,3 @@
-// src/Home/SecretPage.tsx
-
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -52,17 +50,23 @@ const SecretPage: FC = () => {
   }
 
   return (
-    <section className="min-h-screen bg-base-200 text-base-content flex flex-col">
-      <header className="py-8 px-6 border-b border-base-300">
-        <SecretHeader />
+    <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 md:p-8">
+      <header className="max-w-4xl mx-auto w-full mb-8">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
+          <SecretHeader />
+        </div>
       </header>
 
-      <main className="flex-grow px-6 py-8 max-w-4xl mx-auto w-full space-y-8">
-        {user && <SecretDescription user={user} />}
+      <main className="flex-grow max-w-4xl mx-auto w-full mb-8">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
+          {user && <SecretDescription user={user} />}
+        </div>
       </main>
 
-      <footer className="py-6 px-6 border-t border-base-300 max-w-4xl mx-auto w-full">
-        {user && <SecretActions role={user.role} />}
+      <footer className="max-w-4xl mx-auto w-full">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
+          {user && <SecretActions role={user.role} />}
+        </div>
       </footer>
     </section>
   );

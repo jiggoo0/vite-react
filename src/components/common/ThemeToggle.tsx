@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react'
 import { THEMES, getSavedTheme, saveTheme, applyTheme, ThemeName } from '@/data/theme'
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState<ThemeName>(getSavedTheme())
+  const [theme, setTheme] = useState<ThemeName>(() => {
+    const saved = getSavedTheme()
+    applyTheme(saved) // apply ทันทีเมื่อ mount (ไม่ต้องรอ useEffect)
+    return saved
+  })
 
   const handleChange = (newTheme: ThemeName) => {
     setTheme(newTheme)
     applyTheme(newTheme)
     saveTheme(newTheme)
   }
-
-  useEffect(() => {
-    applyTheme(theme)
-  }, [theme])
 
   return (
     <select

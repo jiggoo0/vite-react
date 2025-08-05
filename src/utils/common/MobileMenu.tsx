@@ -25,16 +25,32 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
       aria-label="เมนูมือถือ"
     >
       <nav className="flex flex-col gap-5 text-lg font-medium">
-        <a href="/" onClick={onClose} className="hover:text-primary transition-colors">
+        <a
+          href="/"
+          onClick={onClose}
+          className="hover:text-primary transition-colors"
+        >
           หน้าแรก
         </a>
-        <a href="/#portfolio" onClick={onClose} className="hover:text-primary transition-colors">
+        <a
+          href="/#portfolio"
+          onClick={onClose}
+          className="hover:text-primary transition-colors"
+        >
           ผลงาน
         </a>
-        <a href="/#services" onClick={onClose} className="hover:text-primary transition-colors">
+        <a
+          href="/#services"
+          onClick={onClose}
+          className="hover:text-primary transition-colors"
+        >
           บริการ
         </a>
-        <a href="/#about" onClick={onClose} className="hover:text-primary transition-colors">
+        <a
+          href="/#about"
+          onClick={onClose}
+          className="hover:text-primary transition-colors"
+        >
           เกี่ยวกับเรา
         </a>
       </nav>

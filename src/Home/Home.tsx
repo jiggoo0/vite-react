@@ -34,27 +34,27 @@ const Home: FC = () => {
   return (
     <main className="flex flex-col scroll-smooth">
       {/* 🚀 Hero */}
-      <PageSection id="hero">
+      <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์">
         <Hero />
       </PageSection>
 
       {/* 👤 About */}
-      <PageSection id="about">
+      <PageSection id="about" title="เกี่ยวกับเรา">
         <About />
       </PageSection>
 
       {/* 🛠️ Services */}
-      <PageSection id="services" bg="bg-base-100">
+      <PageSection id="services" title="บริการของเรา" bg="bg-base-100">
         <ServicesSection />
       </PageSection>
 
       {/* 🎨 Portfolio */}
-      <PageSection id="portfolio" bg="bg-base-100">
+      <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
         <PortfolioGallery />
       </PageSection>
 
       {/* ❓ FAQ */}
-      <PageSection id="faq">
+      <PageSection id="faq" title="คำถามที่พบบ่อย">
         <SupportFAQ />
       </PageSection>
     </main>
@@ -66,17 +66,22 @@ export default Home;
 // ✅ Composable Section Wrapper (Clean & Consistent)
 interface PageSectionProps {
   id: string;
+  title: string; // สำหรับ aria-labelledby text
   children: React.ReactNode;
   bg?: string; // tailwind class string
 }
 
-const PageSection: FC<PageSectionProps> = ({ id, children, bg }) => {
+const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => {
   return (
     <section
       id={id}
       aria-labelledby={`${id}-title`}
+      role="region"
       className={`scroll-mt-20 py-16 md:py-24 ${bg ?? ""}`}
     >
+      <h2 id={`${id}-title`} className="sr-only">
+        {title}
+      </h2>
       <SectionContainer>{children}</SectionContainer>
     </section>
   );

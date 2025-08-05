@@ -5,7 +5,7 @@
   - CustomerAssessmentForm.tsx
   - Home.tsx
   - Login.tsx
-  - Secret.tsx
+  - SecretPage.tsx
   - components/
     - About/
       - About.tsx
@@ -15,8 +15,6 @@
         - AboutImage.tsx
         - AboutQuote.tsx
         - AboutTitle.tsx
-    - CTASection/
-      - CTASection.tsx
     - Forms/
       - FormWrapper.tsx
       - SelectField.tsx
@@ -36,11 +34,16 @@
         - HeroStats.tsx
     - Portfolio/
       - PortfolioGallery.tsx
+      - SupportFAQ.tsx
       - index.ts
       - ui/
         - Button.tsx
         - PortfolioCTA.tsx
         - PortfolioFilter.tsx
+    - SecretSection/
+      - SecretActions.tsx
+      - SecretDescription.tsx
+      - SecretHeader.tsx
     - Services/
       - FeatureAwards.tsx
       - FeatureList.tsx

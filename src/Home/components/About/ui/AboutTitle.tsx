@@ -1,5 +1,3 @@
-// ✅ src/Home/components/About/ui/AboutTitle.tsx — Production-Ready Title Component
-
 "use client";
 
 import { motion } from "framer-motion";

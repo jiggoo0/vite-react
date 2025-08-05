@@ -15,18 +15,18 @@ const stats = [
   {
     icon: ShieldCheck,
     color: "text-green-500",
-    label: "ความลับปลอดภัย"
+    label: "ความลับปลอดภัย",
   },
   {
     icon: Clock4,
     color: "text-yellow-400",
-    label: "งานไวใน 24 ชม."
+    label: "งานไวใน 24 ชม.",
   },
   {
     icon: Zap,
     color: "text-blue-500",
-    label: "พร้อมลุยทุกเคส"
-  }
+    label: "พร้อมลุยทุกเคส",
+  },
 ];
 
 const HeroStats: FC = () => {
@@ -44,8 +44,7 @@ const HeroStats: FC = () => {
         <div
           key={index}
           role="listitem"
-          className="flex flex-col items-center gap-2 rounded-2xl border border-neutral-800 
-                     bg-neutral-900/80 px-6 py-5 shadow text-center"
+          className="flex flex-col items-center gap-2 rounded-2xl border border-neutral-800 bg-neutral-900/80 px-6 py-5 shadow text-center"
         >
           <Icon className={`w-6 h-6 ${color}`} strokeWidth={2.2} aria-hidden="true" />
           <span className="text-sm font-medium text-white whitespace-nowrap">{label}</span>

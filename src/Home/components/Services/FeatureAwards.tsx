@@ -30,25 +30,34 @@ const awards = [
 
 const FeatureAwards: FC = () => {
   return (
-    <div
-      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+    <section
       aria-labelledby="awards-title"
-      role="list"
+      role="region"
+      className="mt-12"
     >
-      {awards.map((award, index) => (
-        <div
-          key={index}
-          className="flex items-start space-x-4 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm"
-          role="listitem"
-        >
-          <div className="shrink-0">{award.icon}</div>
-          <div>
-            <h4 className="text-base font-semibold text-base-content">{award.title}</h4>
-            <p className="text-sm text-base-content/70">{award.description}</p>
+      <h3 id="awards-title" className="sr-only">
+        จุดเด่นและรางวัล
+      </h3>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {awards.map((award, index) => (
+          <div
+            key={index}
+            className="flex items-start space-x-4 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm hover:shadow-md transition-shadow focus-within:ring-2 focus-within:ring-primary"
+            role="listitem"
+            tabIndex={0}
+          >
+            <div className="shrink-0">{award.icon}</div>
+            <div>
+              <h4 className="text-base font-semibold text-base-content">
+                {award.title}
+              </h4>
+              <p className="text-sm text-base-content/70">{award.description}</p>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
   );
 };
 

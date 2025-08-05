@@ -18,8 +18,9 @@ interface ServiceCardProps {
 const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
   return (
     <article
-      className="relative overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-md"
+      className="relative overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-md focus-within:ring-2 focus-within:ring-primary"
       aria-label={`บริการ: ${service.title}`}
+      tabIndex={0}
     >
       {/* 📷 รูปภาพบริการ */}
       <img
@@ -40,7 +41,10 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
 
         {/* 🟡 Coming Soon Note (fallback safeguard) */}
         {!service.available && service.comingSoonNote && (
-          <span className="inline-block rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+          <span
+            className="inline-block rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800"
+            aria-hidden="true"
+          >
             🚧 {service.comingSoonNote}
           </span>
         )}

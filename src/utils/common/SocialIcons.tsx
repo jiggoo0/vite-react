@@ -46,7 +46,8 @@ const SocialIcons: FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="text-base-content hover:text-primary transition-colors duration-200"
+          title={label}
+          className="text-base-content hover:text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
         >
           <Icon className="w-5 h-5" aria-hidden="true" />
         </a>

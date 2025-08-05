@@ -1,5 +1,3 @@
-// ✅ src/Home/components/About/About.tsx — Production-Ready About Section
-
 "use client";
 
 import { motion } from "framer-motion";
@@ -31,7 +29,7 @@ const About = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="mx-auto w-full max-w-3xl space-y-14 text-center"
+        className="mx-auto max-w-3xl space-y-14 text-center"
       >
         <AboutTitle />
         <AboutDescription />

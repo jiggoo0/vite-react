@@ -1,6 +1,4 @@
-// ✅ src/Layout/Layout.tsx — Layout หลักของแอปพลิเคชัน
-
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 
 import Navbar from "@/components/Layout/Navbar";
@@ -16,7 +14,7 @@ import BackToTop from "@/utils/common/BackToTop";
  * - รองรับ Outlet สำหรับ Routing
  * - จัด Layout Responsive และ Maintainable
  */
-const Layout: FC = () => {
+const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content">
       {/* 🔝 Header */}
@@ -24,7 +22,7 @@ const Layout: FC = () => {
 
       {/* 📄 Main Content */}
       <main className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Outlet />
+        {children ?? <Outlet />}
       </main>
 
       {/* 👣 Footer */}

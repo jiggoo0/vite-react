@@ -21,9 +21,10 @@ const ComingSoonServiceCard: FC<ComingSoonServiceCardProps> = ({ service }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 shadow-md"
+      viewport={{ once: true, amount: 0.3 }}
+      className="relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 shadow-md focus-within:ring-2 focus-within:ring-yellow-400"
       aria-label={`บริการ ${service.title} กำลังจะเปิดให้บริการเร็ว ๆ นี้`}
+      tabIndex={0}
     >
       {/* 📷 รูปภาพประกอบ */}
       <img
@@ -44,7 +45,10 @@ const ComingSoonServiceCard: FC<ComingSoonServiceCardProps> = ({ service }) => {
 
       {/* 🟡 Badge "เร็ว ๆ นี้" */}
       {service.comingSoonNote && (
-        <div className="absolute top-2 right-2 rounded-full bg-yellow-500 px-3 py-1 text-xs font-medium text-black shadow">
+        <div
+          className="absolute top-2 right-2 rounded-full bg-yellow-500 px-3 py-1 text-xs font-medium text-black shadow"
+          aria-hidden="true"
+        >
           {service.comingSoonNote}
         </div>
       )}
