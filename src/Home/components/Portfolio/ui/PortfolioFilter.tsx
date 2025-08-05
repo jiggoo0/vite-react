@@ -3,23 +3,22 @@
 import { FC, useCallback } from "react";
 import clsx from "clsx";
 
-interface PortfolioFilterProps {
-  categories: readonly string[];
+type PortfolioFilterProps = {
+  categories: string[];
   activeCategory: string;
   onChange: (category: string) => void;
-}
+};
 
 /**
- * 🎛️ PortfolioFilter — ปุ่มกรองหมวด Portfolio
- * - แสดงปุ่มกรองตามหมวดหมู่ที่เป็นไปได้
- * - รองรับ active state และ accessibility (aria-pressed)
+ * 🎛️ PortfolioFilter
+ * - ปุ่มกรองรายการ Portfolio
+ * - รองรับ Active state, Accessibility และ Transition
  */
 const PortfolioFilter: FC<PortfolioFilterProps> = ({
   categories,
   activeCategory,
   onChange,
 }) => {
-  // Memoize onClick handler factory to avoid inline arrow function in render
   const handleClick = useCallback(
     (category: string) => () => onChange(category),
     [onChange]
@@ -31,22 +30,26 @@ const PortfolioFilter: FC<PortfolioFilterProps> = ({
       aria-label="ตัวกรองหมวด Portfolio"
       className="flex flex-wrap gap-3"
     >
-      {categories.map((category) => (
-        <button
-          key={category}
-          type="button"
-          onClick={handleClick(category)}
-          className={clsx(
-            "px-4 py-2 text-sm font-medium rounded-full border transition duration-200",
-            activeCategory === category
-              ? "bg-primary text-white border-primary shadow"
-              : "bg-base-100 text-base-content border-neutral-300 hover:bg-base-200"
-          )}
-          aria-pressed={activeCategory === category}
-        >
-          {category}
-        </button>
-      ))}
+      {categories.map((category) => {
+        const isActive = activeCategory === category;
+
+        return (
+          <button
+            key={category}
+            type="button"
+            onClick={handleClick(category)}
+            className={clsx(
+              "px-4 py-2 text-sm font-medium rounded-full border transition duration-200",
+              isActive
+                ? "bg-primary text-white border-primary shadow"
+                : "bg-base-100 text-base-content border-neutral-300 hover:bg-base-200"
+            )}
+            aria-pressed={isActive}
+          >
+            {category}
+          </button>
+        );
+      })}
     </div>
   );
 };

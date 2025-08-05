@@ -2,60 +2,82 @@
 
 import { FC } from "react";
 
+// ✅ Core Sections
 import Hero from "@home/components/Hero/Hero";
 import About from "@home/components/About/About";
 import { ServicesSection } from "@home/components/Services";
-import PortfolioGallery from "@home/components/Portfolio/PortfolioGallery";
 import SectionContainer from "@common/SectionContainer";
 
+// ✅ Feature Sections
+import {
+  PortfolioGallery,
+  SupportFAQ,
+} from "@home/components/Portfolio";
+
 /**
- * 🏠 Home — หน้าแรกของระบบ JP Visual & Docs
+ * 🏠 Home — Landing Page สำหรับระบบ JP Visual & Docs
  *
- * - Hero / About / Services / Portfolio
- * - ทุก Section รองรับ anchor scroll และ mobile responsive
+ * 🚩 Layout Summary:
+ * - Hero
+ * - About
+ * - Services
+ * - Portfolio Gallery
+ * - FAQ (Support)
+ *
+ * 🌐 Features:
+ * - Responsive
+ * - Dark Mode
+ * - Smooth Anchor Scroll
+ * - Semantic HTML & Accessibility
  */
 const Home: FC = () => {
   return (
     <main className="flex flex-col scroll-smooth">
-      {/* 🚀 Hero Section */}
-      <section id="hero" aria-labelledby="hero-title" className="scroll-mt-20">
+      {/* 🚀 Hero */}
+      <PageSection id="hero">
         <Hero />
-      </section>
+      </PageSection>
 
-      {/* 👤 About Section */}
-      <section
-        id="about"
-        aria-labelledby="about-title"
-        className="scroll-mt-20 py-16 md:py-24"
-      >
-        <SectionContainer>
-          <About />
-        </SectionContainer>
-      </section>
+      {/* 👤 About */}
+      <PageSection id="about">
+        <About />
+      </PageSection>
 
-      {/* 🛠️ Services Section */}
-      <section
-        id="services"
-        aria-labelledby="services-title"
-        className="scroll-mt-20 py-16 md:py-24 bg-base-100"
-      >
-        <SectionContainer>
-          <ServicesSection />
-        </SectionContainer>
-      </section>
+      {/* 🛠️ Services */}
+      <PageSection id="services" bg="bg-base-100">
+        <ServicesSection />
+      </PageSection>
 
-      {/* 🎨 Portfolio Section */}
-      <section
-        id="portfolio"
-        aria-labelledby="portfolio-title"
-        className="scroll-mt-20 py-16 md:py-24 bg-base-100"
-      >
-        <SectionContainer>
-          <PortfolioGallery />
-        </SectionContainer>
-      </section>
+      {/* 🎨 Portfolio */}
+      <PageSection id="portfolio" bg="bg-base-100">
+        <PortfolioGallery />
+      </PageSection>
+
+      {/* ❓ FAQ */}
+      <PageSection id="faq">
+        <SupportFAQ />
+      </PageSection>
     </main>
   );
 };
 
 export default Home;
+
+// ✅ Composable Section Wrapper (Clean & Consistent)
+interface PageSectionProps {
+  id: string;
+  children: React.ReactNode;
+  bg?: string; // tailwind class string
+}
+
+const PageSection: FC<PageSectionProps> = ({ id, children, bg }) => {
+  return (
+    <section
+      id={id}
+      aria-labelledby={`${id}-title`}
+      className={`scroll-mt-20 py-16 md:py-24 ${bg ?? ""}`}
+    >
+      <SectionContainer>{children}</SectionContainer>
+    </section>
+  );
+};

@@ -8,23 +8,20 @@ import PortfolioCTA from "./ui/PortfolioCTA";
 import type { PortfolioItem } from "@/data/portfolioItems";
 
 const PortfolioGallery: React.FC = () => {
-  // memoize categories array (unique)
   const categories = useMemo(
     () => Array.from(new Set(portfolioItems.map((item) => item.category))),
     []
   );
 
   const [activeCategory, setActiveCategory] = useState<string>(
-    categories[0] ?? ""
+    () => categories[0] ?? ""
   );
 
-  // filter items memoized by activeCategory
   const filteredItems = useMemo(
     () => portfolioItems.filter((item) => item.category === activeCategory),
     [activeCategory]
   );
 
-  // stable callback for filter change
   const handleCategoryChange = useCallback((category: string) => {
     setActiveCategory(category);
   }, []);
@@ -62,8 +59,11 @@ const PortfolioGallery: React.FC = () => {
               decoding="async"
             />
             <div className="space-y-2 p-4">
-              <h3 className="text-lg font-semibold text-base-content">{title}</h3>
+              <h3 className="text-lg font-semibold text-base-content">
+                {title}
+              </h3>
               <p className="text-sm text-muted">{category}</p>
+
               {link && (
                 <div className="pt-2">
                   <PortfolioCTA href={link} />
