@@ -5,8 +5,6 @@ import { BrowserRouter } from "react-router-dom";
 import AppRouter from "@/Router/AppRouter";
 import "@/styles/global.css";
 
-// เอา FakeProvider ออก
-
 const root = document.getElementById("root") as HTMLElement;
 
 ReactDOM.createRoot(root).render(

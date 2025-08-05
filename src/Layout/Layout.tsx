@@ -14,30 +14,28 @@ import BackToTop from "@/utils/common/BackToTop";
  * - รองรับ Outlet สำหรับ Routing
  * - จัด Layout Responsive และ Maintainable
  */
-const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
-  return (
-    <div className="flex min-h-screen flex-col bg-base-100 text-base-content">
-      {/* 🔝 Header */}
-      <Navbar />
+const Layout: FC<{ children?: ReactNode }> = ({ children }) => (
+  <div className="flex min-h-screen flex-col bg-base-100 text-base-content">
+    {/* 🔝 Header */}
+    <Navbar />
 
-      {/* 📄 Main Content */}
-      <main className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        {children ?? <Outlet />}
-      </main>
+    {/* 📄 Main Content */}
+    <main className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+      {children ?? <Outlet />}
+    </main>
 
-      {/* 👣 Footer */}
-      <Footer />
+    {/* 👣 Footer */}
+    <Footer />
 
-      {/* 💬 Chat Widget */}
-      <ChatWidget />
+    {/* 💬 Chat Widget */}
+    <ChatWidget />
 
-      {/* ⬆️ Back to Top Button */}
-      <BackToTop />
+    {/* ⬆️ Back to Top Button */}
+    <BackToTop />
 
-      {/* ⚠️ Disclaimer Modal */}
-      <DisclaimerModal />
-    </div>
-  );
-};
+    {/* ⚠️ Disclaimer Modal */}
+    <DisclaimerModal />
+  </div>
+);
 
 export default Layout;

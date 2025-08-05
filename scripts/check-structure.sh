@@ -1,23 +1,19 @@
 #!/usr/bin/env bash
 # scripts/check-structure.sh
 
-# 📁 Path setup
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../src" && pwd)"
 OUTPUT_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/STRUCTURE.md"
 
-# 🧠 Indent function (2 spaces per level)
 indent() {
   local level=$1
-  local i
   for ((i = 0; i < level; i++)); do
     printf "  "
   done
 }
 
-# 🔍 Collect all .ts and .tsx files (relative paths)
+# เก็บไฟล์ .ts, .tsx ทั้งหมดแบบ relative path
 mapfile -t entries < <(find "$ROOT_DIR" -type f \( -name "*.ts" -o -name "*.tsx" \) | sed "s|^$ROOT_DIR/||" | sort)
 
-# 📦 Build tree output
 declare -A seen
 output=""
 
@@ -27,17 +23,23 @@ for entry in "${entries[@]}"; do
   for i in "${!parts[@]}"; do
     current+="${parts[i]}"
     key="${i}-${current}"
+
     if [[ -z "${seen[$key]}" ]]; then
       seen["$key"]=1
-      is_file=""
-      [[ "${parts[i]}" == *.* && $i -eq $((${#parts[@]} - 1)) ]] && is_file="" || is_file="/"
-      output+=$(indent "$i")"- ${parts[i]}${is_file}"$'\n'
+
+      # เช็คว่าชิ้นนี้คือไฟล์หรือโฟลเดอร์ (ไฟล์จะอยู่ตำแหน่งสุดท้าย และมี dot)
+      if [[ $i -eq $((${#parts[@]} - 1)) && "${parts[i]}" == *.* ]]; then
+        # ไฟล์ ไม่ต้องขึ้นบรรทัด / ต่อ
+        output+=$(indent "$i")"- ${parts[i]}"$'\n'
+      else
+        # โฟลเดอร์ ใส่ / ต่อท้าย
+        output+=$(indent "$i")"- ${parts[i]}/"$'\n'
+      fi
     fi
     current+="/"
   done
 done
 
-# ✍️ Write STRUCTURE.md
 {
   echo "# 📁 Project Source Structure (\`src/\`)"
   echo
