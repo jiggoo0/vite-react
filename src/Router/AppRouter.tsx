@@ -1,3 +1,5 @@
+// src/Router/AppRouter.tsx
+
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -13,7 +15,7 @@ import ErrorBoundary from "@/utils/common/ErrorBoundary";
 import GuardRoutes from "@/Router/GuardRoutes";
 import RoleGuard from "@/Router/RoleGuard";
 
-// Pages (Lazy)
+// Pages (Lazy Loaded)
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
@@ -26,14 +28,14 @@ const AppRouter: FC = () => (
     <ErrorBoundary>
       <Suspense fallback={<FallbackLoader />}>
         <Routes>
-          {/* 🟢 Public */}
+          {/* 🟢 Public Routes */}
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="form" element={<CustomerAssessmentForm />} />
           </Route>
 
-          {/* 🔒 Protected */}
+          {/* 🔒 Protected Routes */}
           <Route
             element={
               <GuardRoutes>
@@ -44,7 +46,7 @@ const AppRouter: FC = () => (
             <Route path="secret" element={<SecretPage />} />
           </Route>
 
-          {/* 🛡️ Admin-only */}
+          {/* 🛡️ Admin-only Routes */}
           <Route
             path="admin"
             element={
@@ -63,7 +65,7 @@ const AppRouter: FC = () => (
             />
           </Route>
 
-          {/* 🚫 403 */}
+          {/* 🚫 403 Forbidden Page */}
           <Route path="403" element={<Forbidden />} />
         </Routes>
       </Suspense>

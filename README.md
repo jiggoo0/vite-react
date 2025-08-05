@@ -1,156 +1,287 @@
-✅ สรุป REMD (Readme/Documentation Dev) — สถานะปัจจุบันของโปรเจกต์ JP Visual & Docs
+📂 Project Overview - README.md
 
-> 💡 รูปแบบ Dev-to-Dev, เน้นสั้น ชัด ใช้งานได้จริงทันที
+This document summarizes the technical structure, layout, technologies, and custom implementations used in the project as explored and refined through the conversation.
 
+
+---
+
+✨ Project Purpose
+
+A modern, modular, scalable web application built with React + TypeScript, following a clean architectural pattern optimized for maintainability, readability, and performance.
+
+
+---
+
+🎓 Tech Stack
+
+Layer	Tech/Library	Purpose
+
+Frontend	React, TypeScript	Component-based UI
+Styling	Tailwind CSS, DaisyUI	Utility-first + Component UI framework
+Forms	React Hook Form + Zod	Form handling and schema validation
+Routing	React Router DOM v7	Declarative routing
+Animation	Framer Motion	Animations & motion
+Auth & Guards	Custom Role-Based Guards	Page-level access control
+ESLint	@typescript-eslint, Prettier	Code linting and formatting
+Build Tool	Vite	Fast dev/build tooling
+Assets	WebP, SVG, PNG	Optimized web assets
+Hosting	Vercel	Deployment and CI/CD
 
 
 
 ---
 
-🧱 โครงสร้างโปรเจกต์
+🏛️ Project Structure
 
-project/
-├── public/                # ไฟล์ static
+project-root/
+├── dist/                      # Production build output
+├── public/                    # Public static assets
+├── scripts/                   # Helper & utility scripts (e.g., backup, hashPassword)
 ├── src/
-│   ├── data/              # users.ts (รหัส hash)
-│   ├── Home/              # Secret.tsx (หน้าเฉพาะ user)
-│   ├── pages/             # หน้า login, main
-│   ├── routes/            # Routing setup
-│   ├── App.tsx            # Entry Component
-│   └── main.tsx           # Entry Point
-├── .env                   # (กรณีใช้ env เช่น VITE_API)
-├── tailwind.config.ts
-├── tsconfig.json
-├── vite.config.ts
+│   ├── Home/                  # Main page modules
+│   │   ├── components/        # Domain-specific components (About, Hero, Portfolio)
+│   ├── Layout/               # Layouts with Header/Footer
+│   ├── Router/               # AppRouter and Route Guards
+│   ├── components/           # Common components
+│   ├── data/                 # Static data files (portfolioItems, schemas)
+│   ├── hooks/                # Custom React hooks (e.g., useAuth)
+│   ├── styles/               # Global CSS
+│   ├── utils/                # Shared utility functions
+│   └── main.tsx             # Application bootstrap entry
+├── .eslintrc, tailwind.config.ts, tsconfig.*.json
+├── README.md, STRUCTURE.md   # Project documentation
+└── package.json, vite.config.ts
+
+
+---
+
+🔄 Folder Details (Key Focus)
+
+1. src/Home
+
+Contains main modules like CustomerAssessmentForm, Hero, About, Portfolio, Services, etc.
+
+Each component follows separation of UI (ui/) and logic (index.tsx, *.tsx).
+
+Modular and tree-shakable imports.
+
+
+2. src/components
+
+Shared reusable components (Button, Navbar, LogoutButton, etc.)
+
+Organized by domain and UI widgets.
+
+
+3. src/Layout
+
+Global layout components with Header, Footer, and ThemeToggle.
+
+
+4. src/Router
+
+Implements AppRouter with nested route guards using GuardRoutes.tsx and RoleGuard.tsx.
+
+
+5. src/utils/common
+
+Helpers for fallback UI, mobile menu, scroll animations, and modals.
+
+
+
+---
+
+🚀 Deployment & Build
+
+Build command: vite build
+
+Output directory: /dist
+
+Vercel config: vercel.json
+
+Assets handled via vite, postcss, and autoprefixer
+
+
+
+---
+
+🌀 Custom Scripts
+
+Script	Purpose
+
+backup-project.sh	Archive or backup project
+clean.sh	Clean artifacts
+check-structure.sh	Check folder consistency
+hashPassword.ts	Utility to generate hashed password
+
+
+
+---
+
+✅ Design Philosophy
+
+Atomic Design approach for component layering
+
+Clean separation of logic, presentation, and state
+
+DRY principle: shared elements abstracted to components or utils
+
+Fully typed codebase with TypeScript
+
+Modular layout for rapid scalability
+
+
+
+---
+
+🎉 What Was Done (Summary from Conversation)
+
+Improved folder and file layout structure for clarity and scalability
+
+Defined guarded routes and role-based access control system
+
+Separated layout, UI, and logic into atomic components (e.g., Hero, About)
+
+Implemented responsive design using Tailwind
+
+Applied React Hook Form + Zod for complex forms
+
+Added fallbacks, loaders, and modals for better UX
+
+Introduced custom utility hooks and scripts
+
+Verified and cleaned assets & image structures (WebP, SVG)
+
+Enhanced SEO and performance structure (asset optimization)
+
+
+
+---
+
+🔍 Suggestions for Next Steps
+
+Add unit tests using Vitest or Jest
+
+Implement CI/CD pipeline in Vercel/GitHub Actions
+
+Convert more static data to CMS integration (e.g., Contentful or Sanity)
+
+Add analytics or behavior tracking (e.g., Plausible, Google Analytics)
+
+
+
+---
+
+🚀 Ready for production with maintainability in mind.
+
+
+
+สรุป README.md เชิงเทคนิคของโปรเจกต์นี้ถูกจัดทำเรียบร้อยแล้วในเอกสาร “Readme Project Summary” โดยครอบคลุมหัวข้อหลัก ๆ ดังนี้:
+
+
+---
+
+🗂️ โครงสร้างโปรเจกต์
+
+โปรเจกต์นี้ถูกออกแบบด้วยโฟลเดอร์โครงสร้างที่ชัดเจน รองรับแนวทาง Modular Architecture + Component-based Design บนเทคโนโลยี React + Vite + TypeScript พร้อม TailwindCSS และการจัดการ State ด้วย React Hooks
+
+/
+├── dist/                   # ไฟล์ build แล้ว (สำหรับ production)
+├── public/                 # Static assets ใช้แสดงผลตรง
+├── scripts/                # Utility script (เช่น backup, hash password)
+├── src/                    # Source code หลัก
+│   ├── Home/               # หน้าหลักและ Component ย่อย
+│   ├── Layout/             # Layout หลัก เช่น Header/Footer
+│   ├── Router/             # App Routing + Route Guards
+│   ├── components/         # Component แยกใช้ซ้ำได้
+│   ├── data/               # Static data/schema เช่น portfolio items
+│   ├── hooks/              # Custom hooks
+│   ├── styles/             # global styles (Tailwind)
+│   ├── utils/              # ฟังก์ชันช่วยทั่วไป + component ที่ใช้ซ้ำ
+│   └── main.tsx            # Entry point
 ├── package.json
-└── pnpm-lock.yaml
+├── tailwind.config.ts
+├── vite.config.ts
+├── tsconfig.*
+└── README.md
 
 
 ---
 
-🔧 Tech Stack
+⚙️ เทคโนโลยีที่ใช้
 
-Tool	Description
+Stack	รายละเอียด
 
-React 18.3.1	Frontend Framework
-Vite 5.4.19	Lightning-fast build tool
-Tailwind CSS	Styling utility-first framework
-DaisyUI 5.0.50	Tailwind component library
-bcryptjs 3.0.2	สำหรับ compare hash (frontend-only)
-React Router v7	Routing หน้าต่าง ๆ
-React Hook Form	ฟอร์ม login
-Zod 4.0.14	ฟอร์ม validation
-Lucide Icons	UI Icons
-Axios 1.11.0	future-proof HTTP client
-
-
-
----
-
-✅ ฟีเจอร์ที่ทำแล้ว
-
-🔐 Authentication
-
-ใช้ localStorage เก็บ session
-
-เช็ค username + password (hash เทียบจาก list)
-
-ระบบ hash bcryptjs → เปรียบเทียบแบบปลอดภัย ไม่ต้อง request API
-
-
-// เทียบรหัสผ่าน
-const valid = await bcrypt.compare(password, user.passwordHash)
-
-
----
-
-🔓 Protected Route (Secret.tsx)
-
-ตรวจสอบ user จาก localStorage
-
-ถ้าไม่มี หรือ object ไม่ตรง type → redirect ไป /login
-
-Render เฉพาะหน้า Secret เมื่อผ่านเท่านั้น
+Frontend Framework	React 18 (with TypeScript)
+Build Tool	Vite
+CSS Framework	TailwindCSS + DaisyUI
+State Handling	React Hook Form (ฟอร์ม), useState/useEffect
+Routing	React Router DOM (v7)
+Animation	Framer Motion
+Icon	Lucide-react
+Validation	Zod (schema-based form validation)
+Auth Guard	Custom RoleGuard, GuardRoutes
+Form Componentization	FormWrapper, InputField, SelectField, TextareaField
+Custom Utilities	cn.ts (className merge), common/ component (BackToTop, ErrorBoundary, etc.)
 
 
 
 ---
 
-👤 Users Setup (src/data/users.ts)
+🧪 การจัดการ Code Quality
 
-จัดเก็บ user/passwordHash/role
+ใช้ ESLint สำหรับตรวจ linting และ format code ตามมาตรฐาน
 
-ปัจจุบันมี 12 records
+แยก Component เป็น module-based และใช้แนวทาง index.ts สำหรับ export
 
-ทุก password ถูก hash ด้วย bcrypt $2b$10$
+จัดกลุ่ม Component UI ไว้ใน /ui ในแต่ละโมดูลย่อย เพื่อความเป็นระเบียบ
 
-
-export const users: UserRecord[] = [
-  {
-    username: "admin2517",
-    passwordHash: "...",
-    role: "admin"
-  },
-  // ...
-];
-
-
----
-
-⚙️ สภาพแวดล้อม Dev
-
-รายการ	ค่าปัจจุบัน
-
-Termux	✅ ใช้งานอยู่ (Android Dev)
-Node	รองรับ native build tools
-pnpm	ใช้งานจริง
-localhost:5173	Port สำหรับ dev preview
-no backend	⚠️ ยังไม่มี API หรือ backend
+เขียน script/clean.sh และ script/check-structure.sh สำหรับจัดการระบบภายใน
 
 
 
 ---
 
-📦 แพ็กเกจทั้งหมด (pnpm list)
+🖼️ Assets & Static Resources
 
-# production
-axios, bcryptjs, react, react-router-dom, tailwindcss, etc.
+Images และ WebP อยู่ภายใต้ public/assets/ และ src/assets/
 
-# dev-only
-vite, eslint, daisyui, tsx, @vitejs/plugin-react, typescript, etc.
+ใช้ vite สำหรับจัดการ static imports แบบ lazy-load ได้
 
-
----
-
-🛠️ จุดแนะนำเพิ่มเติม
-
-จุด	แนะนำ
-
-✅ Auth flow	พร้อมใช้
-⚠️ ไม่มี backend	ถ้าจะมี register / dynamic users ต้องต่อ API
-⚠️ bcryptjs	ใช้ได้ แต่ถ้ามี backend ควรเปลี่ยนเป็น bcrypt
-🔒 ไม่ใช้ external login	ปลอดภัยแบบ internal-only
-🧪 ยังไม่มี test	ถ้าจะ production ควรเสริม E2E test เช่น Playwright
+มีการใช้ภาพ responsive เช่น .webp แทน .jpg หรือ .png เพื่อ performance
 
 
 
 ---
 
-🧪 การถอนแพ็กเกจ
+🔐 ความปลอดภัย
 
-ถอน bcryptjs ไม่มีผลต่อโครงสร้างถ้าไม่ใช้งาน hashing ฝั่ง client
+ใช้ RoleGuard.tsx และ GuardRoutes.tsx เพื่อจำกัดสิทธิ์การเข้าถึงหน้าเพจ
 
-ถ้าจะใช้ bcrypt ต้อง run ใน Node.js backend เท่านั้น
+มีการเข้ารหัสรหัสผ่านผ่าน scripts/hashPassword.ts ด้วย bcrypt
 
 
 
 ---
 
-📌 สรุปแนวทาง Dev ปัจจุบัน
+🛠️ Scripts สำคัญ
 
-โปรเจคเน้น hash login internal (ไม่มี backend)
+Script	คำอธิบาย
 
-ผู้ใช้ล็อกอินได้จาก hash ที่เตรียมไว้
+backup-project.sh	สำรองข้อมูลโปรเจกต์
+clean.sh	ลบโฟลเดอร์ build, dist
+check-structure.sh	ตรวจสอบโครงสร้างโปรเจกต์
+hashPassword.ts	สร้าง hash ของ password
 
-ระบบพร้อม deploy static frontend (เช่น Vercel, Netlify)
+
+
+---
+
+🔄 รูปแบบการพัฒนา
+
+ใช้ pnpm เป็น package manager เพื่อประสิทธิภาพและความเร็ว
+
+pnpm-lock.yaml ช่วยล็อกเวอร์ชันทุก dependency
+
+ใช้ Vite dev server และ hot reload สำหรับความเร็วในการพัฒนา
 

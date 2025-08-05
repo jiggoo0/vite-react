@@ -1,47 +1,41 @@
-import { FC, useState, useRef, useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+// src/utils/common/ChatWidget.tsx
 
-const ChatWidget: FC = () => {
+import { useState } from "react";
+import { MessageCircle } from "lucide-react";
+import SocialIcons from "./SocialIcons";
+
+const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = () => setIsOpen((prev) => !prev);
 
-  // โฟกัส panel ตอนเปิด
-  useEffect(() => {
-    if (isOpen && panelRef.current) {
-      panelRef.current.focus();
-    }
-  }, [isOpen]);
-
   return (
-    <div className="fixed bottom-6 right-6 z-[9999]">
-      <button
-        onClick={toggleChat}
-        aria-label="Toggle Chat"
-        aria-expanded={isOpen}
-        aria-controls="chat-panel"
-        className="rounded-full bg-primary p-4 text-white shadow-lg transition hover:bg-primary/90 focus:outline-none"
-      >
-        <MessageCircle size={24} />
-      </button>
-
-      {isOpen && (
-        <div
-          id="chat-panel"
-          ref={panelRef}
-          tabIndex={-1}
-          role="dialog"
-          aria-modal="true"
-          className="mt-3 w-80 max-w-[90vw] rounded-xl bg-base-100 p-4 text-base-content shadow-2xl animate-fadeInUp"
-        >
-          <h2 className="mb-2 text-lg font-bold">💬 แชทกับเรา</h2>
-          <p className="text-sm text-base-content/70">
-            สวัสดีค่ะ 👋 หากมีคำถามหรือข้อสงสัย ทีมงานยินดีให้บริการเสมอ!
+    <div className="fixed bottom-5 right-5 z-50">
+      {isOpen ? (
+        <div className="flex flex-col items-center w-80 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl shadow-xl p-5 text-center">
+          <p className="mb-4 text-base font-semibold text-gray-800 dark:text-gray-200">
+            ติดต่อเราผ่านช่องทางโซเชียล
           </p>
 
-          {/* <RealChatComponent /> */}
+          <SocialIcons />
+
+          <button
+            onClick={toggleChat}
+            className="mt-6 px-6 py-2 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-700 transition focus:outline-none focus:ring-2 focus:ring-primary"
+            type="button"
+          >
+            ปิด
+          </button>
         </div>
+      ) : (
+        <button
+          onClick={toggleChat}
+          aria-label="Toggle Chat"
+          className="bg-primary text-white dark:bg-primary-dark dark:text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          type="button"
+        >
+          <MessageCircle className="w-6 h-6" aria-hidden="true" />
+        </button>
       )}
     </div>
   );

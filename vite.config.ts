@@ -7,16 +7,27 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+      "@api": path.resolve(__dirname, "src/api"),
+      "@assets": path.resolve(__dirname, "src/assets"),
       "@common": path.resolve(__dirname, "src/utils/common"),
-      "@utils": path.resolve(__dirname, "src/utils"),
+      "@components": path.resolve(__dirname, "src/components"),
+      "@data": path.resolve(__dirname, "src/data"),
+      "@home": path.resolve(__dirname, "src/Home"),
       "@hooks": path.resolve(__dirname, "src/hooks"),
       "@layout": path.resolve(__dirname, "src/Layout"),
       "@router": path.resolve(__dirname, "src/Router"),
-      "@home": path.resolve(__dirname, "src/Home"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@assets": path.resolve(__dirname, "src/assets"),
       "@styles": path.resolve(__dirname, "src/styles"),
-      "@data": path.resolve(__dirname, "src/data"),
+      "@utils": path.resolve(__dirname, "src/utils"),
+    },
+  },
+  server: {
+    proxy: {
+      // Proxy API requests to backend running on localhost:4000
+      "/api": {
+        target: "http://localhost:4000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
 });

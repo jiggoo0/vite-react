@@ -17,7 +17,8 @@
       "@hooks/*": ["hooks/*"],
       "@layout/*": ["Layout/*"],
       "@router/*": ["Router/*"],
-      "@home/*": ["Home/*"]
+      "@home/*": ["Home/*"],
+      "@api/*": ["api/*"]
     },
     "outDir": "./dist",
     "rootDir": "./src",

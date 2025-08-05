@@ -1,7 +1,7 @@
 // ✅ src/utils/common/SocialIcons.tsx — Compact Social Icon Links
 
 import { FC } from "react";
-import { Facebook, Instagram, Youtube, Globe } from "lucide-react";
+import { Facebook, Instagram, Youtube, Globe, MessageSquare } from "lucide-react";
 
 /**
  * 🌐 SocialIcons
@@ -31,6 +31,11 @@ const SocialIcons: FC = () => {
       href: "https://jpvisual.com",
       label: "เว็บไซต์หลัก",
       icon: Globe,
+    },
+    {
+      href: "https://lin.ee/PAWDPO0",
+      label: "Line Official",
+      icon: MessageSquare,
     },
   ];
 

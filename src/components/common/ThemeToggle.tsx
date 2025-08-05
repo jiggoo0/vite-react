@@ -1,32 +1,39 @@
-import { useEffect, useState } from 'react'
-import { THEMES, getSavedTheme, saveTheme, applyTheme, ThemeName } from '@/data/theme'
+// ✅ src/components/common/LogoutButton.tsx — ปุ่ม Logout คุณภาพ Production พร้อม UI + Icon
 
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState<ThemeName>(() => {
-    const saved = getSavedTheme()
-    applyTheme(saved) // apply ทันทีเมื่อ mount (ไม่ต้องรอ useEffect)
-    return saved
-  })
+"use client";
 
-  const handleChange = (newTheme: ThemeName) => {
-    setTheme(newTheme)
-    applyTheme(newTheme)
-    saveTheme(newTheme)
-  }
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
+
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/Button";
+
+/**
+ * 🔐 LogoutButton — ปุ่มออกจากระบบ พร้อมนำทางกลับไปยังหน้าล็อกอิน
+ *
+ * - ใช้งานร่วมกับ useAuth
+ * - มีไอคอน + สไตล์มาตรฐาน
+ */
+const LogoutButton = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true }); // ✅ กลับไปยังหน้าล็อกอิน
+  };
 
   return (
-    <select
-      value={theme}
-      onChange={(e) => handleChange(e.target.value as ThemeName)}
-      className="select select-sm"
+    <Button
+      onClick={handleLogout}
+      variant="outline"
+      size="sm"
+      className="gap-2 text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
     >
-      {THEMES.map((t) => (
-        <option key={t} value={t}>
-          {t.charAt(0).toUpperCase() + t.slice(1)}
-        </option>
-      ))}
-    </select>
-  )
-}
+      <LogOut className="w-4 h-4" />
+      ออกจากระบบ
+    </Button>
+  );
+};
 
-export default ThemeToggle
+export default LogoutButton;

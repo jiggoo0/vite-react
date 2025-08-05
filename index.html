@@ -1,4 +1,5 @@
-<!-- ✅ /index.html — Vite entry HTML -->
+<!-- index.html — Vite entry HTML -->
+
 <!DOCTYPE html>
 <html lang="th" data-theme="light">
   <head>
@@ -8,11 +9,11 @@
     <meta name="theme-color" content="#0f172a" />
     <title>JP Visual & Docs</title>
 
-    <!-- ✅ Preload Theme ก่อน React Mount -->
+    <!-- Preload Theme ก่อน React Mount -->
     <script>
       try {
         const saved = localStorage.getItem("theme");
-        if (saved) {
+        if (saved && ["light", "dark", "business"].includes(saved)) {
           document.documentElement.setAttribute("data-theme", saved);
         }
       } catch (_) {}
