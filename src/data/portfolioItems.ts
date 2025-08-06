@@ -15,7 +15,7 @@ export const portfolioItems: readonly PortfolioItem[] = [
     image: "/assets/portfolio/portfolio1.webp",
     description:
       "เว็บไซต์หลักของหน่วยงานภาครัฐ สร้างความเชื่อมั่นต่อประชาชน รองรับมือถือและมาตรฐาน WCAG 2.1 AA",
-    link: "https://govhub.example.com"
+    link: "https://govhub.example.com",
   },
   {
     id: "2",
@@ -24,7 +24,7 @@ export const portfolioItems: readonly PortfolioItem[] = [
     image: "/assets/portfolio/portfolio2.webp",
     description:
       "แดชบอร์ดแสดงนโยบายสำคัญแบบ Interactive สำหรับหน่วยงานนโยบายแห่งชาติ",
-    link: "https://dashboard.example.com"
+    link: "https://dashboard.example.com",
   },
   {
     id: "3",
@@ -33,7 +33,7 @@ export const portfolioItems: readonly PortfolioItem[] = [
     image: "/assets/portfolio/portfolio3.webp",
     description:
       "หน้าแลนดิ้งโปรโมทกิจกรรมและวาระของรัฐสภา รองรับ SEO และระบบลงทะเบียนออนไลน์",
-    link: "https://assembly-event.example.com"
+    link: "https://assembly-event.example.com",
   },
   {
     id: "4",
@@ -42,7 +42,7 @@ export const portfolioItems: readonly PortfolioItem[] = [
     image: "/assets/portfolio/portfolio4.webp",
     description:
       "แอพมือถือเพื่อบริการประชาชน เช่น แจ้งเรื่อง ร้องเรียน และติดตามเอกสารราชการ",
-    link: "https://play.google.com/store/apps/details?id=egov.app"
+    link: "https://play.google.com/store/apps/details?id=egov.app",
   },
   {
     id: "5",
@@ -51,6 +51,6 @@ export const portfolioItems: readonly PortfolioItem[] = [
     image: "/assets/portfolio/portfolio5.webp",
     description:
       "โปสเตอร์ประชาสัมพันธ์รัฐสภาใหม่ (สัปปายะสภาสถาน) สไตล์โมเดิร์นและมินิมอล",
-    link: "https://drive.google.com/sapasathan-visual"
-  }
+    link: "https://drive.google.com/sapasathan-visual",
+  },
 ] as const;

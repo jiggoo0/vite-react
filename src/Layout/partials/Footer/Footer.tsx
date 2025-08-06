@@ -64,7 +64,8 @@ const Footer: FC = () => {
 
         {/* 📝 ลิขสิทธิ์ */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none">
-          &copy; {currentYear} JP Visual & Docs — Powered by Applicationlab. All rights reserved.
+          &copy; {currentYear} JP Visual & Docs — Powered by Applicationlab. All
+          rights reserved.
         </p>
       </div>
     </footer>

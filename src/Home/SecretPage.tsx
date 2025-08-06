@@ -1,13 +1,20 @@
+// src/Home/SecretPage.tsx
+
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Components
 import SecretHeader from "@/Home/components/SecretSection/SecretHeader";
 import SecretDescription from "@/Home/components/SecretSection/SecretDescription";
 import SecretActions from "@/Home/components/SecretSection/SecretActions";
+import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
 import RegistrationPreview from "./SecretPage/RegistrationPreview";
 import BlurContact from "./SecretPage/BlurContact";
-import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
-import KbankIOSNotification from "@/Home/components/SecretSection/KbankIOSNotification"; // <-- import เพิ่ม
+import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotificationCard";
+
+// Mock Data
+import { kbankMockData } from "@/Home/components/SecretSection/KbankIOSNotification.mock";
+import { mockRegistrationData } from "./SecretPage/mockRegistrationPreview";
 
 type UserRole = "admin" | "user";
 
@@ -31,7 +38,6 @@ const SecretPage: FC = () => {
 
     try {
       const parsedUser = JSON.parse(storedUser);
-
       if (
         typeof parsedUser === "object" &&
         parsedUser !== null &&
@@ -62,55 +68,35 @@ const SecretPage: FC = () => {
 
   return (
     <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 md:p-8">
-      {/* Header */}
       <header className="max-w-4xl mx-auto w-full mb-8">
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           <SecretHeader />
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-grow max-w-4xl mx-auto w-full mb-8 space-y-8">
-        {/* Description */}
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           {user && <SecretDescription user={user} />}
         </div>
 
-        {/* Document Download */}
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           <DocumentDownload />
         </div>
 
-        {/* Admin Only Section */}
         {user?.role === "admin" && (
           <>
             <div className="bg-base-100 rounded-xl shadow-md p-6">
-              <RegistrationPreview
-                businessName="บริษัท เจพีดิจิทัล กรุ๊ป จำกัด"
-                ownerName="นางสาวขวัญเรือน วิสุทธิ์ศรี"
-                registrationNumber="0105555001234"
-                address={{
-                  houseNumber: "888",
-                  villageNo: "5",
-                  alley: "เจริญนคร 23",
-                  subDistrict: "คลองต้นไทร",
-                  district: "คลองสาน",
-                  province: "กรุงเทพมหานคร",
-                }}
-                issuedDate="6 สิงหาคม 2568"
-                registrarPosition="เจ้าหน้าที่สารสนเทศ"
-                registrarName="นางสาวจันทร์เพ็ญ สวัสดิ์ศรี"
-              />
+              <RegistrationPreview {...mockRegistrationData} />
             </div>
 
-            {/* เพิ่ม KbankIOSNotification เฉพาะแอดมิน */}
-            <div className="bg-base-100 rounded-xl shadow-md p-6">
-              <KbankIOSNotification />
+            <div className="bg-base-100 rounded-xl shadow-md p-6 space-y-4">
+              {kbankMockData.map((item) => (
+                <KbankNotificationCard key={item.id} data={item} />
+              ))}
             </div>
           </>
         )}
 
-        {/* Support Contact */}
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           <BlurContact
             imageUrl="/images/admin-contact.jpg"
@@ -119,7 +105,6 @@ const SecretPage: FC = () => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="max-w-4xl mx-auto w-full">
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           {user && <SecretActions role={user.role} />}

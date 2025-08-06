@@ -1,16 +1,31 @@
-interface SubmitButtonProps {
-  isSubmitting: boolean;
-  isSubmitted?: boolean;
-}
+// src/Home/components/Forms/SubmitButton.tsx
+import React from "react";
 
-export default function SubmitButton({ isSubmitting, isSubmitted }: SubmitButtonProps) {
+type SubmitButtonProps = {
+  loading?: boolean;
+  label?: string;
+  loadingLabel?: string;
+  className?: string;
+};
+
+const SubmitButton: React.FC<SubmitButtonProps> = ({
+  loading = false,
+  label = "บันทึก",
+  loadingLabel = "กำลังบันทึก...",
+  className = "",
+}) => {
   return (
     <button
       type="submit"
-      className="btn btn-primary w-full disabled:opacity-50"
-      disabled={isSubmitting}
+      disabled={loading}
+      className={`px-4 py-2 rounded-lg text-white font-medium
+        ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}
+        focus:outline-none focus:ring-2 focus:ring-blue-400
+        transition-colors duration-200 ${className}`}
     >
-      {isSubmitting ? "กำลังส่ง..." : isSubmitted ? "ส่งสำเร็จ 🎉" : "ส่งแบบฟอร์ม"}
+      {loading ? loadingLabel : label}
     </button>
   );
-}
+};
+
+export default SubmitButton;

@@ -13,11 +13,11 @@ export const PortfolioItemSchema = z.object({
     "Dashboard",
     "Landing Page",
     "Mobile App",
-    "Graphic"
+    "Graphic",
   ]),
   image: z.string().min(1, { message: "Image path is required" }), // ปรับจาก .url() เป็น .string().min(1)
   description: z.string().optional(),
-  link: z.string().url().optional()
+  link: z.string().url().optional(),
 });
 
 /**

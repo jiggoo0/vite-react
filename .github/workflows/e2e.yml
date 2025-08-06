@@ -3,7 +3,7 @@ name: End to End Tests
 on:
   repository_dispatch:
     types:
-      - 'vercel.deployment.success'
+      - "vercel.deployment.success"
 
 jobs:
   run-e2es:

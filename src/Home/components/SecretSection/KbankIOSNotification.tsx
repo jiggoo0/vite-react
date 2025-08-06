@@ -1,82 +1,80 @@
+// src/Home/components/SecretSection/KbankIOSNotification.tsx
+
 import { FC, useEffect, useState } from "react";
+import {
+  KbankIOSNotification as NotificationType,
+  kbankMockData,
+} from "./KbankIOSNotification.mock";
+import KbankNotificationCard from "./KbankNotificationCard";
 
-type NotificationData = {
-  amount: number;
-  accountName: string;
-  approvalDate: string;
-  transactionId: string;
-};
-
-const MOCK_NOTIFICATION: NotificationData = {
-  amount: 125000,
-  accountName: "นายสมชาย ใจดี",
-  approvalDate: "6 สิงหาคม 2568",
-  transactionId: "TXN1234567890",
-};
-
-const formatAmount = (amount: number): string =>
-  amount.toLocaleString("th-TH", { style: "currency", currency: "THB" });
+const LOAD_DELAY_MS = 700;
 
 const KbankIOSNotification: FC = () => {
-  const [notification, setNotification] = useState<NotificationData | null>(
-    null
-  );
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setNotification(MOCK_NOTIFICATION);
+    const timer = setTimeout(() => {
+      setNotifications(kbankMockData);
+      setLoading(false);
+    }, LOAD_DELAY_MS);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  if (!notification) return null;
+  if (loading) {
+    return (
+      <section
+        className="space-y-4 max-w-md mx-auto animate-pulse"
+        aria-label="Loading KBank notifications"
+        role="status"
+        aria-live="polite"
+      >
+        {[...Array(3)].map((_, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-3xl p-4 shadow space-y-2"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 bg-gray-200 rounded-sm" />
+              <div className="w-8 h-8 bg-gray-200 rounded-full" />
+              <div className="flex-1 space-y-1">
+                <div className="h-3 w-2/3 bg-gray-200 rounded" />
+                <div className="h-2 w-1/3 bg-gray-200 rounded" />
+              </div>
+            </div>
+            <div className="h-3 bg-gray-200 rounded w-full" />
+            <div className="flex justify-between mt-2">
+              <div className="h-2 w-1/4 bg-gray-200 rounded" />
+              <div className="h-2 w-1/4 bg-gray-200 rounded" />
+            </div>
+          </div>
+        ))}
+      </section>
+    );
+  }
+
+  if (notifications.length === 0) {
+    return (
+      <section
+        className="min-h-[120px] flex items-center justify-center bg-base-100 rounded-3xl shadow-md p-6 border border-gray-200"
+        aria-live="polite"
+        aria-label="No notifications"
+      >
+        <p className="text-gray-500 select-none">ไม่มีการแจ้งเตือนในขณะนี้</p>
+      </section>
+    );
+  }
 
   return (
     <section
-      role="alert"
-      aria-live="assertive"
-      className="max-w-sm mx-auto bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] font-sf-pro p-5 space-y-4 border border-gray-200 backdrop-blur-md"
-      style={{ WebkitBackdropFilter: "blur(20px)" }}
+      className="space-y-4 max-w-md mx-auto"
+      role="list"
+      aria-label={`รายการแจ้งเตือนธุรกรรมทั้งหมด ${notifications.length} รายการ`}
     >
-      {/* Header */}
-      <header className="flex items-center space-x-3">
-        <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center drop-shadow-md">
-          <svg
-            className="w-7 h-7 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={3}
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
-        <h2 className="text-xl font-semibold text-gray-900 select-none">
-          ยอดอนุมัติเรียบร้อย
-        </h2>
-      </header>
-
-      {/* Content */}
-      <div className="text-center space-y-2">
-        <p className="text-3xl font-extrabold text-green-700 select-text">
-          {formatAmount(notification.amount)}
-        </p>
-        <p className="text-sm text-gray-600 select-text">
-          บัญชี: {notification.accountName}
-        </p>
-        <p className="text-xs text-gray-500 select-text">
-          วันที่อนุมัติ: {notification.approvalDate}
-        </p>
-      </div>
-
-      {/* Footer */}
-      <footer className="text-center">
-        <p className="text-xs text-gray-400 select-text">
-          หมายเลขรายการ: {notification.transactionId}
-        </p>
-      </footer>
+      {notifications.map((item) => (
+        <KbankNotificationCard key={item.id} data={item} />
+      ))}
     </section>
   );
 };

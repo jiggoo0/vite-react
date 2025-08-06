@@ -33,7 +33,9 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
 
       {/* 📋 เนื้อหาบริการ */}
       <div className="space-y-2 p-4">
-        <h3 className="text-lg font-semibold text-base-content">{service.title}</h3>
+        <h3 className="text-lg font-semibold text-base-content">
+          {service.title}
+        </h3>
         <p className="text-sm text-base-content/70 leading-relaxed">
           {service.description}
         </p>

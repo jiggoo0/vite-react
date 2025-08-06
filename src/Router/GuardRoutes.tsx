@@ -5,44 +5,56 @@ interface GuardRoutesProps {
   children: ReactNode;
 }
 
+type User = {
+  username: string;
+  role: "admin" | "user";
+};
+
+// ตรวจสอบว่า data เป็น User ที่ถูกต้องหรือไม่
+const isValidUser = (data: unknown): data is User => {
+  if (typeof data !== "object" || data === null) return false;
+  const user = data as Partial<User>;
+  return (
+    typeof user.username === "string" &&
+    (user.role === "admin" || user.role === "user")
+  );
+};
+
+// ฟังก์ชัน parse user จาก localStorage
+const parseUserFromStorage = (): User | null => {
+  const raw = localStorage.getItem("user");
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw);
+    return isValidUser(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * GuardRoutes - ตรวจสอบ user login และ valid หรือไม่
+ * ถ้าไม่ valid หรือไม่มี user ให้ redirect ไปหน้า login
+ * ถ้า valid ให้แสดง children
+ */
 const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
+    const user = parseUserFromStorage();
 
-    if (!stored) {
-      navigate("/login", { replace: true });
+    if (!user) {
       setIsAuthenticated(false);
+      navigate("/login", { replace: true });
       return;
     }
 
-    try {
-      const parsed = JSON.parse(stored);
-      if (
-        typeof parsed !== "object" ||
-        parsed === null ||
-        !("username" in parsed) ||
-        !("role" in parsed) ||
-        typeof (parsed as any).username !== "string" ||
-        !["admin", "user"].includes((parsed as any).role)
-      ) {
-        localStorage.removeItem("user");
-        navigate("/login", { replace: true });
-        setIsAuthenticated(false);
-      } else {
-        setIsAuthenticated(true);
-      }
-    } catch {
-      localStorage.removeItem("user");
-      navigate("/login", { replace: true });
-      setIsAuthenticated(false);
-    }
+    setIsAuthenticated(true);
   }, [navigate]);
 
   if (isAuthenticated === null) {
-    // Loading state - สามารถใส่ spinner หรือ loading indicator ได้
     return (
       <div className="min-h-screen flex items-center justify-center">
         <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -50,10 +62,7 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
     );
   }
 
-  if (!isAuthenticated) {
-    // ไม่แสดง content หากยังไม่ auth
-    return null;
-  }
+  if (!isAuthenticated) return null;
 
   return <>{children}</>;
 };

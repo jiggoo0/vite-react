@@ -1,35 +1,29 @@
 // src/Home/components/Forms/ui/FieldGroup.tsx
-
 import React from "react";
 
-interface FieldGroupProps {
-  label?: string;
-  htmlFor?: string;
+type FieldGroupProps = {
   children: React.ReactNode;
-  required?: boolean;
-  description?: string;
-}
+  columns?: 1 | 2 | 3 | 4; // จำนวนคอลัมน์ที่ต้องการ
+  className?: string;
+};
 
 const FieldGroup: React.FC<FieldGroupProps> = ({
-  label,
-  htmlFor,
   children,
-  required = false,
-  description
+  columns = 1,
+  className = "",
 }) => {
+  // กำหนด grid-cols ตาม columns
+  const columnClass =
+    columns === 1
+      ? "grid-cols-1"
+      : columns === 2
+        ? "grid-cols-1 md:grid-cols-2"
+        : columns === 3
+          ? "grid-cols-1 md:grid-cols-3"
+          : "grid-cols-1 md:grid-cols-4";
+
   return (
-    <div className="form-control w-full mb-4">
-      {label && (
-        <label htmlFor={htmlFor} className="label">
-          <span className="label-text font-medium">
-            {label}
-            {required && <span className="text-error ml-1">*</span>}
-          </span>
-        </label>
-      )}
-      {description && <p className="text-sm text-base-content/70 mb-1">{description}</p>}
-      {children}
-    </div>
+    <div className={`grid gap-4 ${columnClass} ${className}`}>{children}</div>
   );
 };
 

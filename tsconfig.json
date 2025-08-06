@@ -2,11 +2,11 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node", // ✅ ต้องใช้ lowercase: "node"
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
 
-    "baseUrl": ".",
+    "baseUrl": ".", // ✅ สำคัญสำหรับ path alias
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
@@ -28,12 +28,13 @@
     "strict": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
+
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true // ✅ ปิดการเช็ค type จาก node_modules (ช่วยลด error ของ zod v4 ได้)
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

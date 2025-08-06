@@ -22,7 +22,8 @@ const ServicesSection: FC = () => {
           บริการของเรา
         </h2>
         <p className="mt-2 text-base-content/70">
-          เรามีบริการหลากหลายด้านให้คุณเลือกใช้ ครอบคลุมทั้ง Visual & Documentation
+          เรามีบริการหลากหลายด้านให้คุณเลือกใช้ ครอบคลุมทั้ง Visual &
+          Documentation
         </p>
       </header>
 

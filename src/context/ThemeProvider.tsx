@@ -1,18 +1,10 @@
-import { createContext, useEffect, useState, ReactNode } from "react";
+// src/context/ThemeProvider.tsx
 
-export type Theme = "light" | "dark" | "business";
-
-export interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-}
-
-export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+import { useEffect, useState, type ReactNode } from "react";
+import { Theme, ThemeContext } from "./ThemeContext";
 
 const isValidTheme = (value: unknown): value is Theme =>
-  typeof value === "string" && ["light", "dark", "business"].includes(value);
+  value === "light" || value === "dark" || value === "business";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const getDefaultTheme = (): Theme => {

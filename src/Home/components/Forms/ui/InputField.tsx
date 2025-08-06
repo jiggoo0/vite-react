@@ -1,60 +1,39 @@
 // src/Home/components/Forms/ui/InputField.tsx
+import React, { forwardRef } from "react";
 
-import clsx from "clsx";
-import React from "react";
-
-interface InputFieldProps {
-  name: string;
+type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-  className?: string;
-  description?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
-}
-
-const InputField: React.FC<InputFieldProps> = ({
-  name,
-  label,
-  type = "text",
-  placeholder = "",
-  required = false,
-  className,
-  description,
-  value,
-  onChange,
-  error
-}) => {
-  return (
-    <div className={clsx("form-control w-full mb-4", className)}>
-      <label htmlFor={name} className="label">
-        <span className="label-text font-medium">
-          {label}
-          {required && <span className="text-error ml-1">*</span>}
-        </span>
-      </label>
-
-      {description && <p className="text-sm text-base-content/70 mb-1">{description}</p>}
-
-      <input
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        value={value}
-        onChange={onChange}
-        className={clsx("input input-bordered w-full", {
-          "input-error": !!error
-        })}
-      />
-
-      {error && <span className="label-text-alt text-error mt-1">{error}</span>}
-    </div>
-  );
+  name: string;
+  error?: string | null;
 };
+
+const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+  ({ label, name, error = null, required, className = "", ...rest }, ref) => {
+    return (
+      <div className={`flex flex-col ${className}`}>
+        {/* Label */}
+        <label htmlFor={name} className="mb-1 font-medium text-gray-700">
+          {label} {required && <span className="text-red-500">*</span>}
+        </label>
+
+        {/* Input */}
+        <input
+          id={name}
+          name={name}
+          ref={ref}
+          required={required}
+          className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 
+            ${error ? "border-red-500" : "border-gray-300"}`}
+          {...rest}
+        />
+
+        {/* Error message */}
+        {error && <span className="mt-1 text-sm text-red-500">{error}</span>}
+      </div>
+    );
+  }
+);
+
+InputField.displayName = "InputField";
 
 export default InputField;

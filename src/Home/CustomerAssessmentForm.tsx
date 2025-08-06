@@ -1,174 +1,106 @@
-"use client";
+// src/Home/CustomerAssessmentForm.tsx
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  FormWrapper,
+  FieldGroup,
+  InputField,
+  SelectFieldUI,
+  TextareaField,
+  SubmitButton,
+} from "@/Home/components/Forms";
 
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { useState } from "react";
-import { FormWrapper, SubmitButton, SelectField } from "./components/Forms";
-
-/**
- * 🌟 แบบฟอร์มประเมินความต้องการลูกค้า — JP Visual & Docs
- * - ส่งออกไปยัง LINE แบบข้อความ
- * - ใช้ react-hook-form + Tailwind CSS + Modular Field Components
- */
-
-type FormValues = {
+type CustomerAssessmentData = {
   name: string;
-  phone: string;
-  projectType: string;
-  budget: string;
-  details: string;
+  email: string;
+  satisfaction: string;
+  feedback: string;
 };
 
-const projectOptions = [
-  { value: "web", label: "เว็บไซต์ขายของ / ร้านค้า" },
-  { value: "landing", label: "หน้า Landing Page / โปรโมทสินค้า" },
-  { value: "company", label: "เว็บไซต์บริษัท / โปรไฟล์องค์กร" },
-  { value: "portfolio", label: "Portfolio / เรซูเม่ส่วนตัว" },
-  { value: "other", label: "อื่น ๆ" },
-];
-
-const budgetOptions = [
-  { value: "low", label: "ต่ำกว่า 10,000 บาท" },
-  { value: "medium", label: "10,000 - 30,000 บาท" },
-  { value: "high", label: "มากกว่า 30,000 บาท" },
-];
-
-const CustomerAssessmentForm = () => {
-  const methods = useForm<FormValues>({
-    defaultValues: {
-      name: "",
-      phone: "",
-      projectType: "",
-      budget: "",
-      details: "",
-    },
-  });
+const CustomerAssessmentForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
-  } = methods;
+    reset,
+  } = useForm<CustomerAssessmentData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      satisfaction: "",
+      feedback: "",
+    },
+  });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const message = `
-📝 แบบฟอร์มประเมินลูกค้า
-━━━━━━━━━━━━━━
-👤 ชื่อลูกค้า: ${data.name}
-📞 เบอร์โทร: ${data.phone}
-📌 ประเภทโปรเจกต์: ${projectOptions.find((p) => p.value === data.projectType)?.label}
-💰 งบประมาณ: ${budgetOptions.find((b) => b.value === data.budget)?.label}
-🖊 รายละเอียดเพิ่มเติม:
-${data.details || "-"}
-━━━━━━━━━━━━━━`;
-
-    const encoded = encodeURIComponent(message.trim());
-    const lineURL = `https://line.me/R/msg/text/?${encoded}`;
-
-    const newWindow = window.open(lineURL, "_blank");
-    if (!newWindow) {
-      alert("กรุณาอนุญาตให้เปิดหน้าต่างใหม่เพื่อส่งข้อมูล");
+  const onSubmit: SubmitHandler<CustomerAssessmentData> = async (data) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // จำลองการส่งข้อมูล API
+      console.log("ข้อมูลที่ส่ง:", data);
+      alert("บันทึกการประเมินเรียบร้อยแล้ว");
+      reset();
+    } catch (error) {
+      console.error("เกิดข้อผิดพลาด:", error);
     }
-
-    reset();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 5000);
   };
 
   return (
     <FormWrapper
-      title="ประเมินความต้องการของคุณ"
-      description="ทีมเราจะใช้ข้อมูลนี้ในการเสนอแพ็กเกจที่เหมาะกับคุณที่สุด"
+      title="แบบฟอร์มประเมินลูกค้า"
+      description="กรุณากรอกข้อมูลและให้คะแนนความพึงพอใจของคุณ"
+      onSubmit={handleSubmit(onSubmit)}
     >
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
-          aria-label="แบบฟอร์มประเมินลูกค้า JP Visual & Docs"
-        >
-          {/* ชื่อ-นามสกุล */}
-          <div>
-            <label className="label" htmlFor="name">
-              <span className="label-text font-semibold">ชื่อ-นามสกุล</span>
-            </label>
-            <input
-              id="name"
-              {...register("name", { required: "จำเป็นต้องกรอกชื่อ" })}
-              aria-invalid={!!errors.name}
-              aria-describedby={errors.name ? "name-error" : undefined}
-              className="input input-bordered w-full"
-              placeholder="เช่น สมชาย ใจดี"
-              autoComplete="name"
-            />
-            {errors.name && (
-              <p id="name-error" className="text-error text-sm mt-1" role="alert">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
+      <FieldGroup columns={2}>
+        {/* ชื่อ */}
+        <InputField
+          label="ชื่อ"
+          placeholder="กรอกชื่อของคุณ"
+          required
+          error={errors.name?.message || null}
+          {...register("name", { required: "กรุณากรอกชื่อ" })}
+        />
 
-          {/* เบอร์โทร */}
-          <div>
-            <label className="label" htmlFor="phone">
-              <span className="label-text font-semibold">เบอร์โทร</span>
-            </label>
-            <input
-              id="phone"
-              {...register("phone", {
-                required: "จำเป็นต้องกรอกเบอร์โทร",
-                pattern: {
-                  value: /^[0-9]{9,10}$/,
-                  message: "กรุณาใส่เบอร์โทรให้ถูกต้อง",
-                },
-              })}
-              aria-invalid={!!errors.phone}
-              aria-describedby={errors.phone ? "phone-error" : undefined}
-              className="input input-bordered w-full"
-              placeholder="เช่น 0912345678"
-              inputMode="tel"
-              autoComplete="tel"
-            />
-            {errors.phone && (
-              <p id="phone-error" className="text-error text-sm mt-1" role="alert">
-                {errors.phone.message}
-              </p>
-            )}
-          </div>
+        {/* อีเมล */}
+        <InputField
+          label="อีเมล"
+          type="email"
+          placeholder="example@email.com"
+          required
+          error={errors.email?.message || null}
+          {...register("email", {
+            required: "กรุณากรอกอีเมล",
+            pattern: { value: /^\S+@\S+$/i, message: "รูปแบบอีเมลไม่ถูกต้อง" },
+          })}
+        />
 
-          {/* ประเภทโปรเจกต์ */}
-          <SelectField<FormValues>
-            name="projectType"
-            label="ประเภทโปรเจกต์ที่ต้องการ"
-            options={projectOptions}
-            requiredMessage="กรุณาเลือกประเภทโปรเจกต์"
-          />
+        {/* ความพึงพอใจ */}
+        <SelectFieldUI
+          label="ความพึงพอใจ"
+          required
+          options={[
+            { label: "พอใจมาก", value: "very_satisfied" },
+            { label: "พอใจ", value: "satisfied" },
+            { label: "ปานกลาง", value: "neutral" },
+            { label: "ไม่พอใจ", value: "dissatisfied" },
+            { label: "ไม่พอใจมาก", value: "very_dissatisfied" },
+          ]}
+          error={errors.satisfaction?.message || null}
+          {...register("satisfaction", { required: "กรุณาเลือกความพึงพอใจ" })}
+        />
 
-          {/* งบประมาณ */}
-          <SelectField<FormValues>
-            name="budget"
-            label="งบประมาณโดยประมาณ"
-            options={budgetOptions}
-            requiredMessage="กรุณาเลือกช่วงงบประมาณ"
-          />
+        {/* ข้อเสนอแนะ */}
+        <TextareaField
+          label="ข้อเสนอแนะเพิ่มเติม"
+          placeholder="เขียนความคิดเห็นหรือข้อเสนอแนะของคุณ"
+          rows={4}
+          {...register("feedback")}
+        />
+      </FieldGroup>
 
-          {/* รายละเอียดเพิ่มเติม */}
-          <div>
-            <label className="label" htmlFor="details">
-              <span className="label-text font-semibold">รายละเอียดเพิ่มเติม</span>
-            </label>
-            <textarea
-              id="details"
-              {...register("details")}
-              className="textarea textarea-bordered w-full min-h-[120px]"
-              placeholder="เช่น ต้องการเว็บรองรับมือถือ มีระบบแชท ฯลฯ"
-            />
-          </div>
-
-          {/* ปุ่มส่งฟอร์ม */}
-          <SubmitButton isSubmitting={isSubmitting} isSubmitted={isSubmitted} />
-        </form>
-      </FormProvider>
+      <SubmitButton
+        loading={isSubmitting}
+        label="ส่งแบบฟอร์ม"
+        loadingLabel="กำลังส่ง..."
+      />
     </FormWrapper>
   );
 };

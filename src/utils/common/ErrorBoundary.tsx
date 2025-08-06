@@ -39,7 +39,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (hasError) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-base-100 text-base-content p-4 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-3">เกิดข้อผิดพลาดบางอย่าง</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-3">
+            เกิดข้อผิดพลาดบางอย่าง
+          </h1>
           <p className="mb-4 text-sm text-base-content/70">
             ขอโทษในความไม่สะดวก กรุณารีเฟรชหน้าใหม่ หรือลองอีกครั้งภายหลัง
           </p>

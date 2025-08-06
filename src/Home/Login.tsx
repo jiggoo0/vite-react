@@ -45,7 +45,9 @@ const Login: React.FC = () => {
   return (
     <section className="min-h-screen flex items-center justify-center px-4 bg-base-100 text-base-content">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8 space-y-6">
-        <h1 className="text-2xl font-bold text-center text-primary">เข้าสู่ระบบ</h1>
+        <h1 className="text-2xl font-bold text-center text-primary">
+          เข้าสู่ระบบ
+        </h1>
 
         {error && (
           <div className="flex items-center gap-2 p-3 text-red-700 bg-red-100 rounded-md">
@@ -72,7 +74,11 @@ const Login: React.FC = () => {
             required
             disabled={loading}
           />
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary w-full"
+            disabled={loading}
+          >
             {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
           </button>
         </form>

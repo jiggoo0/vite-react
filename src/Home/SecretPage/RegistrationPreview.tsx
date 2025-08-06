@@ -1,17 +1,22 @@
+// src/Home/SecretPage/RegistrationPreview.tsx
+
 import { FC } from "react";
+
+// เปลี่ยนชื่อ type เพื่อหลีกเลี่ยงการซ้ำซ้อน
+type RegistrationAddress = {
+  houseNumber?: string;
+  villageNo?: string;
+  alley?: string;
+  subDistrict?: string;
+  district?: string;
+  province?: string;
+};
 
 type Props = {
   businessName?: string;
   ownerName?: string;
   registrationNumber?: string;
-  address?: {
-    houseNumber?: string;
-    villageNo?: string;
-    alley?: string;
-    subDistrict?: string;
-    district?: string;
-    province?: string;
-  };
+  address?: RegistrationAddress;
   issuedDate?: string;
   registrarPosition?: string;
   registrarName?: string;
@@ -26,19 +31,12 @@ const RegistrationPreview: FC<Props> = ({
   registrarPosition,
   registrarName,
 }) => {
-  // ฟังก์ชันแสดงจุดเติมช่องว่าง กำหนดความยาวได้
   const fallbackDots = (length: number) => (
-    <span className="text-gray-400 select-none">{'.'.repeat(length)}</span>
+    <span className="text-gray-400 select-none">{".".repeat(length)}</span>
   );
 
-  const {
-    houseNumber,
-    villageNo,
-    alley,
-    subDistrict,
-    district,
-    province,
-  } = address;
+  const { houseNumber, villageNo, alley, subDistrict, district, province } =
+    address;
 
   return (
     <section
@@ -50,15 +48,18 @@ const RegistrationPreview: FC<Props> = ({
       }}
     >
       {/* Header */}
+      {/* ซ้ายบน */}
       <div className="absolute top-6 left-10 text-sm leading-5">
         <p>ทะเบียนเลขที่ {registrationNumber}</p>
         <p>คำขอที่ {fallbackDots(20)}</p>
       </div>
+      {/* ขวาบน */}
       <div className="absolute top-6 right-10 text-sm leading-5 text-right">
         <p>แบบ พค. 0403</p>
       </div>
 
-      {/* 🛡️ ตราครุฑ */}
+      {/* ตราครุฑ */}
+      {/* กึ่งกลางบน */}
       <div className="flex justify-center mt-16">
         <img
           src="/fonts/krut.webp"
@@ -70,6 +71,7 @@ const RegistrationPreview: FC<Props> = ({
       </div>
 
       {/* หัวเอกสาร */}
+      {/* ตรงกลางแนวตั้งและแนวนอน */}
       <div className="text-center mt-6 mb-10">
         <p className="text-xl font-bold leading-relaxed">
           กรมพัฒนาธุรกิจการค้า <br />
@@ -80,6 +82,7 @@ const RegistrationPreview: FC<Props> = ({
       </div>
 
       {/* เนื้อหา */}
+      {/* กึ่งกลางแนวตั้ง, จัดกึ่งกลาง */}
       <div className="text-center mt-12 text-lg space-y-6">
         <p>{ownerName}</p>
         <p>ได้จดทะเบียนพาณิชย์ ตามพระราชบัญญัติทะเบียนพาณิชย์ พ.ศ.2499</p>
@@ -100,22 +103,22 @@ const RegistrationPreview: FC<Props> = ({
         </div>
 
         {/* ที่อยู่ */}
+        {/* กึ่งกลางแต่ข้อความจัดชิดซ้าย */}
         <p className="mt-8 text-center max-w-[720px] mx-auto font-semibold">
           ที่ตั้งสถานประกอบการ
         </p>
         <p className="text-left max-w-[720px] mx-auto">
           เลขที่ {houseNumber || fallbackDots(20)} หมู่ที่{" "}
-          {villageNo || fallbackDots(15)} ตรอก/ซอย{" "}
-          {alley || fallbackDots(20)} ตำบล/แขวง{" "}
-          {subDistrict || fallbackDots(25)} อำเภอ/เขต{" "}
-          {district || fallbackDots(25)} จังหวัด{" "}
-          {province || fallbackDots(25)}
+          {villageNo || fallbackDots(15)} ตรอก/ซอย {alley || fallbackDots(20)}{" "}
+          ตำบล/แขวง {subDistrict || fallbackDots(25)} อำเภอ/เขต{" "}
+          {district || fallbackDots(25)} จังหวัด {province || fallbackDots(25)}
         </p>
       </div>
 
-      {/* 🖋️ ตำแหน่งลงนาม */}
+      {/* ลายเซ็นและตำแหน่ง */}
+      {/* ขยับไปทางขวา และชิดขวา */}
       <div
-        className="mt-24 max-w-[720px] mx-auto text-lg text-end space-y-6"
+        className="mt-24 max-w-[720px] mx-auto text-lg text-right space-y-6 pr-30"
         style={{ fontFamily: '"TH SarabunPSK", serif' }}
       >
         <p className="whitespace-nowrap">

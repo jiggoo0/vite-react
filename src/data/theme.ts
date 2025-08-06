@@ -1,20 +1,24 @@
 // src/data/theme.ts — Theme Config & Utilities (Client-only Safe)
 
-export type ThemeName = 'light' | 'dark' | 'business';
+export type ThemeName = "light" | "dark" | "business";
 
-export const THEMES: ThemeName[] = ['light', 'dark', 'business'];
-export const DEFAULT_THEME: ThemeName = 'light';
+export const THEMES = ["light", "dark", "business"] as const;
+export const DEFAULT_THEME: ThemeName = "light";
 
 /**
  * 🧠 ดึงค่าธีมจาก localStorage (Client-side เท่านั้น)
  * คืนค่าเป็น ThemeName หรือ DEFAULT_THEME หากไม่มีค่าใน localStorage
  */
 export const getSavedTheme = (): ThemeName => {
-  if (typeof window === 'undefined') return DEFAULT_THEME;
+  if (typeof window === "undefined") return DEFAULT_THEME;
 
-  const stored = localStorage.getItem('theme');
-  if (stored && THEMES.includes(stored as ThemeName)) {
-    return stored as ThemeName;
+  try {
+    const stored = localStorage.getItem("theme");
+    if (stored && THEMES.includes(stored as ThemeName)) {
+      return stored as ThemeName;
+    }
+  } catch {
+    // localStorage อาจ throw error ในบาง environment
   }
   return DEFAULT_THEME;
 };
@@ -24,8 +28,13 @@ export const getSavedTheme = (): ThemeName => {
  * @param theme ชื่อธีมที่ต้องการบันทึก
  */
 export const saveTheme = (theme: ThemeName): void => {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem('theme', theme);
+  if (typeof window === "undefined") return;
+
+  try {
+    localStorage.setItem("theme", theme);
+  } catch {
+    // fail silently
+  }
 };
 
 /**
@@ -33,8 +42,13 @@ export const saveTheme = (theme: ThemeName): void => {
  * @param theme ชื่อธีมที่ต้องการใช้
  */
 export const applyTheme = (theme: ThemeName): void => {
-  if (typeof document === 'undefined') return;
-  document.documentElement.setAttribute('data-theme', theme);
+  if (typeof document === "undefined") return;
+
+  try {
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch {
+    // fail silently
+  }
 };
 
 /**
@@ -42,7 +56,7 @@ export const applyTheme = (theme: ThemeName): void => {
  * คืนค่าเป็นธีมใหม่หลังจากสลับ และบันทึกลง localStorage พร้อม apply ทันที
  */
 export const toggleTheme = (): ThemeName => {
-  if (typeof window === 'undefined') return DEFAULT_THEME;
+  if (typeof window === "undefined") return DEFAULT_THEME;
 
   const current = getSavedTheme();
   const currentIndex = THEMES.indexOf(current);
@@ -72,22 +86,26 @@ type ThemeChangeCallback = (newTheme: ThemeName) => void;
 /**
  * subscribe การเปลี่ยนแปลงธีมผ่าน event 'storage' (ข้ามแท็บ)
  * คืนฟังก์ชัน unsubscribe เมื่อเรียกใช้
+ *
+ * @param callback ฟังก์ชัน callback เมื่อธีมเปลี่ยนแปลง
+ * @returns ฟังก์ชัน unsubscribe
  */
-export const subscribeThemeChange = (callback: ThemeChangeCallback): (() => void) => {
-  if (typeof window === 'undefined') {
-    // SSR หรือ environment ไม่มี window ให้ return noop function
-    return () => {};
-  }
+export const subscribeThemeChange = (
+  callback: ThemeChangeCallback
+): (() => void) => {
+  if (typeof window === "undefined") return () => {};
 
   const handler = (e: StorageEvent) => {
-    if (e.key === 'theme' && e.newValue && THEMES.includes(e.newValue as ThemeName)) {
+    if (
+      e.key === "theme" &&
+      e.newValue &&
+      THEMES.includes(e.newValue as ThemeName)
+    ) {
       callback(e.newValue as ThemeName);
     }
   };
 
-  window.addEventListener('storage', handler);
+  window.addEventListener("storage", handler);
 
-  return () => {
-    window.removeEventListener('storage', handler);
-  };
+  return () => window.removeEventListener("storage", handler);
 };

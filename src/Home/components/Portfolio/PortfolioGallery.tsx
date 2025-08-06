@@ -5,7 +5,6 @@ import { portfolioItems } from "@/data/portfolioItems";
 import { cn } from "@/utils/cn";
 import PortfolioFilter from "./ui/PortfolioFilter";
 import PortfolioCTA from "./ui/PortfolioCTA";
-import type { PortfolioItem } from "@/data/portfolioItems";
 
 const PortfolioGallery: React.FC = () => {
   const categories = useMemo(

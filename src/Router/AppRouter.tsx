@@ -19,7 +19,9 @@ import RoleGuard from "@/Router/RoleGuard";
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
+const CustomerAssessmentForm = lazy(
+  () => import("@/Home/CustomerAssessmentForm")
+);
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
 /**
@@ -47,7 +49,13 @@ const AppRouter: FC = () => (
           </Route>
 
           {/* Protected Routes: ต้อง login */}
-          <Route element={<GuardRoutes><Layout /></GuardRoutes>}>
+          <Route
+            element={
+              <GuardRoutes>
+                <Layout />
+              </GuardRoutes>
+            }
+          >
             <Route path="secret" element={<SecretPage />} />
           </Route>
 

@@ -9,23 +9,39 @@ import Logo from "@/Layout/partials/Header/ui/Logo";
 const Navbar: FC = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-base-100 text-base-content shadow-sm">
-      <nav className="navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+      <nav
+        className="navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+        aria-label="Main navigation"
+      >
         {/* Logo */}
         <div className="flex-1">
-          <Link to="/" className="text-xl font-bold" aria-label="JP Visual Home">
+          <Link
+            to="/"
+            className="text-xl font-bold"
+            aria-label="JP Visual Home"
+          >
             <Logo />
           </Link>
         </div>
 
         {/* Navigation + ThemeToggle */}
         <div className="flex-none items-center space-x-2">
-          <Link to="/" className="btn btn-ghost btn-sm font-medium hover:bg-base-200">
+          <Link
+            to="/"
+            className="btn btn-ghost btn-sm font-medium hover:bg-base-200"
+          >
             หน้าแรก
           </Link>
-          <Link to="/form" className="btn btn-ghost btn-sm font-medium hover:bg-base-200">
+          <Link
+            to="/form"
+            className="btn btn-ghost btn-sm font-medium hover:bg-base-200"
+          >
             ประเมินลูกค้า
           </Link>
-          <Link to="/login" className="btn btn-ghost btn-sm font-medium hover:bg-base-200">
+          <Link
+            to="/login"
+            className="btn btn-ghost btn-sm font-medium hover:bg-base-200"
+          >
             เข้าสู่ระบบ
           </Link>
 

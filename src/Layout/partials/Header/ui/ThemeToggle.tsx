@@ -14,7 +14,10 @@ const ThemeToggle = () => {
     setIsDark(useDark);
     if (typeof document !== "undefined") {
       document.documentElement.classList.toggle("dark", useDark);
-      document.documentElement.setAttribute("data-theme", useDark ? "dark" : "light");
+      document.documentElement.setAttribute(
+        "data-theme",
+        useDark ? "dark" : "light"
+      );
     }
     if (typeof window !== "undefined") {
       localStorage.setItem(THEME_KEY, useDark ? "dark" : "light");
@@ -27,7 +30,9 @@ const ThemeToggle = () => {
     if (typeof window === "undefined") return;
 
     const savedTheme = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     const defaultDark = savedTheme ? savedTheme === "dark" : prefersDark;
 
     applyTheme(defaultDark);

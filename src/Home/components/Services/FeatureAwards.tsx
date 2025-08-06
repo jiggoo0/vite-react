@@ -30,11 +30,7 @@ const awards = [
 
 const FeatureAwards: FC = () => {
   return (
-    <section
-      aria-labelledby="awards-title"
-      role="region"
-      className="mt-12"
-    >
+    <section aria-labelledby="awards-title" role="region" className="mt-12">
       <h3 id="awards-title" className="sr-only">
         จุดเด่นและรางวัล
       </h3>
@@ -52,7 +48,9 @@ const FeatureAwards: FC = () => {
               <h4 className="text-base font-semibold text-base-content">
                 {award.title}
               </h4>
-              <p className="text-sm text-base-content/70">{award.description}</p>
+              <p className="text-sm text-base-content/70">
+                {award.description}
+              </p>
             </div>
           </div>
         ))}

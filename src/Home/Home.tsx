@@ -9,10 +9,7 @@ import { ServicesSection } from "@home/components/Services";
 import SectionContainer from "@common/SectionContainer";
 
 // ✅ Feature Sections
-import {
-  PortfolioGallery,
-  SupportFAQ,
-} from "@home/components/Portfolio";
+import { PortfolioGallery, SupportFAQ } from "@home/components/Portfolio";
 
 /**
  * 🏠 Home — Landing Page สำหรับระบบ JP Visual & Docs
@@ -66,9 +63,9 @@ export default Home;
 // ✅ Composable Section Wrapper — Clean & Consistent Layout for Sections
 interface PageSectionProps {
   id: string;
-  title: string;          // สำหรับ aria-labelledby text
+  title: string; // สำหรับ aria-labelledby text
   children: ReactNode;
-  bg?: string;            // Tailwind background color class, เช่น "bg-base-100"
+  bg?: string; // Tailwind background color class, เช่น "bg-base-100"
 }
 
 const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => {
