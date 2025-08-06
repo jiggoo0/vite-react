@@ -7,22 +7,20 @@ interface ServiceCardProps {
   service: ServiceType;
 }
 
-/**
- * 🧩 ServiceCard
- *
- * - แสดงบริการที่พร้อมใช้งาน
- * - ใช้งานได้ใน Section, Grid, Modal ฯลฯ
- * - รองรับ Dark mode และ Mobile responsive
- * - ใช้ร่วมกับ `ComingSoonServiceCard` ได้
- */
+const createLineLink = (message: string) =>
+  `https://lin.ee/sOKDUEg?text=${encodeURIComponent(message)}`;
+
 const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
+  const lineMessage = service.lineMessage ?? `สนใจบริการ: ${service.title}`;
+  const lineLink = createLineLink(lineMessage);
+
   return (
     <article
       className="relative overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-md focus-within:ring-2 focus-within:ring-primary"
       aria-label={`บริการ: ${service.title}`}
       tabIndex={0}
     >
-      {/* 📷 รูปภาพบริการ */}
+      {/* รูปภาพบริการ */}
       <img
         src={service.image}
         alt={service.altText}
@@ -31,7 +29,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
         className="h-48 w-full object-cover rounded-t-2xl"
       />
 
-      {/* 📋 เนื้อหาบริการ */}
+      {/* เนื้อหาบริการ */}
       <div className="space-y-2 p-4">
         <h3 className="text-lg font-semibold text-base-content">
           {service.title}
@@ -41,7 +39,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
         </p>
         <p className="text-sm font-medium text-green-600">{service.price}</p>
 
-        {/* 🟡 Coming Soon Note (fallback safeguard) */}
+        {/* แสดงข้อความ Coming Soon ถ้าบริการยังไม่พร้อม */}
         {!service.available && service.comingSoonNote && (
           <span
             className="inline-block rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800"
@@ -49,6 +47,20 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
           >
             🚧 {service.comingSoonNote}
           </span>
+        )}
+
+        {/* ปุ่มสนใจบริการ (แสดงเฉพาะบริการที่พร้อมใช้งาน) */}
+        {service.available && (
+          <a
+            href={lineLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`สนใจบริการ ${service.title} ติดต่อผ่าน LINE`}
+            className="mt-3 inline-flex items-center justify-center rounded bg-primary px-5 py-2 text-sm font-semibold text-white shadow transition-transform duration-200 hover:bg-primary-dark hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            {/* ถ้าต้องการไอคอน LINE ให้แทรกที่นี่ */}
+            สนใจบริการ
+          </a>
         )}
       </div>
     </article>

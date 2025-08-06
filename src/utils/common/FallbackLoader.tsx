@@ -1,20 +1,46 @@
-// ✅ src/utils/common/FallbackLoader.tsx — Minimal Loader สำหรับ Suspense หรือ React.lazy
+// ✅ src/utils/common/FallbackLoader.tsx — Improved Minimal Loader
+"use client";
 
 import { FC } from "react";
 
-/**
- * ⏳ FallbackLoader
- *
- * - ใช้สำหรับ fallback UI ระหว่างโหลด Component (เช่น React.lazy)
- * - ตำแหน่งอยู่กลาง viewport (min-height ครึ่งจอ)
- * - แสดง spinner พร้อมข้อความสถานะ
- */
-const FallbackLoader: FC = () => {
+interface FallbackLoaderProps {
+  message?: string;
+}
+
+const FallbackLoader: FC<FallbackLoaderProps> = ({ message }) => {
   return (
-    <div className="flex min-h-[50vh] items-center justify-center text-center">
+    <div
+      className="flex min-h-[50vh] items-center justify-center text-center animate-fade-in"
+      role="status"
+      aria-live="polite"
+    >
       <div className="flex flex-col items-center gap-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-        <p className="text-sm text-base-content/60">กำลังโหลดข้อมูล...</p>
+        {/* SVG Spinner */}
+        <svg
+          className="h-10 w-10 animate-spin text-primary"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          />
+        </svg>
+
+        {/* ข้อความ */}
+        <p className="text-sm text-base-content/60">
+          {message || "กำลังโหลดข้อมูล..."}
+        </p>
       </div>
     </div>
   );

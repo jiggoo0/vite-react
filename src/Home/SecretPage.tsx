@@ -1,9 +1,4 @@
-// src/Home/SecretPage.tsx
-
-import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-// Components
+import { FC } from "react";
 import SecretHeader from "@/Home/components/SecretSection/SecretHeader";
 import SecretDescription from "@/Home/components/SecretSection/SecretDescription";
 import SecretActions from "@/Home/components/SecretSection/SecretActions";
@@ -12,51 +7,13 @@ import RegistrationPreview from "./SecretPage/RegistrationPreview";
 import BlurContact from "./SecretPage/BlurContact";
 import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotificationCard";
 
-// Mock Data
 import { kbankMockData } from "@/Home/components/SecretSection/KbankIOSNotification.mock";
 import { mockRegistrationData } from "./SecretPage/mockRegistrationPreview";
 
-type UserRole = "admin" | "user";
-
-type User = {
-  username: string;
-  role: UserRole;
-};
+import { useProtectedAuth } from "@/hooks/useProtectedAuth"; // <-- import hook
 
 const SecretPage: FC = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-
-    if (!storedUser) {
-      navigate("/login", { replace: true });
-      return;
-    }
-
-    try {
-      const parsedUser = JSON.parse(storedUser);
-      if (
-        typeof parsedUser === "object" &&
-        parsedUser !== null &&
-        "username" in parsedUser &&
-        "role" in parsedUser &&
-        typeof parsedUser.username === "string" &&
-        (parsedUser.role === "admin" || parsedUser.role === "user")
-      ) {
-        setUser(parsedUser as User);
-      } else {
-        throw new Error("Invalid user data format.");
-      }
-    } catch {
-      localStorage.removeItem("user");
-      navigate("/login", { replace: true });
-    } finally {
-      setLoading(false);
-    }
-  }, [navigate]);
+  const { user, loading } = useProtectedAuth();
 
   if (loading) {
     return (
@@ -64,6 +21,11 @@ const SecretPage: FC = () => {
         <span className="loading loading-spinner loading-lg text-primary" />
       </section>
     );
+  }
+
+  if (!user) {
+    // กรณี hook ยังไม่ redirect (เผื่อ)
+    return null;
   }
 
   return (
@@ -76,14 +38,14 @@ const SecretPage: FC = () => {
 
       <main className="flex-grow max-w-4xl mx-auto w-full mb-8 space-y-8">
         <div className="bg-base-100 rounded-xl shadow-md p-6">
-          {user && <SecretDescription user={user} />}
+          <SecretDescription user={user} />
         </div>
 
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           <DocumentDownload />
         </div>
 
-        {user?.role === "admin" && (
+        {user.role === "admin" && (
           <>
             <div className="bg-base-100 rounded-xl shadow-md p-6">
               <RegistrationPreview {...mockRegistrationData} />
@@ -107,7 +69,7 @@ const SecretPage: FC = () => {
 
       <footer className="max-w-4xl mx-auto w-full">
         <div className="bg-base-100 rounded-xl shadow-md p-6">
-          {user && <SecretActions role={user.role} />}
+          <SecretActions role={user.role} />
         </div>
       </footer>
     </section>

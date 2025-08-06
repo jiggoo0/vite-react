@@ -1,6 +1,4 @@
-// ✅ src/utils/common/ScrollProgress.tsx — แถบแสดงความคืบหน้าการ scroll หน้าเว็บ (Production Ready)
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 /**
  * 📊 ScrollProgress
@@ -11,18 +9,24 @@ import { useEffect, useState } from "react";
  */
 const ScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const ticking = useRef(false);
 
   useEffect(() => {
     const updateProgress = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setScrollProgress(progress);
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          setScrollProgress(progress);
+          ticking.current = false;
+        });
+        ticking.current = true;
+      }
     };
 
-    window.addEventListener("scroll", updateProgress);
-    updateProgress(); // set ค่าเริ่มต้นทันที
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress(); // ค่าเริ่มต้นตอนโหลด
 
     return () => window.removeEventListener("scroll", updateProgress);
   }, []);

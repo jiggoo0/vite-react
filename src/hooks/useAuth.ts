@@ -7,6 +7,14 @@ export type User = {
   role: "admin" | "user";
 };
 
+/**
+ * 🔑 useAuth
+ *
+ * - Hook สำหรับจัดการสถานะ Authentication แบบ client-side
+ * - อ่าน/เขียนข้อมูล user จาก localStorage
+ * - มีสถานะ loading สำหรับตรวจสอบข้อมูลตอน mount
+ * - มีฟังก์ชัน login/logout เพื่อแก้ไขสถานะ user และ localStorage
+ */
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -17,11 +25,12 @@ export const useAuth = () => {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
+
         if (
           typeof parsed === "object" &&
           parsed !== null &&
           typeof parsed.username === "string" &&
-          ["admin", "user"].includes(parsed.role)
+          (parsed.role === "admin" || parsed.role === "user")
         ) {
           setUser(parsed);
         } else {

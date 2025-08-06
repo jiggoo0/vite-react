@@ -1,12 +1,25 @@
 #!/bin/sh
+# =========================================
+# Husky pre-commit hook
+# Purpose: Ensure pnpm-lock.yaml is staged
+# Author: JP Dev
+# =========================================
+
 . "$(dirname "$0")/_/husky.sh"
 
-echo "🔍 Checking pnpm lockfile sync..."
-pnpm install --lockfile-only
+LOCKFILE="pnpm-lock.yaml"
 
-if [ -n "$(git status --porcelain pnpm-lock.yaml)" ]; then
-  echo "⚠️  pnpm-lock.yaml updated. Please commit the changes."
-  git add pnpm-lock.yaml
+echo "🔍 Checking if $LOCKFILE is staged for commit..."
+
+# ดึงรายการไฟล์ที่อยู่ใน staging
+STAGED_FILES=$(git diff --cached --name-only)
+
+# เช็กว่า $LOCKFILE อยู่ใน staging ไหม
+if echo "$STAGED_FILES" | grep -q "^$LOCKFILE$"; then
+  echo "✅ $LOCKFILE is staged. Proceeding with commit..."
+  exit 0
+else
+  echo "⚠️ $LOCKFILE has changes but is NOT staged."
+  echo "❗ โปรดรัน: git add $LOCKFILE แล้ว commit อีกครั้ง"
+  exit 1
 fi
-
-echo "✅ Lockfile is in sync."

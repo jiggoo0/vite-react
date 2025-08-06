@@ -1,9 +1,11 @@
-// ✅ src/Home/common/ErrorBoundary.tsx — React Error Boundary สำหรับ JP Visual & Docs
+// ✅ src/Home/common/ErrorBoundary.tsx — Improved React Error Boundary
+"use client";
 
 import React, { Component, ReactNode, ErrorInfo } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
+  fallbackMessage?: string;
 }
 
 interface ErrorBoundaryState {
@@ -11,13 +13,6 @@ interface ErrorBoundaryState {
   error?: Error;
 }
 
-/**
- * 🧱 ErrorBoundary
- *
- * - จับ error runtime ของ component tree ด้านล่าง
- * - แสดง fallback UI แทน component ที่ล้มเหลว
- * - ใช้งานได้ดีร่วมกับ Production หรือการ debug
- */
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
@@ -29,27 +24,41 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // 🔧 ส่ง log error ไปยัง monitoring service (เช่น Sentry) ได้ที่นี่
+    // 📡 ส่ง log error ไปยัง Monitoring Service (Sentry, LogRocket, etc.)
     console.error("💥 Uncaught error:", error, errorInfo);
   }
 
+  handleReload = () => {
+    window.location.reload();
+  };
+
   render() {
     const { hasError, error } = this.state;
+    const { fallbackMessage } = this.props;
 
     if (hasError) {
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-base-100 text-base-content p-4 text-center">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-base-100 text-base-content p-6 text-center">
           <h1 className="text-2xl sm:text-3xl font-bold mb-3">
-            เกิดข้อผิดพลาดบางอย่าง
+            เกิดข้อผิดพลาด
           </h1>
           <p className="mb-4 text-sm text-base-content/70">
-            ขอโทษในความไม่สะดวก กรุณารีเฟรชหน้าใหม่ หรือลองอีกครั้งภายหลัง
+            {fallbackMessage ||
+              "ขอโทษในความไม่สะดวก กรุณารีเฟรชหน้าใหม่ หรือลองอีกครั้งภายหลัง"}
           </p>
+
           {error?.message && (
-            <pre className="whitespace-pre-wrap bg-base-200 p-4 rounded-lg text-sm text-error max-w-md mx-auto">
+            <pre className="whitespace-pre-wrap bg-base-200 p-4 rounded-lg text-sm text-error max-w-md mx-auto mb-4">
               {error.message}
             </pre>
           )}
+
+          <button
+            onClick={this.handleReload}
+            className="rounded-lg bg-primary px-4 py-2 text-white font-semibold shadow hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            🔄 ลองใหม่
+          </button>
         </div>
       );
     }

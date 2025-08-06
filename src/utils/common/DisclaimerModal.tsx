@@ -1,32 +1,44 @@
-// ✅ src/utils/common/DisclaimerModal.tsx — Legal Notice Modal
+// ✅ src/utils/common/DisclaimerModal.tsx — Improved Legal Notice Modal
+"use client";
 
 import { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
-/**
- * 📢 DisclaimerModal
- *
- * - แสดงคำชี้แจงทางกฎหมายเมื่อผู้ใช้เข้าครั้งแรก
- * - บันทึกการยืนยันผ่าน localStorage (`seen_disclaimer`)
- * - รองรับ a11y / responsive / animation
- */
-const DisclaimerModal = () => {
+interface DisclaimerModalProps {
+  title?: string;
+  description?: string;
+  storageKey?: string;
+}
+
+const DisclaimerModal = ({
+  title = "⚠️ แจ้งเพื่อทราบ",
+  description = `เว็บไซต์นี้ไม่ใช่สถาบันการเงิน และไม่มีบริการปล่อยสินเชื่อในทุกกรณี
+  ทีม JP Visual & Docs ให้บริการเฉพาะด้านงานเอกสารและระบบเท่านั้น`,
+  storageKey = "seen_disclaimer",
+}: DisclaimerModalProps) => {
   const [open, setOpen] = useState(false);
 
   // ✅ แสดง modal ถ้ายังไม่เคยดูมาก่อน
   useEffect(() => {
-    const seen = localStorage.getItem("seen_disclaimer");
-    if (!seen) setOpen(true);
-  }, []);
+    if (!localStorage.getItem(storageKey)) {
+      setOpen(true);
+    }
+  }, [storageKey]);
 
   // ✅ ปิด modal และบันทึกสถานะ
   const handleClose = () => {
-    localStorage.setItem("seen_disclaimer", "true");
+    localStorage.setItem(storageKey, "true");
     setOpen(false);
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} className="relative z-[9999]">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      className="relative z-[9999]"
+      aria-label="คำชี้แจงทางกฎหมาย"
+    >
       {/* 🔳 Overlay */}
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
@@ -35,17 +47,24 @@ const DisclaimerModal = () => {
 
       {/* 📦 Modal Container */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-sm rounded-xl bg-white p-6 text-gray-800 shadow-xl">
+        <Dialog.Panel
+          className="w-full max-w-sm rounded-xl bg-base-100 text-base-content shadow-xl p-6 relative animate-fade-in"
+        >
+          {/* ❌ ปุ่มปิด */}
+          <button
+            onClick={handleClose}
+            className="absolute top-3 right-3 rounded-full p-1 text-base-content/70 hover:text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="ปิด"
+          >
+            <XMarkIcon className="w-5 h-5" />
+          </button>
+
           {/* 🧠 Title */}
-          <Dialog.Title className="text-lg font-bold mb-2">
-            ⚠️ แจ้งเพื่อทราบ
-          </Dialog.Title>
+          <Dialog.Title className="text-lg font-bold mb-2">{title}</Dialog.Title>
 
           {/* 📄 Description */}
-          <Dialog.Description className="text-sm leading-relaxed mb-4">
-            เว็บไซต์นี้ไม่ใช่สถาบันการเงิน และไม่มีบริการปล่อยสินเชื่อในทุกกรณี
-            <br />
-            ทีม JP Visual & Docs ให้บริการเฉพาะด้านงานเอกสารและระบบเท่านั้น
+          <Dialog.Description className="text-sm leading-relaxed mb-4 whitespace-pre-line">
+            {description}
           </Dialog.Description>
 
           {/* ✅ Confirm Button */}

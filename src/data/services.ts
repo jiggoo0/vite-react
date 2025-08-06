@@ -1,5 +1,3 @@
-// ✅ src/data/services.ts — รายละเอียดบริการทั้งหมดของ JP Visual & Docs (Production-Ready)
-
 export interface ServiceType {
   id: number;
   title: string;
@@ -9,19 +7,9 @@ export interface ServiceType {
   altText: string;
   available: boolean;
   comingSoonNote?: string;
+  lineMessage?: string; // ข้อความส่ง LINE (ไม่บังคับ)
 }
 
-/**
- * 📦 jpServices — รายการบริการทั้งหมดของ JP Visual & Docs
- *
- * - ใช้ในหน้า Services / Landing Page / Form / CMS
- * - พร้อมใช้งานกับ UI Component (Card, Modal, Form dropdown, etc.)
- * - รองรับ coming soon services
- *
- * 🔧 NOTE: รูปภาพทั้งหมดจะถูกโหลดจาก public/images/services/
- * - ต้องย้ายไฟล์ไปที่: public/images/services/
- * - ห้ามวางไว้ใน src/assets/... แล้วใช้ path `/images/...`
- */
 export const jpServices: readonly ServiceType[] = [
   {
     id: 1,
@@ -32,6 +20,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service1.webp",
     altText: "ภาพประกอบบริการที่ปรึกษายื่นกู้สินเชื่อ",
     available: true,
+    lineMessage: "สนใจบริการที่ปรึกษายื่นกู้สินเชื่อ กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 2,
@@ -42,6 +31,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service2.webp",
     altText: "ภาพประกอบบริการดูแลเอกสารยื่นวีซ่า",
     available: true,
+    lineMessage: "สนใจบริการดูแลเอกสารยื่นวีซ่า กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 3,
@@ -52,6 +42,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service3.webp",
     altText: "ภาพประกอบบริการสลิปโอนเงิน SLIBBANK",
     available: true,
+    lineMessage: "สนใจบริการสลิปโอนเงิน SLIBBANK กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 4,
@@ -62,6 +53,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service4.webp",
     altText: "ภาพประกอบบริการเอกสารเฉพาะทาง",
     available: true,
+    lineMessage: "สนใจบริการแก้ไขหรือสร้างเอกสาร กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 5,
@@ -72,6 +64,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service5.webp",
     altText: "ภาพประกอบบริการผลิตบัตรแข็งและบัตรอ่อน",
     available: true,
+    lineMessage: "สนใจบริการผลิตบัตร กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 6,
@@ -82,6 +75,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service7.webp",
     altText: "ภาพประกอบบริการออกแบบโลโก้และทีม",
     available: true,
+    lineMessage: "สนใจบริการออกแบบโลโก้และแบนเนอร์ กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 7,
@@ -92,6 +86,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service6.webp",
     altText: "ภาพประกอบบริการดูแลการตลาดครบวงจร",
     available: true,
+    lineMessage: "สนใจบริการดูแลการตลาดครบวงจร กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 8,
@@ -102,6 +97,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service9.webp",
     altText: "ภาพประกอบบริการระบบดูแลลูกค้าภายใน",
     available: true,
+    lineMessage: "สนใจโครงการ AI Matching กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 9,
@@ -112,6 +108,7 @@ export const jpServices: readonly ServiceType[] = [
     image: "/images/services/service10.webp",
     altText: "ภาพประกอบบริการสร้างหรือปรับภาพลักษณ์",
     available: true,
+    lineMessage: "สนใจบริการสร้างภาพลักษณ์ กรุณาติดต่อกลับด้วยครับ/ค่ะ",
   },
   {
     id: 10,

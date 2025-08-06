@@ -19,6 +19,7 @@
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
     "@headlessui/react": "^2.2.7",
+    "@heroicons/react": "2.2.0",
     "@radix-ui/react-slot": "^1.2.3",
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
