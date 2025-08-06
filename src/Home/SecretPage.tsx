@@ -8,6 +8,7 @@ import SecretDescription from "@/Home/components/SecretSection/SecretDescription
 import SecretActions from "@/Home/components/SecretSection/SecretActions";
 import RegistrationPreview from "./SecretPage/RegistrationPreview";
 import BlurContact from "./SecretPage/BlurContact";
+import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
 
 type User = {
   username: string;
@@ -36,13 +37,13 @@ const SecretPage: FC = () => {
         "username" in parsedUser &&
         "role" in parsedUser &&
         typeof (parsedUser as any).username === "string" &&
-        (parsedUser as any).role === "admin" || (parsedUser as any).role === "user"
+        ((parsedUser as any).role === "admin" || (parsedUser as any).role === "user")
       ) {
         setUser(parsedUser as User);
       } else {
         throw new Error("Invalid user data format.");
       }
-    } catch (error) {
+    } catch {
       localStorage.removeItem("user");
       navigate("/login", { replace: true });
     } finally {
@@ -53,29 +54,39 @@ const SecretPage: FC = () => {
   if (loading) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-base-100">
-        <span className="loading loading-spinner loading-lg text-primary" />
+        <span
+          role="status"
+          aria-label="Loading"
+          className="loading loading-spinner loading-lg text-primary"
+        />
       </section>
     );
   }
 
   return (
-    <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 md:p-8">
+    <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 sm:p-6 md:p-8">
       {/* Header */}
-      <header className="max-w-4xl mx-auto w-full mb-8">
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
+      <header className="max-w-5xl mx-auto w-full mb-10">
+        <div className="bg-base-100 rounded-2xl shadow-lg p-8">
           <SecretHeader />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow max-w-4xl mx-auto w-full mb-8 space-y-8">
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
+      <main className="flex-grow max-w-5xl mx-auto w-full mb-10 space-y-10">
+        {/* Description */}
+        <section className="bg-base-100 rounded-2xl shadow-lg p-8">
           {user && <SecretDescription user={user} />}
-        </div>
+        </section>
+
+        {/* Document Download */}
+        <section className="bg-base-100 rounded-2xl shadow-lg p-8">
+          <DocumentDownload />
+        </section>
 
         {/* Admin Only Section */}
         {user?.role === "admin" && (
-          <div className="bg-base-100 rounded-xl shadow-md p-6">
+          <section className="bg-base-100 rounded-2xl shadow-lg p-8">
             <RegistrationPreview
               businessName="บริษัท ทดสอบ จำกัด"
               ownerName="นายสมชาย ใจดี"
@@ -92,21 +103,21 @@ const SecretPage: FC = () => {
               registrarPosition="เจ้าหน้าที่ทะเบียน"
               registrarName="นางสาวจันทร์เพ็ญ สวัสดิ์ศรี"
             />
-          </div>
+          </section>
         )}
 
         {/* Support Contact */}
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
+        <section className="bg-base-100 rounded-2xl shadow-lg p-8">
           <BlurContact
             imageUrl="/images/admin-contact.jpg"
             contactText="ติดต่อแอดมินฝ่ายสนับสนุน"
           />
-        </div>
+        </section>
       </main>
 
       {/* Footer */}
-      <footer className="max-w-4xl mx-auto w-full">
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
+      <footer className="max-w-5xl mx-auto w-full">
+        <div className="bg-base-100 rounded-2xl shadow-lg p-6">
           {user && <SecretActions role={user.role} />}
         </div>
       </footer>

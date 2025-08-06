@@ -25,16 +25,16 @@ import {
  * - FAQ (Support)
  *
  * 🌐 Features:
- * - Responsive
+ * - Responsive Design (Mobile, Tablet, Desktop)
  * - Dark Mode
  * - Smooth Anchor Scroll
  * - Semantic HTML & Accessibility
  */
 const Home: FC = () => {
   return (
-    <main className="flex flex-col scroll-smooth">
+    <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
       {/* 🚀 Hero */}
-      <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์">
+      <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์" bg="bg-base-100">
         <Hero />
       </PageSection>
 
@@ -77,12 +77,18 @@ const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => {
       id={id}
       aria-labelledby={`${id}-title`}
       role="region"
-      className={`scroll-mt-20 py-16 md:py-24 ${bg ?? ""}`}
+      className={`scroll-mt-24 py-12 sm:py-16 md:py-24 ${bg ?? ""}`}
     >
+      {/* ซ่อนหัวข้อสำหรับ screen reader */}
       <h2 id={`${id}-title`} className="sr-only">
         {title}
       </h2>
-      <SectionContainer>{children}</SectionContainer>
+
+      <SectionContainer>
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+          {children}
+        </div>
+      </SectionContainer>
     </section>
   );
 };
