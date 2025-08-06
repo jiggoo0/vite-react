@@ -20,6 +20,7 @@ const SecretActions: FC<SecretActionsProps> = ({ role }) => {
       <button
         onClick={() => alert("Manage your jobs feature coming soon!")}
         className="btn btn-primary"
+        type="button"
       >
         จัดการงานของฉัน
       </button>
@@ -28,12 +29,17 @@ const SecretActions: FC<SecretActionsProps> = ({ role }) => {
         <button
           onClick={() => navigate("/admin")}
           className="btn btn-secondary"
+          type="button"
         >
           เข้าสู่แผงควบคุม Admin
         </button>
       )}
 
-      <button onClick={handleLogout} className="btn btn-outline btn-error">
+      <button
+        onClick={handleLogout}
+        className="btn btn-outline btn-error"
+        type="button"
+      >
         ออกจากระบบ
       </button>
     </div>
