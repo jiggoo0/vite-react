@@ -1,5 +1,3 @@
-// src/Router/RoleGuard.tsx
-
 import { FC, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +15,7 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
 
     if (!stored) {
       navigate("/login", { replace: true });
+      setAuthorized(false);
       return;
     }
 
@@ -27,6 +26,7 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
         typeof parsed === "object" &&
         parsed !== null &&
         "role" in parsed &&
+        typeof (parsed as any).role === "string" &&
         allowedRoles.includes((parsed as any).role)
       ) {
         setAuthorized(true);
@@ -37,11 +37,12 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
     } catch {
       localStorage.removeItem("user");
       navigate("/login", { replace: true });
+      setAuthorized(false);
     }
   }, [allowedRoles, navigate]);
 
   if (authorized === null) {
-    // Loading or checking
+    // กำลังโหลด/ตรวจสอบ
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-100">
         <span className="loading loading-spinner loading-lg text-primary" />
@@ -50,7 +51,7 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
   }
 
   if (!authorized) {
-    // Redirecting - avoid rendering children
+    // ไม่อนุญาต ไม่แสดง children
     return null;
   }
 

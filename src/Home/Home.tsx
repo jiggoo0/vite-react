@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 // ✅ Core Sections
 import Hero from "@home/components/Hero/Hero";
@@ -63,12 +63,12 @@ const Home: FC = () => {
 
 export default Home;
 
-// ✅ Composable Section Wrapper (Clean & Consistent)
+// ✅ Composable Section Wrapper — Clean & Consistent Layout for Sections
 interface PageSectionProps {
   id: string;
-  title: string; // สำหรับ aria-labelledby text
-  children: React.ReactNode;
-  bg?: string; // tailwind class string
+  title: string;          // สำหรับ aria-labelledby text
+  children: ReactNode;
+  bg?: string;            // Tailwind background color class, เช่น "bg-base-100"
 }
 
 const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => {

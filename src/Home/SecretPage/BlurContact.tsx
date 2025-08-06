@@ -6,7 +6,7 @@ interface BlurContactProps {
 }
 
 /**
- * Component แสดงภาพพื้นหลังแบบเบลอ พร้อมข้อความกึ่งกลาง
+ * แสดงภาพพื้นหลังแบบเบลอพร้อมข้อความกึ่งกลาง (สำหรับช่องติดต่อ)
  */
 const BlurContact: FC<BlurContactProps> = ({
   imageUrl,
@@ -14,7 +14,7 @@ const BlurContact: FC<BlurContactProps> = ({
 }) => {
   return (
     <div className="relative w-full h-64 md:h-96 rounded-md overflow-hidden">
-      {/* Background image with blur and dark overlay */}
+      {/* ภาพพื้นหลังพร้อมเอฟเฟกต์เบลอและมืด */}
       <img
         src={imageUrl}
         alt="Background"
@@ -22,7 +22,7 @@ const BlurContact: FC<BlurContactProps> = ({
         draggable={false}
       />
 
-      {/* Centered text */}
+      {/* ข้อความกึ่งกลาง */}
       <div className="absolute inset-0 flex items-center justify-center">
         <p className="text-white text-xl md:text-3xl font-semibold drop-shadow-lg">
           {contactText}

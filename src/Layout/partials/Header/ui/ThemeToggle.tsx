@@ -1,42 +1,51 @@
-// ✅ src/Layout/partials/Header/ui/ThemeToggle.tsx
-
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const THEME_KEY = "theme";
 
-/**
- * 🌗 ThemeToggle — ปุ่มเปลี่ยนธีมแสง/มืด
- *
- * - ใช้ Tailwind dark mode (`dark:` class)
- * - บันทึกสถานะใน localStorage
- * - ปรับ icon UI ตามสถานะปัจจุบัน
- */
 const ThemeToggle = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  useEffect(() => {
-    // ✅ ป้องกัน hydration mismatch
-    setIsMounted(true);
-
-    const saved = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const useDark = saved === "dark" || (!saved && prefersDark);
-
+  const applyTheme = useCallback((useDark: boolean) => {
     setIsDark(useDark);
-    document.documentElement.classList.toggle("dark", useDark);
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.toggle("dark", useDark);
+      document.documentElement.setAttribute("data-theme", useDark ? "dark" : "light");
+    }
+    if (typeof window !== "undefined") {
+      localStorage.setItem(THEME_KEY, useDark ? "dark" : "light");
+    }
   }, []);
 
-  const toggleTheme = () => {
-    const next = !isDark;
-    setIsDark(next);
+  useEffect(() => {
+    setIsMounted(true);
 
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem(THEME_KEY, next ? "dark" : "light");
+    if (typeof window === "undefined") return;
+
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const defaultDark = savedTheme ? savedTheme === "dark" : prefersDark;
+
+    applyTheme(defaultDark);
+  }, [applyTheme]);
+
+  useEffect(() => {
+    const handler = (e: StorageEvent) => {
+      if (e.key === THEME_KEY) {
+        const next = e.newValue === "dark";
+        applyTheme(next);
+      }
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
+  }, [applyTheme]);
+
+  const toggleTheme = () => {
+    applyTheme(!isDark);
   };
 
   if (!isMounted) return null;
@@ -47,6 +56,7 @@ const ThemeToggle = () => {
       variant="ghost"
       size="icon"
       aria-label="Toggle theme"
+      aria-pressed={isDark}
       className="rounded-full"
     >
       {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}

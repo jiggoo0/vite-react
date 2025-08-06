@@ -1,4 +1,3 @@
-
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
@@ -18,18 +17,23 @@ const Header: FC = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <header className="bg-base-100 w-full shadow-sm border-b border-base-content/10">
-      <div className="container mx-auto flex items-center justify-between px-4 py-3">
-        {/* 🔰 โลโก้หลัก */}
+    <header className="bg-base-100 w-full border-b border-base-content/10 shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        {/* 🔰 โลโก้ */}
         <Logo />
 
-        {/* 🔘 Theme Switch + Auth Button */}
+        {/* 🔘 Theme Toggle & Auth Actions */}
         <div className="flex items-center gap-3">
           <ThemeToggle />
+
           {isAuthenticated ? (
             <LogoutButton />
           ) : (
-            <Link to="/login" className="btn btn-primary btn-sm" aria-label="เข้าสู่ระบบ">
+            <Link
+              to="/login"
+              className="btn btn-primary btn-sm"
+              aria-label="เข้าสู่ระบบ"
+            >
               เข้าสู่ระบบ
             </Link>
           )}

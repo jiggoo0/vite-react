@@ -19,7 +19,7 @@ const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content">
       {/* Header */}
-      <header>
+      <header className="sticky top-0 z-50 bg-base-100 shadow-sm">
         <Navbar />
       </header>
 

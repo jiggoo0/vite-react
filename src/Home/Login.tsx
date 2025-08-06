@@ -3,35 +3,42 @@ import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 import { users } from "@/data/users";
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const user = users.find((u) => u.username === username);
+    setError(null);
+    setLoading(true);
+
+    const trimmedUsername = username.trim();
+
+    const user = users.find((u) => u.username === trimmedUsername);
     if (!user) {
       setError("ไม่พบผู้ใช้นี้ในระบบ");
+      setLoading(false);
       return;
     }
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       setError("รหัสผ่านไม่ถูกต้อง");
+      setLoading(false);
       return;
     }
 
-    // เก็บเฉพาะข้อมูลที่ไม่ลับใน localStorage
     localStorage.setItem(
       "user",
       JSON.stringify({ username: user.username, role: user.role })
     );
 
-    setError(null);
+    setLoading(false);
     navigate("/secret");
   };
 
@@ -54,6 +61,7 @@ const Login = () => {
             onChange={(e) => setUsername(e.target.value)}
             className="input input-bordered w-full"
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -62,9 +70,10 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="input input-bordered w-full"
             required
+            disabled={loading}
           />
-          <button type="submit" className="btn btn-primary w-full">
-            เข้าสู่ระบบ
+          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+            {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
           </button>
         </form>
       </div>

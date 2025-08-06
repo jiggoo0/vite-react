@@ -17,11 +17,18 @@ const AboutQuote = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true }}
       className="mt-24 px-4 text-center max-w-3xl mx-auto"
+      aria-label="คติประจำทีม JP Visual & Docs"
     >
       <blockquote
-        className="relative border-l-4 border-primary pl-6 text-base md:text-lg italic 
-                   text-base-content/70 leading-relaxed"
-        aria-label="คติประจำทีม JP Visual & Docs"
+        className="
+          relative 
+          border-l-4 border-primary 
+          pl-6 
+          text-base md:text-lg 
+          italic 
+          text-base-content/70 
+          leading-relaxed
+        "
       >
         <span className="text-xl md:text-2xl text-base-content/80 font-medium">
           “ยินดีร่วมงานทุกสาย วงการกฎข้อแรกของเราคือ ความลับของลูกค้า”

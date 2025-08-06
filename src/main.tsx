@@ -7,9 +7,15 @@ import { BrowserRouter } from "react-router-dom";
 import AppRouter from "@/Router/AppRouter";
 import "@/styles/global.css";
 
-const root = document.getElementById("root") as HTMLElement;
+// หา root element จาก DOM
+const rootElement = document.getElementById("root");
 
-ReactDOM.createRoot(root).render(
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+// สร้าง root และเรนเดอร์แอปด้วย React.StrictMode และ React Router
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <AppRouter />

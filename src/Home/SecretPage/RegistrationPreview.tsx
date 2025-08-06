@@ -26,6 +26,7 @@ const RegistrationPreview: FC<Props> = ({
   registrarPosition,
   registrarName,
 }) => {
+  // ฟังก์ชันแสดงจุดเติมช่องว่าง กำหนดความยาวได้
   const fallbackDots = (length: number) => (
     <span className="text-gray-400 select-none">{'.'.repeat(length)}</span>
   );
@@ -82,7 +83,7 @@ const RegistrationPreview: FC<Props> = ({
       <div className="text-center mt-12 text-lg space-y-6">
         <p>{ownerName}</p>
         <p>ได้จดทะเบียนพาณิชย์ ตามพระราชบัญญัติทะเบียนพาณิชย์ พ.ศ.2499</p>
-        <p className="mt-8">เมื่อวันที่ {fallbackDots(20)}</p>
+        <p className="mt-8">เมื่อวันที่ {issuedDate || fallbackDots(20)}</p>
 
         <p className="mt-8">ชื่อที่ใช้ในการประกอบพาณิชยกิจ</p>
         <p>{businessName}</p>
@@ -113,7 +114,10 @@ const RegistrationPreview: FC<Props> = ({
       </div>
 
       {/* 🖋️ ตำแหน่งลงนาม */}
-      <div className="mt-24 max-w-[720px] mx-auto text-lg text-end space-y-6" style={{ fontFamily: '"TH SarabunPSK", serif' }}>
+      <div
+        className="mt-24 max-w-[720px] mx-auto text-lg text-end space-y-6"
+        style={{ fontFamily: '"TH SarabunPSK", serif' }}
+      >
         <p className="whitespace-nowrap">
           ออกให้ ณ วันที่ {issuedDate || fallbackDots(15)}
         </p>

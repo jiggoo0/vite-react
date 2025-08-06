@@ -26,14 +26,23 @@ const HeroBackground = ({ className = "" }: HeroBackgroundProps) => {
     >
       {/* 🔵 Blue Glow Blob */}
       <div
-        className="absolute -top-32 left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] 
-                   sm:w-[50vw] sm:h-[50vw] rounded-full bg-blue-500/20 blur-3xl z-10"
+        className="
+          absolute -top-32 left-1/2 -translate-x-1/2 
+          w-[80vw] h-[80vw] 
+          sm:w-[50vw] sm:h-[50vw] 
+          rounded-full bg-blue-500/20 blur-3xl z-10
+        "
       />
 
       {/* 🟣 Dot Grid Pattern */}
       <div
-        className="absolute inset-0 bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] 
-                   [background-size:30px_30px] opacity-10 z-20"
+        className="
+          absolute inset-0 
+          bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] 
+          [background-size:30px_30px] 
+          opacity-10 
+          z-20
+        "
       />
 
       {/* 🖼️ Optimized Background Image */}

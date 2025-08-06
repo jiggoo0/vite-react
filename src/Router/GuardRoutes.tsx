@@ -1,6 +1,4 @@
-// src/Router/GuardRoutes.tsx
-
-import { FC, ReactNode, useEffect } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface GuardRoutesProps {
@@ -9,12 +7,14 @@ interface GuardRoutesProps {
 
 const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
 
     if (!stored) {
       navigate("/login", { replace: true });
+      setIsAuthenticated(false);
       return;
     }
 
@@ -30,14 +30,31 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
       ) {
         localStorage.removeItem("user");
         navigate("/login", { replace: true });
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
       }
     } catch {
       localStorage.removeItem("user");
       navigate("/login", { replace: true });
+      setIsAuthenticated(false);
     }
   }, [navigate]);
 
-  // Render children only if user is valid
+  if (isAuthenticated === null) {
+    // Loading state - สามารถใส่ spinner หรือ loading indicator ได้
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    // ไม่แสดง content หากยังไม่ auth
+    return null;
+  }
+
   return <>{children}</>;
 };
 

@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 const AboutDescription = () => {
   return (
     <motion.section
+      role="region"
       aria-labelledby="about-description"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -21,6 +22,7 @@ const AboutDescription = () => {
       {/* ✅ Headline */}
       <blockquote
         id="about-description"
+        tabIndex={-1}
         className="text-lg md:text-xl font-medium leading-relaxed text-base-content/80"
       >
         “ทำธุรกิจสีเทาให้มีมาตรฐานระดับมืออาชีพ”

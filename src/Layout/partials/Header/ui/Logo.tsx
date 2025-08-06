@@ -15,19 +15,16 @@ const Logo = () => {
       to="/"
       aria-label="กลับหน้าหลัก"
       className="inline-flex items-center gap-2 font-bold text-lg text-primary hover:opacity-80 transition-opacity"
-      tabIndex={0}
     >
       {/* 🖼️ โลโก้รูปภาพ */}
       <img
         src={logo}
-        alt="JP Visual & Docs Logo"
+        alt="โลโก้ JP Visual & Docs"
         className="h-8 w-auto"
         loading="lazy"
         decoding="async"
         onError={(e) => {
-          // fallback กรณีโหลดภาพไม่สำเร็จ
-          (e.currentTarget as HTMLImageElement).src =
-            "/fallback-logo.png"; // เพิ่มไฟล์ fallback ใน public folder
+          (e.currentTarget as HTMLImageElement).src = "/fallback-logo.png";
         }}
       />
 

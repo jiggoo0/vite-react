@@ -18,7 +18,13 @@ const AboutTitle = () => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="text-center font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-base-content"
+      className="
+        text-center 
+        font-extrabold 
+        tracking-tight 
+        text-4xl sm:text-5xl lg:text-6xl 
+        text-base-content
+      "
       aria-label="หัวข้อ JP Visual & Docs"
     >
       <span className="inline-block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">

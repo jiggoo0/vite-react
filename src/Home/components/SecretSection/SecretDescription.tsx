@@ -7,9 +7,9 @@ type User = {
   role: "admin" | "user";
 };
 
-type SecretDescriptionProps = {
+interface SecretDescriptionProps {
   user: User;
-};
+}
 
 const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
   return (

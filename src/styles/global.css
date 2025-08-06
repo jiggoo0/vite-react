@@ -2,7 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional: font / scrollbar / transition / etc. */
-html {
-  scroll-behavior: smooth;
+@layer base {
+  /* 🌍 Font + Smoothing */
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Roboto', 'Noto Sans Thai', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 🎨 Background + Color */
+  body {
+    @apply bg-base-100 text-base-content;
+    line-height: 1.6;
+    min-height: 100dvh;
+  }
+
+  /* 💡 Auto dark if prefers-color-scheme: dark */
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) {
+      color-scheme: dark;
+      /* ไม่ใช้ @apply dark */
+      /* ถ้าต้องการเปลี่ยนสีพื้นหลัง-ข้อความจริง ๆ ให้ใช้ CSS ปกติ หรือจัดการผ่าน data-theme หรือ class dark ใน JS */
+    }
+  }
+
+  /* 📱 Text selection style */
+  ::selection {
+    background-color: theme('colors.primary');
+    color: white;
+  }
+
+  /* 🧼 Box sizing reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* 🖱️ Scrollbars (Chrome / Safari / Firefox) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: theme('colors.primary');
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.primary') transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 🧭 Anchor scroll offset (use with id links) */
+  :target {
+    scroll-margin-top: 6rem;
+  }
+
+  /* ⚡ UI transition (button, a, etc.) */
+  button, a {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  }
+
+  /* 🔠 Responsive base font size */
+  @media (min-width: 768px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    html {
+      font-size: 16px;
+    }
+  }
 }

@@ -1,5 +1,3 @@
-// src/Home/SecretPage.tsx
-
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,9 +8,11 @@ import RegistrationPreview from "./SecretPage/RegistrationPreview";
 import BlurContact from "./SecretPage/BlurContact";
 import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
 
+type UserRole = "admin" | "user";
+
 type User = {
   username: string;
-  role: "admin" | "user";
+  role: UserRole;
 };
 
 const SecretPage: FC = () => {
@@ -29,15 +29,15 @@ const SecretPage: FC = () => {
     }
 
     try {
-      const parsedUser: unknown = JSON.parse(storedUser);
+      const parsedUser = JSON.parse(storedUser);
 
       if (
         typeof parsedUser === "object" &&
         parsedUser !== null &&
         "username" in parsedUser &&
         "role" in parsedUser &&
-        typeof (parsedUser as any).username === "string" &&
-        ((parsedUser as any).role === "admin" || (parsedUser as any).role === "user")
+        typeof parsedUser.username === "string" &&
+        (parsedUser.role === "admin" || parsedUser.role === "user")
       ) {
         setUser(parsedUser as User);
       } else {
@@ -54,39 +54,35 @@ const SecretPage: FC = () => {
   if (loading) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-base-100">
-        <span
-          role="status"
-          aria-label="Loading"
-          className="loading loading-spinner loading-lg text-primary"
-        />
+        <span className="loading loading-spinner loading-lg text-primary" />
       </section>
     );
   }
 
   return (
-    <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 sm:p-6 md:p-8">
+    <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 md:p-8">
       {/* Header */}
-      <header className="max-w-5xl mx-auto w-full mb-10">
-        <div className="bg-base-100 rounded-2xl shadow-lg p-8">
+      <header className="max-w-4xl mx-auto w-full mb-8">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
           <SecretHeader />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow max-w-5xl mx-auto w-full mb-10 space-y-10">
+      <main className="flex-grow max-w-4xl mx-auto w-full mb-8 space-y-8">
         {/* Description */}
-        <section className="bg-base-100 rounded-2xl shadow-lg p-8">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
           {user && <SecretDescription user={user} />}
-        </section>
+        </div>
 
         {/* Document Download */}
-        <section className="bg-base-100 rounded-2xl shadow-lg p-8">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
           <DocumentDownload />
-        </section>
+        </div>
 
         {/* Admin Only Section */}
         {user?.role === "admin" && (
-          <section className="bg-base-100 rounded-2xl shadow-lg p-8">
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
             <RegistrationPreview
               businessName="บริษัท ทดสอบ จำกัด"
               ownerName="นายสมชาย ใจดี"
@@ -103,21 +99,21 @@ const SecretPage: FC = () => {
               registrarPosition="เจ้าหน้าที่ทะเบียน"
               registrarName="นางสาวจันทร์เพ็ญ สวัสดิ์ศรี"
             />
-          </section>
+          </div>
         )}
 
         {/* Support Contact */}
-        <section className="bg-base-100 rounded-2xl shadow-lg p-8">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
           <BlurContact
             imageUrl="/images/admin-contact.jpg"
             contactText="ติดต่อแอดมินฝ่ายสนับสนุน"
           />
-        </section>
+        </div>
       </main>
 
       {/* Footer */}
-      <footer className="max-w-5xl mx-auto w-full">
-        <div className="bg-base-100 rounded-2xl shadow-lg p-6">
+      <footer className="max-w-4xl mx-auto w-full">
+        <div className="bg-base-100 rounded-xl shadow-md p-6">
           {user && <SecretActions role={user.role} />}
         </div>
       </footer>

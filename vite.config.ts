@@ -21,13 +21,18 @@ export default defineConfig({
     },
   },
   server: {
+    port: 3000, // กำหนด port ที่ชัดเจน ถ้าต้องการ (default 5173)
+    open: true, // เปิด browser อัตโนมัติเมื่อรัน dev server
     proxy: {
-      // Proxy API requests to backend running on localhost:4000
       "/api": {
         target: "http://localhost:4000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
+        // เพิ่ม secure: false ถ้าระบบ backend ใช้ https self-signed
       },
     },
+  },
+  build: {
+    sourcemap: true, // เปิด sourcemap สำหรับ debug ใน production ถ้าต้องการ
   },
 });

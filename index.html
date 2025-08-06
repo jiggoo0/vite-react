@@ -1,27 +1,57 @@
-<!-- index.html — Vite entry HTML -->
-
 <!DOCTYPE html>
 <html lang="th" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- SEO and Meta Data -->
     <meta name="description" content="JP Visual & Docs — พอร์ตโฟลิโอและระบบจัดการเอกสารภาครัฐ" />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="JP System" />
+    <meta name="keywords" content="JP, Visual, Docs, พอร์ตโฟลิโอ, เอกสารภาครัฐ, ระบบจัดการ" />
+
+    <!-- Theme color for address bar -->
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+    <!-- Icons and Manifest -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Sans+Thai&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Title -->
     <title>JP Visual & Docs</title>
 
-    <!-- Preload Theme ก่อน React Mount -->
+    <!-- Preload Theme Script -->
     <script>
       try {
         const saved = localStorage.getItem("theme");
         if (saved && ["light", "dark", "business"].includes(saved)) {
           document.documentElement.setAttribute("data-theme", saved);
+        } else {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
         }
-      } catch (_) {}
+      } catch (_) {
+        // Fail silently if any error occurs
+      }
     </script>
   </head>
 
   <body class="bg-base-100 text-base-content">
     <div id="root"></div>
+
+    <!-- Main React Entry -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

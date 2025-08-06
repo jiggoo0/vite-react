@@ -44,10 +44,20 @@ const HeroStats: FC = () => {
         <div
           key={index}
           role="listitem"
-          className="flex flex-col items-center gap-2 rounded-2xl border border-neutral-800 bg-neutral-900/80 px-6 py-5 shadow text-center"
+          className="
+            flex flex-col items-center gap-2 
+            rounded-2xl border border-neutral-800 
+            bg-neutral-900/80 px-6 py-5 shadow text-center
+          "
         >
-          <Icon className={`w-6 h-6 ${color}`} strokeWidth={2.2} aria-hidden="true" />
-          <span className="text-sm font-medium text-white whitespace-nowrap">{label}</span>
+          <Icon
+            className={`${color} w-6 h-6`}
+            strokeWidth={2.2}
+            aria-hidden="true"
+          />
+          <span className="text-sm font-medium text-white whitespace-nowrap">
+            {label}
+          </span>
         </div>
       ))}
     </motion.div>
