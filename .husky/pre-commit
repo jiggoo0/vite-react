@@ -1,4 +1,12 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-pnpm lint-staged
+echo "🔍 Checking pnpm lockfile sync..."
+pnpm install --lockfile-only
+
+if [ -n "$(git status --porcelain pnpm-lock.yaml)" ]; then
+  echo "⚠️  pnpm-lock.yaml updated. Please commit the changes."
+  git add pnpm-lock.yaml
+fi
+
+echo "✅ Lockfile is in sync."
