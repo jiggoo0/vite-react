@@ -7,6 +7,7 @@ import SecretActions from "@/Home/components/SecretSection/SecretActions";
 import RegistrationPreview from "./SecretPage/RegistrationPreview";
 import BlurContact from "./SecretPage/BlurContact";
 import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
+import KbankIOSNotification from "@/Home/components/SecretSection/KbankIOSNotification"; // <-- import เพิ่ม
 
 type UserRole = "admin" | "user";
 
@@ -82,24 +83,31 @@ const SecretPage: FC = () => {
 
         {/* Admin Only Section */}
         {user?.role === "admin" && (
-          <div className="bg-base-100 rounded-xl shadow-md p-6">
-            <RegistrationPreview
-              businessName="บริษัท ทดสอบ จำกัด"
-              ownerName="นายสมชาย ใจดี"
-              registrationNumber="1234567890"
-              address={{
-                houseNumber: "123",
-                villageNo: "4",
-                alley: "สุขุมวิท 101",
-                subDistrict: "บางนา",
-                district: "พระโขนง",
-                province: "กรุงเทพมหานคร",
-              }}
-              issuedDate="12 สิงหาคม 2568"
-              registrarPosition="เจ้าหน้าที่ทะเบียน"
-              registrarName="นางสาวจันทร์เพ็ญ สวัสดิ์ศรี"
-            />
-          </div>
+          <>
+            <div className="bg-base-100 rounded-xl shadow-md p-6">
+              <RegistrationPreview
+                businessName="บริษัท เจพีดิจิทัล กรุ๊ป จำกัด"
+                ownerName="นางสาวขวัญเรือน วิสุทธิ์ศรี"
+                registrationNumber="0105555001234"
+                address={{
+                  houseNumber: "888",
+                  villageNo: "5",
+                  alley: "เจริญนคร 23",
+                  subDistrict: "คลองต้นไทร",
+                  district: "คลองสาน",
+                  province: "กรุงเทพมหานคร",
+                }}
+                issuedDate="6 สิงหาคม 2568"
+                registrarPosition="เจ้าหน้าที่สารสนเทศ"
+                registrarName="นางสาวจันทร์เพ็ญ สวัสดิ์ศรี"
+              />
+            </div>
+
+            {/* เพิ่ม KbankIOSNotification เฉพาะแอดมิน */}
+            <div className="bg-base-100 rounded-xl shadow-md p-6">
+              <KbankIOSNotification />
+            </div>
+          </>
         )}
 
         {/* Support Contact */}

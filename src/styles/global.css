@@ -3,52 +3,50 @@
 @tailwind utilities;
 
 @layer base {
-  /* 🌍 Font + Smoothing */
+  /*  Font + Smoothing */
   html {
     scroll-behavior: smooth;
-    font-family: 'Roboto', 'Noto Sans Thai', sans-serif;
+    font-family: theme("fontFamily.body"); /*  font  tailwind.config */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* 🎨 Background + Color */
+  /*  Background + Color */
   body {
     @apply bg-base-100 text-base-content;
     line-height: 1.6;
-    min-height: 100dvh; /* dynamic viewport height สำหรับมือถือ */
+    min-height: 100dvh; /*  dynamic viewport  */
   }
 
-  /* 💡 Auto dark mode ถ้า prefers-color-scheme: dark */
+  /*  Auto dark mode  data-theme */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
       color-scheme: dark;
-      /*
-        ไม่ใช้ @apply dark;
-        หากต้องการเปลี่ยนสีพื้นหลัง-ข้อความ ให้ใช้ CSS ปกติ หรือควบคุมด้วย data-theme / class dark ผ่าน JS
-      */
     }
   }
 
-  /* 📱 Text selection style */
+  /*  Text selection */
   ::selection {
-    background-color: theme('colors.primary');
+    background-color: theme("colors.primary");
     color: white;
   }
 
-  /* 🧼 Box sizing reset */
-  *, *::before, *::after {
+  /*  Box sizing reset */
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
-  /* 🖱️ Scrollbars (Chrome / Safari) */
+  /*  Scrollbar (Webkit - Chrome/Safari) */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: theme('colors.primary');
+    background-color: theme("colors.primary");
     border-radius: 4px;
   }
 
@@ -56,29 +54,34 @@
     background: transparent;
   }
 
-  /* Firefox scrollbar */
+  /*  Scrollbar (Firefox) */
   * {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.primary') transparent;
+    scrollbar-color: theme("colors.primary") transparent;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* 🧭 Anchor scroll offset (สำหรับใช้กับลิงก์ที่มี id) */
+  /*  Anchor scroll offset ( #id) */
   :target {
     scroll-margin-top: 6rem;
   }
 
-  /* ⚡ UI transitions */
-  button, a {
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  /*  UI transitions */
+  button,
+  a {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.2s ease;
   }
 
-  /* 🔠 Responsive base font size */
+  /*  Responsive font size */
   @media (min-width: 768px) {
     html {
       font-size: 18px;
     }
   }
+
   @media (max-width: 767px) {
     html {
       font-size: 16px;

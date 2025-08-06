@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
 import typography from "@tailwindcss/typography";
@@ -7,10 +8,7 @@ import aspectRatio from "@tailwindcss/aspect-ratio";
 const config: Config = {
   darkMode: "class",
 
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 
   safelist: [
     "bg-primary",
@@ -23,14 +21,12 @@ const config: Config = {
     },
   ],
 
-  blocklist: [
-    "debug",
-    "bg-red-500",
-  ],
+  blocklist: ["debug", "bg-red-500"],
 
   theme: {
     extend: {
       colors: {
+        // Design Token Colors (via CSS Variables)
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
         accent: "var(--color-accent)",
@@ -39,6 +35,13 @@ const config: Config = {
         "base-200": "var(--color-base-200)",
         "base-300": "var(--color-base-300)",
 
+        // iOS-specific Notification Colors
+        iosSuccess: "#34C759",
+        iosError: "#FF3B30",
+        iosWarning: "#FF9500",
+        iosInfo: "#5AC8FA",
+
+        // DaisyUI default feedback colors
         info: "#3ABFF8",
         success: "#36D399",
         warning: "#FBBD23",
@@ -48,6 +51,16 @@ const config: Config = {
       fontFamily: {
         heading: ["Inter", "Noto Sans Thai", "sans-serif"],
         body: ["Roboto", "Noto Sans Thai", "sans-serif"],
+        ios: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          '"SF Pro Text"',
+          "sans-serif",
+        ], // ✅ iOS System Font
+      },
+
+      fontSize: {
+        iosSmall: "13px", // ✅ Specific to iOS Notification Design
       },
 
       spacing: {
@@ -60,7 +73,7 @@ const config: Config = {
         60: "60",
         70: "70",
         80: "80",
-        9999: "9999",
+        9999: "9999", // ✅ Overlay level
       },
 
       borderRadius: {
@@ -98,12 +111,7 @@ const config: Config = {
     },
   },
 
-  plugins: [
-    daisyui,
-    typography,
-    forms,
-    aspectRatio, // `lineClamp` ไม่ต้องใส่แล้ว
-  ],
+  plugins: [daisyui, typography, forms, aspectRatio],
 
   daisyui: {
     themes: [
