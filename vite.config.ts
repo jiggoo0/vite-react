@@ -1,11 +1,18 @@
+// vite.config.ts
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tsconfigPaths(), // ใช้ path จาก tsconfig.json อัตโนมัติ
+  ],
   resolve: {
     alias: {
+      // เสริม alias แบบ manual สำหรับ fallback (ถ้า tsconfig ไม่มี)
       "@": path.resolve(__dirname, "src"),
       "@api": path.resolve(__dirname, "src/api"),
       "@assets": path.resolve(__dirname, "src/assets"),
@@ -21,18 +28,20 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000, // กำหนด port ที่ชัดเจน ถ้าต้องการ (default 5173)
-    open: true, // เปิด browser อัตโนมัติเมื่อรัน dev server
+    port: 3000,
+    open: true,
     proxy: {
       "/api": {
         target: "http://localhost:4000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
-        // เพิ่ม secure: false ถ้าระบบ backend ใช้ https self-signed
+        // secure: false // เพิ่มถ้า backend ใช้ self-signed HTTPS
       },
     },
   },
   build: {
-    sourcemap: true, // เปิด sourcemap สำหรับ debug ใน production ถ้าต้องการ
+    sourcemap: true,
+    outDir: "dist", // สามารถระบุชื่อโฟลเดอร์ build ได้เอง
+    assetsDir: "assets", // ไดเรกทอรีเก็บ asset
   },
 });

@@ -13,7 +13,10 @@ export const getSavedTheme = (): ThemeName => {
   if (typeof window === 'undefined') return DEFAULT_THEME;
 
   const stored = localStorage.getItem('theme');
-  return THEMES.includes(stored as ThemeName) ? (stored as ThemeName) : DEFAULT_THEME;
+  if (stored && THEMES.includes(stored as ThemeName)) {
+    return stored as ThemeName;
+  }
+  return DEFAULT_THEME;
 };
 
 /**
@@ -59,4 +62,32 @@ export const toggleTheme = (): ThemeName => {
 export const initTheme = (): void => {
   const theme = getSavedTheme();
   applyTheme(theme);
+};
+
+// ───────────
+// ฟังก์ชัน subscribe สำหรับ sync ธีมข้ามแท็บผ่าน event 'storage'
+
+type ThemeChangeCallback = (newTheme: ThemeName) => void;
+
+/**
+ * subscribe การเปลี่ยนแปลงธีมผ่าน event 'storage' (ข้ามแท็บ)
+ * คืนฟังก์ชัน unsubscribe เมื่อเรียกใช้
+ */
+export const subscribeThemeChange = (callback: ThemeChangeCallback): (() => void) => {
+  if (typeof window === 'undefined') {
+    // SSR หรือ environment ไม่มี window ให้ return noop function
+    return () => {};
+  }
+
+  const handler = (e: StorageEvent) => {
+    if (e.key === 'theme' && e.newValue && THEMES.includes(e.newValue as ThemeName)) {
+      callback(e.newValue as ThemeName);
+    }
+  };
+
+  window.addEventListener('storage', handler);
+
+  return () => {
+    window.removeEventListener('storage', handler);
+  };
 };

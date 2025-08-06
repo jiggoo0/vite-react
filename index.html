@@ -4,54 +4,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- SEO and Meta Data -->
+    <!-- ✅ SEO -->
     <meta name="description" content="JP Visual & Docs — พอร์ตโฟลิโอและระบบจัดการเอกสารภาครัฐ" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="JP System" />
     <meta name="keywords" content="JP, Visual, Docs, พอร์ตโฟลิโอ, เอกสารภาครัฐ, ระบบจัดการ" />
 
-    <!-- Theme color for address bar -->
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <!-- ✅ Theme color for light/dark mode -->
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
 
-    <!-- Icons and Manifest -->
+    <!-- ✅ Favicon & Web App Support -->
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preconnect for Google Fonts -->
+    <!-- ✅ Fonts Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Sans+Thai&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Title -->
+    <!-- ✅ Social Sharing / Open Graph -->
+    <meta property="og:title" content="JP Visual & Docs" />
+    <meta property="og:description" content="ระบบจัดการเอกสารภาครัฐและพอร์ตโฟลิโอของ JP System" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://your-domain.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- ✅ Title -->
     <title>JP Visual & Docs</title>
 
-    <!-- Preload Theme Script -->
+    <!-- ✅ Preload theme on first paint -->
     <script>
       try {
         const saved = localStorage.getItem("theme");
-        if (saved && ["light", "dark", "business"].includes(saved)) {
-          document.documentElement.setAttribute("data-theme", saved);
-        } else {
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-        }
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = saved || (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
       } catch (_) {
-        // Fail silently if any error occurs
+        // Fail silently
       }
     </script>
   </head>
 
-  <body class="bg-base-100 text-base-content">
+  <body class="bg-base-100 text-base-content antialiased">
     <div id="root"></div>
 
-    <!-- Main React Entry -->
+    <!-- ✅ React App Entry -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -6,14 +6,14 @@ import { ArrowUp } from "lucide-react";
 /**
  * ⬆️ BackToTop
  *
- * - ปุ่มย้อนกลับด้านบนของหน้า
- * - แสดงเมื่อ scroll ลงมามากกว่า 300px
- * - รองรับ animation, accessibility, และ responsive
+ * - ปุ่มย้อนกลับด้านบน
+ * - แสดงเมื่อ scroll เกิน 300px
+ * - มี animation, a11y, และ responsive
  */
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // ✅ ตรวจจับ scroll position
+  // 🎯 ตรวจจับ scroll แล้วตั้งค่า visibility
   useEffect(() => {
     const handleScroll = () => {
       setIsVisible(window.scrollY > 300);
@@ -23,19 +23,21 @@ const BackToTop = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // 🔝 Scroll กลับไปด้านบนแบบ smooth
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // ❌ ไม่แสดงถ้ายังไม่ scroll
   if (!isVisible) return null;
 
   return (
     <button
       onClick={scrollToTop}
       aria-label="กลับไปด้านบน"
-      className="fixed bottom-6 right-6 z-[9998] rounded-full bg-primary p-3 text-white shadow-lg transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50"
+      className="fixed bottom-6 right-6 z-[9998] flex items-center justify-center rounded-full bg-primary p-3 text-white shadow-lg transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50"
     >
-      <ArrowUp className="h-5 w-5" />
+      <ArrowUp className="w-5 h-5" aria-hidden="true" />
     </button>
   );
 };

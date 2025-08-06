@@ -1,5 +1,3 @@
-// ✅ src/components/common/LogoutButton.tsx — ปุ่ม Logout คุณภาพ Production พร้อม UI + Icon
-
 "use client";
 
 import { useNavigate } from "react-router-dom";
@@ -18,9 +16,14 @@ const LogoutButton = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true }); // ✅ กลับไปยังหน้าล็อกอิน
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login", { replace: true }); // ✅ กลับไปยังหน้าล็อกอิน
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // อาจแสดงข้อความแจ้งเตือนผู้ใช้ในภายหลัง
+    }
   };
 
   return (

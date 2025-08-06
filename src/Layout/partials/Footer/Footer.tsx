@@ -1,6 +1,14 @@
-import { FC } from "react";
-import { FaLine, FaInstagram, FaEnvelope, FaFacebookMessenger } from "react-icons/fa";
+// ✅ src/Layout/partials/Footer/Footer.tsx
 
+import { FC } from "react";
+import {
+  FaLine,
+  FaInstagram,
+  FaEnvelope,
+  FaFacebookMessenger,
+} from "react-icons/fa";
+
+// รายการลิงก์ช่องทางติดต่อ
 const socialLinks = [
   {
     href: "https://lin.ee/gVptUhR",
@@ -34,7 +42,7 @@ const Footer: FC = () => {
   return (
     <footer className="bg-base-200 border-t border-base-content/10 dark:border-base-content/20 py-10">
       <div className="max-w-7xl mx-auto px-4 text-center space-y-6">
-        {/* ช่องทางติดต่อ */}
+        {/* 🔗 ช่องทางติดต่อ */}
         <nav
           aria-label="ช่องทางติดต่อ"
           className="flex flex-wrap justify-center gap-6 text-sm text-neutral-600 dark:text-neutral-400"
@@ -54,7 +62,7 @@ const Footer: FC = () => {
           ))}
         </nav>
 
-        {/* ลิขสิทธิ์ */}
+        {/* 📝 ลิขสิทธิ์ */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none">
           &copy; {currentYear} JP Visual & Docs — Powered by Applicationlab. All rights reserved.
         </p>

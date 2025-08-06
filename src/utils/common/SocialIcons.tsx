@@ -1,50 +1,50 @@
 // ✅ src/utils/common/SocialIcons.tsx — Compact Social Icon Links
 
 import { FC } from "react";
-import { Facebook, Instagram, Youtube, Globe, MessageSquare } from "lucide-react";
+import {
+  FaLine,
+  FaInstagram,
+  FaEnvelope,
+  FaFacebookMessenger,
+} from "react-icons/fa";
 
 /**
  * 🌐 SocialIcons
  *
- * - แสดงชุดลิงก์ไอคอนโซเชียล
- * - ใช้ Lucide icon + Tailwind + A11y
- * - สามารถฝังใน Footer / Hero / Contact ได้
+ * - แสดงไอคอนโซเชียลพร้อมลิงก์
+ * - ใช้ react-icons + Tailwind + A11y
+ * - ฝังได้ใน Footer / Hero / Contact
  */
-const SocialIcons: FC = () => {
-  const links = [
-    {
-      href: "https://facebook.com/jpvisual",
-      label: "Facebook",
-      icon: Facebook,
-    },
-    {
-      href: "https://instagram.com/jpvisual",
-      label: "Instagram",
-      icon: Instagram,
-    },
-    {
-      href: "https://youtube.com/@jpvisual",
-      label: "YouTube",
-      icon: Youtube,
-    },
-    {
-      href: "https://jpvisual.com",
-      label: "เว็บไซต์หลัก",
-      icon: Globe,
-    },
-    {
-      href: "https://lin.ee/PAWDPO0",
-      label: "Line Official",
-      icon: MessageSquare,
-    },
-  ];
+const socialLinks = [
+  {
+    href: "https://lin.ee/gVptUhR",
+    label: "LINE",
+    icon: FaLine,
+  },
+  {
+    href: "https://www.instagram.com/jpsystem.official",
+    label: "Instagram",
+    icon: FaInstagram,
+  },
+  {
+    href: "mailto:contact@jpsystem.dev",
+    label: "Email",
+    icon: FaEnvelope,
+  },
+  {
+    href: "https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share",
+    label: "Messenger",
+    icon: FaFacebookMessenger,
+  },
+];
 
+const SocialIcons: FC = () => {
   return (
     <nav
       className="flex items-center gap-4"
       aria-label="ลิงก์โซเชียลมีเดียของ JP Visual"
     >
-      {links.map(({ href, label, icon: Icon }) => (
+      {socialLinks.map(({ href, label, icon: Icon }) => (
         <a
           key={label}
           href={href}
