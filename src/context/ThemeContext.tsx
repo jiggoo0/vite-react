@@ -1,59 +1,47 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from 'react';
+// src/context/ThemeContext.tsx
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-import type { ThemeName } from '@/data/theme';
-import {
-  getSavedTheme,
-  toggleTheme as toggleThemeUtil,
-  subscribeThemeChange,
-  applyTheme,
-} from '@/data/theme';
+type Theme = "light" | "dark" | "business";
 
-// กำหนดชนิดของ Context
 interface ThemeContextType {
-  theme: ThemeName;
-  toggleTheme: () => void;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
 }
 
-// สร้าง Context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// สร้าง Provider
-export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeName>(() => getSavedTheme());
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    applyTheme(theme);
-
-    const unsubscribe = subscribeThemeChange((newTheme: ThemeName) => {
-      setTheme(newTheme);
-    });
-
-    return () => unsubscribe();
+    // โหลดธีมจาก localStorage หรือ ตาม prefers-color-scheme
+    const saved = localStorage.getItem("theme") as Theme | null;
+    if (saved && ["light", "dark", "business"].includes(saved)) {
+      setTheme(saved);
+      document.documentElement.setAttribute("data-theme", saved);
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const defaultTheme: Theme = prefersDark ? "dark" : "light";
+      setTheme(defaultTheme);
+      document.documentElement.setAttribute("data-theme", defaultTheme);
+    }
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = toggleThemeUtil();
-    setTheme(newTheme);
-  };
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-// Hook สำหรับใช้งาน Theme Context
-export const useTheme = (): ThemeContextType => {
+// Hook เพื่อใช้งาน context ใน component
+export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
+  if (!context) throw new Error("useTheme must be used within a ThemeProvider");
   return context;
 };
