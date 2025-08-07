@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  /* ---------------------------------------------
+  /* ------------------------------
    Font & Smoothing
-  ---------------------------------------------- */
+  ------------------------------- */
   html {
     scroll-behavior: smooth;
+    font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
     font-family:
       theme("fontFamily.body"),
       -apple-system,
@@ -22,44 +23,64 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* ---------------------------------------------
-   Background & Text Color
-  ---------------------------------------------- */
+  /* Background slide animation for BlurContact */
+  @keyframes slideBackground {
+    0% {
+      transform: translateX(0) scale(0.55);
+    }
+    50% {
+      transform: translateX(10%) scale(0.6);
+    }
+    100% {
+      transform: translateX(0) scale(0.55);
+    }
+  }
+
+  .animate-slide {
+    animation: slideBackground 20s ease-in-out infinite;
+  }
+
+  /* ------------------------------
+   Body Style
+  ------------------------------- */
   body {
     @apply bg-base-100 text-base-content;
     line-height: 1.6;
-    min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    min-height: 100dvh; /* for mobile viewport */
   }
 
-  /* ---------------------------------------------
-   Auto dark mode based on user preference & data-theme attr
-  ---------------------------------------------- */
+  /* ------------------------------
+   Auto Dark Mode if no data-theme
+  ------------------------------- */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
       color-scheme: dark;
     }
   }
 
-  /* ---------------------------------------------
-   Text selection styling
-  ---------------------------------------------- */
+  /* ------------------------------
+   Text Selection Styling
+  ------------------------------- */
   ::selection {
     background-color: theme("colors.primary");
     color: theme("colors.white", "#fff");
   }
 
-  /* ---------------------------------------------
-   Box sizing reset for consistency
-  ---------------------------------------------- */
+  /* ------------------------------
+   Box Sizing Reset
+  ------------------------------- */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: theme("colors.primary") transparent;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* ---------------------------------------------
-   Scrollbar styles - WebKit browsers (Chrome, Safari)
-  ---------------------------------------------- */
+  /* ------------------------------
+   WebKit Scrollbar
+  ------------------------------- */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -70,51 +91,36 @@
     border-radius: 4px;
     transition: background-color 0.3s ease;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background-color: theme("colors.primary", "#2563eb"); /* fallback */
+    background-color: theme("colors.primary", "#2563eb");
   }
 
   ::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  /* ---------------------------------------------
-   Scrollbar styles - Firefox
-  ---------------------------------------------- */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: theme("colors.primary") transparent;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  /* ---------------------------------------------
-   Anchor scroll offset (to avoid fixed header overlapping)
-  ---------------------------------------------- */
+  /* ------------------------------
+   Anchor Scroll Offset
+  ------------------------------- */
   :target {
     scroll-margin-top: 6rem;
   }
 
-  /* ---------------------------------------------
-   UI transitions for interactive elements
-  ---------------------------------------------- */
+  /* ------------------------------
+   Interactive UI Elements
+  ------------------------------- */
   button,
   a {
     transition-property: background-color, color, transform;
-    transition-duration: 0.3s, 0.3s, 0.2s;
-    transition-timing-function: ease, ease, ease;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
     will-change: transform, color, background-color;
   }
 
-  /* ---------------------------------------------
-   Responsive font size using clamp (fluid typography)
-  ---------------------------------------------- */
-  html {
-    font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
-  }
-
-  /* ---------------------------------------------
-   Optional: reduce motion for accessibility
-  ---------------------------------------------- */
+  /* ------------------------------
+   Accessibility: Reduce Motion
+  ------------------------------- */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

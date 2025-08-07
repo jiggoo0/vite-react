@@ -13,49 +13,34 @@ import ErrorBoundary from "@/utils/common/ErrorBoundary";
 import GuardRoutes from "@/Router/GuardRoutes";
 import RoleGuard from "@/Router/RoleGuard";
 
-// Pages (Lazy Loaded)
+// Lazy-loaded pages
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(
-  () => import("@/Home/CustomerAssessmentForm")
-);
+const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
 /**
- * AppRouter - จัดการ Routing ของโปรเจกต์
- *
- * Public Routes:
- *  - Home (index)
- *  - Login
- *  - Customer Assessment Form
- *
- * Protected Routes (ต้อง login):
- *  - SecretPage
- *
- * Admin-only Routes (role = admin):
- *  - Admin Dashboard (index)
- *
- * 403 Forbidden Page
+ * AppRouter: จัดการ routing หลักของโปรเจกต์
  */
 const AppRouter: FC = () => (
   <>
     {/* Scroll to top on route change */}
     <ScrollToTop />
 
-    {/* Global error boundary */}
+    {/* Error boundary ครอบทุก route */}
     <ErrorBoundary>
-      {/* Suspense สำหรับโหลด Lazy Components */}
+      {/* Suspense สำหรับ fallback ขณะโหลด Lazy components */}
       <Suspense fallback={<FallbackLoader />}>
         <Routes>
-          {/* Public Routes */}
+          {/* Public routes - ไม่มีการตรวจสอบ */}
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="form" element={<CustomerAssessmentForm />} />
           </Route>
 
-          {/* Protected Routes (Login Required) */}
+          {/* Protected routes - ตรวจสอบ login */}
           <Route
             element={
               <GuardRoutes>
@@ -66,7 +51,7 @@ const AppRouter: FC = () => (
             <Route path="secret" element={<SecretPage />} />
           </Route>
 
-          {/* Admin Routes (Role Guard) */}
+          {/* Admin-only routes - ตรวจสอบ role */}
           <Route
             path="admin"
             element={

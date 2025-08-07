@@ -7,6 +7,7 @@ import KbankNotificationCard from "./KbankNotificationCard";
 
 const LOAD_DELAY_MS = 700;
 
+// Loader ขณะรอข้อมูล
 const SkeletonLoader: FC = () => (
   <section
     className="space-y-4 max-w-md mx-auto animate-pulse"
@@ -37,6 +38,7 @@ const SkeletonLoader: FC = () => (
   </section>
 );
 
+// กรณีไม่มีข้อมูลแจ้งเตือน
 const EmptyState: FC = () => (
   <section
     className="min-h-[120px] flex items-center justify-center bg-base-100 rounded-3xl shadow-md p-6 border border-gray-200"
@@ -47,11 +49,13 @@ const EmptyState: FC = () => (
   </section>
 );
 
+// Component หลักแสดงรายการแจ้งเตือน
 const KbankIOSNotification: FC = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // จำลองการโหลดข้อมูลด้วย delay
     const timer = setTimeout(() => {
       setNotifications(kbankMockData);
       setLoading(false);

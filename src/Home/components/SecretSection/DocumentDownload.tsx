@@ -7,11 +7,13 @@ const DocumentDownload: FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (docCode.trim() === "") {
       setError("กรุณากรอกรหัสเอกสาร");
       setSuccess(false);
       return;
     }
+
     // สมมติว่าต้องติดต่อ ADMIN เพื่อขอรหัสที่ถูกต้อง
     setError("");
     setSuccess(true);
@@ -48,12 +50,21 @@ const DocumentDownload: FC = () => {
       </form>
 
       {error && (
-        <p className="text-error text-center mt-4 font-semibold" role="alert">
+        <p
+          className="text-error text-center mt-4 font-semibold"
+          role="alert"
+          aria-live="assertive"
+        >
           {error}
         </p>
       )}
+
       {success && (
-        <p className="text-success text-center mt-4 font-semibold" role="alert">
+        <p
+          className="text-success text-center mt-4 font-semibold"
+          role="alert"
+          aria-live="assertive"
+        >
           รหัสเอกสารถูกต้อง สามารถดาวน์โหลดเอกสารได้ที่ ADMIN
         </p>
       )}

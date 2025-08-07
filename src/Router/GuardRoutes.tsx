@@ -47,7 +47,10 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
 
     if (!user) {
       setIsAuthenticated(false);
-      navigate("/login", { replace: true });
+      // ใช้ setTimeout เล็กน้อยเพื่อป้องกัน React strict mode double effect ปัญหาการ redirect ซ้ำ
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 0);
       return;
     }
 
@@ -55,15 +58,20 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
   }, [navigate]);
 
   if (isAuthenticated === null) {
+    // โหลด spinner รอเช็คสถานะ
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <span className="loading loading-spinner loading-lg text-primary" />
       </div>
     );
   }
 
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated) {
+    // ยังไม่ redirect แต่ไม่แสดงอะไร
+    return null;
+  }
 
+  // ถ้า authenticated แล้ว ให้แสดง children (หน้าที่ protected)
   return <>{children}</>;
 };
 

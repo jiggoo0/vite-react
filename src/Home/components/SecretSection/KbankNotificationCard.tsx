@@ -7,8 +7,8 @@ interface Props {
 }
 
 const formatCurrency = (value: string | number | undefined) => {
-  if (value === undefined || value === null || isNaN(Number(value)))
-    return null;
+  if (value === undefined || value === null || isNaN(Number(value))) return null;
+
   return Number(value).toLocaleString("th-TH", {
     style: "currency",
     currency: "THB",
@@ -56,17 +56,11 @@ const AdditionalInfo: FC<{
   time: string;
   qrCodeUrl?: string;
 }> = ({ balanceAfter, channel, transactionId, time, qrCodeUrl }) => {
-  const formattedBalance = useMemo(
-    () => formatCurrency(balanceAfter),
-    [balanceAfter]
-  );
+  const formattedBalance = useMemo(() => formatCurrency(balanceAfter), [balanceAfter]);
   const formattedTime = useMemo(() => formatTime(time), [time]);
 
   return (
-    <div
-      className="mt-4 text-sm text-gray-600 select-text"
-      aria-label="ข้อมูลเพิ่มเติม"
-    >
+    <div className="mt-4 text-sm text-gray-600 select-text" aria-label="ข้อมูลเพิ่มเติม">
       <div className="grid grid-cols-[1fr_auto] gap-x-6 gap-y-2 items-start">
         <div className="space-y-1">
           <div>

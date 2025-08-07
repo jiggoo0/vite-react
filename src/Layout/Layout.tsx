@@ -28,7 +28,7 @@ const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
         tabIndex={-1}
         className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"
       >
-        {/* children ถ้าไม่มี ใช้ Outlet */}
+        {/* Render children if provided, otherwise use React Router Outlet */}
         {children ?? <Outlet />}
       </main>
 

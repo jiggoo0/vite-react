@@ -33,24 +33,18 @@ export interface KbankIOSNotification {
  * @returns string Payload พร้อม CRC16 checksum สำหรับ QR code
  */
 export function generatePromptPayQR(payee: string, amount: string): string {
-  // ตรวจสอบเบอร์โทร (0 นำหน้า 10 หลัก)
+  // ตรวจสอบว่าเป็นเบอร์โทร 0 นำหน้า 10 หลักหรือไม่
   const isPhone = /^0\d{9}$/.test(payee);
+
   // แปลงเบอร์โทรเป็นรูปแบบ 66xxxxxxxxx (ตัด 0 ตัวหน้า เปลี่ยนเป็น 66)
   const payeeValue = isPhone ? `0066${payee.slice(1)}` : payee;
 
-  // สร้างฟิลด์ ID สำหรับเบอร์โทรหรือบัญชี
-  // 01 = เบอร์โทร 13 หลัก, 02 = บัญชี 13 หลัก ตามสเปค
+  // สร้างฟิลด์ ID สำหรับเบอร์โทรหรือบัญชี (ตามสเปค PromptPay)
   const idField = isPhone
     ? `0113${payeeValue}` // เบอร์โทร (ID 01, length 13)
     : `0213${payeeValue}`; // บัญชี (ID 02, length 13)
 
   // สร้าง Payload เบื้องต้น (ตาม EMV QR)
-  // 00 = Payload Format Indicator
-  // 01 = Point of Initiation Method
-  // 29 = Merchant Account Information (อันนี้จะมีข้อมูล PromptPay)
-  // 53 = Transaction Currency (764 = THB)
-  // 54 = Transaction Amount (optional, จำนวนเงิน)
-  // 63 = CRC (ยังไม่ใส่ค่า)
   const payload =
     "000201" + // Payload Format Indicator
     "010211" + // Point of Initiation Method (static QR)
@@ -61,10 +55,9 @@ export function generatePromptPayQR(payee: string, amount: string): string {
     `54${amount.length}${amount}` + // จำนวนเงิน พร้อมความยาว (length ของ amount)
     "6304"; // CRC Placeholder (4 ตัว)
 
-  // คำนวณ CRC16 checksum
+  // คำนวณ CRC16 checksum และเติมท้าย Payload
   const crc = computeCRC16(payload);
 
-  // ส่ง payload + crc
   return payload + crc;
 }
 

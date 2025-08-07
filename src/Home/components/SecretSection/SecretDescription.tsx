@@ -1,5 +1,3 @@
-// src/Home/components/SecretSection/SecretDescription.tsx
-
 import { FC } from "react";
 
 type User = {
@@ -13,8 +11,8 @@ interface SecretDescriptionProps {
 
 const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
   return (
-    <section className="mb-6">
-      <h2 className="text-xl font-semibold mb-2">
+    <section aria-labelledby="secret-description-title" className="mb-6">
+      <h2 id="secret-description-title" className="text-xl font-semibold mb-2">
         🎯 พื้นที่รับงานเฉพาะสมาชิก
       </h2>
       <p className="mb-2">

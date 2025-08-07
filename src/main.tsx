@@ -3,17 +3,24 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import AppRouter from "@/Router/AppRouter";
-import { ThemeProvider } from "@/context/ThemeContext"; //  (Context + Provider)
+import { ThemeProvider } from "@/context/ThemeContext";
+
+// CSS base
 import "@/styles/global.css";
+import "@/styles/fonts.css";
 
-const rootElement = document.getElementById("root");
-
+// ตรวจสอบ root element (ปลอดภัย + ล็อก error message)
+const rootElement = document.getElementById("root") as HTMLElement | null;
 if (!rootElement) {
-  throw new Error("Root element not found");
+  console.error("❌ ไม่พบ root element ใน DOM (#root)");
+  throw new Error("ไม่สามารถ mount React app ได้");
 }
 
-//  root  StrictMode  BrowserRouter  ThemeProvider
-ReactDOM.createRoot(rootElement).render(
+// สร้าง root
+const root = ReactDOM.createRoot(rootElement);
+
+// Render
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
@@ -22,5 +29,3 @@ ReactDOM.createRoot(rootElement).render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-export {};

@@ -32,7 +32,7 @@ const Login: React.FC = () => {
             "user",
             JSON.stringify({ username: user.username, role: user.role })
           );
-          navigate("/secret");
+          navigate("/secret", { replace: true });
           return;
         } else {
           setError("รหัสผ่านไม่ถูกต้อง");
@@ -40,6 +40,7 @@ const Login: React.FC = () => {
         }
       }
 
+      // ถ้าไม่พบ user ใน users, ตรวจสอบ temp code login
       const tempLoginSuccess = await loginWithTempCode(
         trimmedUsername,
         password
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
           "user",
           JSON.stringify({ username: trimmedUsername, role: "temp" })
         );
-        navigate("/secret");
+        navigate("/secret", { replace: true });
         return;
       }
 
@@ -90,6 +91,7 @@ const Login: React.FC = () => {
             disabled={loading}
             autoComplete="username"
             aria-label="ชื่อผู้ใช้"
+            spellCheck={false}
           />
           <input
             type="password"

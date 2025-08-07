@@ -1,5 +1,4 @@
 // src/hooks/useAuth.ts
-
 import { useState, useEffect } from "react";
 
 export type User = {

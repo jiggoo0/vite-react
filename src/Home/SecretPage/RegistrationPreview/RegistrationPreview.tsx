@@ -2,7 +2,7 @@ import { FC, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-type RegistrationAddress = {
+type Address = {
   houseNumber?: string;
   villageNo?: string;
   alley?: string;
@@ -15,163 +15,143 @@ type RegistrationPreviewProps = {
   businessName?: string;
   ownerName?: string;
   registrationNumber?: string;
-  address?: RegistrationAddress;
+  address?: Address;
   issuedDate?: string;
   registrarPosition?: string;
   registrarName?: string;
 };
 
-// ฟังก์ชันเติมค่า default
-function fillDefaultRegistrationData(
-  data: RegistrationPreviewProps = {}
-): Required<RegistrationPreviewProps> {
-  return {
-    businessName: data.businessName || "—",
-    ownerName: data.ownerName || "—",
-    registrationNumber: data.registrationNumber || "—",
-    address: {
-      houseNumber: data.address?.houseNumber || "—",
-      villageNo: data.address?.villageNo || "—",
-      alley: data.address?.alley || "—",
-      subDistrict: data.address?.subDistrict || "—",
-      district: data.address?.district || "—",
-      province: data.address?.province || "—",
-    },
-    issuedDate: data.issuedDate || "—",
-    registrarPosition: data.registrarPosition || "—",
-    registrarName: data.registrarName || "—",
-  };
-}
+const defaultText = "—";
+const withFallback = (value?: string) => value?.trim() || defaultText;
 
-function createFallbackDots(length: number): string {
-  return ".".repeat(length);
-}
-
-const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
-  const data = fillDefaultRegistrationData(props);
-
-  const {
-    businessName,
-    ownerName,
-    registrationNumber,
-    address,
-    issuedDate,
-    registrarPosition,
-    registrarName,
-  } = data;
-
-  const { houseNumber, villageNo, alley, subDistrict, district, province } =
-    address;
-
-  const printRef = useRef<HTMLDivElement>(null);
+const RegistrationPreview: FC<RegistrationPreviewProps> = ({
+  businessName,
+  ownerName,
+  registrationNumber,
+  address = {},
+  issuedDate,
+  registrarPosition,
+  registrarName,
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
 
   const handleDownloadPdf = async () => {
-    if (!printRef.current) return;
+    if (!ref.current) return;
 
-    const element = printRef.current;
-    const canvas = await html2canvas(element, {
+    const canvas = await html2canvas(ref.current, {
       scale: 2,
       useCORS: true,
       logging: false,
+      backgroundColor: "#fff",
     });
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdfWidth = (canvas.width * 72) / 96;
-    const pdfHeight = (canvas.height * 72) / 96;
 
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
-      format: [pdfWidth, pdfHeight],
+      format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96],
     });
 
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.addImage(
+      canvas.toDataURL("image/png"),
+      "PNG",
+      0,
+      0,
+      (canvas.width * 72) / 96,
+      (canvas.height * 72) / 96
+    );
     pdf.save("registration-preview.pdf");
   };
-
-  const fallbackDots = (length: number) => (
-    <span className="text-gray-400 select-none">
-      {createFallbackDots(length)}
-    </span>
-  );
 
   return (
     <>
       <section
-        ref={printRef}
-        className="bg-white border border-gray-300 rounded-md shadow-md p-12 w-full max-w-[800px] mx-auto relative"
+        ref={ref}
+        className="bg-white font-sans border border-gray-400 rounded-md shadow p-12 w-full max-w-[800px] mx-auto relative"
         style={{
-          fontFamily: '"THSarabunNew", serif',
-          lineHeight: 2,
+          fontFamily: '"THSarabunNew", sans-serif',
+          lineHeight: 1.8,
+          fontSize: "18pt",
+          backgroundColor: "#fff",
           minHeight: 1200,
         }}
       >
-        <div className="absolute top-6 left-10 text-sm leading-5">
-          <p>ทะเบียนเลขที่ {registrationNumber}</p>
-          <p>คำขอที่ {fallbackDots(20)}</p>
+        {/* เลขทะเบียน + คำขอ */}
+        <div className="absolute top-8 left-12 text-[14pt] leading-snug">
+          <p className="mb-2">ทะเบียนเลขที่ {withFallback(registrationNumber)}</p>
+          <p>
+            คำขอที่{" "}
+            <span className="inline-block border-b border-gray-300 min-w-[160px] h-[1.7em] align-bottom"></span>
+          </p>
         </div>
 
-        <div className="absolute top-6 right-10 text-sm leading-5 text-right">
+        {/* แบบฟอร์ม */}
+        <div className="absolute top-8 right-12 text-[14pt] leading-snug text-right">
           <p>แบบ พค. 0403</p>
         </div>
 
-        <div className="flex justify-center mt-16">
+        {/* ตราครุฑ */}
+        <div className="flex justify-center mt-24 mb-6">
           <img
             src="/fonts/krut.webp"
             alt="ตราครุฑ"
-            className="w-24 h-24 object-contain"
+            className="w-[100px] h-[100px] object-contain"
             crossOrigin="anonymous"
             draggable={false}
           />
         </div>
 
-        <div className="text-center mt-6 mb-10">
-          <p className="text-xl font-bold leading-relaxed">
+        {/* ส่วนหัว */}
+        <div className="text-center leading-relaxed mb-6">
+          <p className="text-[22pt] font-bold leading-none">
             กรมพัฒนาธุรกิจการค้า <br />
             สำนักงานกลางทะเบียนพาณิชย์
           </p>
-          <p className="text-3xl font-bold mt-2">ใบทะเบียนพาณิชย์</p>
-          <p className="text-lg mt-4">ใบสำคัญนี้ออกให้เพื่อแสดงว่า</p>
+          <p className="text-[28pt] font-bold mt-2 underline underline-offset-4 decoration-[1.5px] leading-none">
+            ใบทะเบียนพาณิชย์
+          </p>
+          <p className="text-[20pt] mt-4">ใบสำคัญนี้ออกให้เพื่อแสดงว่า</p>
         </div>
 
-        <div className="text-center mt-12 text-lg space-y-6">
-          <p>{ownerName}</p>
-          <p>ได้จดทะเบียนพาณิชย์ ตามพระราชบัญญัติทะเบียนพาณิชย์ พ.ศ.2499</p>
-          <p className="mt-8">เมื่อวันที่ {issuedDate}</p>
+        {/* เนื้อหา */}
+        <div className="text-center mt-6 space-y-4">
+          <p className="text-[20pt]">{withFallback(ownerName)}</p>
+          <p>ได้จดทะเบียนพาณิชย์ ตามพระราชบัญญัติทะเบียนพาณิชย์ พ.ศ. 2499</p>
+          <p>เมื่อวันที่ {withFallback(issuedDate)}</p>
 
           <p className="mt-8">ชื่อที่ใช้ในการประกอบพาณิชยกิจ</p>
-          <p>{businessName}</p>
+          <p className="font-bold text-[20pt]">{withFallback(businessName)}</p>
 
           <p className="mt-6">เขียนเป็นอักษรโรมัน</p>
-          <p>{businessName?.toUpperCase() || "—"}</p>
+          <p>{withFallback(businessName?.toUpperCase())}</p>
 
           <p className="mt-6">ชนิดแห่งพาณิชยกิจ</p>
-          <div className="mx-auto max-w-[720px] space-y-2 tracking-wide text-center text-gray-500 select-none">
-            <p>{fallbackDots(100)}</p>
-            <p>{fallbackDots(100)}</p>
-            <p>{fallbackDots(100)}</p>
-            <p>{fallbackDots(100)}</p>
+          <div className="mx-auto max-w-[720px] text-gray-500 text-center select-none space-y-3 tracking-wide">
+            {[...Array(4)].map((_, i) => (
+              <p key={i}>
+                <span className="inline-block border-b border-gray-300 w-full h-[1.7em]"></span>
+              </p>
+            ))}
           </div>
 
-          <p className="mt-8 text-center max-w-[720px] mx-auto font-semibold">
-            ที่ตั้งสถานประกอบการ
-          </p>
-          <p className="text-left max-w-[720px] mx-auto">
-            เลขที่ {houseNumber} หมู่ที่ {villageNo} ตรอก/ซอย {alley} ตำบล/แขวง{" "}
-            {subDistrict} อำเภอ/เขต {district} จังหวัด {province}
+          <p className="mt-10 font-semibold">ที่ตั้งสถานประกอบการ</p>
+          <p className="text-left max-w-[720px] mx-auto indent-12 leading-relaxed">
+            เลขที่ {withFallback(address.houseNumber)} หมู่ที่{" "}
+            {withFallback(address.villageNo)} ตรอก/ซอย{" "}
+            {withFallback(address.alley)} ตำบล/แขวง{" "}
+            {withFallback(address.subDistrict)} อำเภอ/เขต{" "}
+            {withFallback(address.district)} จังหวัด{" "}
+            {withFallback(address.province)}
           </p>
         </div>
 
-        <div
-          className="mt-24 max-w-[720px] mx-auto text-lg text-right space-y-6 pr-10"
-          style={{ fontFamily: '"THSarabunNew", serif' }}
-        >
-          <p className="whitespace-nowrap">ออกให้ ณ วันที่ {issuedDate}</p>
-          <p className="whitespace-nowrap">ตำแหน่ง {registrarPosition}</p>
+        {/* ส่วนลายเซ็น */}
+        <div className="mt-32 max-w-[720px] mx-auto text-lg text-right space-y-6 pr-10 leading-relaxed">
+          <p>ออกให้ ณ วันที่ {withFallback(issuedDate)}</p>
+          <p>ตำแหน่ง {withFallback(registrarPosition)}</p>
 
-          <div className="mt-16">
-            <p className="text-xl font-bold underline decoration-dotted decoration-gray-400 inline-block min-w-[250px]">
-              {registrarName}
+          <div className="mt-20">
+            <p className="text-[20pt] font-bold underline decoration-dotted decoration-gray-400 inline-block min-w-[250px] text-center">
+              {withFallback(registrarName)}
             </p>
             <p className="mt-2">นายทะเบียนพาณิชย์</p>
           </div>
@@ -189,6 +169,24 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
       </div>
     </>
   );
+};
+
+// Data for testing
+export const mockRegistrationData: RegistrationPreviewProps = {
+  businessName: "บริษัท ทดสอบ จำกัด",
+  ownerName: "นายสมชาย ใจดี",
+  registrationNumber: "1234567890123",
+  address: {
+    houseNumber: "123/45",
+    villageNo: "7",
+    alley: "ซอยสุขุมวิท 50",
+    subDistrict: "บางจาก",
+    district: "พระโขนง",
+    province: "กรุงเทพมหานคร",
+  },
+  issuedDate: "1 มกราคม 2565",
+  registrarPosition: "เจ้าหน้าที่ทะเบียน",
+  registrarName: "นางสาวสุนิสา ศรีสุข",
 };
 
 export default RegistrationPreview;

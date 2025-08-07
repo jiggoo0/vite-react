@@ -10,7 +10,7 @@ interface User {
   role: "admin" | "user";
 }
 
-// ตรวจสอบว่า object มี property role และตรงกับ allowedRoles หรือไม่
+// ตรวจสอบว่า obj มี property role และตรงกับ allowedRoles หรือไม่
 const isUserWithAllowedRole = (
   obj: unknown,
   allowedRoles: Array<"admin" | "user">
@@ -32,8 +32,10 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
     const stored = localStorage.getItem("user");
 
     if (!stored) {
-      navigate("/login", { replace: true });
       setAuthorized(false);
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 0);
       return;
     }
 
@@ -43,21 +45,24 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
       if (isUserWithAllowedRole(parsed, allowedRoles)) {
         setAuthorized(true);
       } else {
-        // ข้อมูล role ไม่ถูกต้องหรือนอกขอบเขตสิทธิ์
+        // Role ไม่ตรง allowedRoles หรือข้อมูลไม่ถูกต้อง
         localStorage.removeItem("user");
         setAuthorized(false);
-        navigate("/403", { replace: true });
+        setTimeout(() => {
+          navigate("/403", { replace: true });
+        }, 0);
       }
     } catch {
-      // JSON parse error หรือข้อมูลเสียหาย
+      // parse error หรือข้อมูลเสียหาย
       localStorage.removeItem("user");
-      navigate("/login", { replace: true });
       setAuthorized(false);
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 0);
     }
   }, [allowedRoles, navigate]);
 
   if (authorized === null) {
-    // รอโหลดสถานะ auth
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-100">
         <span
