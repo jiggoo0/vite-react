@@ -1,3 +1,4 @@
+// src/Home/SecretPage.tsx
 import { FC } from "react";
 import SecretHeader from "@/Home/components/SecretSection/SecretHeader";
 import SecretDescription from "@/Home/components/SecretSection/SecretDescription";
@@ -10,7 +11,7 @@ import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotifica
 import { kbankMockData } from "@/Home/components/SecretSection/KbankIOSNotification.mock";
 import { mockRegistrationData } from "./SecretPage/mockRegistrationPreview";
 
-import { useProtectedAuth } from "@/hooks/useProtectedAuth"; // <-- import hook
+import { useProtectedAuth } from "@/hooks/useProtectedAuth";
 
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
@@ -24,9 +25,11 @@ const SecretPage: FC = () => {
   }
 
   if (!user) {
-    // กรณี hook ยังไม่ redirect (เผื่อ)
     return null;
   }
+
+  // สำหรับ role temp ให้มองเป็น user เพื่อแสดงข้อมูลบางส่วน
+  const effectiveRole = user.role === "temp" ? "user" : user.role;
 
   return (
     <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 md:p-8">
@@ -38,25 +41,25 @@ const SecretPage: FC = () => {
 
       <main className="flex-grow max-w-4xl mx-auto w-full mb-8 space-y-8">
         <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <SecretDescription user={user} />
+          <SecretDescription user={{ ...user, role: effectiveRole }} />
         </div>
 
         <div className="bg-base-100 rounded-xl shadow-md p-6">
           <DocumentDownload />
         </div>
 
-        {user.role === "admin" && (
-          <>
-            <div className="bg-base-100 rounded-xl shadow-md p-6">
-              <RegistrationPreview {...mockRegistrationData} />
-            </div>
+        {effectiveRole === "admin" && (
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
+            <RegistrationPreview {...mockRegistrationData} />
+          </div>
+        )}
 
-            <div className="bg-base-100 rounded-xl shadow-md p-6 space-y-4">
-              {kbankMockData.map((item) => (
-                <KbankNotificationCard key={item.id} data={item} />
-              ))}
-            </div>
-          </>
+        {(effectiveRole === "admin" || effectiveRole === "user") && (
+          <div className="bg-base-100 rounded-xl shadow-md p-6 space-y-4">
+            {kbankMockData.map((item) => (
+              <KbankNotificationCard key={item.id} data={item} />
+            ))}
+          </div>
         )}
 
         <div className="bg-base-100 rounded-xl shadow-md p-6">
@@ -69,7 +72,7 @@ const SecretPage: FC = () => {
 
       <footer className="max-w-4xl mx-auto w-full">
         <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <SecretActions role={user.role} />
+          <SecretActions role={effectiveRole} />
         </div>
       </footer>
     </section>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 export type User = {
   username: string;
-  role: "admin" | "user";
+  role: "admin" | "user" | "temp";
 };
 
 /**
@@ -30,7 +30,7 @@ export const useAuth = () => {
           typeof parsed === "object" &&
           parsed !== null &&
           typeof parsed.username === "string" &&
-          (parsed.role === "admin" || parsed.role === "user")
+          (parsed.role === "admin" || parsed.role === "user" || parsed.role === "temp")
         ) {
           setUser(parsed);
         } else {

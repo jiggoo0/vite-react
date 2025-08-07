@@ -1,7 +1,9 @@
+// src/Home/Login.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 import { users } from "@/data/users";
+import { useTempCodeAuth } from "@/hooks/useTempCodeAuth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -11,6 +13,12 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const {
+    login: loginWithTempCode,
+    isLoggedIn: isTempLoggedIn,
+    error: tempError,
+  } = useTempCodeAuth(username, password);
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,27 +27,40 @@ const Login: React.FC = () => {
 
     const trimmedUsername = username.trim();
 
+    // ตรวจสอบ user ปกติจาก users
     const user = users.find((u) => u.username === trimmedUsername);
-    if (!user) {
-      setError("ไม่พบผู้ใช้นี้ในระบบ");
+    if (user) {
+      const match = await bcrypt.compare(password, user.passwordHash);
+      if (match) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ username: user.username, role: user.role })
+        );
+        setLoading(false);
+        navigate("/secret");
+        return;
+      } else {
+        setError("รหัสผ่านไม่ถูกต้อง");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // ลอง login ด้วยรหัสชั่วคราว
+    await loginWithTempCode();
+
+    if (isTempLoggedIn) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ username: trimmedUsername, role: "temp" })
+      );
       setLoading(false);
+      navigate("/secret");
       return;
     }
 
-    const match = await bcrypt.compare(password, user.passwordHash);
-    if (!match) {
-      setError("รหัสผ่านไม่ถูกต้อง");
-      setLoading(false);
-      return;
-    }
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ username: user.username, role: user.role })
-    );
-
+    setError(tempError || "ไม่พบผู้ใช้นี้ในระบบ");
     setLoading(false);
-    navigate("/secret");
   };
 
   return (
@@ -48,11 +69,7 @@ const Login: React.FC = () => {
         <h1 className="text-2xl font-bold text-center text-primary">เข้าสู่ระบบ</h1>
 
         {error && (
-          <div
-            className="flex items-center gap-2 p-3 text-red-700 bg-red-100 rounded-md"
-            role="alert"
-            aria-live="assertive"
-          >
+          <div className="p-3 text-red-700 bg-red-100 rounded-md" role="alert">
             {error}
           </div>
         )}

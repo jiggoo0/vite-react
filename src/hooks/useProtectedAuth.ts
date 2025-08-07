@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export type User = {
   username: string;
-  role: "admin" | "user";
+  role: "admin" | "user" | "temp";
 };
 
 export const useProtectedAuth = () => {
@@ -26,7 +26,9 @@ export const useProtectedAuth = () => {
         parsedUser &&
         typeof parsedUser === "object" &&
         typeof parsedUser.username === "string" &&
-        (parsedUser.role === "admin" || parsedUser.role === "user")
+        (parsedUser.role === "admin" ||
+          parsedUser.role === "user" ||
+          parsedUser.role === "temp")
       ) {
         setUser(parsedUser);
       } else {
