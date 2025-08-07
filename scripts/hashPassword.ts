@@ -1,4 +1,5 @@
-// scripts/hashPassword.ts
+#!/usr/bin/env ts-node
+
 import bcrypt from "bcryptjs";
 
 const passwords: Record<string, string> = {

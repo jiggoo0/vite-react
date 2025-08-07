@@ -17,23 +17,25 @@ import RoleGuard from "@/Router/RoleGuard";
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
+const CustomerAssessmentForm = lazy(
+  () => import("@/Home/CustomerAssessmentForm")
+);
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
 /**
  * AppRouter - จัดการ Routing ของโปรเจกต์
- * 
+ *
  * Public Routes:
  *  - Home (index)
  *  - Login
  *  - Customer Assessment Form
- * 
+ *
  * Protected Routes (ต้อง login):
  *  - SecretPage
- * 
+ *
  * Admin-only Routes (role = admin):
  *  - Admin Dashboard (index)
- * 
+ *
  * 403 Forbidden Page
  */
 const AppRouter: FC = () => (

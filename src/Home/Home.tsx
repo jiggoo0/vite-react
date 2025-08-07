@@ -7,7 +7,9 @@ import { ServicesSection } from "@home/components/Services";
 import SectionContainer from "@common/SectionContainer";
 
 // Lazy load components ที่ไม่จำเป็นตอนแรก
-const PortfolioGallery = lazy(() => import("@home/components/Portfolio/PortfolioGallery"));
+const PortfolioGallery = lazy(
+  () => import("@home/components/Portfolio/PortfolioGallery")
+);
 const SupportFAQ = lazy(() => import("@home/components/Portfolio/SupportFAQ"));
 
 interface PageSectionProps {
@@ -59,7 +61,9 @@ const Home: FC = () => {
         <ServicesSection />
       </PageSection>
 
-      <Suspense fallback={<div className="text-center py-12">กำลังโหลด...</div>}>
+      <Suspense
+        fallback={<div className="text-center py-12">กำลังโหลด...</div>}
+      >
         <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
           <PortfolioGallery />
         </PageSection>

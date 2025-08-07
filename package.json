@@ -11,10 +11,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "clean": "rm -rf dist .backup node_modules .turbo .cache",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",

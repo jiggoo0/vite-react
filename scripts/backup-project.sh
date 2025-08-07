@@ -15,7 +15,7 @@ log() {
   echo "[$(date '+%H:%M:%S')] $*"
 }
 
-# Check Android Storage (Termux)
+# ตรวจสอบว่ามีสิทธิ์เข้าถึง Android Storage หรือยัง (สำหรับ Termux)
 if [[ ! -d "/storage/emulated/0" ]]; then
   log "❌ Storage access not found. Run: termux-setup-storage"
   exit 1
@@ -25,9 +25,11 @@ mkdir -p "$LOCAL_FOLDER" "$ANDROID_BACKUP_DIR"
 
 log "🧹 Cleaning old backups..."
 cd "$LOCAL_BACKUP_DIR" || { log "❌ Cannot cd to $LOCAL_BACKUP_DIR"; exit 1; }
+# เก็บแค่ 10 โฟลเดอร์ backup ล่าสุด แล้วลบที่เกิน
 ls -1dt backup_* 2>/dev/null | tail -n +11 | xargs -r rm -rf --
 
 log "📁 Copying files to $LOCAL_FOLDER ..."
+# กำหนดไฟล์และโฟลเดอร์ที่ไม่ต้องการแบ็คอัพ
 EXCLUDES=(
   "node_modules"
   ".git"
@@ -45,12 +47,15 @@ for item in "${EXCLUDES[@]}"; do
   RSYNC_EXCLUDES+=("--exclude=$item")
 done
 
+# คัดลอกไฟล์ไปที่ backup folder โดยไม่รวมไฟล์ที่ exclude
 rsync -a "${RSYNC_EXCLUDES[@]}" "$SRC_DIR/" "$LOCAL_FOLDER/"
 
 log "📦 Creating ZIP at $ZIP_FILE ..."
 cd "$LOCAL_BACKUP_DIR" || { log "❌ Cannot cd to $LOCAL_BACKUP_DIR"; exit 1; }
+# zip แบบเงียบ (quiet)
 zip -r -q "$ZIP_FILE" "$FOLDER_NAME"
 
+# ตรวจสอบว่าสร้างไฟล์ zip สำเร็จไหม
 if [[ -f "$ZIP_FILE" ]]; then
   log "✅ Backup completed."
   log "   📁 Folder: $LOCAL_FOLDER"

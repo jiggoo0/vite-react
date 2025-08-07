@@ -32,18 +32,18 @@ const SalaryCertificate = () => {
       {/* เนื้อหา */}
       <div className="whitespace-pre-line text-justify tracking-wide">
         บริษัทฯ ขอรับรองว่า <strong>นาย {data.employeeName}</strong>{" "}
-        เป็นพนักงานของบริษัทฯ โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {data.startDate} จนถึงปัจจุบัน ดำรงตำแหน่ง{" "}
-        {data.position} สังกัดแผนก {data.department}
-
+        เป็นพนักงานของบริษัทฯ โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {data.startDate}{" "}
+        จนถึงปัจจุบัน ดำรงตำแหน่ง {data.position} สังกัดแผนก {data.department}
         <br />
         <br />
         โดยมีรายได้ประจำดังนี้:
         <ul className="ml-8 list-disc">
           <li>เงินเดือนประจำ: {data.salary.toLocaleString()} บาท / เดือน</li>
-          <li>ค่าตำแหน่ง: {data.positionAllowance.toLocaleString()} บาท / เดือน</li>
+          <li>
+            ค่าตำแหน่ง: {data.positionAllowance.toLocaleString()} บาท / เดือน
+          </li>
           <li>ค่าครองชีพ: {data.costOfLiving.toLocaleString()} บาท / เดือน</li>
         </ul>
-
         <br />
         ออกให้ ณ วันที่ {data.issueDate}
         <br />
@@ -61,8 +61,13 @@ const SalaryCertificate = () => {
       <div className="mt-10 text-[14pt]">
         <p className="underline font-bold">หมายเหตุ</p>
         <ol className="list-decimal ml-6">
-          <li>หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น</li>
-          <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด จึงจะถือว่าสมบูรณ์</li>
+          <li>
+            หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น
+          </li>
+          <li>
+            หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด
+            จึงจะถือว่าสมบูรณ์
+          </li>
         </ol>
       </div>
 

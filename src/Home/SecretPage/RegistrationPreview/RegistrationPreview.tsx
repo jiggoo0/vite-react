@@ -60,7 +60,8 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
     registrarName,
   } = data;
 
-  const { houseNumber, villageNo, alley, subDistrict, district, province } = address;
+  const { houseNumber, villageNo, alley, subDistrict, district, province } =
+    address;
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +69,11 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
     if (!printRef.current) return;
 
     const element = printRef.current;
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    });
     const imgData = canvas.toDataURL("image/png");
 
     const pdfWidth = (canvas.width * 72) / 96;
@@ -85,7 +90,9 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
   };
 
   const fallbackDots = (length: number) => (
-    <span className="text-gray-400 select-none">{createFallbackDots(length)}</span>
+    <span className="text-gray-400 select-none">
+      {createFallbackDots(length)}
+    </span>
   );
 
   return (
@@ -93,7 +100,11 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
       <section
         ref={printRef}
         className="bg-white border border-gray-300 rounded-md shadow-md p-12 w-full max-w-[800px] mx-auto relative"
-        style={{ fontFamily: '"THSarabunNew", serif', lineHeight: 2, minHeight: 1200 }}
+        style={{
+          fontFamily: '"THSarabunNew", serif',
+          lineHeight: 2,
+          minHeight: 1200,
+        }}
       >
         <div className="absolute top-6 left-10 text-sm leading-5">
           <p>ทะเบียนเลขที่ {registrationNumber}</p>
@@ -146,7 +157,8 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = (props) => {
             ที่ตั้งสถานประกอบการ
           </p>
           <p className="text-left max-w-[720px] mx-auto">
-            เลขที่ {houseNumber} หมู่ที่ {villageNo} ตรอก/ซอย {alley} ตำบล/แขวง {subDistrict} อำเภอ/เขต {district} จังหวัด {province}
+            เลขที่ {houseNumber} หมู่ที่ {villageNo} ตรอก/ซอย {alley} ตำบล/แขวง{" "}
+            {subDistrict} อำเภอ/เขต {district} จังหวัด {province}
           </p>
         </div>
 

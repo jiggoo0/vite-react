@@ -13,8 +13,12 @@ import BlurContact from "./SecretPage/BlurContact";
 import { useProtectedAuth } from "@/hooks/useProtectedAuth";
 
 // Lazy Load Component ใหญ่
-const RegistrationPreview = lazy(() => import("./SecretPage/RegistrationPreview/RegistrationPreview"));
-const SalaryCertificate = lazy(() => import("./SecretPage/SalaryCertificate/SalaryCertificate"));
+const RegistrationPreview = lazy(
+  () => import("./SecretPage/RegistrationPreview/RegistrationPreview")
+);
+const SalaryCertificate = lazy(
+  () => import("./SecretPage/SalaryCertificate/SalaryCertificate")
+);
 import { mockRegistrationData } from "./SecretPage/RegistrationPreview/mockRegistrationPreview";
 
 // CardWrapper ช่วยลดโค้ดซ้ำ
@@ -60,7 +64,11 @@ const SecretPage: FC = () => {
           </CardWrapper>
 
           {isAdmin && (
-            <Suspense fallback={<span className="loading loading-spinner text-primary" />}>
+            <Suspense
+              fallback={
+                <span className="loading loading-spinner text-primary" />
+              }
+            >
               <CardWrapper>
                 <RegistrationPreview {...mockRegistrationData} />
               </CardWrapper>
@@ -68,7 +76,11 @@ const SecretPage: FC = () => {
           )}
 
           {isAdmin && (
-            <Suspense fallback={<span className="loading loading-spinner text-primary" />}>
+            <Suspense
+              fallback={
+                <span className="loading loading-spinner text-primary" />
+              }
+            >
               <CardWrapper>
                 <SalaryCertificate />
               </CardWrapper>
