@@ -1,23 +1,52 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tsconfigPaths(), // ช่วยให้ alias จาก tsconfig ทำงานได้
+  ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@assets": path.resolve(__dirname, "./src/assets"),
-      "@styles": path.resolve(__dirname, "./src/styles"),
-      "@data": path.resolve(__dirname, "./src/data"),
-      "@components": path.resolve(__dirname, "./src/components"),
-      "@common": path.resolve(__dirname, "./src/utils/common"),
-      "@utils": path.resolve(__dirname, "./src/utils"),
-      "@hooks": path.resolve(__dirname, "./src/hooks"),
-      "@layout": path.resolve(__dirname, "./src/Layout"),
-      "@router": path.resolve(__dirname, "./src/Router"),
-      "@home": path.resolve(__dirname, "./src/Home"),
-      "@api": path.resolve(__dirname, "./src/api"),
+      // กรณีอยากกำหนดเพิ่มจาก tsconfig หรือแก้ไขเฉพาะบางอัน
+      crypto: "crypto-browserify",
+      stream: "stream-browserify",
+      buffer: "buffer/",
+      process: "process/browser",
+      events: "events/",
+      vm: "vm-browserify",
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: "globalThis",
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          buffer: true,
+        }),
+      ],
+    },
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react")) return "react";
+            if (id.includes("framer-motion")) return "motion";
+            if (id.includes("dayjs")) return "dayjs";
+            if (id.match(/(html2canvas|jspdf|html2pdf)/)) return "pdf";
+            return "vendor";
+          }
+        },
+      },
     },
   },
 });

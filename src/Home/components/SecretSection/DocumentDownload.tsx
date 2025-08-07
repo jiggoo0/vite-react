@@ -5,7 +5,7 @@ const DocumentDownload: FC = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (docCode.trim() === "") {
       setError("กรุณากรอกรหัสเอกสาร");
@@ -23,7 +23,7 @@ const DocumentDownload: FC = () => {
         ส่งงาน ดาวน์โหลดเอกสาร & ไฟล์ต่าง ๆ เกี่ยวกับการจ้างงานสำคัญงานจากทางเรา
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <label htmlFor="doc-code" className="block font-medium text-gray-700">
           กรุณากรอกรหัสเอกสาร
         </label>
@@ -36,6 +36,7 @@ const DocumentDownload: FC = () => {
           className="input input-bordered w-full"
           aria-describedby="doc-code-note"
           required
+          autoComplete="off"
         />
         <button
           type="submit"
@@ -47,10 +48,12 @@ const DocumentDownload: FC = () => {
       </form>
 
       {error && (
-        <p className="text-error text-center mt-4 font-semibold">{error}</p>
+        <p className="text-error text-center mt-4 font-semibold" role="alert">
+          {error}
+        </p>
       )}
       {success && (
-        <p className="text-success text-center mt-4 font-semibold">
+        <p className="text-success text-center mt-4 font-semibold" role="alert">
           รหัสเอกสารถูกต้อง สามารถดาวน์โหลดเอกสารได้ที่ ADMIN
         </p>
       )}

@@ -1,5 +1,3 @@
-// src/Router/AppRouter.tsx
-
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -19,17 +17,24 @@ import RoleGuard from "@/Router/RoleGuard";
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(
-  () => import("@/Home/CustomerAssessmentForm")
-);
+const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
 /**
  * AppRouter - จัดการ Routing ของโปรเจกต์
- * - Public Routes: Home, Login, Form
- * - Protected Routes: SecretPage (เฉพาะผู้เข้าสู่ระบบ)
- * - Admin Routes: เฉพาะ role admin เท่านั้น
- * - 403 Forbidden Page
+ * 
+ * Public Routes:
+ *  - Home (index)
+ *  - Login
+ *  - Customer Assessment Form
+ * 
+ * Protected Routes (ต้อง login):
+ *  - SecretPage
+ * 
+ * Admin-only Routes (role = admin):
+ *  - Admin Dashboard (index)
+ * 
+ * 403 Forbidden Page
  */
 const AppRouter: FC = () => (
   <>
@@ -38,17 +43,17 @@ const AppRouter: FC = () => (
 
     {/* Global error boundary */}
     <ErrorBoundary>
-      {/* Suspense สำหรับ Lazy Loaded Components */}
+      {/* Suspense สำหรับโหลด Lazy Components */}
       <Suspense fallback={<FallbackLoader />}>
         <Routes>
-          {/* Public Routes: ใช้ Layout ร่วม */}
+          {/* Public Routes */}
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="form" element={<CustomerAssessmentForm />} />
           </Route>
 
-          {/* Protected Routes: ต้อง login */}
+          {/* Protected Routes (Login Required) */}
           <Route
             element={
               <GuardRoutes>
@@ -59,7 +64,7 @@ const AppRouter: FC = () => (
             <Route path="secret" element={<SecretPage />} />
           </Route>
 
-          {/* Admin-only Routes: ต้อง role = admin */}
+          {/* Admin Routes (Role Guard) */}
           <Route
             path="admin"
             element={
@@ -78,7 +83,7 @@ const AppRouter: FC = () => (
             />
           </Route>
 
-          {/* 403 Forbidden Page */}
+          {/* 403 Forbidden */}
           <Route path="403" element={<Forbidden />} />
         </Routes>
       </Suspense>

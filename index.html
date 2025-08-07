@@ -36,10 +36,15 @@
     <!-- Fonts Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts: Roboto and Noto Sans Thai for body and heading -->
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Sans+Thai&display=swap"
       rel="stylesheet"
     />
+    <!--
+      ฟอนต์ TH Sarabun New โหลดจากไฟล์ภายในโปรเจกต์ผ่าน Tailwind @font-face,
+      จึงไม่ต้องโหลดจากเว็บตรงนี้
+    -->
 
     <!-- Social Sharing / Open Graph -->
     <meta property="og:title" content="JP Visual &amp; Docs" />
@@ -61,15 +66,17 @@
         const prefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)"
         ).matches;
+        // หากมี theme บันทึกไว้ ให้ใช้ theme นั้น
+        // หากไม่มี ให้ใช้ธีมตาม prefers-color-scheme
         const theme = saved || (prefersDark ? "dark" : "light");
         document.documentElement.setAttribute("data-theme", theme);
       } catch (_) {
-        // Fail silently
+        // fail silently
       }
     </script>
   </head>
 
-  <body class="bg-base-100 text-base-content antialiased">
+  <body class="bg-base-100 text-base-content antialiased font-thsarabun">
     <div id="root"></div>
 
     <!-- React App Entry -->

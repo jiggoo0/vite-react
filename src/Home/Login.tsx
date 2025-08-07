@@ -13,54 +13,55 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const {
-    login: loginWithTempCode,
-    isLoggedIn: isTempLoggedIn,
-    error: tempError,
-  } = useTempCodeAuth(username, password);
+  // ปรับ useTempCodeAuth ให้คืนฟังก์ชัน login ที่รับ username, password
+  const { login: loginWithTempCode, error: tempError } = useTempCodeAuth();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setError(null);
     setLoading(true);
 
     const trimmedUsername = username.trim();
 
-    // ตรวจสอบ user ปกติจาก users
-    const user = users.find((u) => u.username === trimmedUsername);
-    if (user) {
-      const match = await bcrypt.compare(password, user.passwordHash);
-      if (match) {
+    try {
+      // ตรวจสอบ user ปกติจาก users
+      const user = users.find((u) => u.username === trimmedUsername);
+      if (user) {
+        const match = await bcrypt.compare(password, user.passwordHash);
+        if (match) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ username: user.username, role: user.role })
+          );
+          setLoading(false); // ปิด loading ก่อน navigate
+          navigate("/secret");
+          return;
+        } else {
+          setError("รหัสผ่านไม่ถูกต้อง");
+          setLoading(false);
+          return;
+        }
+      }
+
+      // ลอง login ด้วยรหัสชั่วคราว (loginWithTempCode คืนค่า boolean)
+      const tempLoginSuccess = await loginWithTempCode(trimmedUsername, password);
+
+      if (tempLoginSuccess) {
         localStorage.setItem(
           "user",
-          JSON.stringify({ username: user.username, role: user.role })
+          JSON.stringify({ username: trimmedUsername, role: "temp" })
         );
         setLoading(false);
         navigate("/secret");
         return;
-      } else {
-        setError("รหัสผ่านไม่ถูกต้อง");
-        setLoading(false);
-        return;
       }
-    }
 
-    // ลอง login ด้วยรหัสชั่วคราว
-    await loginWithTempCode();
-
-    if (isTempLoggedIn) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ username: trimmedUsername, role: "temp" })
-      );
+      setError(tempError || "ไม่พบผู้ใช้นี้ในระบบ หรือรหัสผ่านไม่ถูกต้อง");
+    } catch (err) {
+      setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+    } finally {
       setLoading(false);
-      navigate("/secret");
-      return;
     }
-
-    setError(tempError || "ไม่พบผู้ใช้นี้ในระบบ");
-    setLoading(false);
   };
 
   return (
@@ -69,7 +70,11 @@ const Login: React.FC = () => {
         <h1 className="text-2xl font-bold text-center text-primary">เข้าสู่ระบบ</h1>
 
         {error && (
-          <div className="p-3 text-red-700 bg-red-100 rounded-md" role="alert">
+          <div
+            className="p-3 text-red-700 bg-red-100 rounded-md"
+            role="alert"
+            aria-live="assertive"
+          >
             {error}
           </div>
         )}

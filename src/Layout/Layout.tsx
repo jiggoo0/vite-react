@@ -1,5 +1,3 @@
-// ✅ src/Layout/Layout.tsx
-
 import { FC, ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -25,7 +23,12 @@ const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
       </header>
 
       {/* 🧱 Main Content */}
-      <main className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main
+        role="main"
+        tabIndex={-1}
+        className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        {/* children ถ้าไม่มี ใช้ Outlet */}
         {children ?? <Outlet />}
       </main>
 

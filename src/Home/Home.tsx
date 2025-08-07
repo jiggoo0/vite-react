@@ -17,6 +17,10 @@ interface PageSectionProps {
   bg?: string;
 }
 
+/**
+ * PageSection - Section wrapper ที่ตั้ง id, title และจัด layout พื้นฐาน
+ * ใช้ aria-labelledby เพื่อช่วยเรื่อง accessibility
+ */
 const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => (
   <section
     id={id}
@@ -24,9 +28,11 @@ const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => (
     role="region"
     className={`scroll-mt-24 py-12 sm:py-16 md:py-24 ${bg ?? ""}`}
   >
+    {/* ซ่อน heading แต่ใช้สำหรับ screen reader */}
     <h2 id={`${id}-title`} className="sr-only">
       {title}
     </h2>
+
     <SectionContainer>
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         {children}

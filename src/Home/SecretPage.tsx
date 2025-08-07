@@ -1,17 +1,28 @@
 // src/Home/SecretPage.tsx
-import { FC } from "react";
+
+import { FC, Suspense, lazy } from "react";
+
 import SecretHeader from "@/Home/components/SecretSection/SecretHeader";
 import SecretDescription from "@/Home/components/SecretSection/SecretDescription";
 import SecretActions from "@/Home/components/SecretSection/SecretActions";
 import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
-import RegistrationPreview from "./SecretPage/RegistrationPreview";
-import BlurContact from "./SecretPage/BlurContact";
 import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotificationCard";
-
 import { kbankMockData } from "@/Home/components/SecretSection/KbankIOSNotification.mock";
-import { mockRegistrationData } from "./SecretPage/mockRegistrationPreview";
+import BlurContact from "./SecretPage/BlurContact";
 
 import { useProtectedAuth } from "@/hooks/useProtectedAuth";
+
+// Lazy Load Component ใหญ่
+const RegistrationPreview = lazy(() => import("./SecretPage/RegistrationPreview/RegistrationPreview"));
+const SalaryCertificate = lazy(() => import("./SecretPage/SalaryCertificate/SalaryCertificate"));
+import { mockRegistrationData } from "./SecretPage/RegistrationPreview/mockRegistrationPreview";
+
+// CardWrapper ช่วยลดโค้ดซ้ำ
+const CardWrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="bg-base-100 rounded-xl shadow-md p-4 sm:p-6 transition hover:shadow-lg">
+    {children}
+  </div>
+);
 
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
@@ -24,57 +35,70 @@ const SecretPage: FC = () => {
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
-  // สำหรับ role temp ให้มองเป็น user เพื่อแสดงข้อมูลบางส่วน
   const effectiveRole = user.role === "temp" ? "user" : user.role;
+  const isAdmin = effectiveRole === "admin";
+  const canViewKbank = ["admin", "user"].includes(effectiveRole);
 
   return (
-    <section className="min-h-screen bg-base-200 text-base-content flex flex-col p-4 md:p-8">
-      <header className="max-w-4xl mx-auto w-full mb-8">
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <SecretHeader />
-        </div>
-      </header>
+    <section className="min-h-screen bg-base-200 text-base-content flex flex-col px-4 sm:px-6 md:px-8 py-6">
+      <div className="container mx-auto space-y-8">
+        <header>
+          <CardWrapper>
+            <SecretHeader />
+          </CardWrapper>
+        </header>
 
-      <main className="flex-grow max-w-4xl mx-auto w-full mb-8 space-y-8">
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <SecretDescription user={{ ...user, role: effectiveRole }} />
-        </div>
+        <main className="space-y-8">
+          <CardWrapper>
+            <SecretDescription user={{ ...user, role: effectiveRole }} />
+          </CardWrapper>
 
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <DocumentDownload />
-        </div>
+          <CardWrapper>
+            <DocumentDownload />
+          </CardWrapper>
 
-        {effectiveRole === "admin" && (
-          <div className="bg-base-100 rounded-xl shadow-md p-6">
-            <RegistrationPreview {...mockRegistrationData} />
-          </div>
-        )}
+          {isAdmin && (
+            <Suspense fallback={<span className="loading loading-spinner text-primary" />}>
+              <CardWrapper>
+                <RegistrationPreview {...mockRegistrationData} />
+              </CardWrapper>
+            </Suspense>
+          )}
 
-        {(effectiveRole === "admin" || effectiveRole === "user") && (
-          <div className="bg-base-100 rounded-xl shadow-md p-6 space-y-4">
-            {kbankMockData.map((item) => (
-              <KbankNotificationCard key={item.id} data={item} />
-            ))}
-          </div>
-        )}
+          {isAdmin && (
+            <Suspense fallback={<span className="loading loading-spinner text-primary" />}>
+              <CardWrapper>
+                <SalaryCertificate />
+              </CardWrapper>
+            </Suspense>
+          )}
 
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <BlurContact
-            imageUrl="/images/admin-contact.jpg"
-            contactText="ติดต่อแอดมินฝ่ายสนับสนุน"
-          />
-        </div>
-      </main>
+          {canViewKbank && (
+            <CardWrapper>
+              <div className="space-y-4">
+                {kbankMockData.map((item) => (
+                  <KbankNotificationCard key={item.id} data={item} />
+                ))}
+              </div>
+            </CardWrapper>
+          )}
 
-      <footer className="max-w-4xl mx-auto w-full">
-        <div className="bg-base-100 rounded-xl shadow-md p-6">
-          <SecretActions role={effectiveRole} />
-        </div>
-      </footer>
+          <CardWrapper>
+            <BlurContact
+              imageUrl="/images/admin-contact.jpg"
+              contactText="ติดต่อแอดมินฝ่ายสนับสนุน"
+            />
+          </CardWrapper>
+        </main>
+
+        <footer>
+          <CardWrapper>
+            <SecretActions role={effectiveRole} />
+          </CardWrapper>
+        </footer>
+      </div>
     </section>
   );
 };
