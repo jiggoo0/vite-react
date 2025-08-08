@@ -1,5 +1,4 @@
 // src/data/UserTempCodes.ts
-import crypto from "crypto";
 
 export type TempCode = {
   userId: string;
@@ -9,13 +8,23 @@ export type TempCode = {
   used: boolean; // ใช้แล้วหรือยัง (ไม่ให้ใช้ซ้ำ)
 };
 
-// ฟังก์ชัน hash รหัสด้วย sha256
-export function hashCode(code: string): string {
-  return crypto.createHash("sha256").update(code).digest("hex");
+// ฟังก์ชัน hash รหัสด้วย sha256 (ใช้ Web Crypto API)
+export async function hashCode(code: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(code);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// ข้อมูลดิบพร้อม hashedCode ที่ให้มา
-const rawUserCodes = [
+// rawUserCodes type กำหนดชัดเจน
+type RawUserCode = {
+  userId: string;
+  password: string;
+  hashedCode: string;
+};
+
+const rawUserCodes: RawUserCode[] = [
   {
     userId: "JPKEY01",
     password: "O01KEYJP",
@@ -78,7 +87,7 @@ const rawUserCodes = [
   },
 ];
 
-// ใช้ข้อมูล hashedCode ที่ให้มา ไม่ต้อง hash อีก
+// สร้าง userTempCodes ใช้ hashedCode เดิมเหมือนเดิม
 const userTempCodes: TempCode[] = rawUserCodes.map(
   ({ userId, hashedCode }) => ({
     userId,
@@ -100,12 +109,13 @@ setInterval(() => {
   }
 }, 60 * 1000);
 
-export function resetUserTempCode(
+// resetUserTempCode เปลี่ยนให้ async ใช้ hashCode ใหม่
+export async function resetUserTempCode(
   userId: string,
   plainCode: string,
   expiresInMin = 10
-): void {
-  const hashed = hashCode(plainCode);
+): Promise<void> {
+  const hashed = await hashCode(plainCode);
   const existing = userTempCodes.find((r) => r.userId === userId);
 
   if (existing) {
@@ -124,10 +134,16 @@ export function resetUserTempCode(
   }
 }
 
-export function tryUserTempLogin(userId: string, plainCode: string): boolean {
+// tryUserTempLogin เปลี่ยนให้ async เพราะต้อง await hashCode
+export async function tryUserTempLogin(
+  userId: string,
+  plainCode: string
+): Promise<boolean> {
   const code = userTempCodes.find((c) => c.userId === userId);
-  if (!code || code.used || code.hashedCode !== hashCode(plainCode))
-    return false;
+  if (!code || code.used) return false;
+
+  const hashedInput = await hashCode(plainCode);
+  if (code.hashedCode !== hashedInput) return false;
 
   const now = Date.now();
 

@@ -6,41 +6,21 @@ import aspectRatio from "@tailwindcss/aspect-ratio";
 
 const config: Config = {
   darkMode: "class",
-
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-
   safelist: [
     "bg-primary",
     "text-primary",
     { pattern: /^btn-/ },
     { pattern: /^text-/ },
   ],
-
   blocklist: ["debug", "bg-red-500"],
 
   theme: {
     extend: {
-      colors: {
-        primary: "var(--color-primary)",
-        secondary: "var(--color-secondary)",
-        accent: "var(--color-accent)",
-        neutral: "var(--color-neutral)",
-        "base-100": "var(--color-base-100)",
-        "base-200": "var(--color-base-200)",
-        "base-300": "var(--color-base-300)",
-        iosSuccess: "#34C759",
-        iosError: "#FF3B30",
-        iosWarning: "#FF9500",
-        iosInfo: "#5AC8FA",
-        info: "#3ABFF8",
-        success: "#36D399",
-        warning: "#FBBD23",
-        error: "#F87272",
-      },
-
       fontFamily: {
-        heading: ["Inter", "Noto Sans Thai", "sans-serif"],
-        body: ["Roboto", "Noto Sans Thai", "sans-serif"],
+        heading: ["Inter", "Noto Sans Thai", "THSarabunNew", "sans-serif"],
+        body: ["Roboto", "Noto Sans Thai", "THSarabunNew", "sans-serif"],
+        th: ["THSarabunNew", "sans-serif"],
         ios: [
           "-apple-system",
           "BlinkMacSystemFont",
@@ -97,6 +77,24 @@ const config: Config = {
         height: "height",
         opacity: "opacity",
         transform: "transform",
+      },
+
+      colors: {
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+        accent: "var(--color-accent)",
+        neutral: "var(--color-neutral)",
+        "base-100": "var(--color-base-100)",
+        "base-200": "var(--color-base-200)",
+        "base-300": "var(--color-base-300)",
+        iosSuccess: "#34C759",
+        iosError: "#FF3B30",
+        iosWarning: "#FF9500",
+        iosInfo: "#5AC8FA",
+        info: "#3ABFF8",
+        success: "#36D399",
+        warning: "#FBBD23",
+        error: "#F87272",
       },
     },
   },

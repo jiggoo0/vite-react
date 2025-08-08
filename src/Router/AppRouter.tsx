@@ -17,7 +17,9 @@ import RoleGuard from "@/Router/RoleGuard";
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
+const CustomerAssessmentForm = lazy(
+  () => import("@/Home/CustomerAssessmentForm")
+);
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
 /**

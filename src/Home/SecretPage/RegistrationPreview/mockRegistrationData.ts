@@ -1,4 +1,7 @@
-const mockRegistrationData = {
+// src/Home/SecretPage/RegistrationPreview/mockRegistrationData.ts
+import type { RegistrationPreviewProps } from "./RegistrationPreview";
+
+export const mockRegistrationData: RegistrationPreviewProps = {
   businessName: "บริษัท ทดสอบ จำกัด",
   ownerName: "นายสมชาย ใจดี",
   registrationNumber: "1234567890123",
@@ -14,5 +17,3 @@ const mockRegistrationData = {
   registrarPosition: "เจ้าหน้าที่ทะเบียน",
   registrarName: "นางสาวสุนิสา ศรีสุข",
 };
-
-export { mockRegistrationData };

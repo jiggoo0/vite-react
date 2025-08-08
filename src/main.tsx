@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import AppRouter from "@/Router/AppRouter";
-import { ThemeProvider } from "@/context/ThemeContext";
+import { ThemeProvider } from "@/context/ThemeProvider"; // ✅ เปลี่ยนตรงนี้
 
 // CSS base
 import "@/styles/global.css";

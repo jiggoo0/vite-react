@@ -1,3 +1,4 @@
+// src/Home/SecretPage.tsx
 import { FC, Suspense, lazy } from "react";
 
 import SecretHeader from "@/Home/components/SecretSection/SecretHeader";
@@ -8,6 +9,7 @@ import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotifica
 import { kbankMockData } from "@/Home/components/SecretSection/KbankIOSNotification.mock";
 import BlurContact from "@/Home/components/SecretSection/BlurContact/BlurContact";
 import { useProtectedAuth } from "@/hooks/useProtectedAuth";
+import { mockRegistrationData } from "@/Home/SecretPage/RegistrationPreview/mockRegistrationData"; // ✅ Path ถูกต้อง
 
 const RegistrationPreview = lazy(
   () => import("@/Home/SecretPage/RegistrationPreview/RegistrationPreview")
@@ -15,8 +17,6 @@ const RegistrationPreview = lazy(
 const SalaryCertificate = lazy(
   () => import("@/Home/SecretPage/SalaryCertificate/SalaryCertificate")
 );
-
-import { mockRegistrationData } from "@/Home/SecretPage/RegistrationPreview/mockRegistrationPreview";
 
 const CardWrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="bg-white dark:bg-base-100 rounded-2xl shadow-sm p-5 sm:p-6 border border-base-300 transition-all hover:shadow-md">
@@ -58,14 +58,12 @@ const SecretPage: FC = () => {
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-4 sm:px-6 md:px-8 py-10">
       <div className="container max-w-7xl mx-auto space-y-12">
-        {/* Header */}
         <header>
           <CardWrapper>
             <SecretHeader />
           </CardWrapper>
         </header>
 
-        {/* Main */}
         <main className="space-y-10 md:space-y-12">
           <CardWrapper>
             <SecretDescription user={{ ...user, role: effectiveRole }} />
@@ -109,7 +107,6 @@ const SecretPage: FC = () => {
           </CardWrapper>
         </main>
 
-        {/* Footer */}
         <footer>
           <CardWrapper>
             <SecretActions role={effectiveRole} />

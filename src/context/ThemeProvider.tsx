@@ -1,8 +1,9 @@
-import { useEffect, useState, type ReactNode } from "react";
+// src/context/ThemeProvider.tsx
+import { useEffect, useState, ReactNode } from "react";
 import { Theme, ThemeContext } from "./ThemeContext";
 
 const isValidTheme = (value: unknown): value is Theme =>
-  value === "light" || value === "dark" || value === "business";
+  typeof value === "string" && ["light", "dark", "business"].includes(value);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const getDefaultTheme = (): Theme => {
@@ -10,7 +11,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       const saved = localStorage.getItem("theme");
       if (isValidTheme(saved)) return saved;
 
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
       return prefersDark ? "dark" : "light";
     }
     return "light";
@@ -23,21 +26,19 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // Optional: ติดตามการเปลี่ยนแปลง prefers-color-scheme ของ user
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-    const listener = (e: MediaQueryListEvent) => {
-      // เปลี่ยน theme อัตโนมัติ ก็ต่อเมื่อ user ยังไม่ได้ตั้งค่าธีมเอง
+    const handleChange = (e: MediaQueryListEvent) => {
       if (!localStorage.getItem("theme")) {
         setTheme(e.matches ? "dark" : "light");
       }
     };
 
-    mediaQuery.addEventListener("change", listener);
-    return () => mediaQuery.removeEventListener("change", listener);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   return (
