@@ -9,7 +9,7 @@ import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotifica
 import { kbankMockData } from "@/Home/components/SecretSection/KbankIOSNotification.mock";
 import BlurContact from "@/Home/components/SecretSection/BlurContact/BlurContact";
 import { useProtectedAuth } from "@/hooks/useProtectedAuth";
-import { mockRegistrationData } from "@/Home/SecretPage/RegistrationPreview/mockRegistrationData"; // ✅ Path ถูกต้อง
+import { mockRegistrationData } from "@/Home/SecretPage/RegistrationPreview/mockRegistrationData";
 
 const RegistrationPreview = lazy(
   () => import("@/Home/SecretPage/RegistrationPreview/RegistrationPreview")
@@ -31,8 +31,8 @@ const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "lg" }) => (
         size === "lg"
           ? "loading-lg"
           : size === "md"
-          ? "loading-md"
-          : "loading-sm"
+            ? "loading-md"
+            : "loading-sm"
       }`}
     />
   </div>
@@ -53,7 +53,7 @@ const SecretPage: FC = () => {
 
   const effectiveRole = user.role === "temp" ? "user" : user.role;
   const isAdmin = effectiveRole === "admin";
-  const canViewKbank = ["admin", "user"].includes(effectiveRole);
+  const canViewKbank = effectiveRole === "admin"; // ✅ แก้ตรงนี้
 
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-4 sm:px-6 md:px-8 py-10">
