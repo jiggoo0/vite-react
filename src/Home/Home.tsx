@@ -6,11 +6,13 @@ import About from "@home/components/About/About";
 import { ServicesSection } from "@home/components/Services";
 import SectionContainer from "@common/SectionContainer";
 
-// Lazy load components ที่ไม่จำเป็นตอนแรก
 const PortfolioGallery = lazy(
   () => import("@home/components/Portfolio/PortfolioGallery")
 );
 const SupportFAQ = lazy(() => import("@home/components/Portfolio/SupportFAQ"));
+
+import UserBoard from "@home/components/UserBoard/UserBoard";
+import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
 
 interface PageSectionProps {
   id: string;
@@ -19,10 +21,6 @@ interface PageSectionProps {
   bg?: string;
 }
 
-/**
- * PageSection - Section wrapper ที่ตั้ง id, title และจัด layout พื้นฐาน
- * ใช้ aria-labelledby เพื่อช่วยเรื่อง accessibility
- */
 const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => (
   <section
     id={id}
@@ -30,11 +28,9 @@ const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => (
     role="region"
     className={`scroll-mt-24 py-12 sm:py-16 md:py-24 ${bg ?? ""}`}
   >
-    {/* ซ่อน heading แต่ใช้สำหรับ screen reader */}
     <h2 id={`${id}-title`} className="sr-only">
       {title}
     </h2>
-
     <SectionContainer>
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         {children}
@@ -44,11 +40,10 @@ const PageSection: FC<PageSectionProps> = ({ id, title, children, bg }) => (
 );
 
 const Home: FC = () => {
+  const UserBoardData = [...UserBoardDataReadonly];
+
   return (
-    <main
-      className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen"
-      aria-label="หน้าแรก JP Visual & Docs"
-    >
+    <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
       <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์" bg="bg-base-100">
         <Hero />
       </PageSection>
@@ -61,13 +56,16 @@ const Home: FC = () => {
         <ServicesSection />
       </PageSection>
 
+      <PageSection id="user-board" title="บอร์ดรายชื่อผู้สมัคร">
+        <UserBoard data={UserBoardData} />
+      </PageSection>
+
       <Suspense
         fallback={<div className="text-center py-12">กำลังโหลด...</div>}
       >
         <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
           <PortfolioGallery />
         </PageSection>
-
         <PageSection id="faq" title="คำถามที่พบบ่อย">
           <SupportFAQ />
         </PageSection>

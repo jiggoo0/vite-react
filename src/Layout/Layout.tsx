@@ -8,34 +8,35 @@ import DisclaimerModal from "@/utils/common/DisclaimerModal";
 import BackToTop from "@/utils/common/BackToTop";
 
 /**
- * 🌟 Layout Component
- *
- * - แสดง Navbar, Footer และองค์ประกอบ utility อื่นๆ
- * - รองรับ children หรือ Outlet สำหรับ React Router
- * - รองรับ Tailwind Theme (bg/text)
+ * Layout Component
+ * - ครอบโครงสร้างหลักของแอป
+ * - แสดง Navbar, Footer และ Utilities ทั่วไป
+ * - รองรับการส่ง children หรือใช้ React Router Outlet
+ * - ใช้ Tailwind Theme สำหรับสีพื้นและข้อความ
  */
 const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content">
-      {/* 🧭 Navbar */}
+      {/* Navbar: ติดบน viewport */}
       <header className="sticky top-0 z-50 bg-base-100 shadow-sm">
         <Navbar />
       </header>
 
-      {/* 🧱 Main Content */}
+      {/* Main content: กินพื้นที่ที่เหลือ */}
       <main
         role="main"
         tabIndex={-1}
         className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"
+        aria-live="polite"
       >
-        {/* Render children if provided, otherwise use React Router Outlet */}
+        {/* children มี priority, ถ้าไม่มีแสดง Outlet */}
         {children ?? <Outlet />}
       </main>
 
-      {/* 📦 Footer */}
+      {/* Footer */}
       <Footer />
 
-      {/* 🛠️ Utilities */}
+      {/* Utilities */}
       <ChatWidget />
       <BackToTop />
       <DisclaimerModal />

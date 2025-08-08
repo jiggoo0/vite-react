@@ -7,10 +7,9 @@
   - Login.tsx
   - SecretPage.tsx
   - SecretPage/
-    - BlurContact.tsx
     - RegistrationPreview/
       - RegistrationPreview.tsx
-      - mockRegistrationPreview.ts
+      - mockRegistrationData.ts
     - Reviews/
       - ReviewsGallery.tsx
       - ui/
@@ -53,6 +52,8 @@
         - PortfolioCTA.tsx
         - PortfolioFilter.tsx
     - SecretSection/
+      - BlurContact/
+        - BlurContact.tsx
       - DocumentDownload.tsx
       - KbankIOSNotification.mock.ts
       - KbankIOSNotification.tsx
@@ -69,6 +70,8 @@
       - ui/
         - ComingSoonServiceCard.tsx
         - ServiceCard.tsx
+    - UserBoard/
+      - UserBoard.tsx
 - Layout/
   - Layout.tsx
   - partials/
@@ -96,9 +99,10 @@
   - ui/
     - Button.tsx
 - context/
-  - ThemeContext.tsx
+  - ThemeContext.ts
   - ThemeProvider.tsx
 - data/
+  - UserBoard.ts
   - UserTempCodes.ts
   - portfolioItems.ts
   - portfolioSchema.ts

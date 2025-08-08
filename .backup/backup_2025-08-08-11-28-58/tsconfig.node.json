@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "ESNext", // ใช้ module แบบล่าสุด เหมาะกับ Vite
+    "target": "ESNext", // ใช้ JavaScript เวอร์ชันล่าสุด
+    "moduleResolution": "Bundler", // สำคัญสำหรับ Vite + TS: ใช้ bundler style resolver
+    "types": ["node"], // เพิ่ม types ของ Node.js
+    "esModuleInterop": true, // เปิด interop ระหว่าง CommonJS และ ESModules
+    "allowSyntheticDefaultImports": true, // รองรับ import แบบ default จากโมดูลที่ไม่มี default export
+    "resolveJsonModule": true, // สามารถ import ไฟล์ .json ได้
+    "strict": true, // เปิด strict mode (แนะนำ)
+    "skipLibCheck": true // ข้ามการตรวจสอบ type definitions ของ library ลดเวลา compile
+  },
+  "include": ["src", "vite.config.ts"], // ไฟล์และโฟลเดอร์ที่ TypeScript จะ compile
+  "exclude": ["dist", "node_modules"] // ไฟล์และโฟลเดอร์ที่ไม่ต้อง compile
+}
