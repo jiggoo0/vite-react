@@ -18,16 +18,16 @@ const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content">
       {/* Navbar: ติดบน viewport */}
-      <header className="sticky top-0 z-50 bg-base-100 shadow-sm">
+      <header className="sticky top-0 z-50 bg-base-100 shadow-sm" role="banner">
         <Navbar />
       </header>
 
       {/* Main content: กินพื้นที่ที่เหลือ */}
       <main
         role="main"
-        tabIndex={-1}
+        tabIndex={-1} // ช่วยให้ keyboard focus เข้า main ได้
         className="flex-grow w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"
-        aria-live="polite"
+        aria-live="polite" // แจ้งการเปลี่ยนแปลงเนื้อหา
       >
         {/* children มี priority, ถ้าไม่มีแสดง Outlet */}
         {children ?? <Outlet />}

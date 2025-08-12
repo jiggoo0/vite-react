@@ -4,29 +4,28 @@ import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 
+// ฟอนต์หลัก (heading และ body)
+const fontSans = ["Inter", "Noto Sans Thai", "THSarabunNew", "sans-serif"];
+const fontBody = ["Roboto", "Noto Sans Thai", "THSarabunNew", "sans-serif"];
+
 const config: Config = {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+
   safelist: [
-    "bg-primary",
-    "text-primary",
-    { pattern: /^btn-/ },
-    { pattern: /^text-/ },
+    // เรียกใช้ class ที่ขึ้นต้นด้วย bg-, text-, btn-
+    { pattern: /^(bg|text|btn)-/ },
   ],
-  blocklist: ["debug", "bg-red-500"],
+
+  blocklist: ["debug", "bg-red-500"], // ป้องกัน class ที่ไม่ต้องการ
 
   theme: {
     extend: {
       fontFamily: {
-        heading: ["Inter", "Noto Sans Thai", "THSarabunNew", "sans-serif"],
-        body: ["Roboto", "Noto Sans Thai", "THSarabunNew", "sans-serif"],
+        heading: fontSans,
+        body: fontBody,
         th: ["THSarabunNew", "sans-serif"],
-        ios: [
-          "-apple-system",
-          "BlinkMacSystemFont",
-          '"SF Pro Text"',
-          "sans-serif",
-        ],
+        ios: ["-apple-system", "BlinkMacSystemFont", '"SF Pro Text"', "sans-serif"],
       },
 
       fontSize: {
@@ -53,16 +52,16 @@ const config: Config = {
 
       keyframes: {
         fadeIn: {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         slideIn: {
-          from: { opacity: "0", transform: "translateY(20px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
         fadeInUp: {
-          from: { opacity: "0", transform: "translateY(10px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
 
@@ -74,19 +73,10 @@ const config: Config = {
 
       transitionProperty: {
         spacing: "margin, padding",
-        height: "height",
-        opacity: "opacity",
-        transform: "transform",
+        common: "height, opacity, transform",
       },
 
       colors: {
-        primary: "var(--color-primary)",
-        secondary: "var(--color-secondary)",
-        accent: "var(--color-accent)",
-        neutral: "var(--color-neutral)",
-        "base-100": "var(--color-base-100)",
-        "base-200": "var(--color-base-200)",
-        "base-300": "var(--color-base-300)",
         iosSuccess: "#34C759",
         iosError: "#FF3B30",
         iosWarning: "#FF9500",

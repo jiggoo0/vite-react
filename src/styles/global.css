@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  /* ------------------------------
-   Font & Smoothing
-  ------------------------------- */
+  /* =====================================
+     Global Font & Rendering
+  ====================================== */
   html {
     scroll-behavior: smooth;
     font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
@@ -23,52 +23,35 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Background slide animation for BlurContact */
-  @keyframes slideBackground {
-    0% {
-      transform: translateX(0) scale(0.55);
-    }
-    50% {
-      transform: translateX(10%) scale(0.6);
-    }
-    100% {
-      transform: translateX(0) scale(0.55);
-    }
-  }
-
-  .animate-slide {
-    animation: slideBackground 20s ease-in-out infinite;
-  }
-
-  /* ------------------------------
-   Body Style
-  ------------------------------- */
+  /* =====================================
+     Body
+  ====================================== */
   body {
     @apply bg-base-100 text-base-content;
     line-height: 1.6;
-    min-height: 100dvh; /* for mobile viewport */
+    min-height: 100dvh; /* Support mobile viewport height */
   }
 
-  /* ------------------------------
-   Auto Dark Mode if no data-theme
-  ------------------------------- */
+  /* =====================================
+     Dark Mode (Auto if no data-theme)
+  ====================================== */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
       color-scheme: dark;
     }
   }
 
-  /* ------------------------------
-   Text Selection Styling
-  ------------------------------- */
+  /* =====================================
+     Text Selection
+  ====================================== */
   ::selection {
     background-color: theme("colors.primary");
     color: theme("colors.white", "#fff");
   }
 
-  /* ------------------------------
-   Box Sizing Reset
-  ------------------------------- */
+  /* =====================================
+     Box Sizing & Scrollbar Defaults
+  ====================================== */
   *,
   *::before,
   *::after {
@@ -78,9 +61,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* ------------------------------
-   WebKit Scrollbar
-  ------------------------------- */
+  /* Custom Scrollbar (WebKit) */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -100,16 +81,16 @@
     background: transparent;
   }
 
-  /* ------------------------------
-   Anchor Scroll Offset
-  ------------------------------- */
+  /* =====================================
+     Anchor Scroll Offset
+  ====================================== */
   :target {
     scroll-margin-top: 6rem;
   }
 
-  /* ------------------------------
-   Interactive UI Elements
-  ------------------------------- */
+  /* =====================================
+     Interactive Elements
+  ====================================== */
   button,
   a {
     transition-property: background-color, color, transform;
@@ -118,9 +99,9 @@
     will-change: transform, color, background-color;
   }
 
-  /* ------------------------------
-   Accessibility: Reduce Motion
-  ------------------------------- */
+  /* =====================================
+     Accessibility: Reduce Motion
+  ====================================== */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -129,5 +110,24 @@
       animation-duration: 0s !important;
       animation-iteration-count: 1 !important;
     }
+  }
+
+  /* =====================================
+     Animations
+  ====================================== */
+  @keyframes slideBackground {
+    0% {
+      transform: translateX(0) scale(0.55);
+    }
+    50% {
+      transform: translateX(10%) scale(0.6);
+    }
+    100% {
+      transform: translateX(0) scale(0.55);
+    }
+  }
+
+  .animate-slide {
+    animation: slideBackground 20s ease-in-out infinite;
   }
 }
