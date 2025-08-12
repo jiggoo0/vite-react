@@ -11,19 +11,20 @@ import { kbankMockData } from "@home/components/SecretSection/KbankIOSNotificati
 import BlurContact from "@home/components/SecretSection/BlurContact/BlurContact";
 import { useProtectedAuth } from "@hooks/useProtectedAuth";
 import { mockRegistrationData } from "@home/SecretPage/RegistrationPreview/mockRegistrationData";
-import { CardWrapper, A4CardWrapper } from "@home/SecretPage/common/CardWrapper";
+import {
+  CardWrapper,
+  A4CardWrapper,
+} from "@home/SecretPage/common/CardWrapper";
 
 // Lazy loaded components
-const RegistrationPreview = lazy(() =>
-  import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
+const RegistrationPreview = lazy(
+  () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
 );
-const SalaryCertificate = lazy(() =>
-  import("@home/SecretPage/SalaryCertificate/SalaryCertificate")
+const SalaryCertificate = lazy(
+  () => import("@home/SecretPage/SalaryCertificate/SalaryCertificate")
 );
 
-const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({
-  size = "lg",
-}) => {
+const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "lg" }) => {
   const sizeClass =
     size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
 

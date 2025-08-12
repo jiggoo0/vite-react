@@ -78,7 +78,9 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
       >
         {/* Top-left details */}
         <div className="absolute left-12 top-8 text-[14pt] leading-snug">
-          <p className="mb-2">ทะเบียนเลขที่ {withFallback(registrationNumber)}</p>
+          <p className="mb-2">
+            ทะเบียนเลขที่ {withFallback(registrationNumber)}
+          </p>
           <p>
             คำขอที่{" "}
             <span className="inline-block h-[1.7em] min-w-[160px] border-b border-gray-300" />
@@ -136,7 +138,12 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           {/* Address */}
           <p className="mt-10 font-semibold">ที่ตั้งสถานประกอบการ</p>
           <p className="mx-auto max-w-[720px] indent-12 text-left leading-relaxed">
-            เลขที่ {withFallback(address.houseNumber)} หมู่ที่ {withFallback(address.villageNo)} ตรอก/ซอย {withFallback(address.alley)} ตำบล/แขวง {withFallback(address.subDistrict)} อำเภอ/เขต {withFallback(address.district)} จังหวัด {withFallback(address.province)}
+            เลขที่ {withFallback(address.houseNumber)} หมู่ที่{" "}
+            {withFallback(address.villageNo)} ตรอก/ซอย{" "}
+            {withFallback(address.alley)} ตำบล/แขวง{" "}
+            {withFallback(address.subDistrict)} อำเภอ/เขต{" "}
+            {withFallback(address.district)} จังหวัด{" "}
+            {withFallback(address.province)}
           </p>
         </div>
 

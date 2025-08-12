@@ -22,7 +22,12 @@ const config: Config = {
         heading: fontSans,
         body: fontBody,
         th: ["THSarabunNew", "sans-serif"],
-        ios: ["-apple-system", "BlinkMacSystemFont", '"SF Pro Text"', "sans-serif"],
+        ios: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          '"SF Pro Text"',
+          "sans-serif",
+        ],
       },
 
       fontSize: {

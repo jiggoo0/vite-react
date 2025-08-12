@@ -1,8 +1,7 @@
-// scripts/mock_thai_users.ts
-
 import { writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { v4 as uuidv4 } from "uuid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,36 +12,36 @@ function randomInt(min: number, max: number) {
 
 const REAL_FIRST_NAMES_MALE = [
   "สมชาย",
-  "ศักดิ์ชัย",
+  "บักดิ์ชาย",
   "สุชาติ",
   "อนันต์",
-  "นิพนธ์",
+  "นิจันทร์",
   "วรชัย",
   "วิทยา",
 ];
 const REAL_FIRST_NAMES_FEMALE = [
   "อรทัย",
   "วาสนา",
-  "สมพร",
+  "สมจร",
   "ประไพ",
   "สุภาวดี",
-  "บุญญาพร",
-  "จิตติมา",
+  "ชุฑณา",
+  "ฐิติมา",
 ];
 const REAL_LAST_NAMES = [
-  "ใจดี",
-  "ตั้งตรงจิตร",
-  "บุญเรือง",
+  "ชัยดี",
+  "ตั้งทรงกิจ",
+  "ชุมเรือง",
   "มงคลชัย",
   "ทองดี",
-  "สุวรรณภูมิ",
-  "วงศ์ศรี",
+  "สุวรรณ์ภูมิ",
+  "วงษ์ษ์ปรี",
 ];
 const STAFF_NAMES = [
-  "ณัฐกานต์ ศรีวงศ์",
-  "วรัญญา อินทร์แก้ว",
-  "พีรพงศ์ แซ่ลิ้ม",
-  "ชุติมา แก้วสิงห์",
+  "ผู้จัดการ โศรีวงษ์",
+  "วรัญญา อินทร์เกษ",
+  "พีรเจริญชัย แซ่หลิม",
+  "สุทธิมา แก้วสิงห์",
 ];
 const MOBILE_PREFIXES = [
   "081",
@@ -68,79 +67,79 @@ const MOBILE_PREFIXES = [
 const STATUS_WEIGHTED = [
   ...Array(70).fill("ผ่าน"),
   ...Array(20).fill("ไม่ผ่าน"),
-  ...Array(10).fill("รอดำเนินการ"),
+  ...Array(10).fill("รอตรวจแก้"),
 ];
 
-// Mock address data แบบง่าย (แทนของจริง)
 const ADDRESS_DATA = [
   {
-    subdistrict: "คลองหนึ่ง",
-    district: "คลองหลวง",
-    province: "ปทุมธานี",
-    zipcode: "12120",
-  },
-  {
-    subdistrict: "หัวหมาก",
-    district: "บางกะปิ",
-    province: "กรุงเทพมหานคร",
-    zipcode: "10240",
-  },
-  {
-    subdistrict: "บ้านเป็ด",
-    district: "บ้านเป็ด",
+    subdistrict: "ในเมือง",
+    district: "เมือง",
     province: "ขอนแก่น",
     zipcode: "40000",
   },
   {
-    subdistrict: "หนองปรือ",
-    district: "บางละมุง",
-    province: "ชลบุรี",
-    zipcode: "20150",
-  },
-  {
-    subdistrict: "ในเมือง",
-    district: "เมืองนครราชสีมา",
+    subdistrict: "สุรนารี",
+    district: "เมือง",
     province: "นครราชสีมา",
     zipcode: "30000",
   },
+  {
+    subdistrict: "บ้านโป่ง",
+    district: "เมือง",
+    province: "ราชบุรี",
+    zipcode: "70000",
+  },
+  {
+    subdistrict: "ปากเกร็ด",
+    district: "ปากเกร็ด",
+    province: "นนทบุรี",
+    zipcode: "11120",
+  },
+  {
+    subdistrict: "หาดใหญ่",
+    district: "หาดใหญ่",
+    province: "สงขลา",
+    zipcode: "90110",
+  },
 ];
 
-// UUID generator สั้น (ใช้แทน)
-function uuidv4() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0,
-      v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+// ฟังก์ชันสร้างหมายเลขบัตรประชาชนแบบสุ่ม 13 หลัก (ง่าย ๆ)
+function generateCitizenId(): string {
+  let id = "";
+  for (let i = 0; i < 12; i++) {
+    id += String(randomInt(0, 9));
+  }
+  // สร้าง check digit แบบง่าย (mod 10)
+  const sum = id
+    .split("")
+    .reduce((acc, d, i) => acc + parseInt(d) * (13 - i), 0);
+  const checkDigit = (11 - (sum % 11)) % 10;
+  return id + checkDigit.toString();
 }
 
-function mask(value: string, keep: number) {
-  return value.slice(0, keep) + "XXX";
+// ฟังก์ชันสร้างเบอร์มือถือแบบสุ่ม โดยใช้ MOBILE_PREFIXES
+function generateMobile(): string {
+  const prefix = MOBILE_PREFIXES[randomInt(0, MOBILE_PREFIXES.length - 1)];
+  let number = "";
+  for (let i = 0; i < 7; i++) {
+    number += String(randomInt(0, 9));
+  }
+  return prefix + number;
 }
 
-function generateCitizenId() {
-  const digits: number[] = [];
-  digits.push(randomInt(1, 9));
-  for (let i = 0; i < 11; i++) digits.push(randomInt(0, 9));
-  let sum = 0;
-  for (let i = 0; i < digits.length; i++) sum += digits[i] * (13 - i);
-  const checksum = (11 - (sum % 11)) % 10;
-  digits.push(checksum);
-  return digits.join("");
+// ฟังก์ชันปิดบังหมายเลข ด้วยการแทนที่ตั้งแต่ตำแหน่ง index ที่กำหนดเป็น "*"
+function mask(str: string, visibleCount: number): string {
+  if (str.length <= visibleCount) return str;
+  return str.slice(0, visibleCount) + "*".repeat(str.length - visibleCount);
 }
 
-function generateMobile() {
-  return (
-    MOBILE_PREFIXES[randomInt(0, MOBILE_PREFIXES.length - 1)] +
-    Array.from({ length: 7 }, () => randomInt(0, 9)).join("")
-  );
-}
-
-function generateCreatedAt() {
-  const daysAgo = randomInt(0, 30);
-  const d = new Date();
-  d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().slice(0, 19);
+// สร้างวันที่สุ่มภายในช่วง 3 เดือนที่ผ่านมา
+function generateCreatedAt(): string {
+  const now = new Date();
+  const past = new Date();
+  past.setMonth(now.getMonth() - 3);
+  const time = randomInt(past.getTime(), now.getTime());
+  return new Date(time).toISOString();
 }
 
 function generateUser() {
@@ -153,7 +152,7 @@ function generateUser() {
         ];
   const lastName = REAL_LAST_NAMES[randomInt(0, REAL_LAST_NAMES.length - 1)];
   const prefix = gender === "male" ? "นาย" : "นางสาว";
-  const fullName = `${prefix}${firstName} ${lastName}`;
+  const fullName = `${prefix} ${firstName} ${lastName}`;
   const dobYear = new Date().getFullYear() - randomInt(20, 60);
   const dobMonth = randomInt(1, 12);
   const dobDay = randomInt(1, 28);
@@ -196,7 +195,7 @@ function main() {
   const filepath = join(__dirname, "../src/data/UserBoard.ts");
   writeFileSync(filepath, output, { encoding: "utf-8" });
 
-  console.log(`✅ Generated ${users.length} users → ${filepath}`);
+  console.log(`✓ Generated ${users.length} users → ${filepath}`);
 }
 
 main();

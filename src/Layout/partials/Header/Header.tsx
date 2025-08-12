@@ -7,7 +7,7 @@ import LogoutButton from "@components/common/LogoutButton";
 import { useAuth } from "@hooks/useAuth";
 
 /**
- *  Header — 
+ *  Header ï¿½ 
  *
  * - 
  * -  (Light/Dark)

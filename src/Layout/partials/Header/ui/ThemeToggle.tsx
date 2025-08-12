@@ -30,7 +30,9 @@ const ThemeToggle = () => {
     if (typeof window === "undefined") return;
 
     const savedTheme = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     const defaultDark = savedTheme ? savedTheme === "dark" : prefersDark;
 
     applyTheme(defaultDark);

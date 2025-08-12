@@ -23,7 +23,7 @@ const getDeadline = (createdAt: string): string => {
 
 const labelMap: Record<
   string,
-  { label: string; compute?: (val: any, row?: IUser) => string }
+  { label: string; compute?: (val: unknown, row?: IUser) => string }
 > = {
   full_name: { label: "ชื่อ-นามสกุล" },
   citizen_id: { label: "เลขบัตร" },
@@ -33,7 +33,7 @@ const labelMap: Record<
   status: { label: "สถานะ" },
   created_at: {
     label: "วันที่ยื่น",
-    compute: (val) => new Date(val).toLocaleDateString("th-TH"),
+    compute: (val) => new Date(val as string).toLocaleDateString("th-TH"),
   },
   deadline: {
     label: `ครบกำหนด (${DEADLINE_DAYS} วัน)`,
@@ -55,7 +55,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const displayKeys = useMemo(() => Object.keys(labelMap), []);
-  const totalPages = Math.ceil(data.length / pageSize);
+  const totalPages = useMemo(
+    () => Math.ceil(data.length / pageSize),
+    [data.length, pageSize]
+  );
 
   const pageData = useMemo(() => {
     const startIndex = (page - 1) * pageSize;
@@ -139,7 +142,6 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
         </div>
       )}
 
-      {/* Responsive Table Wrapper */}
       <div className="overflow-x-auto">
         <table
           className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm"
@@ -188,8 +190,8 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
                     key === "deadline"
                       ? labelMap[key].compute?.("", user)
                       : labelMap[key].compute
-                      ? labelMap[key].compute(user[key as keyof IUser])
-                      : (user[key as keyof IUser] as string);
+                        ? labelMap[key].compute(user[key as keyof IUser])
+                        : (user[key as keyof IUser] as string);
                   return (
                     <td
                       key={key}
@@ -206,7 +208,6 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
         </table>
       </div>
 
-      {/* Pagination */}
       <nav
         className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4"
         role="navigation"
@@ -223,7 +224,6 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
           Prev
         </button>
 
-        {/* ใช้ scroll horizontal เมื่อหน้าจอเล็ก */}
         <div className="flex gap-1 overflow-x-auto max-w-[320px] sm:max-w-none">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
             <button

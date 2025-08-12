@@ -26,7 +26,12 @@ interface PageSectionProps {
  * Wrapper for page sections with consistent styling, accessible roles,
  * and scroll margin for anchor navigation.
  */
-const PageSection: FC<PageSectionProps> = ({ id, title, children, bg = "" }) => (
+const PageSection: FC<PageSectionProps> = ({
+  id,
+  title,
+  children,
+  bg = "",
+}) => (
   <section
     id={id}
     aria-labelledby={`${id}-title`}
@@ -73,7 +78,11 @@ const Home: FC = () => {
       </PageSection>
 
       {/* User Board Section */}
-      <PageSection id="user-board" title="บอร์ดรายชื่อผู้สมัคร" bg="bg-base-200">
+      <PageSection
+        id="user-board"
+        title="บอร์ดรายชื่อผู้สมัคร"
+        bg="bg-base-200"
+      >
         <UserBoard data={UserBoardData} />
       </PageSection>
 
