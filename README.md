@@ -1,8 +1,6 @@
 📂 Project Overview - README.md
 
-This document summarizes the technical structure, layout, technologies, and custom implementations used in the project as explored and refined through the conversation.
-
----
+This document summarizes the technical structure, layout, technologies, and custom implementations used in the project as explored and refined through the conversation
 
 ✨ Project Purpose
 
