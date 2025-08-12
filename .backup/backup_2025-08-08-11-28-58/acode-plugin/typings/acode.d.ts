@@ -1,5 +1,5 @@
 type Strings = string[];
-declare var acode: Acode;
+declare let acode: Acode;
 
 interface WCPage extends HTMLElement {
   on(event: "hide" | "show", cb: (this: WCPage) => void): void;

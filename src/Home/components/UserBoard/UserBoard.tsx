@@ -148,7 +148,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
           <thead>
             <tr className="bg-gray-100">
               {displayKeys.map((key) => {
-                let style: React.CSSProperties = {};
+                const style: React.CSSProperties = {};
                 switch (key) {
                   case "full_name":
                     style.width = "20%";

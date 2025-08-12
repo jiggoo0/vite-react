@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle } from "lucide-react"; // ลบ X ออก
 import SocialIcons from "./SocialIcons";
 
 const ChatWidget = () => {
@@ -13,7 +13,7 @@ const ChatWidget = () => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  // Auto-close after 15s
+  // ปิดอัตโนมัติหลังเปิด 15 วินาที
   useEffect(() => {
     if (isOpen) {
       autoCloseTimer.current = setTimeout(() => setIsOpen(false), 15000);
@@ -23,7 +23,7 @@ const ChatWidget = () => {
     };
   }, [isOpen]);
 
-  // Close with Esc key
+  // ปิดด้วยปุ่ม Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
@@ -32,7 +32,7 @@ const ChatWidget = () => {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  // Auto-focus when open
+  // โฟกัส widget เมื่อเปิด
   useEffect(() => {
     if (isOpen && widgetRef.current) {
       widgetRef.current.focus();
@@ -69,11 +69,7 @@ const ChatWidget = () => {
           aria-expanded={isOpen}
           className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white dark:bg-primary-dark shadow-lg hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
-          {isOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <MessageCircle className="w-6 h-6" />
-          )}
+          <MessageCircle className="w-6 h-6" />
         </button>
       )}
     </div>

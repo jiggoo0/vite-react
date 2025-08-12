@@ -1,4 +1,6 @@
-onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
+ignoredBuiltDependencies:
   - core-js
   - esbuild
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'

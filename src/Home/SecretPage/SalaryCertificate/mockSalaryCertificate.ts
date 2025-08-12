@@ -1,4 +1,27 @@
-export const mockSalaryCertificate = {
+// src/Home/SecretPage/mockSalaryCertificate.ts
+export interface SalaryCertificateData {
+  companyName: string;
+  companyNameEn: string;
+  certificateNumber: string;
+
+  employeeName: string;
+  startDate: string;
+  position: string;
+  department: string;
+
+  salary: number;
+  positionAllowance: number;
+  costOfLiving: number;
+
+  issueDate: string;
+  signPosition: string;
+
+  phone: string;
+  addressLine1: string;
+  addressLine2: string;
+}
+
+export const mockSalaryCertificate: SalaryCertificateData = {
   companyName: "บริษัท เจ้าป่าการตลาดนอกกรอบ จำกัด",
   companyNameEn: "JOAPAAKANTARADNOKGROB CO., LTD.",
   certificateNumber: "HR. Cer 123456789",
@@ -8,9 +31,9 @@ export const mockSalaryCertificate = {
   position: "BOSSRAISARA",
   department: "MAIMEPAYOD",
 
-  salary: 50000,
-  positionAllowance: 5000,
-  costOfLiving: 3000,
+  salary: 50_000,
+  positionAllowance: 5_000,
+  costOfLiving: 3_000,
 
   issueDate: "1 ธันวาคม พ.ศ. 2345",
   signPosition: "แผนกบริหารทรัพยากรบุคคลและบริการองค์กร",

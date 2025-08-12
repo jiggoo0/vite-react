@@ -5,6 +5,7 @@ import {
   FaEnvelope,
   FaFacebookMessenger,
 } from "react-icons/fa";
+import { SiTiktok } from "react-icons/si"; // import ไอคอน TikTok
 
 const socialLinks = [
   {
@@ -30,6 +31,12 @@ const socialLinks = [
     label: "Messenger",
     text: "Messenger",
     icon: FaFacebookMessenger,
+  },
+  {
+    href: "https://www.tiktok.com/@jaopa.zerofour",
+    label: "TikTok",
+    text: "@jaopa.zerofour",
+    icon: SiTiktok,
   },
 ];
 

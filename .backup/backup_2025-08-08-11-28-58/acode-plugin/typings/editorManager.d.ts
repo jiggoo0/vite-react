@@ -1,4 +1,4 @@
-declare var editorManager: EditorManager;
+declare let editorManager: EditorManager;
 
 type FileEvent =
   | "switch-file"

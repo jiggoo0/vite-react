@@ -3,7 +3,7 @@
 /// <reference path="editorFile.d.ts" />
 /// <reference path="settings.d.ts" />
 
-declare var ace: AceAjax.Ace;
+declare let ace: AceAjax.Ace;
 
 declare global {
   interface Window {

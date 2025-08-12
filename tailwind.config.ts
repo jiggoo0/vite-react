@@ -12,12 +12,9 @@ const config: Config = {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 
-  safelist: [
-    // เรียกใช้ class ที่ขึ้นต้นด้วย bg-, text-, btn-
-    { pattern: /^(bg|text|btn)-/ },
-  ],
+  safelist: [{ pattern: /^(bg|text|btn)-/ }],
 
-  blocklist: ["debug", "bg-red-500"], // ป้องกัน class ที่ไม่ต้องการ
+  blocklist: ["debug", "bg-red-500"],
 
   theme: {
     extend: {

@@ -24,16 +24,16 @@
   }
 
   /* =====================================
-     Body
+     Body Styling
   ====================================== */
   body {
     @apply bg-base-100 text-base-content;
     line-height: 1.6;
-    min-height: 100dvh; /* Support mobile viewport height */
+    min-height: 100dvh; /* รองรับ viewport height บนอุปกรณ์มือถือ */
   }
 
   /* =====================================
-     Dark Mode (Auto if no data-theme)
+     Dark Mode Support (prefers-color-scheme)
   ====================================== */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
@@ -42,7 +42,7 @@
   }
 
   /* =====================================
-     Text Selection
+     Text Selection Styling
   ====================================== */
   ::selection {
     background-color: theme("colors.primary");
@@ -50,7 +50,7 @@
   }
 
   /* =====================================
-     Box Sizing & Scrollbar Defaults
+     Box Sizing & Scrollbar Styling
   ====================================== */
   *,
   *::before,
@@ -61,7 +61,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Custom Scrollbar (WebKit) */
+  /* Custom Scrollbar สำหรับ WebKit browsers */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -82,14 +82,14 @@
   }
 
   /* =====================================
-     Anchor Scroll Offset
+     Anchor Target Offset (scroll margin top)
   ====================================== */
   :target {
     scroll-margin-top: 6rem;
   }
 
   /* =====================================
-     Interactive Elements
+     Interactive Elements Transition
   ====================================== */
   button,
   a {
@@ -100,7 +100,7 @@
   }
 
   /* =====================================
-     Accessibility: Reduce Motion
+     Accessibility: Reduce Motion Preferences
   ====================================== */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -113,7 +113,7 @@
   }
 
   /* =====================================
-     Animations
+     Animations (slideBackground)
   ====================================== */
   @keyframes slideBackground {
     0% {
@@ -129,5 +129,26 @@
 
   .animate-slide {
     animation: slideBackground 20s ease-in-out infinite;
+  }
+}
+
+/* =====================================
+   Print Styles
+====================================== */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .a4-card-wrapper {
+    max-width: 210mm !important;
+    min-height: 297mm !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-after: always;
+    margin: 0 auto;
   }
 }

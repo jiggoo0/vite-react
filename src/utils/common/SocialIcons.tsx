@@ -7,13 +7,14 @@ import {
   FaEnvelope,
   FaFacebookMessenger,
 } from "react-icons/fa";
+import { SiTiktok } from "react-icons/si";
 
 /**
  * 🌐 SocialIcons
  *
  * - แสดงไอคอนโซเชียลพร้อมลิงก์
- * - ใช้ react-icons + Tailwind + A11y
- * - ฝังได้ใน Footer / Hero / Contact
+ * - ใช้ react-icons + Tailwind CSS + การเข้าถึง (A11y)
+ * - สามารถฝังใน Footer / Hero / Contact ได้
  */
 const socialLinks = [
   {
@@ -35,6 +36,11 @@ const socialLinks = [
     href: "https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share",
     label: "Messenger",
     icon: FaFacebookMessenger,
+  },
+  {
+    href: "https://www.tiktok.com/@jaopa.zerofour",
+    label: "TikTok",
+    icon: SiTiktok,
   },
 ];
 

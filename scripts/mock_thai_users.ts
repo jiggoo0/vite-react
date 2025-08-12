@@ -119,7 +119,7 @@ function mask(value: string, keep: number) {
 }
 
 function generateCitizenId() {
-  let digits: number[] = [];
+  const digits: number[] = [];
   digits.push(randomInt(1, 9));
   for (let i = 0; i < 11; i++) digits.push(randomInt(0, 9));
   let sum = 0;
