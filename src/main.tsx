@@ -12,8 +12,8 @@ import "@/index.css";
 const rootElement = document.getElementById("root") as HTMLElement | null;
 
 if (!rootElement) {
-  console.error("❌ ไม่พบ root element ใน DOM (#root)");
-  throw new Error("ไม่สามารถ mount React app ได้");
+  console.error("❌ Root element not found in DOM (#root)");
+  throw new Error("Cannot mount React app without root element");
 }
 
 const root = ReactDOM.createRoot(rootElement);

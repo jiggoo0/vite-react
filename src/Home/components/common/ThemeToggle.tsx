@@ -1,14 +1,11 @@
-// src/Home/components/common/ThemeToggle.tsx
-
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState<string>(
-    typeof window !== "undefined" && window.localStorage.getItem("theme")
-      ? window.localStorage.getItem("theme")!
-      : "light"
-  );
+  const [theme, setTheme] = useState<string>(() => {
+    if (typeof window === "undefined") return "light";
+    return window.localStorage.getItem("theme") || "light";
+  });
 
   useEffect(() => {
     if (theme === "dark") {
@@ -21,7 +18,7 @@ const ThemeToggle = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
   return (

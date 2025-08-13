@@ -7,10 +7,6 @@ type PortfolioCTAProps = {
   href: string;
 };
 
-/**
- * 📣 PortfolioCTA
- * - ปุ่ม CTA ลิงก์ดูโปรเจกต์เพิ่มเติม (เปิดแท็บใหม่)
- */
 const PortfolioCTA: FC<PortfolioCTAProps> = ({ href }) => (
   <a
     href={href}

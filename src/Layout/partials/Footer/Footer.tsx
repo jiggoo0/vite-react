@@ -5,7 +5,7 @@ import {
   FaEnvelope,
   FaFacebookMessenger,
 } from "react-icons/fa";
-import { SiTiktok } from "react-icons/si"; // ไอคอน TikTok
+import { SiTiktok } from "react-icons/si";
 
 const socialLinks = [
   {
@@ -49,7 +49,6 @@ const Footer: FC = () => {
       role="contentinfo"
     >
       <div className="max-w-7xl mx-auto px-4 text-center space-y-6">
-        {/* ช่องทางติดต่อ */}
         <nav
           aria-label="ช่องทางติดต่อ"
           className="flex flex-wrap justify-center gap-6 text-sm text-neutral-600 dark:text-neutral-400"
@@ -69,7 +68,6 @@ const Footer: FC = () => {
           ))}
         </nav>
 
-        {/* ลิขสิทธิ์ */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none">
           &copy; {currentYear} JP Visual & Docs — Powered by Applicationlab. All
           rights reserved.

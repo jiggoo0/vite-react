@@ -4,28 +4,19 @@ import ServiceCard from "./ui/ServiceCard";
 import ComingSoonServiceCard from "./ui/ComingSoonServiceCard";
 import SectionContainer from "@/utils/common/SectionContainer";
 
-/**
- * 🧩 ServicesSection
- * - แสดงรายการบริการที่พร้อมใช้งาน และบริการ Coming Soon
- * - ใช้ร่วมกับ Card สองแบบ: ServiceCard และ ComingSoonServiceCard
- * - ใช้ Grid responsive รองรับตั้งแต่ 1-3 คอลัมน์
- */
 const ServicesSection: FC = () => {
-  // กรองรายการบริการพร้อมใช้งาน แคชผลลัพธ์ด้วย useMemo
   const availableServices = useMemo(
-    () => jpServices.filter((service) => service.available),
+    () => jpServices.filter(({ available }) => available),
     []
   );
 
-  // กรองรายการบริการ Coming Soon
   const comingSoonServices = useMemo(
-    () => jpServices.filter((service) => !service.available),
+    () => jpServices.filter(({ available }) => !available),
     []
   );
 
   return (
     <SectionContainer as="section" aria-labelledby="services-title">
-      {/* Header section */}
       <header className="mb-10 text-center">
         <h2 id="services-title" className="text-3xl font-bold text-primary">
           บริการของเรา
@@ -36,7 +27,6 @@ const ServicesSection: FC = () => {
         </p>
       </header>
 
-      {/* Grid รายการบริการ */}
       <div role="list" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {availableServices.map((service) => (
           <ServiceCard key={service.id} service={service} />

@@ -1,5 +1,3 @@
-// ✅ src/Home/components/Portfolio/ui/Button.tsx — ปุ่มสำหรับกรองประเภท Portfolio
-
 "use client";
 
 import { FC } from "react";
@@ -11,11 +9,6 @@ interface FilterButtonProps {
   onClick: () => void;
 }
 
-/**
- * 🔘 FilterButton
- * - ปุ่ม UI สำหรับกรองประเภทผลงาน (เช่น Website, App ฯลฯ)
- * - แสดงสถานะ active ด้วยสีและการจัดสไตล์
- */
 const FilterButton: FC<FilterButtonProps> = ({ label, isActive, onClick }) => {
   return (
     <button

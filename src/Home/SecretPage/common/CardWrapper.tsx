@@ -1,9 +1,5 @@
 import { FC, ReactNode } from "react";
 
-/**
- * 🖇 CardWrapper — กรอบเนื้อหาปกติ (ทั่วไป)
- * ใช้ครอบเนื้อหาทั่วไป มีเงาและขอบโค้งมน
- */
 export const CardWrapper: FC<{ children: ReactNode }> = ({ children }) => (
   <div
     className="
@@ -15,11 +11,6 @@ export const CardWrapper: FC<{ children: ReactNode }> = ({ children }) => (
   </div>
 );
 
-/**
- * 📄 A4CardWrapper — กรอบเนื้อหาขนาด A4 สำหรับเอกสารพิมพ์
- * กำหนดขนาดตามมาตรฐาน A4 (210mm x 297mm)
- * รองรับการแสดงผลทั้งบนจอและการพิมพ์
- */
 export const A4CardWrapper: FC<{ children: ReactNode }> = ({ children }) => (
   <div
     className="

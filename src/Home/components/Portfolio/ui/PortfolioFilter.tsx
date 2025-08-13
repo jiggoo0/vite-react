@@ -9,11 +9,6 @@ type PortfolioFilterProps = {
   onChange: (category: string) => void;
 };
 
-/**
- * 🎛️ PortfolioFilter
- * - ปุ่มกรองรายการ Portfolio
- * - รองรับ Active state, Accessibility และ Transition
- */
 const PortfolioFilter: FC<PortfolioFilterProps> = ({
   categories,
   activeCategory,

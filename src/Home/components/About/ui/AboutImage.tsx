@@ -1,14 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
-/**
- * 🖼️ AboutImage
- *
- * - แสดงลายเซ็นหรือภาพที่สื่อถึงความน่าเชื่อถือของ JP Visual & Docs
- * - รองรับ lazy-load, responsive, animation และ A11y
- */
 const AboutImage = () => {
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <motion.figure
       initial={{ opacity: 0, y: 20 }}
@@ -20,13 +17,16 @@ const AboutImage = () => {
       <img
         src="/signature.webp"
         alt="ลายเซ็นความน่าเชื่อถือของ JP Visual & Docs"
-        className="mx-auto w-32 sm:w-40 md:w-48 opacity-80"
+        className={`mx-auto w-32 sm:w-40 md:w-48 opacity-80 transition-all duration-500 
+          ${loaded ? "blur-0 scale-100" : "blur-sm scale-95"} 
+          hover:scale-105 hover:opacity-100`}
         loading="lazy"
         decoding="async"
         fetchPriority="low"
+        onLoad={() => setLoaded(true)}
       />
-      <figcaption className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        ลายเซ็นแสดงถึงความน่าเชื่อถือและความเป็นมืออาชีพของทีมงาน
+      <figcaption className="mt-2 text-sm text-base-content/60">
+        ลายเซ็นที่สะท้อนถึงความเป็นมืออาชีพและความน่าเชื่อถือของทีมงาน
       </figcaption>
     </motion.figure>
   );

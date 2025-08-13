@@ -1,5 +1,3 @@
-// ✅ src/data/users.ts
-
 export type UserRecord = {
   username: string;
   passwordHash: string;

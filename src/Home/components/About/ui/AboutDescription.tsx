@@ -1,56 +1,84 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants, easeOut } from "framer-motion";
 
-/**
- * 📄 AboutDescription
- *
- * - แสดงคำอธิบายธุรกิจ JP Visual & Docs
- * - รองรับ animation, semantic tag, A11y
- */
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: easeOut, delay: i * 0.1 },
+  }),
+};
+
 const AboutDescription = () => {
+  const texts = [
+    {
+      type: "blockquote",
+      content: "“ยกระดับธุรกิจเฉพาะทางให้มีมาตรฐานระดับมืออาชีพ”",
+    },
+    {
+      type: "label",
+      content: "JP - VISUAL & DOCS",
+    },
+    {
+      type: "p",
+      content:
+        "รวมทีมตัวจริงที่เชี่ยวชาญงานออกแบบและสร้างภาพลักษณ์ดิจิทัล ให้ธุรกิจดูมืออาชีพ มีมาตรฐาน น่าเชื่อถือ และปลอดภัยต่อการทำงาน",
+    },
+    {
+      type: "p",
+      content:
+        "แม้ธุรกิจจะอยู่นอกระบบกฎหมายทั่วไป แต่เราทำให้มันดูดีได้ในแบบที่หาไม่ได้จาก Google หรือ YouTube การันตีด้วยประสบการณ์ในวงการมากกว่า 8 ปี",
+    },
+    {
+      type: "small",
+      content: "ผมไม่ใช่คนเก่ง แต่ทีมงานผมเก่งแน่นอน",
+    },
+  ];
+
   return (
-    <motion.section
+    <section
+      id="about-description"
       role="region"
-      aria-labelledby="about-description"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="text-center space-y-6 text-base md:text-lg text-gray-700 dark:text-gray-300"
+      aria-labelledby="about-description-title"
+      className="text-center max-w-3xl mx-auto space-y-6 text-base md:text-lg text-gray-700 dark:text-gray-300"
     >
-      {/* ✅ Headline */}
-      <blockquote
-        id="about-description"
-        tabIndex={-1}
-        className="text-lg md:text-xl font-medium leading-relaxed text-base-content/80"
-      >
-        “ทำธุรกิจสีเทาให้มีมาตรฐานระดับมืออาชีพ”
-      </blockquote>
-
-      {/* ✅ Brand Label */}
-      <p className="leading-relaxed text-base-content/60 font-semibold uppercase tracking-wide">
-        JP - VISUAL & DOCS
-      </p>
-
-      {/* ✅ Content */}
-      <p className="leading-relaxed text-base-content/60">
-        รวมตัวจริงของทีมงานเจ้าป่า เชี่ยวชาญ Application Mobile
-        ทำธุรกิจสีเทาให้ดูมืออาชีพ มีมาตรฐาน น่าเชื่อถือ กล้าจ้างงาน
-        และรับงานได้อย่างปลอดภัย
-      </p>
-
-      <p className="leading-relaxed text-base-content/60">
-        แม้ธุรกิจยังผิดกฎหมาย แต่เราทำให้มันดูดีได้ในแบบที่ Google หรือ YouTube
-        ไม่เคยสอน — หาจากที่อื่นไม่ได้แน่นอน และบางอย่างก็เปิดเผยทั้งหมดไม่ได้
-        การันตีด้วยประสบการณ์ของทีมเจ้าป่าที่อยู่ในวงการมากว่า 8 ปี
-      </p>
-
-      {/* ✅ Personal Statement */}
-      <p className="text-sm italic leading-snug text-base-content/50">
-        ผมไม่ใช่คนเก่ง แต่ทีมงานผมเก่งแน่นอน
-      </p>
-    </motion.section>
+      {texts.map((item, i) => (
+        <motion.div
+          key={i}
+          custom={i}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {item.type === "blockquote" && (
+            <blockquote
+              id="about-description-title"
+              className="text-lg md:text-xl font-medium leading-relaxed text-base-content/80"
+            >
+              {item.content}
+            </blockquote>
+          )}
+          {item.type === "label" && (
+            <p className="leading-relaxed text-base-content/60 font-semibold uppercase tracking-wide">
+              {item.content}
+            </p>
+          )}
+          {item.type === "p" && (
+            <p className="leading-relaxed text-base-content/60">
+              {item.content}
+            </p>
+          )}
+          {item.type === "small" && (
+            <p className="text-sm italic leading-snug text-base-content/50">
+              {item.content}
+            </p>
+          )}
+        </motion.div>
+      ))}
+    </section>
   );
 };
 

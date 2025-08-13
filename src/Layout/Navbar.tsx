@@ -4,12 +4,6 @@ import { Link } from "react-router-dom";
 import ThemeToggle from "@layout/ui/ThemeToggle";
 import Logo from "@layout/ui/Logo";
 
-/**
- * Navbar Component
- *
- * - แถบนำทางหลักของแอป
- * - แสดงโลโก้, ลิงก์เมนู และปุ่มสลับธีม
- */
 const Navbar: FC = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-base-100 text-base-content shadow-sm">
@@ -17,18 +11,12 @@ const Navbar: FC = () => {
         className="navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
-        {/* Logo */}
         <div className="flex-1">
-          <Link
-            to="/"
-            className="text-xl font-bold"
-            aria-label="JP Visual Home"
-          >
+          <Link to="/" aria-label="JP Visual Home">
             <Logo />
           </Link>
         </div>
 
-        {/* Navigation Links + ThemeToggle */}
         <div className="flex-none items-center space-x-2">
           <Link
             to="/"

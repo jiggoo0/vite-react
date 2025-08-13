@@ -1,4 +1,3 @@
-// src/Layout/ui/ThemeToggle.tsx
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
@@ -29,7 +28,6 @@ const ThemeToggle = () => {
 
   useEffect(() => {
     setIsMounted(true);
-
     if (typeof window === "undefined") return;
 
     const savedTheme = localStorage.getItem(THEME_KEY);
@@ -44,17 +42,14 @@ const ThemeToggle = () => {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === THEME_KEY) {
-        const next = e.newValue === "dark";
-        applyTheme(next);
+        applyTheme(e.newValue === "dark");
       }
     };
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [applyTheme]);
 
-  const toggleTheme = () => {
-    applyTheme(!isDark);
-  };
+  const toggleTheme = () => applyTheme(!isDark);
 
   if (!isMounted) return null;
 

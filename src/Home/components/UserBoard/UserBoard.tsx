@@ -46,13 +46,14 @@ interface UserBoardProps {
   pageSize?: number;
 }
 
-const CORRECT_CODE = "1234";
+const CORRECT_CODE = "9780";
 
 const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [page, setPage] = useState(1);
   const [codeInput, setCodeInput] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [ariaMessage, setAriaMessage] = useState("");
 
   const displayKeys = useMemo(() => Object.keys(labelMap), []);
   const totalPages = useMemo(
@@ -85,8 +86,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
       setIsAuthorized(true);
       setErrorMsg("");
       setCodeInput("");
+      setAriaMessage("ยืนยันรหัสสำเร็จ");
     } else {
       setErrorMsg("รหัสไม่ถูกต้อง กรุณาลองใหม่");
+      setAriaMessage("รหัสไม่ถูกต้อง กรุณาลองใหม่");
     }
   };
 
@@ -108,6 +111,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
           className="flex-grow border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           autoFocus
           aria-label="รหัส"
+          aria-describedby="code-error"
         />
         <button
           type="submit"
@@ -117,11 +121,17 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
           ยืนยัน
         </button>
       </div>
-      {errorMsg && (
-        <p className="mt-2 text-red-600 text-center font-medium" role="alert">
-          {errorMsg}
-        </p>
-      )}
+      <p
+        id="code-error"
+        className="mt-2 text-red-600 text-center font-medium"
+        role="alert"
+        aria-live="assertive"
+      >
+        {errorMsg}
+      </p>
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {ariaMessage}
+      </div>
     </form>
   );
 
@@ -135,7 +145,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
       tabIndex={-1}
     >
       {!isAuthorized && (
-        <div className="absolute inset-0 bg-white bg-opacity-60 flex justify-center items-center pointer-events-none rounded-lg">
+        <div
+          className="absolute inset-0 bg-white bg-opacity-60 flex justify-center items-center pointer-events-none rounded-lg"
+          aria-hidden={isAuthorized}
+        >
           <p className="text-gray-500 font-semibold text-lg select-none">
             กรุณากรอกรหัสเพื่อดูข้อมูล
           </p>
@@ -216,6 +229,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
         <button
           onClick={() => gotoPage(page - 1)}
           disabled={page === 1}
+          aria-disabled={page === 1}
           className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[60px] sm:min-w-[80px] ${
             page === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
           }`}
@@ -244,6 +258,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
         <button
           onClick={() => gotoPage(page + 1)}
           disabled={page === totalPages}
+          aria-disabled={page === totalPages}
           className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[60px] sm:min-w-[80px] ${
             page === totalPages
               ? "opacity-50 cursor-not-allowed"

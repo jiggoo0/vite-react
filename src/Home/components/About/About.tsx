@@ -1,18 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants, easeOut } from "framer-motion";
 import AboutTitle from "./ui/AboutTitle";
 import AboutDescription from "./ui/AboutDescription";
 import AboutImage from "./ui/AboutImage";
 import AboutQuote from "./ui/AboutQuote";
 
-/**
- * 📘 About Section — JP Visual & Docs
- *
- * - แสดงข้อมูลเบื้องต้นเกี่ยวกับทีม
- * - รองรับ animation (Framer Motion)
- * - Responsive layout และ A11y ครบถ้วน
- */
+const containerVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.15,
+      duration: 0.6,
+      ease: easeOut,
+    },
+  },
+};
+
 const About = () => {
   return (
     <section
@@ -21,20 +27,27 @@ const About = () => {
       aria-labelledby="about-title"
       className="relative isolate overflow-hidden bg-base-100 text-base-content py-24 px-4 sm:px-6 lg:px-8"
     >
-      {/* 🎨 Optional Gradient Background */}
-      {/* <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/10 to-secondary/10 blur-2xl opacity-20" /> */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 blur-3xl opacity-40" />
 
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
         viewport={{ once: true }}
-        className="mx-auto max-w-3xl space-y-14 text-center"
+        className="mx-auto max-w-4xl space-y-14 text-center"
       >
-        <AboutTitle />
-        <AboutDescription />
-        <AboutImage />
-        <AboutQuote />
+        <motion.div variants={containerVariants}>
+          <AboutTitle />
+        </motion.div>
+        <motion.div variants={containerVariants}>
+          <AboutDescription />
+        </motion.div>
+        <motion.div variants={containerVariants}>
+          <AboutImage />
+        </motion.div>
+        <motion.div variants={containerVariants}>
+          <AboutQuote />
+        </motion.div>
       </motion.div>
     </section>
   );
