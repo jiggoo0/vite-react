@@ -2,7 +2,8 @@ import { Variants, easeInOut } from "framer-motion";
 
 /**
  * 📦 Container Motion Variants
- * ใช้สำหรับห่อ container หลัก เพื่อให้ children animation stagger
+ * ใช้สำหรับ Motion Container หลัก
+ * กำหนดค่า hidden/visible พร้อม staggerChildren
  */
 export const containerVariants: Variants = {
   hidden: {
@@ -22,21 +23,21 @@ export const containerVariants: Variants = {
 
 /**
  * 🔼 Fade In Up Motion Variants
- * ใช้สำหรับ element แต่ละตัว ให้ fade in + เลื่อนขึ้น
- * รับ parameter i สำหรับ delay ของแต่ละ element
+ * ใช้สำหรับ Element เดี่ยว ๆ เช่น Input, Button, Text
+ * สามารถส่งค่า i (ลำดับ) เพื่อ delay animation
  */
 export const fadeInUp: Variants = {
   hidden: {
     opacity: 0,
     y: 20,
   },
-  visible: (i: number) => ({
+  visible: (i: number = 0) => ({
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.3, // ความยาว animation ของ element
       ease: easeInOut, // easing แบบ smooth
-      delay: i * 0.1, // stagger effect
+      delay: i * 0.1, // stagger effect ตามลำดับ
     },
   }),
 };

@@ -15,11 +15,7 @@ const SalaryCertificate: React.FC = () => {
     >
       {/* ─── Header ─────────────────────────────── */}
       <div className="flex justify-between items-start">
-        <img
-          src="/logo.png"
-          alt="Company Logo"
-          className="w-[3cm] h-[3cm] object-contain"
-        />
+        {/* โลโก้ถูกเอาออก */}
         <div className="text-right leading-tight">
           <p className="text-[18pt] font-bold">{data.companyName}</p>
           <p className="text-[16pt] font-bold">{data.companyNameEn}</p>

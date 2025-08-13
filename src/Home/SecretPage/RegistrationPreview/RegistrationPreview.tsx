@@ -40,7 +40,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
     if (!ref.current) return;
 
     const canvas = await html2canvas(ref.current, {
-      scale: 2,
+      scale: 2, // เพิ่มความละเอียด
       useCORS: true,
       backgroundColor: "#fff",
     });
@@ -48,7 +48,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
-      format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96],
+      format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96], // แปลง px เป็น pt
     });
 
     pdf.addImage(
@@ -64,7 +64,6 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
 
   return (
     <>
-      {/* Certificate Section */}
       <section
         ref={ref}
         className="relative mx-auto w-full max-w-[800px] rounded-md border border-gray-400 bg-white p-12 shadow print:shadow-none print:border print:m-0 print:p-8"
@@ -73,10 +72,10 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           lineHeight: 1.8,
           fontSize: "18pt",
           backgroundColor: "#fff",
-          minHeight: 1200,
+          minHeight: 1200, // ปรับขนาดหน้า A4
         }}
       >
-        {/* Top-left details */}
+        {/* Top-left */}
         <div className="absolute left-12 top-8 text-[14pt] leading-snug">
           <p className="mb-2">
             ทะเบียนเลขที่ {withFallback(registrationNumber)}
@@ -87,7 +86,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           </p>
         </div>
 
-        {/* Top-right details */}
+        {/* Top-right */}
         <div className="absolute right-12 top-8 text-right text-[14pt] leading-snug">
           <p>แบบ พค. 0403</p>
         </div>
@@ -126,17 +125,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           <p className="mt-6">เขียนเป็นอักษรโรมัน</p>
           <p>{withFallback(businessName?.toUpperCase())}</p>
 
-          <p className="mt-6">ชนิดแห่งพาณิชยกิจ</p>
-          <div className="mx-auto max-w-[720px] space-y-3 text-gray-500">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <p key={i}>
-                <span className="inline-block h-[1.7em] w-full border-b border-gray-300" />
-              </p>
-            ))}
-          </div>
-
-          {/* Address */}
-          <p className="mt-10 font-semibold">ที่ตั้งสถานประกอบการ</p>
+          <p className="mt-6 font-semibold">ที่ตั้งสถานประกอบการ</p>
           <p className="mx-auto max-w-[720px] indent-12 text-left leading-relaxed">
             เลขที่ {withFallback(address.houseNumber)} หมู่ที่{" "}
             {withFallback(address.villageNo)} ตรอก/ซอย{" "}
@@ -161,7 +150,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
         </div>
       </section>
 
-      {/* Action Buttons */}
+      {/* Download Button */}
       <div className="mt-6 text-center">
         <button className="btn btn-primary" onClick={handleDownloadPdf}>
           ดาวน์โหลด PDF
