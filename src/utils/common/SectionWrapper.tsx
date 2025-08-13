@@ -1,17 +1,17 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "@/utils/cn";
 
-type SectionWrapperProps = PropsWithChildren<{
-  /** เพิ่มเติม className สำหรับปรับแต่ง container */
+interface SectionWrapperProps extends PropsWithChildren<object> {
+  /** 🎨 เพิ่มเติม className สำหรับปรับแต่ง container */
   className?: string;
-}>;
+}
 
 /**
  * 🧱 SectionWrapper
  *
- * - ใช้สำหรับจัดระยะขอบแนวนอนและความกว้างของ Section
- * - ปรับให้ responsive ได้โดยใช้ Tailwind utility classes
- * - ใช้ร่วมกับแต่ละ Section เช่น Hero, Services, Features ฯลฯ
+ * - ครอบเนื้อหาแต่ละ Section และควบคุม max width
+ * - ปรับ responsive padding ด้วย Tailwind (mobile → desktop)
+ * - ใช้ร่วมกับ Hero, Services, Features หรือ Section อื่นๆ
  */
 const SectionWrapper: FC<SectionWrapperProps> = ({ children, className }) => {
   return (

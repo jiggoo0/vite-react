@@ -3,6 +3,12 @@ import { useState, useEffect, useCallback } from "react";
 const THEME_KEY = "theme";
 type Theme = "light" | "dark";
 
+/**
+ * 🔄 useTheme
+ *
+ * - Hook สำหรับจัดการ Theme ของเว็บไซต์ (Light / Dark)
+ * - รองรับ localStorage, prefers-color-scheme, และการ sync ข้าม tab
+ */
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>("light");
 
@@ -19,6 +25,7 @@ export function useTheme() {
     }
   }, []);
 
+  // โหลด theme เริ่มต้น
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -36,6 +43,7 @@ export function useTheme() {
     applyTheme(defaultTheme);
   }, [applyTheme]);
 
+  // Sync theme ข้าม tab/window
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (
@@ -50,6 +58,7 @@ export function useTheme() {
     return () => window.removeEventListener("storage", onStorage);
   }, [applyTheme]);
 
+  // Toggle theme
   const toggleTheme = () => {
     applyTheme(theme === "dark" ? "light" : "dark");
   };

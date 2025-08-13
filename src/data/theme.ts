@@ -1,5 +1,6 @@
 export type ThemeName = "light" | "dark" | "business" | "team";
 
+/** 🌞 Light Theme Colors */
 export const lightThemeColors = {
   primary: "#2563EB",
   secondary: "#9333EA",
@@ -14,6 +15,7 @@ export const lightThemeColors = {
   error: "#F87272",
 };
 
+/** 🌙 Dark Theme Colors */
 export const darkThemeColors = {
   primary: "#3B82F6",
   secondary: "#8B5CF6",
@@ -28,6 +30,7 @@ export const darkThemeColors = {
   error: "#F87171",
 };
 
+/** 💼 Business Theme Colors */
 export const businessThemeColors = {
   primary: "#0C4A6E",
   secondary: "#0284C7",
@@ -42,6 +45,7 @@ export const businessThemeColors = {
   error: "#DC2626",
 };
 
+/** 👥 Team Theme Colors */
 export const teamThemeColors = {
   primary: "#1D4ED8",
   secondary: "#9333EA",
@@ -56,6 +60,7 @@ export const teamThemeColors = {
   error: "#F87272",
 };
 
+/** 🔹 Themes Object */
 export const themes = {
   light: lightThemeColors,
   dark: darkThemeColors,
@@ -63,4 +68,5 @@ export const themes = {
   team: teamThemeColors,
 };
 
+/** 🏷 Default Theme */
 export const defaultThemeName: ThemeName = "team";

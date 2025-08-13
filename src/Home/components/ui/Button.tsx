@@ -19,39 +19,23 @@ const Button: FC<ButtonProps> = ({
   const baseClass =
     "btn font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
 
-  let sizeClass = "";
-  switch (size) {
-    case "sm":
-      sizeClass = "btn-sm";
-      break;
-    case "md":
-      sizeClass = "btn-md";
-      break;
-    case "lg":
-      sizeClass = "btn-lg";
-      break;
-  }
+  const sizeClasses: Record<string, string> = {
+    sm: "btn-sm",
+    md: "btn-md",
+    lg: "btn-lg",
+  };
 
-  let variantClass = "";
-  switch (variant) {
-    case "primary":
-      variantClass = "btn-primary";
-      break;
-    case "secondary":
-      variantClass = "btn-secondary";
-      break;
-    case "ghost":
-      variantClass = "btn-ghost";
-      break;
-    case "outline":
-      variantClass = "btn-outline";
-      break;
-  }
+  const variantClasses: Record<string, string> = {
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    ghost: "btn-ghost",
+    outline: "btn-outline",
+  };
 
   return (
     <button
       type={type}
-      className={`${baseClass} ${sizeClass} ${variantClass} ${className}`}
+      className={`${baseClass} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
       {...props}
     >
       {children}

@@ -9,6 +9,7 @@ import { ServicesSection } from "@home/components/Services";
 import FeatureList from "@home/components/Services/FeatureList";
 import FeatureAwards from "@home/components/Services/FeatureAwards";
 import UserBoard from "@home/components/UserBoard/UserBoard";
+import TrustBadges from "@home/components/UserBoard/TrustBadges";
 import SectionContainer from "@common/SectionContainer";
 import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
 import { TestimonialSlider } from "@home/components/Testimonials/TestimonialSlider";
@@ -49,27 +50,24 @@ const Home: FC = () => {
   const UserBoardData = [...UserBoardDataReadonly];
 
   return (
-    <main
-      role="main"
-      className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen"
-    >
-      {/* Hero Section */}
+    <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
       <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์" bg="bg-base-100">
         <Hero />
       </PageSection>
 
-      {/* About Section */}
       <PageSection id="about" title="เกี่ยวกับเรา" bg="bg-base-200">
         <About />
       </PageSection>
 
-      {/* Selling Points */}
       <PageSection id="selling-points" title="จุดเด่นของเรา" bg="bg-base-100">
         <SellingPoints />
       </PageSection>
 
-      {/* Features Section */}
-      <PageSection id="features" title="จุดเด่นของบริการ" bg="bg-base-100">
+      <PageSection
+        id="features-trust"
+        title="จุดเด่นและความน่าเชื่อถือ"
+        bg="bg-base-200"
+      >
         <div className="md:flex md:space-x-12 space-y-12 md:space-y-0">
           <div className="md:flex-1">
             <FeatureList />
@@ -78,14 +76,15 @@ const Home: FC = () => {
             <FeatureAwards />
           </div>
         </div>
+        <div className="mt-12">
+          <TrustBadges />
+        </div>
       </PageSection>
 
-      {/* Services Section */}
       <PageSection id="services" title="บริการของเรา" bg="bg-base-100">
         <ServicesSection />
       </PageSection>
 
-      {/* User Board Section */}
       <PageSection
         id="user-board"
         title="บอร์ดรายชื่อผู้สมัคร"
@@ -94,7 +93,6 @@ const Home: FC = () => {
         <UserBoard data={UserBoardData} />
       </PageSection>
 
-      {/* Testimonials Section */}
       <PageSection
         id="testimonials"
         title="เสียงตอบรับจากลูกค้า"
@@ -103,36 +101,18 @@ const Home: FC = () => {
         <TestimonialSlider />
       </PageSection>
 
-      {/* Portfolio Section */}
       <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
         <Suspense
-          fallback={
-            <div
-              role="status"
-              aria-live="polite"
-              aria-busy="true"
-              className="text-center py-16"
-            >
-              กำลังโหลดผลงาน...
-            </div>
-          }
+          fallback={<div className="text-center py-16">กำลังโหลดผลงาน...</div>}
         >
           <PortfolioGallery />
         </Suspense>
       </PageSection>
 
-      {/* FAQ Section */}
       <PageSection id="faq" title="คำถามที่พบบ่อย" bg="bg-base-200">
         <Suspense
           fallback={
-            <div
-              role="status"
-              aria-live="polite"
-              aria-busy="true"
-              className="text-center py-16"
-            >
-              กำลังโหลดคำถามที่พบบ่อย...
-            </div>
+            <div className="text-center py-16">กำลังโหลดคำถามที่พบบ่อย...</div>
           }
         >
           <SupportFAQ />

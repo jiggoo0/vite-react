@@ -1,14 +1,12 @@
 // src/data/UserTempCodes.ts
-
 export type TempCode = {
   userId: string;
   hashedCode: string;
-  loginStartTime?: number; // timestamp มิลลิวินาทีเมื่อเริ่ม login ครั้งแรก
-  expiresInMs: number; // เวลาหมดอายุในมิลลิวินาที (เช่น 10 นาที = 10*60*1000)
-  used: boolean; // ใช้แล้วหรือยัง (ไม่ให้ใช้ซ้ำ)
+  loginStartTime?: number;
+  expiresInMs: number;
+  used: boolean;
 };
 
-// ฟังก์ชัน hash รหัสด้วย sha256 (ใช้ Web Crypto API)
 export async function hashCode(code: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(code);
@@ -17,7 +15,6 @@ export async function hashCode(code: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// rawUserCodes type กำหนดชัดเจน
 type RawUserCode = {
   userId: string;
   password: string;
@@ -87,18 +84,16 @@ const rawUserCodes: RawUserCode[] = [
   },
 ];
 
-// สร้าง userTempCodes ใช้ hashedCode เดิมเหมือนเดิม
 const userTempCodes: TempCode[] = rawUserCodes.map(
   ({ userId, hashedCode }) => ({
     userId,
     hashedCode,
     loginStartTime: undefined,
-    expiresInMs: 10 * 60 * 1000, // 10 นาที
+    expiresInMs: 10 * 60 * 1000,
     used: false,
   })
 );
 
-// ล้างรหัสหมดอายุทุก 1 นาทีอัตโนมัติ
 setInterval(() => {
   const now = Date.now();
   for (let i = userTempCodes.length - 1; i >= 0; i--) {
@@ -109,7 +104,6 @@ setInterval(() => {
   }
 }, 60 * 1000);
 
-// resetUserTempCode เปลี่ยนให้ async ใช้ hashCode ใหม่
 export async function resetUserTempCode(
   userId: string,
   plainCode: string,
@@ -117,7 +111,6 @@ export async function resetUserTempCode(
 ): Promise<void> {
   const hashed = await hashCode(plainCode);
   const existing = userTempCodes.find((r) => r.userId === userId);
-
   if (existing) {
     existing.hashedCode = hashed;
     existing.used = false;
@@ -134,27 +127,21 @@ export async function resetUserTempCode(
   }
 }
 
-// tryUserTempLogin เปลี่ยนให้ async เพราะต้อง await hashCode
 export async function tryUserTempLogin(
   userId: string,
   plainCode: string
 ): Promise<boolean> {
   const code = userTempCodes.find((c) => c.userId === userId);
   if (!code || code.used) return false;
-
   const hashedInput = await hashCode(plainCode);
   if (code.hashedCode !== hashedInput) return false;
-
   const now = Date.now();
-
   if (!code.loginStartTime) {
     code.loginStartTime = now;
     return true;
   }
-
   const expired = now - code.loginStartTime > code.expiresInMs;
   if (expired) return false;
-
   code.used = true;
   return true;
 }
@@ -162,11 +149,9 @@ export async function tryUserTempLogin(
 export function getUserTempTimeRemaining(userId: string): number | null {
   const code = userTempCodes.find((c) => c.userId === userId);
   if (!code || !code.loginStartTime) return null;
-
   const now = Date.now();
   const remaining = code.expiresInMs - (now - code.loginStartTime);
   return remaining > 0 ? remaining : 0;
 }
 
-// export ตัวแปรสำหรับใช้งานอื่น
 export const tempCodes = userTempCodes;

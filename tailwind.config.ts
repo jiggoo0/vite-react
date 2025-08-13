@@ -7,6 +7,7 @@ const config: Config = {
   plugins: [daisyui],
   daisyui: {
     themes: [
+      /** 🌞 Light Theme */
       {
         light: {
           primary: "#2563eb",
@@ -36,6 +37,8 @@ const config: Config = {
           error: "#F87272",
         },
       },
+
+      /** 🌙 Dark Theme */
       {
         dark: {
           primary: "#3b82f6",
@@ -65,6 +68,8 @@ const config: Config = {
           error: "#f87171",
         },
       },
+
+      /** 💼 Business Theme */
       "business",
     ],
   },

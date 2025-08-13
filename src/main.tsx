@@ -9,7 +9,13 @@ import "@/styles/global.css";
 import "@/styles/fonts.css";
 import "@/index.css";
 
-const rootElement = document.getElementById("root") as HTMLElement | null;
+/**
+ * 🔹 Entry Point ของแอป React
+ * - ตรวจสอบ root element ก่อน mount
+ * - ใช้ React.StrictMode
+ * - รองรับ React Router DOM และ ThemeContext
+ */
+const rootElement = document.getElementById("root");
 
 if (!rootElement) {
   console.error("❌ Root element not found in DOM (#root)");

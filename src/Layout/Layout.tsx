@@ -24,11 +24,10 @@ const Layout: FC<{ children?: ReactNode }> = ({ children }) => (
       aria-live="polite"
       aria-atomic="true"
     >
-      {children ?? <Outlet />}
+      {children || <Outlet />}
     </main>
 
     <Footer />
-
     <ChatWidget />
     <BackToTop />
     <DisclaimerModal />

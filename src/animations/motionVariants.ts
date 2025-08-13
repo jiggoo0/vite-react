@@ -1,5 +1,6 @@
 import { Variants, easeInOut } from "framer-motion";
 
+/** 📦 Container Motion Variants */
 export const containerVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -13,6 +14,7 @@ export const containerVariants: Variants = {
   },
 };
 
+/** 🔼 Fade In Up Motion Variants */
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({

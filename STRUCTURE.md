@@ -76,7 +76,9 @@
         - ServiceCard.tsx
     - Testimonials/
       - TestimonialSlider.tsx
+      - TrustBadge.tsx
     - UserBoard/
+      - TrustBadges.tsx
       - UserBoard.tsx
     - common/
       - LogoutButton.tsx

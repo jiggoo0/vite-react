@@ -1,4 +1,4 @@
-// ✅ src/utils/common/MobileMenu.tsx — Mobile Drawer Menu (Improved Production Version)
+// ✅ src/utils/common/MobileMenu.tsx — Mobile Drawer Menu (Production Ready)
 "use client";
 
 import { FC, useEffect } from "react";
@@ -9,14 +9,16 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
-  // ปิดเมนูเมื่อกด Esc
+  // ปิดเมนูเมื่อกด Esc และป้องกัน scroll เมื่อเปิด
   useEffect(() => {
     if (!open) return;
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     document.addEventListener("keydown", handleEsc);
-    document.body.style.overflow = "hidden"; // ป้องกัน scroll
+    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleEsc);

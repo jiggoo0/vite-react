@@ -15,15 +15,19 @@ export interface IUser {
 
 const DEADLINE_DAYS = 65;
 
-const getDeadline = (createdAt: string): string => {
+const getDeadline = (createdAt: string) => {
   const d = new Date(createdAt);
   d.setDate(d.getDate() + DEADLINE_DAYS);
   return d.toLocaleDateString("th-TH");
 };
 
-const labelMap: Record<
-  string,
-  { label: string; compute?: (val: unknown, row?: IUser) => string }
+type DisplayKey = keyof IUser | "deadline";
+
+const labelMap: Partial<
+  Record<
+    DisplayKey,
+    { label: string; compute?: (val: unknown, row?: IUser) => string }
+  >
 > = {
   full_name: { label: "ชื่อ-นามสกุล" },
   citizen_id: { label: "เลขบัตร" },
@@ -55,32 +59,29 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [ariaMessage, setAriaMessage] = useState("");
 
-  const displayKeys = useMemo(() => Object.keys(labelMap), []);
+  const displayKeys = useMemo(() => Object.keys(labelMap) as DisplayKey[], []);
   const totalPages = useMemo(
     () => Math.ceil(data.length / pageSize),
     [data.length, pageSize]
   );
-
-  const pageData = useMemo(() => {
-    const startIndex = (page - 1) * pageSize;
-    return data.slice(startIndex, startIndex + pageSize);
-  }, [data, page, pageSize]);
+  const pageData = useMemo(
+    () => data.slice((page - 1) * pageSize, page * pageSize),
+    [data, page, pageSize]
+  );
 
   const gotoPage = useCallback(
     (num: number) => {
       if (num < 1 || num > totalPages) return;
       setPage(num);
-      const tableElement = document.getElementById("user-table");
-      if (tableElement) {
-        tableElement.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      const el = document.getElementById("user-table");
+      el
+        ? el.scrollIntoView({ behavior: "smooth", block: "start" })
+        : window.scrollTo({ top: 0, behavior: "smooth" });
     },
     [totalPages]
   );
 
-  const handleCodeSubmit = (e: React.FormEvent) => {
+  const handleCodeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (codeInput.trim() === CORRECT_CODE) {
       setIsAuthorized(true);
@@ -138,55 +139,43 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const renderTable = () => (
     <div
       id="user-table"
-      className={`relative overflow-x-auto w-full max-w-full sm:max-w-6xl rounded-lg shadow-md bg-white ${
-        isAuthorized ? "" : "filter blur-sm pointer-events-none select-none"
+      className={`relative overflow-x-auto w-full max-w-full sm:max-w-6xl rounded-lg shadow-md bg-white transition-all duration-500 ${
+        isAuthorized ? "blur-0" : "blur-md pointer-events-none select-none"
       }`}
       aria-live="polite"
       tabIndex={-1}
+      style={{ minHeight: pageData.length > 0 ? undefined : "200px" }}
     >
       {!isAuthorized && (
         <div
           className="absolute inset-0 bg-white bg-opacity-60 flex justify-center items-center pointer-events-none rounded-lg"
-          aria-hidden={isAuthorized}
+          aria-hidden
         >
           <p className="text-gray-500 font-semibold text-lg select-none">
             กรุณากรอกรหัสเพื่อดูข้อมูล
           </p>
         </div>
       )}
-
       <div className="overflow-x-auto">
-        <table
-          className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm"
-          style={{ tableLayout: "auto" }}
-        >
+        <table className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm">
           <thead>
             <tr className="bg-gray-100">
               {displayKeys.map((key) => {
-                const style: React.CSSProperties = {};
-                switch (key) {
-                  case "full_name":
-                    style.width = "20%";
-                    break;
-                  case "address":
-                    style.width = "25%";
-                    break;
-                  case "status":
-                    style.width = "10%";
-                    break;
-                  case "province":
-                    style.width = "10%";
-                    break;
-                  default:
-                    style.width = "auto";
-                }
+                const style: React.CSSProperties =
+                  key === "full_name"
+                    ? { width: "20%" }
+                    : key === "address"
+                      ? { width: "25%" }
+                      : key === "status" || key === "province"
+                        ? { width: "10%" }
+                        : {};
                 return (
                   <th
                     key={key}
                     className="border border-gray-300 px-3 py-2 text-left whitespace-nowrap text-xs sm:text-sm"
                     style={style}
                   >
-                    {labelMap[key].label}
+                    {labelMap[key]?.label}
                   </th>
                 );
               })}
@@ -199,19 +188,17 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
                 className="odd:bg-white even:bg-gray-50 hover:bg-gray-200 transition-colors duration-150"
               >
                 {displayKeys.map((key) => {
-                  const value =
-                    key === "deadline"
-                      ? labelMap[key].compute?.("", user)
-                      : labelMap[key].compute
-                        ? labelMap[key].compute(user[key as keyof IUser])
-                        : (user[key as keyof IUser] as string);
+                  const compute = labelMap[key]?.compute;
+                  const rawValue: unknown =
+                    key === "deadline" ? undefined : user[key as keyof IUser];
+                  const value = compute ? compute(rawValue, user) : rawValue;
                   return (
                     <td
                       key={key}
                       className="border border-gray-300 px-3 py-2 max-w-xs truncate text-xs sm:text-sm"
-                      title={value}
+                      title={String(value)}
                     >
-                      {value}
+                      {String(value)}
                     </td>
                   );
                 })}
@@ -221,60 +208,62 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
         </table>
       </div>
 
-      <nav
-        className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4"
-        role="navigation"
-        aria-label="Pagination"
-      >
-        <button
-          onClick={() => gotoPage(page - 1)}
-          disabled={page === 1}
-          aria-disabled={page === 1}
-          className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[60px] sm:min-w-[80px] ${
-            page === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
-          }`}
-          aria-label="หน้าก่อนหน้า"
+      {totalPages > 1 && (
+        <nav
+          className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4"
+          role="navigation"
+          aria-label="Pagination"
         >
-          Prev
-        </button>
+          <button
+            onClick={() => gotoPage(page - 1)}
+            disabled={page === 1}
+            aria-disabled={page === 1}
+            className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[60px] sm:min-w-[80px] ${
+              page === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
+            }`}
+            aria-label="หน้าก่อนหน้า"
+          >
+            Prev
+          </button>
 
-        <div className="flex gap-1 overflow-x-auto max-w-[320px] sm:max-w-none">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-            <button
-              key={`page_${num}`}
-              onClick={() => gotoPage(num)}
-              className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[40px] sm:min-w-[55px] ${
-                num === page
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "hover:bg-gray-200"
-              }`}
-              aria-current={num === page ? "page" : undefined}
-            >
-              {num}
-            </button>
-          ))}
-        </div>
+          <div className="flex gap-1 overflow-x-auto max-w-[320px] sm:max-w-none">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                onClick={() => gotoPage(num)}
+                className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[40px] sm:min-w-[55px] ${
+                  num === page
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "hover:bg-gray-200"
+                }`}
+                aria-current={num === page ? "page" : undefined}
+              >
+                {num}
+              </button>
+            ))}
+          </div>
 
-        <button
-          onClick={() => gotoPage(page + 1)}
-          disabled={page === totalPages}
-          aria-disabled={page === totalPages}
-          className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[60px] sm:min-w-[80px] ${
-            page === totalPages
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-gray-200"
-          }`}
-          aria-label="หน้าถัดไป"
-        >
-          Next
-        </button>
-      </nav>
+          <button
+            onClick={() => gotoPage(page + 1)}
+            disabled={page === totalPages}
+            aria-disabled={page === totalPages}
+            className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold transition-colors min-w-[60px] sm:min-w-[80px] ${
+              page === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+            aria-label="หน้าถัดไป"
+          >
+            Next
+          </button>
+        </nav>
+      )}
     </div>
   );
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center p-4 sm:pt-6 sm:pb-2">
-      {!isAuthorized && renderCodeForm()}
+    <main className="w-full flex flex-col items-center p-4 sm:pt-6 sm:pb-4 bg-gray-50">
+      {isAuthorized ? null : renderCodeForm()}
       {renderTable()}
     </main>
   );

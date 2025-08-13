@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * ✅ PortfolioItemSchema
  * - ใช้ validate พอร์ตโฟลิโอแต่ละรายการ
- * - `image` เป็น path ภายใน ไม่ต้องตรวจสอบ url format
+ * - `image` เป็น path ภายใน ไม่ต้องตรวจสอบ URL format
  */
 export const PortfolioItemSchema = z.object({
   id: z.string(),
@@ -15,7 +15,7 @@ export const PortfolioItemSchema = z.object({
     "Mobile App",
     "Graphic",
   ]),
-  image: z.string().min(1, { message: "Image path is required" }), // ปรับจาก .url() เป็น .string().min(1)
+  image: z.string().min(1, { message: "Image path is required" }),
   description: z.string().optional(),
   link: z.string().url().optional(),
 });

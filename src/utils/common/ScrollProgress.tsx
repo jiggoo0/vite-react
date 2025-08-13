@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, useRef } from "react";
 
 /**
@@ -5,7 +7,7 @@ import { useEffect, useState, useRef } from "react";
  *
  * - แสดงแถบความคืบหน้าแนวนอนด้านบนเมื่อ scroll หน้าเว็บ
  * - ใช้ window.scrollY และ document scrollHeight คำนวณ
- * - ปรับ transition smooth และใช้ Tailwind รองรับ dark mode
+ * - รองรับ transition smooth และ dark mode
  */
 const ScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -27,7 +29,7 @@ const ScrollProgress = () => {
     };
 
     window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress(); // ค่าเริ่มต้นตอนโหลด
+    updateProgress(); // ตั้งค่าเริ่มต้นตอนโหลด
 
     return () => window.removeEventListener("scroll", updateProgress);
   }, []);
@@ -35,7 +37,7 @@ const ScrollProgress = () => {
   return (
     <div className="fixed top-0 left-0 z-[9999] w-full h-1 bg-transparent pointer-events-none">
       <div
-        className="h-full bg-primary transition-all duration-300 ease-out"
+        className="h-full bg-primary dark:bg-primary-dark transition-all duration-300 ease-out"
         style={{ width: `${scrollProgress}%` }}
       />
     </div>

@@ -1,4 +1,3 @@
-// ✅ src/utils/common/FallbackLoader.tsx — Improved Minimal Loader
 "use client";
 
 import { FC } from "react";
@@ -10,14 +9,14 @@ interface FallbackLoaderProps {
 const FallbackLoader: FC<FallbackLoaderProps> = ({ message }) => {
   return (
     <div
-      className="flex min-h-[50vh] items-center justify-center text-center animate-fade-in"
+      className="flex min-h-[50vh] w-full items-center justify-center text-center animate-fade-in bg-base-100 dark:bg-zinc-900 p-4"
       role="status"
       aria-live="polite"
     >
-      <div className="flex flex-col items-center gap-4">
-        {/* SVG Spinner */}
+      <div className="flex flex-col items-center gap-4 sm:gap-5">
+        {/* Spinner */}
         <svg
-          className="h-10 w-10 animate-spin text-primary"
+          className="h-10 w-10 sm:h-12 sm:w-12 animate-spin text-primary"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -37,8 +36,8 @@ const FallbackLoader: FC<FallbackLoaderProps> = ({ message }) => {
           />
         </svg>
 
-        {/* ข้อความ */}
-        <p className="text-sm text-base-content/60">
+        {/* Loading Message */}
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
           {message || "กำลังโหลดข้อมูล..."}
         </p>
       </div>

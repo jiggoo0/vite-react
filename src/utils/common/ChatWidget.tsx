@@ -1,29 +1,29 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { MessageCircle } from "lucide-react"; // ลบ X ออก
+import { MessageCircle } from "lucide-react";
 import SocialIcons from "./SocialIcons";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const autoCloseTimer = useRef<NodeJS.Timeout | null>(null);
+  const autoCloseTimer = useRef<number | null>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  // ปิดอัตโนมัติหลังเปิด 15 วินาที
+  // ปิดอัตโนมัติ 15 วินาที
   useEffect(() => {
     if (isOpen) {
-      autoCloseTimer.current = setTimeout(() => setIsOpen(false), 15000);
+      autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), 15000);
     }
     return () => {
       if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current);
     };
   }, [isOpen]);
 
-  // ปิดด้วยปุ่ม Escape
+  // ปิดด้วย Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
@@ -40,19 +40,19 @@ const ChatWidget = () => {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-5 right-5 z-[9999] sm:right-5 sm:bottom-5 max-sm:right-3 max-sm:bottom-3">
-      {isOpen ? (
+    <div className="fixed bottom-5 right-5 z-[9999]">
+      {isOpen && (
         <div
           ref={widgetRef}
           tabIndex={-1}
+          role="dialog"
+          aria-label="ช่องทางติดต่อ"
           className="w-80 max-w-[90vw] rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 shadow-xl p-5 text-center space-y-4 transform transition-all duration-300 ease-out animate-fadeInUp"
         >
           <p className="text-base font-semibold text-gray-800 dark:text-gray-200">
             ติดต่อเราผ่านช่องทางโซเชียล
           </p>
-
           <SocialIcons />
-
           <button
             onClick={toggleChat}
             type="button"
@@ -61,7 +61,8 @@ const ChatWidget = () => {
             ปิด
           </button>
         </div>
-      ) : (
+      )}
+      {!isOpen && (
         <button
           onClick={toggleChat}
           type="button"
