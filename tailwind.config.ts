@@ -4,12 +4,18 @@ import typography from "@tailwindcss/typography";
 import forms from "@tailwindcss/forms";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 
-// ฟอนต์หลัก (heading และ body)
+/* =====================================
+   Font Definitions
+====================================== */
 const fontSans = ["Inter", "Noto Sans Thai", "THSarabunNew", "sans-serif"];
 const fontBody = ["Roboto", "Noto Sans Thai", "THSarabunNew", "sans-serif"];
 
+/* =====================================
+   Tailwind Configuration
+====================================== */
 const config: Config = {
   darkMode: "class",
+
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 
   safelist: [{ pattern: /^(bg|text|btn)-/ }],
@@ -18,6 +24,7 @@ const config: Config = {
 
   theme: {
     extend: {
+      /* Font Families */
       fontFamily: {
         heading: fontSans,
         body: fontBody,
@@ -30,16 +37,19 @@ const config: Config = {
         ],
       },
 
+      /* Font Sizes */
       fontSize: {
         iosSmall: "13px",
       },
 
+      /* Spacing */
       spacing: {
         72: "18rem",
         84: "21rem",
         96: "24rem",
       },
 
+      /* Z-Index */
       zIndex: {
         60: "60",
         70: "70",
@@ -47,11 +57,13 @@ const config: Config = {
         9999: "9999",
       },
 
+      /* Border Radius */
       borderRadius: {
         xl: "1rem",
         "2xl": "1.5rem",
       },
 
+      /* Keyframes */
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
@@ -67,17 +79,20 @@ const config: Config = {
         },
       },
 
+      /* Animations */
       animation: {
         fadeIn: "fadeIn 0.5s ease-out forwards",
         slideIn: "slideIn 0.5s ease-out forwards",
         fadeInUp: "fadeInUp 0.3s ease-out forwards",
       },
 
+      /* Transitions */
       transitionProperty: {
         spacing: "margin, padding",
         common: "height, opacity, transform",
       },
 
+      /* Colors */
       colors: {
         iosSuccess: "#34C759",
         iosError: "#FF3B30",
@@ -93,6 +108,7 @@ const config: Config = {
 
   plugins: [daisyui, typography, forms, aspectRatio],
 
+  /* DaisyUI Themes */
   daisyui: {
     themes: [
       {

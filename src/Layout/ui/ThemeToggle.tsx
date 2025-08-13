@@ -1,8 +1,9 @@
+// src/Layout/ui/ThemeToggle.tsx
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import Button from "@/Home/components/ui/Button";
 
 const THEME_KEY = "theme";
 
@@ -12,6 +13,7 @@ const ThemeToggle = () => {
 
   const applyTheme = useCallback((useDark: boolean) => {
     setIsDark(useDark);
+
     if (typeof document !== "undefined") {
       document.documentElement.classList.toggle("dark", useDark);
       document.documentElement.setAttribute(
@@ -19,6 +21,7 @@ const ThemeToggle = () => {
         useDark ? "dark" : "light"
       );
     }
+
     if (typeof window !== "undefined") {
       localStorage.setItem(THEME_KEY, useDark ? "dark" : "light");
     }
@@ -39,14 +42,14 @@ const ThemeToggle = () => {
   }, [applyTheme]);
 
   useEffect(() => {
-    const handler = (e: StorageEvent) => {
+    const handleStorageChange = (e: StorageEvent) => {
       if (e.key === THEME_KEY) {
         const next = e.newValue === "dark";
         applyTheme(next);
       }
     };
-    window.addEventListener("storage", handler);
-    return () => window.removeEventListener("storage", handler);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, [applyTheme]);
 
   const toggleTheme = () => {
@@ -59,10 +62,10 @@ const ThemeToggle = () => {
     <Button
       onClick={toggleTheme}
       variant="ghost"
-      size="icon"
+      className="rounded-full p-2"
       aria-label="Toggle theme"
       aria-pressed={isDark}
-      className="rounded-full"
+      type="button"
     >
       {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </Button>

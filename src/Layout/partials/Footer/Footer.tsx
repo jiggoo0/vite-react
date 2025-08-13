@@ -5,7 +5,7 @@ import {
   FaEnvelope,
   FaFacebookMessenger,
 } from "react-icons/fa";
-import { SiTiktok } from "react-icons/si"; // import ไอคอน TikTok
+import { SiTiktok } from "react-icons/si"; // ไอคอน TikTok
 
 const socialLinks = [
   {

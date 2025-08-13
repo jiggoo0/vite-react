@@ -24,6 +24,9 @@ rm -rf node_modules
 [ -f package-lock.json ] && rm -f package-lock.json
 
 if command -v pnpm >/dev/null 2>&1; then
+  echo "🧹 Pruning pnpm store..."
+  pnpm store prune
+
   echo "📥 pnpm found! Installing dependencies..."
   pnpm install
 else

@@ -25,21 +25,14 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("react")) {
-              return "vendor_react";
-            }
-            if (id.includes("lodash")) {
-              return "vendor_lodash";
-            }
-            if (id.includes("axios")) {
-              return "vendor_axios";
-            }
-            // แยกไลบรารีอื่น ๆ ตามต้องการ
+            if (id.includes("react")) return "vendor_react";
+            if (id.includes("lodash")) return "vendor_lodash";
+            if (id.includes("axios")) return "vendor_axios";
             return "vendor_misc";
           }
         },
       },
     },
-    chunkSizeWarningLimit: 1000, // เพิ่ม limit warning เป็น 1000 kB
+    chunkSizeWarningLimit: 1000,
   },
 });

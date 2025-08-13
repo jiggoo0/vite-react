@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES2020", // คอมไพล์เป็น JS เวอร์ชัน ES2020 (สมรรถนะดีและรองรับ browser ใหม่ ๆ)
-    "module": "ESNext", // ใช้โมดูลแบบ ESNext (เหมาะกับ Vite)
-    "moduleResolution": "node", // Resolver แบบ Node (มาตรฐาน)
-    "lib": ["DOM", "DOM.Iterable", "ESNext"], // ไลบรารีที่รองรับ DOM และ ESNext
-    "jsx": "react-jsx", // การแปลง JSX แบบใหม่ (React 17+)
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "jsx": "react-jsx",
 
-    "baseUrl": ".", // พื้นฐานสำหรับ paths alias
+    "baseUrl": ".",
     "paths": {
-      // ตั้ง alias paths เหมือนใน vite.config.ts
       "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
       "@styles/*": ["src/styles/*"],
@@ -23,20 +22,20 @@
       "@api/*": ["src/api/*"]
     },
 
-    "outDir": "./dist", // โฟลเดอร์เอาต์พุต
-    "rootDir": "./src", // โฟลเดอร์ต้นทางซอร์ส
+    "outDir": "./dist",
+    "rootDir": "./src",
 
-    "strict": true, // เปิด strict mode เต็มที่
-    "noImplicitAny": true, // ห้ามมี any โดยไม่ประกาศ
-    "noFallthroughCasesInSwitch": true, // ป้องกัน case switch รั่ว
+    "strict": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
 
-    "esModuleInterop": true, // รองรับ interop ระหว่าง CommonJS กับ ESModules
-    "allowSyntheticDefaultImports": true, // รองรับ default import
-    "resolveJsonModule": true, // import .json ได้
-    "forceConsistentCasingInFileNames": true, // บังคับ case-sensitive ชื่อไฟล์
-    "incremental": true, // เพิ่มประสิทธิภาพคอมไพล์ incremental
-    "skipLibCheck": true // ข้ามตรวจสอบ types ของไลบรารี ช่วยลดเวลาคอมไพล์
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "skipLibCheck": true
   },
-  "include": ["src"], // ไฟล์และโฟลเดอร์ที่จะคอมไพล์
-  "exclude": ["node_modules", "dist"] // ไฟล์และโฟลเดอร์ที่ไม่คอมไพล์
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

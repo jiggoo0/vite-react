@@ -1,3 +1,2 @@
-// src/Layout/partials/Header/index.ts
-
-export { default as Header } from "./Header";
+import Header from "./Header";
+export default Header;

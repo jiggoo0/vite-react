@@ -1,20 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark,
+    business;
+}
 
+/* ฟอนต์ THSarabunNew */
+@font-face {
+  font-family: "THSarabunNew";
+  src:
+    url("/fonts/THSarabunNew.woff2") format("woff2"),
+    url("/fonts/THSarabunNew.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "THSarabunNew";
+  src:
+    url("/fonts/THSarabunNew-Bold.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "THSarabunNew";
+  src:
+    url("/fonts/THSarabunNew-Italic.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-Italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "THSarabunNew";
+  src:
+    url("/fonts/THSarabunNew-BoldItalic.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-BoldItalic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ใช้ฟอนต์ THSarabunNew ร่วมกับฟอนต์หลักใน Tailwind base layer */
 @layer base {
-  /* =====================================
-     Global Font & Rendering
-  ====================================== */
   html {
     scroll-behavior: smooth;
     font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
     font-family:
-      theme("fontFamily.body"),
+      "Roboto",
+      "Noto Sans Thai",
+      "THSarabunNew",
       -apple-system,
       BlinkMacSystemFont,
       "Segoe UI",
-      Roboto,
       Helvetica,
       Arial,
       sans-serif;
@@ -23,74 +69,61 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* =====================================
-     Body Styling
-  ====================================== */
   body {
     @apply bg-base-100 text-base-content;
     line-height: 1.6;
-    min-height: 100dvh; /* รองรับ viewport height บนอุปกรณ์มือถือ */
+    min-height: 100dvh;
   }
 
-  /* =====================================
-     Dark Mode Support (prefers-color-scheme)
-  ====================================== */
+  /* Dark Mode Support */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
       color-scheme: dark;
     }
   }
 
-  /* =====================================
-     Text Selection Styling
-  ====================================== */
+  /* Text Selection */
   ::selection {
-    background-color: theme("colors.primary");
-    color: theme("colors.white", "#fff");
+    background-color: #2563eb;
+    color: #fff;
   }
 
-  /* =====================================
-     Box Sizing & Scrollbar Styling
-  ====================================== */
+  /* Box sizing and scrollbar */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: theme("colors.primary") transparent;
+    scrollbar-width: thin;
+    scrollbar-color: #2563eb transparent;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Custom Scrollbar สำหรับ WebKit browsers */
+  /* Webkit Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: theme("colors.primary");
+    background-color: #2563eb;
     border-radius: 4px;
     transition: background-color 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: theme("colors.primary", "#2563eb");
+    background-color: #1d4ed8;
   }
 
   ::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  /* =====================================
-     Anchor Target Offset (scroll margin top)
-  ====================================== */
+  /* Anchor target offset */
   :target {
     scroll-margin-top: 6rem;
   }
 
-  /* =====================================
-     Interactive Elements Transition
-  ====================================== */
+  /* Interactive Elements Transition */
   button,
   a {
     transition-property: background-color, color, transform;
@@ -99,9 +132,7 @@
     will-change: transform, color, background-color;
   }
 
-  /* =====================================
-     Accessibility: Reduce Motion Preferences
-  ====================================== */
+  /* Accessibility: Reduce Motion */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -112,9 +143,7 @@
     }
   }
 
-  /* =====================================
-     Animations (slideBackground)
-  ====================================== */
+  /* Animations */
   @keyframes slideBackground {
     0% {
       transform: translateX(0) scale(0.55);
@@ -132,9 +161,7 @@
   }
 }
 
-/* =====================================
-   Print Styles
-====================================== */
+/* Print Styles */
 @media print {
   body {
     margin: 0;

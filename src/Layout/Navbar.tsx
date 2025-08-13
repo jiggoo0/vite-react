@@ -1,11 +1,15 @@
-// src/components/Layout/Navbar.tsx
-
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
-import ThemeToggle from "@/Layout/partials/Header/ui/ThemeToggle";
-import Logo from "@/Layout/partials/Header/ui/Logo";
+import ThemeToggle from "@layout/ui/ThemeToggle";
+import Logo from "@layout/ui/Logo";
 
+/**
+ * Navbar Component
+ *
+ * - แถบนำทางหลักของแอป
+ * - แสดงโลโก้, ลิงก์เมนู และปุ่มสลับธีม
+ */
 const Navbar: FC = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-base-100 text-base-content shadow-sm">
@@ -24,7 +28,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-        {/* Navigation + ThemeToggle */}
+        {/* Navigation Links + ThemeToggle */}
         <div className="flex-none items-center space-x-2">
           <Link
             to="/"

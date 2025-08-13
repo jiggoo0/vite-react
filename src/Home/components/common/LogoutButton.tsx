@@ -1,4 +1,4 @@
-// ✅ src/components/common/LogoutButton.tsx — ปุ่ม Logout คุณภาพ Production พร้อม UI + Icon
+// src/Home/components/common/LogoutButton.tsx
 
 "use client";
 
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/components/ui/Button";
+import Button from "@/Home/components/ui/Button"; // แก้ import ให้ตรงกับ alias และ path จริง
 
 /**
  * 🔐 LogoutButton — ปุ่มออกจากระบบ พร้อมนำทางกลับไปยังหน้าล็อกอิน
@@ -18,9 +18,14 @@ const LogoutButton = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true }); // ✅ กลับไปยังหน้าล็อกอิน
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login", { replace: true }); // ✅ กลับไปยังหน้าล็อกอิน
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // อาจแสดงข้อความแจ้งเตือนผู้ใช้ในภายหลัง
+    }
   };
 
   return (

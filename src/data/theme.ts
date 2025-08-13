@@ -1,118 +1,82 @@
-// src/data/theme.ts — Theme Config & Utilities (Client-only Safe)
-
-export type ThemeName = "light" | "dark" | "business";
-
-export const THEMES = ["light", "dark", "business"] as const;
-export const DEFAULT_THEME: ThemeName = "light";
+// home::/data/data/com.termux/files/home/projectjp/src/data/theme.ts
 
 /**
- * ตรวจสอบว่าค่าที่รับมาเป็น ThemeName ที่รองรับหรือไม่
- * @param theme ค่า string ที่ต้องการตรวจสอบ
- * @returns true หาก theme อยู่ใน THEMES
- */
-const isValidTheme = (theme: unknown): theme is ThemeName =>
-  typeof theme === "string" && THEMES.includes(theme as ThemeName);
-
-/**
- * 🧠 ดึงค่าธีมจาก localStorage (Client-side เท่านั้น)
- * คืนค่าเป็น ThemeName หรือ DEFAULT_THEME หากไม่มีค่าใน localStorage หรือค่าไม่ถูกต้อง
- * @returns ThemeName
- */
-export const getSavedTheme = (): ThemeName => {
-  if (typeof window === "undefined") return DEFAULT_THEME;
-
-  try {
-    const stored = localStorage.getItem("theme");
-    if (isValidTheme(stored)) return stored;
-  } catch {
-    // localStorage อาจไม่สามารถเข้าถึงได้ในบาง environment
-  }
-
-  return DEFAULT_THEME;
-};
-
-/**
- * 💾 บันทึกธีมลงใน localStorage (Client-side เท่านั้น)
- * @param theme ชื่อธีมที่ต้องการบันทึก
- */
-export const saveTheme = (theme: ThemeName): void => {
-  if (typeof window === "undefined") return;
-
-  try {
-    localStorage.setItem("theme", theme);
-  } catch {
-    // fail silently หากไม่สามารถเขียนได้
-  }
-};
-
-/**
- * 🎨 นำธีมไปใช้กับ attribute data-theme ของ <html> (Client-side เท่านั้น)
- * @param theme ชื่อธีมที่ต้องการใช้
- */
-export const applyTheme = (theme: ThemeName): void => {
-  if (typeof document === "undefined") return;
-
-  try {
-    document.documentElement.setAttribute("data-theme", theme);
-  } catch {
-    // fail silently หาก DOM ไม่พร้อม
-  }
-};
-
-/**
- * 🔄 สลับธีมไปยังธีมถัดไปใน THEMES แบบวนลูป (Client-side เท่านั้น)
- * บันทึกและ apply ธีมใหม่ทันที
- * @returns ธีมใหม่หลังจากสลับ
- */
-export const toggleTheme = (): ThemeName => {
-  if (typeof window === "undefined") return DEFAULT_THEME;
-
-  const current = getSavedTheme();
-  const nextIndex = (THEMES.indexOf(current) + 1) % THEMES.length;
-  const nextTheme = THEMES[nextIndex];
-
-  saveTheme(nextTheme);
-  applyTheme(nextTheme);
-
-  return nextTheme;
-};
-
-/**
- * 🚀 เรียกใช้ตอนเริ่มแอป เพื่ออ่านธีมจาก localStorage แล้ว apply ทันที
- * กรณีไม่พบธีมใน localStorage ให้ใช้ DEFAULT_THEME
- */
-export const initTheme = (): void => {
-  applyTheme(getSavedTheme());
-};
-
-// ───────────
-// ฟังก์ชัน subscribe สำหรับ sync ธีมข้ามแท็บผ่าน event 'storage'
-
-type ThemeChangeCallback = (newTheme: ThemeName) => void;
-
-/**
- * subscribe การเปลี่ยนแปลงธีมผ่าน event 'storage' (ข้ามแท็บ)
- * คืนฟังก์ชัน unsubscribe เพื่อเลิกฟัง event
+ * theme.ts
  *
- * @param callback ฟังก์ชัน callback เมื่อธีมเปลี่ยนแปลง
- * @returns ฟังก์ชัน unsubscribe
+ * เก็บคอนสแตนท์และข้อมูลธีมสำหรับโปรเจกต์
+ * ใช้ร่วมกับ Tailwind config และ ThemeProvider
  */
-export const subscribeThemeChange = (
-  callback: ThemeChangeCallback
-): (() => void) => {
-  if (typeof window === "undefined") return () => {};
 
-  const handler = (event: StorageEvent) => {
-    if (
-      event.key === "theme" &&
-      event.newValue &&
-      isValidTheme(event.newValue)
-    ) {
-      callback(event.newValue);
-    }
-  };
+// ประเภทธีมที่รองรับ
+export type ThemeName = "light" | "dark" | "business" | "team";
 
-  window.addEventListener("storage", handler);
-
-  return () => window.removeEventListener("storage", handler);
+// รายละเอียดสีหลักของธีม light
+export const lightThemeColors = {
+  primary: "#2563eb",
+  secondary: "#9333ea",
+  accent: "#f59e0b",
+  neutral: "#374151",
+  "base-100": "#ffffff",
+  "base-200": "#f3f4f6",
+  "base-300": "#e5e7eb",
+  info: "#3ABFF8",
+  success: "#36D399",
+  warning: "#FBBD23",
+  error: "#F87272",
 };
+
+// รายละเอียดสีหลักของธีม dark (daisyUI default dark theme)
+export const darkThemeColors = {
+  primary: "#3b82f6",
+  secondary: "#8b5cf6",
+  accent: "#fbbf24",
+  neutral: "#1f2937",
+  "base-100": "#111827",
+  "base-200": "#1f2937",
+  "base-300": "#374151",
+  info: "#60a5fa",
+  success: "#4ade80",
+  warning: "#facc15",
+  error: "#f87171",
+};
+
+// รายละเอียดสีหลักของธีม business (daisyUI default business theme)
+export const businessThemeColors = {
+  primary: "#0c4a6e",
+  secondary: "#0284c7",
+  accent: "#22d3ee",
+  neutral: "#334155",
+  "base-100": "#f1f5f9",
+  "base-200": "#e2e8f0",
+  "base-300": "#cbd5e1",
+  info: "#38bdf8",
+  success: "#22c55e",
+  warning: "#eab308",
+  error: "#dc2626",
+};
+
+// รายละเอียดสีหลักของธีม team (custom theme ตามที่ระบุ)
+export const teamThemeColors = {
+  primary: "#1D4ED8",
+  secondary: "#9333EA",
+  accent: "#F59E0B",
+  neutral: "#374151",
+  "base-100": "#FFFFFF",
+  "base-200": "#F3F4F6",
+  "base-300": "#E5E7EB",
+  info: "#3ABFF8",
+  success: "#36D399",
+  warning: "#FBBD23",
+  error: "#F87272",
+};
+
+// ธีมทั้งหมดที่มีในโปรเจกต์
+export const themes = {
+  light: lightThemeColors,
+  dark: darkThemeColors,
+  business: businessThemeColors,
+  team: teamThemeColors,
+};
+
+// ค่า default ธีม
+export const defaultThemeName: ThemeName = "team";
