@@ -5,7 +5,6 @@
     "moduleResolution": "node",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -21,14 +20,11 @@
       "@home/*": ["src/Home/*"],
       "@api/*": ["src/api/*"]
     },
-
     "outDir": "./dist",
     "rootDir": "./src",
-
     "strict": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,

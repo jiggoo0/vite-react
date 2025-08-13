@@ -3,16 +3,9 @@ import { useState, useEffect, useCallback } from "react";
 const THEME_KEY = "theme";
 type Theme = "light" | "dark";
 
-/**
- * useTheme Hook
- *
- * - จัดการสถานะธีมของแอป (light / dark)
- * - เก็บธีมใน localStorage และตั้งค่า class/attribute ให้ document
- */
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>("light");
 
-  // ฟังก์ชันตั้งธีมจริงที่ DOM และ localStorage
   const applyTheme = useCallback((nextTheme: Theme) => {
     setTheme(nextTheme);
 
@@ -26,7 +19,6 @@ export function useTheme() {
     }
   }, []);
 
-  // โหลดธีมจาก localStorage หรือ prefers-color-scheme ตอน mount
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -44,7 +36,6 @@ export function useTheme() {
     applyTheme(defaultTheme);
   }, [applyTheme]);
 
-  // ฟัง event storage เพื่อซิงค์ธีมระหว่าง tab ต่าง ๆ
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (
@@ -59,7 +50,6 @@ export function useTheme() {
     return () => window.removeEventListener("storage", onStorage);
   }, [applyTheme]);
 
-  // สลับธีม
   const toggleTheme = () => {
     applyTheme(theme === "dark" ? "light" : "dark");
   };

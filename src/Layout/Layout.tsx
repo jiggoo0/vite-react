@@ -7,15 +7,6 @@ import ChatWidget from "@utils/common/ChatWidget";
 import DisclaimerModal from "@utils/common/DisclaimerModal";
 import BackToTop from "@utils/common/BackToTop";
 
-/**
- * Layout Component
- *
- * - 
- * -  Navbar, Footer  
- *
- * Props:
- * - children: ReactNode (  Outlet  route children)
- */
 const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content">

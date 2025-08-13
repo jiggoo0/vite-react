@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @plugin "daisyui" {
   themes:
     light --default,
@@ -8,7 +9,6 @@
     business;
 }
 
-/* ฟอนต์ THSarabunNew */
 @font-face {
   font-family: "THSarabunNew";
   src:
@@ -49,7 +49,6 @@
   font-display: swap;
 }
 
-/* ใช้ฟอนต์ THSarabunNew ร่วมกับฟอนต์หลักใน Tailwind base layer */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -75,20 +74,17 @@
     min-height: 100dvh;
   }
 
-  /* Dark Mode Support */
   @media (prefers-color-scheme: dark) {
     html:not([data-theme]) {
       color-scheme: dark;
     }
   }
 
-  /* Text Selection */
   ::selection {
     background-color: #2563eb;
     color: #fff;
   }
 
-  /* Box sizing and scrollbar */
   *,
   *::before,
   *::after {
@@ -98,7 +94,6 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Webkit Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -118,12 +113,10 @@
     background: transparent;
   }
 
-  /* Anchor target offset */
   :target {
     scroll-margin-top: 6rem;
   }
 
-  /* Interactive Elements Transition */
   button,
   a {
     transition-property: background-color, color, transform;
@@ -132,7 +125,6 @@
     will-change: transform, color, background-color;
   }
 
-  /* Accessibility: Reduce Motion */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -143,7 +135,6 @@
     }
   }
 
-  /* Animations */
   @keyframes slideBackground {
     0% {
       transform: translateX(0) scale(0.55);
@@ -161,7 +152,6 @@
   }
 }
 
-/* Print Styles */
 @media print {
   body {
     margin: 0;

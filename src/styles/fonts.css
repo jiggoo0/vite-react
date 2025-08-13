@@ -18,7 +18,6 @@
   font-display: swap;
 }
 
-/* ถ้ามี Italic ก็เพิ่มได้ */
 @font-face {
   font-family: "THSarabunNew";
   src:

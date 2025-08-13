@@ -1,16 +1,5 @@
-// home::/data/data/com.termux/files/home/projectjp/src/data/theme.ts
-
-/**
- * theme.ts
- *
- * เก็บคอนสแตนท์และข้อมูลธีมสำหรับโปรเจกต์
- * ใช้ร่วมกับ Tailwind config และ ThemeProvider
- */
-
-// ประเภทธีมที่รองรับ
 export type ThemeName = "light" | "dark" | "business" | "team";
 
-// รายละเอียดสีหลักของธีม light
 export const lightThemeColors = {
   primary: "#2563eb",
   secondary: "#9333ea",
@@ -25,7 +14,6 @@ export const lightThemeColors = {
   error: "#F87272",
 };
 
-// รายละเอียดสีหลักของธีม dark (daisyUI default dark theme)
 export const darkThemeColors = {
   primary: "#3b82f6",
   secondary: "#8b5cf6",
@@ -40,7 +28,6 @@ export const darkThemeColors = {
   error: "#f87171",
 };
 
-// รายละเอียดสีหลักของธีม business (daisyUI default business theme)
 export const businessThemeColors = {
   primary: "#0c4a6e",
   secondary: "#0284c7",
@@ -55,7 +42,6 @@ export const businessThemeColors = {
   error: "#dc2626",
 };
 
-// รายละเอียดสีหลักของธีม team (custom theme ตามที่ระบุ)
 export const teamThemeColors = {
   primary: "#1D4ED8",
   secondary: "#9333EA",
@@ -70,7 +56,6 @@ export const teamThemeColors = {
   error: "#F87272",
 };
 
-// ธีมทั้งหมดที่มีในโปรเจกต์
 export const themes = {
   light: lightThemeColors,
   dark: darkThemeColors,
@@ -78,5 +63,4 @@ export const themes = {
   team: teamThemeColors,
 };
 
-// ค่า default ธีม
 export const defaultThemeName: ThemeName = "team";

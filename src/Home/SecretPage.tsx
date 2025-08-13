@@ -16,7 +16,6 @@ import {
   A4CardWrapper,
 } from "@home/SecretPage/common/CardWrapper";
 
-// Lazy loaded components
 const RegistrationPreview = lazy(
   () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
 );
@@ -55,14 +54,12 @@ const SecretPage: FC = () => {
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
       <div className="container max-w-7xl mx-auto space-y-8 sm:space-y-10 lg:space-y-12">
-        {/* Header */}
         <header>
           <CardWrapper>
             <SecretHeader />
           </CardWrapper>
         </header>
 
-        {/* Main content */}
         <main className="space-y-8 sm:space-y-10 lg:space-y-12">
           <CardWrapper>
             <SecretDescription user={{ ...user, role: effectiveRole }} />
@@ -72,7 +69,6 @@ const SecretPage: FC = () => {
             <DocumentDownload />
           </CardWrapper>
 
-          {/* Admin-only: Registration Preview (A4) */}
           {isAdmin && (
             <Suspense fallback={<LoadingSpinner size="md" />}>
               <A4CardWrapper>
@@ -81,7 +77,6 @@ const SecretPage: FC = () => {
             </Suspense>
           )}
 
-          {/* Admin-only: Salary Certificate (A4) */}
           {isAdmin && (
             <Suspense fallback={<LoadingSpinner size="md" />}>
               <A4CardWrapper>
@@ -90,7 +85,6 @@ const SecretPage: FC = () => {
             </Suspense>
           )}
 
-          {/* Admin-only: Kbank notifications */}
           {canViewKbank && (
             <CardWrapper>
               <div className="space-y-5">
@@ -101,7 +95,6 @@ const SecretPage: FC = () => {
             </CardWrapper>
           )}
 
-          {/* Always visible: BlurContact */}
           <CardWrapper>
             <BlurContact
               imageUrl="/images/admin-contact.jpg"
@@ -110,7 +103,6 @@ const SecretPage: FC = () => {
           </CardWrapper>
         </main>
 
-        {/* Footer actions */}
         <footer>
           <CardWrapper>
             <SecretActions role={effectiveRole} />

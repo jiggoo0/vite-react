@@ -1,4 +1,3 @@
-// src/context/ThemeProvider.tsx
 import { useEffect, useState, ReactNode } from "react";
 import { Theme, ThemeContext } from "./ThemeContext";
 

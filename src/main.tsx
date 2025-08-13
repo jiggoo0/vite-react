@@ -3,14 +3,12 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import AppRouter from "@/Router/AppRouter";
-import { ThemeProvider } from "@/context/ThemeProvider"; // ✅ เปลี่ยนตรงนี้
+import { ThemeProvider } from "@/context/ThemeProvider";
 
-// CSS base
 import "@/styles/global.css";
 import "@/styles/fonts.css";
-import "@/index.css"; // เพิ่มการ import index.css ตามที่ขอ
+import "@/index.css";
 
-// ตรวจสอบ root element (ปลอดภัย + ล็อก error message)
 const rootElement = document.getElementById("root") as HTMLElement | null;
 
 if (!rootElement) {
@@ -18,10 +16,8 @@ if (!rootElement) {
   throw new Error("ไม่สามารถ mount React app ได้");
 }
 
-// สร้าง React root
 const root = ReactDOM.createRoot(rootElement);
 
-// Render แอปทั้งหมด
 root.render(
   <React.StrictMode>
     <BrowserRouter>
