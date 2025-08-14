@@ -4,6 +4,14 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import SocialIcons from "./SocialIcons";
 
+/**
+ * 📬 ChatWidget
+ *
+ * - แสดงปุ่มลอยสำหรับติดต่อผ่านโซเชียล
+ * - รองรับการเปิด/ปิดอัตโนมัติ และ Escape key
+ * - ปิดอัตโนมัติหลัง 15 วินาที
+ * - รองรับ dark mode
+ */
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const autoCloseTimer = useRef<number | null>(null);
@@ -13,7 +21,7 @@ const ChatWidget = () => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  // ปิดอัตโนมัติ 15 วินาที
+  // ปิดอัตโนมัติหลัง 15 วินาที
   useEffect(() => {
     if (isOpen) {
       autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), 15000);
@@ -23,7 +31,7 @@ const ChatWidget = () => {
     };
   }, [isOpen]);
 
-  // ปิดด้วย Escape
+  // ปิดด้วย Escape key
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
@@ -41,6 +49,7 @@ const ChatWidget = () => {
 
   return (
     <div className="fixed bottom-5 right-5 z-[9999]">
+      {/* Widget กล่อง */}
       {isOpen && (
         <div
           ref={widgetRef}
@@ -52,7 +61,9 @@ const ChatWidget = () => {
           <p className="text-base font-semibold text-gray-800 dark:text-gray-200">
             ติดต่อเราผ่านช่องทางโซเชียล
           </p>
+
           <SocialIcons />
+
           <button
             onClick={toggleChat}
             type="button"
@@ -62,6 +73,8 @@ const ChatWidget = () => {
           </button>
         </div>
       )}
+
+      {/* ปุ่มเปิด widget */}
       {!isOpen && (
         <button
           onClick={toggleChat}

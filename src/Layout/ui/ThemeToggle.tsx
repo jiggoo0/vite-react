@@ -10,6 +10,7 @@ const ThemeToggle = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
+  /** 🔹 Apply theme to document & localStorage */
   const applyTheme = useCallback((useDark: boolean) => {
     setIsDark(useDark);
 
@@ -26,6 +27,7 @@ const ThemeToggle = () => {
     }
   }, []);
 
+  /** 🔹 Initialize theme on mount */
   useEffect(() => {
     setIsMounted(true);
     if (typeof window === "undefined") return;
@@ -39,16 +41,19 @@ const ThemeToggle = () => {
     applyTheme(defaultDark);
   }, [applyTheme]);
 
+  /** 🔹 Listen for theme changes in other tabs */
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === THEME_KEY) {
         applyTheme(e.newValue === "dark");
       }
     };
+
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [applyTheme]);
 
+  /** 🔹 Toggle theme on button click */
   const toggleTheme = () => applyTheme(!isDark);
 
   if (!isMounted) return null;

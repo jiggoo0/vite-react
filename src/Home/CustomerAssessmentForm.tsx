@@ -1,4 +1,4 @@
-// src/Home/CustomerAssessmentForm.tsx
+// src/Home/CustomerCreditForm.tsx
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -10,33 +10,39 @@ import {
   SubmitButton,
 } from "@/Home/components/Forms";
 
-type CustomerAssessmentData = {
+type CustomerCreditData = {
   name: string;
   email: string;
-  satisfaction: string;
-  feedback: string;
+  monthlyIncome: number;
+  existingDebt: number;
+  paymentHistory: string;
+  creditRating: string;
+  notes: string;
 };
 
-const CustomerAssessmentForm: React.FC = () => {
+const CustomerCreditForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<CustomerAssessmentData>({
+  } = useForm<CustomerCreditData>({
     defaultValues: {
       name: "",
       email: "",
-      satisfaction: "",
-      feedback: "",
+      monthlyIncome: 0,
+      existingDebt: 0,
+      paymentHistory: "",
+      creditRating: "",
+      notes: "",
     },
   });
 
-  const onSubmit: SubmitHandler<CustomerAssessmentData> = async (data) => {
+  const onSubmit: SubmitHandler<CustomerCreditData> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // จำลองการส่งข้อมูล API
-      console.log("ข้อมูลที่ส่ง:", data);
-      alert("บันทึกการประเมินเรียบร้อยแล้ว");
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // simulate API
+      console.log("ข้อมูลเครดิตลูกค้า:", data);
+      alert("บันทึกการประเมินเครดิตเรียบร้อยแล้ว");
       reset();
     } catch (error) {
       console.error("เกิดข้อผิดพลาด:", error);
@@ -45,15 +51,15 @@ const CustomerAssessmentForm: React.FC = () => {
 
   return (
     <FormWrapper
-      title="แบบฟอร์มประเมินลูกค้า"
-      description="กรุณากรอกข้อมูลและให้คะแนนความพึงพอใจของคุณ"
+      title="แบบฟอร์มประเมินสภาพเครดิตลูกค้า"
+      description="กรุณากรอกข้อมูลเพื่อประเมินสภาพเครดิตปัจจุบันของลูกค้า"
       onSubmit={handleSubmit(onSubmit)}
     >
       <FieldGroup columns={2}>
         {/* ชื่อ */}
         <InputField
-          label="ชื่อ"
-          placeholder="กรอกชื่อของคุณ"
+          label="ชื่อ-สกุล"
+          placeholder="กรอกชื่อของลูกค้า"
           required
           error={errors.name?.message || null}
           {...register("name", { required: "กรุณากรอกชื่อ" })}
@@ -72,27 +78,68 @@ const CustomerAssessmentForm: React.FC = () => {
           })}
         />
 
-        {/* ความพึงพอใจ */}
-        <SelectFieldUI
-          label="ความพึงพอใจ"
+        {/* รายได้ต่อเดือน */}
+        <InputField
+          label="รายได้ต่อเดือน (บาท)"
+          type="number"
+          placeholder="0"
           required
-          options={[
-            { label: "พอใจมาก", value: "very_satisfied" },
-            { label: "พอใจ", value: "satisfied" },
-            { label: "ปานกลาง", value: "neutral" },
-            { label: "ไม่พอใจ", value: "dissatisfied" },
-            { label: "ไม่พอใจมาก", value: "very_dissatisfied" },
-          ]}
-          error={errors.satisfaction?.message || null}
-          {...register("satisfaction", { required: "กรุณาเลือกความพึงพอใจ" })}
+          error={errors.monthlyIncome?.message || null}
+          {...register("monthlyIncome", {
+            required: "กรุณากรอกรายได้ต่อเดือน",
+            min: { value: 0, message: "ต้องมากกว่า 0" },
+          })}
         />
 
-        {/* ข้อเสนอแนะ */}
+        {/* หนี้สินปัจจุบัน */}
+        <InputField
+          label="หนี้สินปัจจุบัน (บาท)"
+          type="number"
+          placeholder="0"
+          required
+          error={errors.existingDebt?.message || null}
+          {...register("existingDebt", {
+            required: "กรุณากรอกหนี้สินปัจจุบัน",
+            min: { value: 0, message: "ต้องมากกว่า 0" },
+          })}
+        />
+
+        {/* ประวัติการชำระ */}
+        <SelectFieldUI
+          label="ประวัติการชำระ"
+          required
+          options={[
+            { label: "ดีมาก", value: "excellent" },
+            { label: "ดี", value: "good" },
+            { label: "ปานกลาง", value: "average" },
+            { label: "ไม่ดี", value: "poor" },
+          ]}
+          error={errors.paymentHistory?.message || null}
+          {...register("paymentHistory", {
+            required: "กรุณาเลือกประวัติการชำระ",
+          })}
+        />
+
+        {/* คะแนนเครดิต */}
+        <SelectFieldUI
+          label="คะแนนเครดิตปัจจุบัน"
+          required
+          options={[
+            { label: "A (ยอดเยี่ยม)", value: "A" },
+            { label: "B (ดี)", value: "B" },
+            { label: "C (พอใช้)", value: "C" },
+            { label: "D (ต้องปรับปรุง)", value: "D" },
+          ]}
+          error={errors.creditRating?.message || null}
+          {...register("creditRating", { required: "กรุณาเลือกคะแนนเครดิต" })}
+        />
+
+        {/* ข้อเสนอแนะ/หมายเหตุ */}
         <TextareaField
-          label="ข้อเสนอแนะเพิ่มเติม"
-          placeholder="เขียนความคิดเห็นหรือข้อเสนอแนะของคุณ"
+          label="หมายเหตุเพิ่มเติม"
+          placeholder="เขียนข้อเสนอแนะหรือหมายเหตุ"
           rows={4}
-          {...register("feedback")}
+          {...register("notes")}
         />
       </FieldGroup>
 
@@ -105,4 +152,4 @@ const CustomerAssessmentForm: React.FC = () => {
   );
 };
 
-export default CustomerAssessmentForm;
+export default CustomerCreditForm;

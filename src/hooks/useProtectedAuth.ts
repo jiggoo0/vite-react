@@ -6,6 +6,19 @@ export type User = {
   role: "admin" | "user" | "temp";
 };
 
+/** Type guard สำหรับตรวจสอบ object เป็น User โดยไม่ใช้ any */
+const isUser = (obj: unknown): obj is User => {
+  if (typeof obj !== "object" || obj === null) return false;
+
+  const u = obj as Record<string, unknown>;
+
+  return (
+    typeof u.username === "string" &&
+    typeof u.role === "string" &&
+    ["admin", "user", "temp"].includes(u.role)
+  );
+};
+
 export const useProtectedAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -21,20 +34,15 @@ export const useProtectedAuth = () => {
     }
 
     try {
-      const parsedUser = JSON.parse(storedUser);
-      if (
-        parsedUser &&
-        typeof parsedUser === "object" &&
-        typeof parsedUser.username === "string" &&
-        (parsedUser.role === "admin" ||
-          parsedUser.role === "user" ||
-          parsedUser.role === "temp")
-      ) {
+      const parsedUser: unknown = JSON.parse(storedUser);
+
+      if (isUser(parsedUser)) {
         setUser(parsedUser);
       } else {
         throw new Error("Invalid user data");
       }
-    } catch {
+    } catch (err) {
+      console.error("Failed to parse user data:", err);
       localStorage.removeItem("user");
       navigate("/login", { replace: true });
     } finally {

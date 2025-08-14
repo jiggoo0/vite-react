@@ -11,12 +11,14 @@ const Navbar: FC = () => {
         className="navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
+        {/* Logo */}
         <div className="flex-1">
           <Link to="/" aria-label="JP Visual Home">
             <Logo />
           </Link>
         </div>
 
+        {/* Navigation Links & Utilities */}
         <div className="flex-none items-center space-x-2">
           <Link
             to="/"
@@ -37,6 +39,7 @@ const Navbar: FC = () => {
             เข้าสู่ระบบ
           </Link>
 
+          {/* Theme Toggle */}
           <ThemeToggle />
         </div>
       </nav>

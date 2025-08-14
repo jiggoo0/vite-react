@@ -1,12 +1,22 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
+/**
+ * 🔄 ThemeToggle
+ *
+ * - ปุ่มสลับธีม Light / Dark
+ * - บันทึก theme ใน localStorage
+ * - อัปเดต class ของ document.documentElement
+ */
 const ThemeToggle = () => {
   const [theme, setTheme] = useState<string>(() => {
     if (typeof window === "undefined") return "light";
     return window.localStorage.getItem("theme") || "light";
   });
 
+  // อัปเดต class และ localStorage เมื่อ theme เปลี่ยน
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -25,7 +35,9 @@ const ThemeToggle = () => {
     <button
       onClick={toggleTheme}
       aria-label="Toggle Theme"
-      className="btn btn-ghost btn-sm"
+      aria-pressed={theme === "dark"}
+      className="btn btn-ghost btn-sm rounded-full p-2"
+      type="button"
     >
       {theme === "dark" ? (
         <Sun className="w-5 h-5 text-yellow-500" />

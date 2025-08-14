@@ -12,6 +12,7 @@ type Theme = "light" | "dark";
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>("light");
 
+  // ฟังก์ชันปรับ theme ทั้ง DOM และ localStorage
   const applyTheme = useCallback((nextTheme: Theme) => {
     setTheme(nextTheme);
 
@@ -25,7 +26,7 @@ export function useTheme() {
     }
   }, []);
 
-  // โหลด theme เริ่มต้น
+  // โหลด theme เริ่มต้นจาก localStorage หรือ prefers-color-scheme
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -33,6 +34,7 @@ export function useTheme() {
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
+
     const defaultTheme: Theme =
       savedTheme === "light" || savedTheme === "dark"
         ? savedTheme

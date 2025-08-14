@@ -3,7 +3,8 @@ import { Theme, ThemeContext } from "./ThemeContext";
 
 /** 🔹 ตรวจสอบค่า theme ที่ถูกต้อง */
 const isValidTheme = (value: unknown): value is Theme =>
-  typeof value === "string" && ["light", "dark", "business"].includes(value);
+  typeof value === "string" &&
+  ["light", "dark", "business", "team"].includes(value);
 
 /** 🌐 ThemeProvider */
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {

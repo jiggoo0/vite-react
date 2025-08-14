@@ -4,9 +4,9 @@ import React, { Component, ReactNode, ErrorInfo } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
-  fallbackMessage?: string;
-  fallbackComponent?: ReactNode;
-  onError?: (error: Error, info: ErrorInfo) => void;
+  fallbackMessage?: string; // ข้อความ fallback กรณี error
+  fallbackComponent?: ReactNode; // สามารถส่ง component เองได้
+  onError?: (error: Error, info: ErrorInfo) => void; // callback เมื่อเกิด error
 }
 
 interface ErrorBoundaryState {

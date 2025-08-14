@@ -13,6 +13,13 @@ interface DisclaimerModalProps {
   onConfirm?: () => void;
 }
 
+/**
+ * ⚠️ DisclaimerModal
+ *
+ * - แสดง modal แจ้งเตือน/คำชี้แจงทางกฎหมาย
+ * - จดจำสถานะการปิด modal ด้วย localStorage
+ * - รองรับ dark mode และ transition animation
+ */
 const DisclaimerModal = ({
   title = "⚠️ แจ้งเพื่อทราบ",
   description = `เว็บไซต์นี้ไม่ใช่สถาบันการเงิน และไม่มีบริการปล่อยสินเชื่อในทุกกรณี
@@ -23,6 +30,7 @@ const DisclaimerModal = ({
 }: DisclaimerModalProps) => {
   const [open, setOpen] = useState(false);
 
+  // ตรวจสอบ localStorage ว่าเคยปิด modal หรือยัง
   useEffect(() => {
     if (!localStorage.getItem(storageKey)) {
       setOpen(true);
@@ -70,13 +78,17 @@ const DisclaimerModal = ({
                 <XMarkIcon className="w-5 h-5" />
               </button>
 
+              {/* Title */}
               <Dialog.Title className="text-lg font-bold mb-2">
                 {title}
               </Dialog.Title>
+
+              {/* Description */}
               <Dialog.Description className="text-sm leading-relaxed mb-4 whitespace-pre-line">
                 {description}
               </Dialog.Description>
 
+              {/* Confirm Button */}
               <button
                 onClick={handleClose}
                 className="w-full rounded-lg bg-primary px-4 py-2 text-white font-semibold hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition"

@@ -15,12 +15,16 @@ const Header: FC = () => {
       role="banner"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        {/* Logo */}
         <Logo />
 
+        {/* Navigation / User Actions */}
         <nav aria-label="การนำทางผู้ใช้">
           <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
             <ThemeToggle />
 
+            {/* Authentication Actions */}
             {isAuthenticated ? (
               <LogoutButton />
             ) : (

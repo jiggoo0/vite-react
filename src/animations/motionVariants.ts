@@ -23,14 +23,14 @@ export const containerVariants: Variants = {
 /**
  * 🔼 Fade In Up Motion Variants
  * ใช้สำหรับ element แต่ละตัว ให้ fade in + เลื่อนขึ้น
- * รับ parameter i สำหรับ delay ของแต่ละ element
+ * รองรับการส่ง index เพื่อ delay stagger
  */
 export const fadeInUp: Variants = {
   hidden: {
     opacity: 0,
     y: 20,
   },
-  visible: (i: number) => ({
+  visible: (i: number = 0) => ({
     opacity: 1,
     y: 0,
     transition: {
@@ -39,4 +39,25 @@ export const fadeInUp: Variants = {
       delay: i * 0.1, // stagger effect
     },
   }),
+};
+
+/**
+ * 🎯 Helper function สำหรับสร้าง Variants แบบ fadeInUp
+ * สำหรับหลาย element พร้อม delay อัตโนมัติ
+ * @param count จำนวน element
+ * @returns Array ของ Variants
+ */
+export const generateFadeInUpVariants = (count: number): Variants[] => {
+  return Array.from({ length: count }, (_, i) => ({
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: easeInOut,
+        delay: i * 0.1,
+      },
+    },
+  }));
 };

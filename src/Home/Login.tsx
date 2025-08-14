@@ -1,4 +1,6 @@
 // src/Home/Login.tsx
+"use client";
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
@@ -23,6 +25,7 @@ const Login: React.FC = () => {
     const trimmedUsername = username.trim();
 
     try {
+      // ตรวจสอบ user ปกติ
       const user = users.find((u) => u.username === trimmedUsername);
 
       if (user) {
@@ -40,7 +43,7 @@ const Login: React.FC = () => {
         }
       }
 
-      // ถ้าไม่พบ user ใน users, ตรวจสอบ temp code login
+      // ตรวจสอบ temp code login
       const tempLoginSuccess = await loginWithTempCode(
         trimmedUsername,
         password
@@ -65,14 +68,14 @@ const Login: React.FC = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center px-4 bg-base-100 text-base-content">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8 space-y-6">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-lg rounded-2xl p-8 space-y-6">
         <h1 className="text-2xl font-bold text-center text-primary">
           เข้าสู่ระบบ
         </h1>
 
         {error && (
           <div
-            className="p-3 text-red-700 bg-red-100 rounded-md"
+            className="p-3 text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300 rounded-md"
             role="alert"
             aria-live="assertive"
           >
@@ -93,6 +96,7 @@ const Login: React.FC = () => {
             aria-label="ชื่อผู้ใช้"
             spellCheck={false}
           />
+
           <input
             type="password"
             placeholder="รหัสผ่าน"
@@ -104,6 +108,7 @@ const Login: React.FC = () => {
             autoComplete="current-password"
             aria-label="รหัสผ่าน"
           />
+
           <button
             type="submit"
             className="btn btn-primary w-full"

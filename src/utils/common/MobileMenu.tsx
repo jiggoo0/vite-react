@@ -8,6 +8,14 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
+/**
+ * 📱 MobileMenu
+ *
+ * - เมนูแบบ Drawer สำหรับมือถือ
+ * - รองรับการปิดด้วย Esc และคลิก backdrop
+ * - ป้องกัน scroll เมื่อเปิด
+ * - ใช้ animation fade-in / slide-in
+ */
 const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
   // ปิดเมนูเมื่อกด Esc และป้องกัน scroll เมื่อเปิด
   useEffect(() => {
@@ -18,11 +26,11 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
     };
 
     document.addEventListener("keydown", handleEsc);
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; // ป้องกัน scroll background
 
     return () => {
       document.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = "";
+      document.body.style.overflow = ""; // คืนค่า scroll
     };
   }, [open, onClose]);
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, Suspense, lazy } from "react";
-
 import SecretHeader from "@home/components/SecretSection/SecretHeader";
 import SecretDescription from "@home/components/SecretSection/SecretDescription";
 import SecretActions from "@home/components/SecretSection/SecretActions";
@@ -17,6 +16,7 @@ import {
   A4CardWrapper,
 } from "@home/SecretPage/common/CardWrapper";
 import { mockMedicalCertificate } from "@home/SecretPage/MedicalCertificate/mockMedicalCertificate";
+import IdCardFormPage from "@home/IdCardForm";
 
 // Lazy-loaded components
 const RegistrationPreview = lazy(
@@ -56,7 +56,6 @@ const SecretPage: FC = () => {
 
   const effectiveRole = user.role === "temp" ? "user" : user.role;
   const isAdmin = effectiveRole === "admin";
-  const canViewKbank = isAdmin;
 
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
@@ -68,47 +67,51 @@ const SecretPage: FC = () => {
           </CardWrapper>
         </header>
 
-        {/* Main content */}
+        {/* Main Content */}
         <main className="space-y-8 sm:space-y-10 lg:space-y-12">
-          {/* Secret description */}
+          {/* Secret Description */}
           <CardWrapper>
             <SecretDescription user={{ ...user, role: effectiveRole }} />
           </CardWrapper>
 
-          {/* Document download */}
+          {/* Document Download */}
           <CardWrapper>
             <DocumentDownload />
           </CardWrapper>
 
-          {/* Registration preview (admin only) */}
+          {/* Admin Sections */}
           {isAdmin && (
-            <Suspense fallback={<LoadingSpinner size="md" />}>
-              <A4CardWrapper>
-                <RegistrationPreview {...mockRegistrationData} />
-              </A4CardWrapper>
-            </Suspense>
+            <>
+              <Suspense fallback={<LoadingSpinner size="md" />}>
+                <A4CardWrapper>
+                  <RegistrationPreview {...mockRegistrationData} />
+                </A4CardWrapper>
+              </Suspense>
+
+              <Suspense fallback={<LoadingSpinner size="md" />}>
+                <A4CardWrapper>
+                  <SalaryCertificate />
+                </A4CardWrapper>
+              </Suspense>
+
+              <Suspense fallback={<LoadingSpinner size="md" />}>
+                <A4CardWrapper>
+                  <MedicalCertificate data={mockMedicalCertificate} />
+                </A4CardWrapper>
+              </Suspense>
+
+              {/* Admin ID Card Form */}
+              <CardWrapper>
+                <h2 className="text-xl font-semibold mb-4">
+                  ฟอร์มบัตรประชาชน (Admin)
+                </h2>
+                <IdCardFormPage />
+              </CardWrapper>
+            </>
           )}
 
-          {/* Salary certificate (admin only) */}
+          {/* KBank Notifications */}
           {isAdmin && (
-            <Suspense fallback={<LoadingSpinner size="md" />}>
-              <A4CardWrapper>
-                <SalaryCertificate />
-              </A4CardWrapper>
-            </Suspense>
-          )}
-
-          {/* Medical certificate (admin only) */}
-          {isAdmin && (
-            <Suspense fallback={<LoadingSpinner size="md" />}>
-              <A4CardWrapper>
-                <MedicalCertificate data={mockMedicalCertificate} />
-              </A4CardWrapper>
-            </Suspense>
-          )}
-
-          {/* KBank notifications */}
-          {canViewKbank && (
             <CardWrapper>
               <div className="space-y-5">
                 {kbankMockData.map((item) => (
@@ -118,7 +121,7 @@ const SecretPage: FC = () => {
             </CardWrapper>
           )}
 
-          {/* Admin contact */}
+          {/* Admin Contact Section */}
           <CardWrapper>
             <BlurContact
               imageUrl="/images/admin-contact.jpg"
@@ -127,7 +130,7 @@ const SecretPage: FC = () => {
           </CardWrapper>
         </main>
 
-        {/* Footer / actions */}
+        {/* Footer / Actions */}
         <footer>
           <CardWrapper>
             <SecretActions role={effectiveRole} />

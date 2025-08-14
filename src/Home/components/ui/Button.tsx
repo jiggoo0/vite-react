@@ -8,6 +8,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type?: "button" | "submit" | "reset";
 }
 
+/**
+ * 🔹 Button Component
+ *
+ * - รองรับ variant, size, และ props ของ button ปกติ
+ * - สามารถเพิ่ม className เพื่อ custom style เพิ่มเติมได้
+ */
 const Button: FC<ButtonProps> = ({
   children,
   variant = "primary",

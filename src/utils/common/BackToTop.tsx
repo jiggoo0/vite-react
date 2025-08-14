@@ -3,14 +3,23 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { ArrowUp } from "lucide-react";
 
+/**
+ * ⬆️ BackToTop
+ *
+ * - แสดงปุ่มกลับไปด้านบนเมื่อ scroll มากกว่า 300px
+ * - รองรับ smooth scroll และ animation transition
+ * - debounce scroll event 50ms
+ */
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<number | null>(null);
 
+  // ตรวจสอบ scroll position
   const handleScroll = useCallback(() => {
     setIsVisible(window.scrollY > 300);
   }, []);
 
+  // ติด listener scroll และ debounce
   useEffect(() => {
     const onScroll = () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -25,10 +34,12 @@ const BackToTop = () => {
     };
   }, [handleScroll]);
 
+  // ฟังก์ชัน scroll กลับไปด้านบน
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // className แบบ dynamic สำหรับ animation และ visibility
   const buttonClasses = `
     flex items-center justify-center
     rounded-full p-3 text-white shadow-lg

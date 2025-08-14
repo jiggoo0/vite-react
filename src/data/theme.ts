@@ -1,3 +1,4 @@
+/** 💡 ประเภทของชื่อธีม */
 export type ThemeName = "light" | "dark" | "business" | "team";
 
 /** 🌞 Light Theme Colors */
@@ -13,7 +14,7 @@ export const lightThemeColors = {
   success: "#36D399",
   warning: "#FBBD23",
   error: "#F87272",
-};
+} as const;
 
 /** 🌙 Dark Theme Colors */
 export const darkThemeColors = {
@@ -28,7 +29,7 @@ export const darkThemeColors = {
   success: "#4ADE80",
   warning: "#FACC15",
   error: "#F87171",
-};
+} as const;
 
 /** 💼 Business Theme Colors */
 export const businessThemeColors = {
@@ -43,7 +44,7 @@ export const businessThemeColors = {
   success: "#22C55E",
   warning: "#EAB308",
   error: "#DC2626",
-};
+} as const;
 
 /** 👥 Team Theme Colors */
 export const teamThemeColors = {
@@ -58,10 +59,10 @@ export const teamThemeColors = {
   success: "#36D399",
   warning: "#FBBD23",
   error: "#F87272",
-};
+} as const;
 
-/** 🔹 Themes Object */
-export const themes = {
+/** 🔹 รวมทุกธีม */
+export const themes: Record<ThemeName, Record<string, string>> = {
   light: lightThemeColors,
   dark: darkThemeColors,
   business: businessThemeColors,

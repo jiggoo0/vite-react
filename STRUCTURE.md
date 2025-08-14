@@ -4,9 +4,13 @@
 - Home/
   - CustomerAssessmentForm.tsx
   - Home.tsx
+  - IdCardForm.tsx
   - Login.tsx
   - SecretPage.tsx
   - SecretPage/
+    - MedicalCertificate/
+      - MedicalCertificate.tsx
+      - mockMedicalCertificate.ts
     - RegistrationPreview/
       - RegistrationPreview.tsx
       - mockRegistrationData.ts
@@ -46,6 +50,7 @@
         - HeroBadge.tsx
         - HeroStats.tsx
     - Portfolio/
+      - CaseStudyRedacted.tsx
       - PortfolioGallery.tsx
       - SupportFAQ.tsx
       - index.ts
@@ -56,6 +61,7 @@
     - SecretSection/
       - BlurContact/
         - BlurContact.tsx
+        - motionVariants.ts
       - DocumentDownload.tsx
       - KbankIOSNotification.mock.ts
       - KbankIOSNotification.tsx
@@ -65,7 +71,9 @@
       - SecretHeader.tsx
     - SellingPoints/
       - SellingPoints.tsx
+      - SpeedGuaranteeBanner.tsx
     - Services/
+      - ComplianceFAQ.tsx
       - FeatureAwards.tsx
       - FeatureList.tsx
       - Services.tsx
@@ -79,6 +87,7 @@
       - TrustBadge.tsx
     - UserBoard/
       - TrustBadges.tsx
+      - TrustMetricsBar.tsx
       - UserBoard.tsx
     - common/
       - LogoutButton.tsx
@@ -108,6 +117,8 @@
   - motionVariants.ts
 - api/
   - chat.ts
+- config/
+  - idcardConfig.ts
 - context/
   - ThemeContext.ts
   - ThemeProvider.tsx
@@ -142,6 +153,7 @@
     - SectionContainer.tsx
     - SectionWrapper.tsx
     - SocialIcons.tsx
+  - exportCard.ts
   - index.ts
 - vite-env.d.ts
 
@@ -412,3 +424,87 @@ vite 7.1.2
 vite-tsconfig-paths 5.1.4
 
 zip-a-folder 3.1.9
+
+การทำงานให้มองภาพรวมโค้ดให้ออก ว่าทำเป็นเครื่องมือหรือทำ components แสดงผล เพราะเครื่องมือเน้นความสมจริงตรงแบบที่สุด เขียน Thyscript ให้เข้มงวด Professional
+
+ลึกเลี่ยงคำว่าตัวอย่างมาใส่การทำงารโครงสร้างโปรเจค รายละเอียดต่าง ๆ ทุกอย่างส่งให้หมดตรวจตรา เน้นการทำงาน ความถูกต้องเกิน1️⃣ src/config/idcardConfig.ts — Config ของบัตร
+
+หน้าที่หลัก:
+กำหนด ขนาดบัตร, พื้นหลัง, และ ตำแหน่ง/ขนาด/น้ำหนักตัวอักษรของแต่ละฟิลด์ บนบัตร
+
+รายละเอียดสำคัญ:
+
+cardWidth, cardHeight → ขนาดบัตร
+
+bgDefault → ภาพพื้นหลังบัตร (bg.webp)
+
+fields → Map ของฟิลด์บนบัตร (cardNumber, fullName, address ฯลฯ)
+
+แต่ละ field มี top, left, fontSize, fontWeight, label
+
+ประโยชน์:
+ทำให้การปรับ layout หรือขนาดฟอนต์ของบัตร ทำได้ง่ายโดยไม่ต้องแก้โค้ด JSX
+
+---
+
+2️⃣ src/Home/IdCardForm.tsx — Form + Preview Component
+
+หน้าที่หลัก:
+
+แสดง ฟอร์มกรอกข้อมูล ของบัตรประชาชน
+
+แสดงผล preview บัตรทันที ตามค่าที่กรอก (dynamic)
+
+ใช้ค่า config จาก idcardConfig เพื่อจัดตำแหน่งและสไตล์ฟิลด์
+
+รายละเอียดสำคัญ:
+
+useState<FormData> → เก็บข้อมูล form
+
+handleChange → อัปเดต state ของแต่ละ input
+
+handleSubmit → ตรวจสอบฟิลด์สำคัญและแจ้งผลด้วย Swal
+
+Preview บัตร:
+
+{Object.entries(idCardConfig.fields).map(([key, cfg]) => (
+<span style={{position:absolute, top: cfg.top, left: cfg.left, fontSize: cfg.fontSize, fontWeight: cfg.fontWeight}}>
+{formData[key as keyof FormData]}
+</span>
+))}
+
+ประโยชน์:
+แยกการจัดการ UI, state, และ logic ของ form/preview ออกจาก config ทำให้ maintain ง่าย
+
+---
+
+3️⃣ src/styles/idcard.css — Style Sheet
+
+หน้าที่หลัก:
+
+จัดสไตล์ให้ ฟอร์ม, ปุ่ม, และ preview บัตร
+
+กำหนด position: relative สำหรับ preview เพื่อให้ span ของฟิลด์วางตำแหน่งได้
+
+รองรับ responsive และสไตล์ hover/focus ของ input
+
+รายละเอียดสำคัญ:
+
+.idcard-preview → container preview ของบัตร
+
+.idcard-field → style ของแต่ละ field บนบัตร (color, font-family)
+
+.btn, .btn-blue → ปุ่ม submit
+
+media query → ปรับขนาดบัตรเมื่อหน้าจอเล็ก
+
+---
+
+💡 สรุป flow การทำงาน
+
+1. Config (idcardConfig) → บอกตำแหน่งและขนาดฟิลด์
+
+2. Component (IdCardForm.tsx) → แสดง form + ใช้ config แสดง preview dynamic
+
+3. CSS (idcard.css) → จัดสไตล์ container, field, form, และปุ่ม
+   99%

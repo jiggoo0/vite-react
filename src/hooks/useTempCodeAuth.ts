@@ -1,4 +1,3 @@
-// src/hooks/useTempCodeAuth.ts
 import { useState } from "react";
 import { tryUserTempLogin } from "@/data/UserTempCodes";
 
@@ -30,7 +29,8 @@ export function useTempCodeAuth(): TempCodeAuthResult {
         setError("รหัสชั่วคราวไม่ถูกต้อง หรือ หมดอายุแล้ว หรือใช้ไปแล้ว");
         return false;
       }
-    } catch {
+    } catch (err) {
+      console.error("Temp code login error:", err);
       setIsLoggedIn(false);
       setError("เกิดข้อผิดพลาดในการตรวจสอบรหัส");
       return false;

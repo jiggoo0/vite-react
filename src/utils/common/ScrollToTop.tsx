@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 interface ScrollToTopProps {
-  smooth?: boolean; // ถ้า false จะ scroll แบบทันที
+  /** ถ้า false จะ scroll แบบทันที */
+  smooth?: boolean;
 }
 
 /**

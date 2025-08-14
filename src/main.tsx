@@ -1,20 +1,26 @@
+// src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import AppRouter from "@/Router/AppRouter";
+// Contexts & Providers
 import { ThemeProvider } from "@/context/ThemeProvider";
 
+// Router
+import AppRouter from "@/Router/AppRouter";
+
+// Styles
 import "@/styles/global.css";
 import "@/styles/fonts.css";
 import "@/index.css";
 
-/**
- * 🔹 Entry Point ของแอป React
- * - ตรวจสอบ root element ก่อน mount
- * - ใช้ React.StrictMode
- * - รองรับ React Router DOM และ ThemeContext
- */
+// Optional: Global Error Boundary
+import ErrorBoundary from "@/utils/common/ErrorBoundary";
+
+// 🔹 Log version (จาก package.json หรือ .env)
+console.info(`🚀 App version: ${import.meta.env.VITE_APP_VERSION || "dev"}`);
+
+// หา root element
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
@@ -24,11 +30,14 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
+// Render App
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL || "/"}>
       <ThemeProvider>
-        <AppRouter />
+        <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในระบบ กรุณารีเฟรชหน้า">
+          <AppRouter />
+        </ErrorBoundary>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>

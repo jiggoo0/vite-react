@@ -4,9 +4,17 @@
 import { FC } from "react";
 
 interface FallbackLoadingProps {
-  message?: string; // กำหนดข้อความได้เอง
+  /** 💬 ข้อความที่แสดงบน loader สามารถกำหนดเองได้ */
+  message?: string;
 }
 
+/**
+ * ⏳ FallbackLoading
+ *
+ * - Overlay loader สำหรับ React Suspense หรือ async fetch
+ * - ใช้ backdrop + blur + spinner animation
+ * - รองรับ accessibility: aria-live="polite", role="status"
+ */
 const FallbackLoading: FC<FallbackLoadingProps> = ({ message }) => {
   return (
     <div
@@ -21,6 +29,7 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({ message }) => {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <circle
             className="opacity-25"
@@ -38,7 +47,7 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({ message }) => {
         </svg>
 
         {/* Loading Text */}
-        <p className="text-sm text-base-content/70">
+        <p className="text-sm text-base-content/70 select-none">
           {message || "กำลังโหลดหน้า..."}
         </p>
       </div>

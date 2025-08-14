@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 
-/** 🌐 รายการลิงก์โซเชียล */
+/** 🌐 รายการลิงก์โซเชียลพร้อมไอคอน */
 const socialLinks = [
   { href: "https://lin.ee/gVptUhR", label: "LINE", icon: FaLine },
   {
@@ -35,8 +35,8 @@ const socialLinks = [
  * SocialIcons
  *
  * - แสดงไอคอนโซเชียลพร้อมลิงก์
- * - ใช้ react-icons + Tailwind CSS + accessibility (A11y)
- * - ฝังได้ทั้ง Footer / Hero / Contact Section
+ * - รองรับ accessibility (A11y) และ focus style
+ * - ใช้งานได้ทั้ง Footer / Hero / Contact Section
  */
 const SocialIcons: FC = () => {
   return (

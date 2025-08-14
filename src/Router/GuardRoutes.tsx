@@ -10,7 +10,6 @@ type User = {
   role: "admin" | "user";
 };
 
-// ตรวจสอบว่า data เป็น User ที่ถูกต้องหรือไม่
 const isValidUser = (data: unknown): data is User => {
   if (typeof data !== "object" || data === null) return false;
   const user = data as Partial<User>;
@@ -20,11 +19,9 @@ const isValidUser = (data: unknown): data is User => {
   );
 };
 
-// ฟังก์ชัน parse user จาก localStorage
 const parseUserFromStorage = (): User | null => {
   const raw = localStorage.getItem("user");
   if (!raw) return null;
-
   try {
     const parsed = JSON.parse(raw);
     return isValidUser(parsed) ? parsed : null;
@@ -33,32 +30,21 @@ const parseUserFromStorage = (): User | null => {
   }
 };
 
-/**
- * GuardRoutes - ตรวจสอบ user login และ valid หรือไม่
- * ถ้าไม่ valid หรือไม่มี user ให้ redirect ไปหน้า login
- * ถ้า valid ให้แสดง children
- */
 const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const user = parseUserFromStorage();
-
     if (!user) {
       setIsAuthenticated(false);
-      // ใช้ setTimeout เล็กน้อยเพื่อป้องกัน React strict mode double effect ปัญหาการ redirect ซ้ำ
-      setTimeout(() => {
-        navigate("/login", { replace: true });
-      }, 0);
+      setTimeout(() => navigate("/login", { replace: true }), 0);
       return;
     }
-
     setIsAuthenticated(true);
   }, [navigate]);
 
   if (isAuthenticated === null) {
-    // โหลด spinner รอเช็คสถานะ
     return (
       <div className="min-h-screen flex items-center justify-center">
         <span className="loading loading-spinner loading-lg text-primary" />
@@ -66,12 +52,8 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
     );
   }
 
-  if (!isAuthenticated) {
-    // ยังไม่ redirect แต่ไม่แสดงอะไร
-    return null;
-  }
+  if (!isAuthenticated) return null;
 
-  // ถ้า authenticated แล้ว ให้แสดง children (หน้าที่ protected)
   return <>{children}</>;
 };
 

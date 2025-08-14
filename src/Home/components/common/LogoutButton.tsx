@@ -1,12 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import Button from "@/Home/components/ui/Button";
-import { useState } from "react";
 
+/**
+ * 🔹 LogoutButton
+ *
+ * - ปุ่มสำหรับออกจากระบบ
+ * - รองรับสถานะ loading ขณะ logout
+ */
 const LogoutButton = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();

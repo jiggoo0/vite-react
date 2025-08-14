@@ -10,7 +10,6 @@ interface User {
   role: "admin" | "user";
 }
 
-// ตรวจสอบว่า obj มี property role และตรงกับ allowedRoles หรือไม่
 const isUserWithAllowedRole = (
   obj: unknown,
   allowedRoles: Array<"admin" | "user">
@@ -33,9 +32,7 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
 
     if (!stored) {
       setAuthorized(false);
-      setTimeout(() => {
-        navigate("/login", { replace: true });
-      }, 0);
+      setTimeout(() => navigate("/login", { replace: true }), 0);
       return;
     }
 
@@ -45,20 +42,14 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
       if (isUserWithAllowedRole(parsed, allowedRoles)) {
         setAuthorized(true);
       } else {
-        // Role ไม่ตรง allowedRoles หรือข้อมูลไม่ถูกต้อง
         localStorage.removeItem("user");
         setAuthorized(false);
-        setTimeout(() => {
-          navigate("/403", { replace: true });
-        }, 0);
+        setTimeout(() => navigate("/403", { replace: true }), 0);
       }
     } catch {
-      // parse error หรือข้อมูลเสียหาย
       localStorage.removeItem("user");
       setAuthorized(false);
-      setTimeout(() => {
-        navigate("/login", { replace: true });
-      }, 0);
+      setTimeout(() => navigate("/login", { replace: true }), 0);
     }
   }, [allowedRoles, navigate]);
 

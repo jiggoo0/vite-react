@@ -2,6 +2,7 @@
 
 import { FC, ReactNode, Suspense, lazy } from "react";
 
+// Components
 import Hero from "@home/components/Hero/Hero";
 import About from "@home/components/About/About";
 import SellingPoints from "@home/components/SellingPoints/SellingPoints";
@@ -14,6 +15,13 @@ import SectionContainer from "@common/SectionContainer";
 import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
 import { TestimonialSlider } from "@home/components/Testimonials/TestimonialSlider";
 
+// New sections
+import TrustMetricsBar from "@home/components/UserBoard/TrustMetricsBar";
+import SpeedGuaranteeBanner from "@home/components/SellingPoints/SpeedGuaranteeBanner";
+import CaseStudyRedacted from "@home/components/Portfolio/CaseStudyRedacted";
+import ComplianceFAQ from "@home/components/Services/ComplianceFAQ";
+
+// Lazy-loaded components
 const PortfolioGallery = lazy(
   () => import("@home/components/Portfolio/PortfolioGallery")
 );
@@ -51,18 +59,28 @@ const Home: FC = () => {
 
   return (
     <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
+      {/* Hero */}
       <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์" bg="bg-base-100">
         <Hero />
       </PageSection>
 
+      {/* Trust metrics */}
+      <TrustMetricsBar className="bg-base-100" />
+
+      {/* About */}
       <PageSection id="about" title="เกี่ยวกับเรา" bg="bg-base-200">
         <About />
       </PageSection>
 
+      {/* Selling points */}
       <PageSection id="selling-points" title="จุดเด่นของเรา" bg="bg-base-100">
         <SellingPoints />
       </PageSection>
 
+      {/* Speed guarantee */}
+      <SpeedGuaranteeBanner className="bg-base-100" />
+
+      {/* Features & Trust */}
       <PageSection
         id="features-trust"
         title="จุดเด่นและความน่าเชื่อถือ"
@@ -81,10 +99,45 @@ const Home: FC = () => {
         </div>
       </PageSection>
 
+      {/* Services */}
       <PageSection id="services" title="บริการของเรา" bg="bg-base-100">
         <ServicesSection />
       </PageSection>
 
+      {/* Case studies */}
+      <PageSection id="case-studies" title="ตัวอย่างผลงาน" bg="bg-base-100">
+        <CaseStudyRedacted
+          className="bg-base-100"
+          items={[
+            {
+              id: "cs-1",
+              title: "รีแบรนด์เอกสารองค์กร",
+              summary: "จัดชุดเอกสารภาพลักษณ์ใหม่ ย้ำความเป็นมืออาชีพ",
+              imageSrc: "/assets/portfolio/portfolio1.webp",
+              tags: ["Branding", "Docs", "Metadata Clean"],
+              redactedFields: ["client", "brand"],
+            },
+            {
+              id: "cs-2",
+              title: "จัดทำสื่อเร่งด่วน 24 ชม.",
+              summary: "ออกแบบชุดสื่อพร้อมส่ง กำหนดส่งกระชั้นชิด",
+              imageSrc: "/assets/portfolio/portfolio2.webp",
+              tags: ["Rush", "Design"],
+              redactedFields: ["client"],
+            },
+            {
+              id: "cs-3",
+              title: "ชุดไฟล์ยื่นงานเฉพาะทาง",
+              summary: "จัดสเปกไฟล์ให้ผ่านข้อกำหนด + ลบข้อมูลซ่อน",
+              imageSrc: "/assets/portfolio/portfolio3.webp",
+              tags: ["Compliance", "Delivery"],
+              redactedFields: ["brand"],
+            },
+          ]}
+        />
+      </PageSection>
+
+      {/* User board */}
       <PageSection
         id="user-board"
         title="บอร์ดรายชื่อผู้สมัคร"
@@ -93,6 +146,7 @@ const Home: FC = () => {
         <UserBoard data={UserBoardData} />
       </PageSection>
 
+      {/* Testimonials */}
       <PageSection
         id="testimonials"
         title="เสียงตอบรับจากลูกค้า"
@@ -101,18 +155,35 @@ const Home: FC = () => {
         <TestimonialSlider />
       </PageSection>
 
+      {/* Portfolio */}
       <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
         <Suspense
-          fallback={<div className="text-center py-16">กำลังโหลดผลงาน...</div>}
+          fallback={
+            <div className="text-center py-16 animate-pulse">
+              กำลังโหลดผลงาน...
+            </div>
+          }
         >
           <PortfolioGallery />
         </Suspense>
       </PageSection>
 
+      {/* Compliance FAQ */}
+      <PageSection
+        id="compliance-faq"
+        title="คำถามด้านข้อกำหนด"
+        bg="bg-base-100"
+      >
+        <ComplianceFAQ className="bg-base-100" />
+      </PageSection>
+
+      {/* General FAQ */}
       <PageSection id="faq" title="คำถามที่พบบ่อย" bg="bg-base-200">
         <Suspense
           fallback={
-            <div className="text-center py-16">กำลังโหลดคำถามที่พบบ่อย...</div>
+            <div className="text-center py-16 animate-pulse">
+              กำลังโหลดคำถามที่พบบ่อย...
+            </div>
           }
         >
           <SupportFAQ />
