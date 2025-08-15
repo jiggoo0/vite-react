@@ -41,59 +41,61 @@ const lazyPage = (Page: React.LazyExoticComponent<FC>, message?: string) => (
 );
 
 // ---------------------- App Router ----------------------
-const AppRouter: FC = () => (
-  <>
-    <ScrollToTop />
-    <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในการโหลดหน้าเว็บ">
-      <Routes>
-        {/* Public Routes */}
-        <Route element={<Layout />}>
-          <Route index element={lazyPage(Home)} />
-          <Route path="login" element={lazyPage(Login)} />
-          <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
-        </Route>
+const AppRouter: FC = () => {
+  return (
+    <>
+      <ScrollToTop />
+      <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในการโหลดหน้าเว็บ">
+        <Routes>
+          {/* Public Routes */}
+          <Route element={<Layout />}>
+            <Route index element={lazyPage(Home)} />
+            <Route path="login" element={lazyPage(Login)} />
+            <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
+          </Route>
 
-        {/* Authenticated Routes */}
-        <Route
-          element={
-            <GuardRoutes>
-              <Layout />
-            </GuardRoutes>
-          }
-        >
-          <Route path="secret" element={lazyPage(SecretPage)} />
-          <Route path="id-card" element={lazyPage(IdCardFormPage)} />
-        </Route>
-
-        {/* Admin-only Routes */}
-        <Route
-          path="admin"
-          element={
-            <RoleGuard allowedRoles={["admin"]}>
-              <Layout />
-            </RoleGuard>
-          }
-        >
+          {/* Authenticated Routes */}
           <Route
-            index
             element={
-              <div className="p-6 text-xl font-semibold text-white">
-                🛠️ Admin Dashboard
-              </div>
+              <GuardRoutes>
+                <Layout />
+              </GuardRoutes>
             }
-          />
-          <Route path="secret" element={lazyPage(SecretPage)} />
-          <Route path="id-card" element={lazyPage(IdCardFormPage)} />
-        </Route>
+          >
+            <Route path="secret" element={lazyPage(SecretPage)} />
+            <Route path="id-card" element={lazyPage(IdCardFormPage)} />
+          </Route>
 
-        {/* Error Pages */}
-        <Route
-          path="403"
-          element={lazyPage(Forbidden, "กำลังโหลดหน้า 403...")}
-        />
-      </Routes>
-    </ErrorBoundary>
-  </>
-);
+          {/* Admin-only Routes */}
+          <Route
+            path="admin"
+            element={
+              <RoleGuard allowedRoles={["admin"]}>
+                <Layout />
+              </RoleGuard>
+            }
+          >
+            <Route
+              index
+              element={
+                <div className="p-6 text-xl font-semibold text-white">
+                  🛠️ Admin Dashboard
+                </div>
+              }
+            />
+            <Route path="secret" element={lazyPage(SecretPage)} />
+            <Route path="id-card" element={lazyPage(IdCardFormPage)} />
+          </Route>
+
+          {/* Error Pages */}
+          <Route
+            path="403"
+            element={lazyPage(Forbidden, "กำลังโหลดหน้า 403...")}
+          />
+        </Routes>
+      </ErrorBoundary>
+    </>
+  );
+};
 
 export default AppRouter;

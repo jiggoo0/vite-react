@@ -34,7 +34,7 @@ const PortfolioGallery = lazy(
 );
 const SupportFAQ = lazy(() => import("@home/components/Portfolio/SupportFAQ"));
 
-// ======================= PageSection Wrapper =======================
+// ======================= Page Section Wrapper =======================
 interface PageSectionProps {
   id: string;
   title: string;
@@ -42,6 +42,11 @@ interface PageSectionProps {
   bg?: string;
 }
 
+/**
+ * 📦 Wrapper สำหรับ Section ของหน้าเว็บ
+ * - มี Animation แสดงผลเมื่อเลื่อนถึง
+ * - มี SectionContainer ครอบเนื้อหา
+ */
 const PageSection: FC<PageSectionProps> = ({
   id,
   title,
@@ -87,22 +92,26 @@ const Home: FC = () => {
 
   return (
     <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
+      {/* Hero Section */}
       <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์" bg="bg-base-100">
         <Hero />
       </PageSection>
 
       <TrustMetricsBar className="bg-base-100" />
 
+      {/* About Section */}
       <PageSection id="about" title="เกี่ยวกับเรา" bg="bg-base-200">
         <About />
       </PageSection>
 
+      {/* Selling Points */}
       <PageSection id="selling-points" title="จุดเด่นของเรา" bg="bg-base-100">
         <SellingPoints />
       </PageSection>
 
       <SpeedGuaranteeBanner className="bg-base-100" />
 
+      {/* Features & Trust */}
       <PageSection
         id="features-trust"
         title="จุดเด่นและความน่าเชื่อถือ"
@@ -121,10 +130,12 @@ const Home: FC = () => {
         </div>
       </PageSection>
 
+      {/* Services */}
       <PageSection id="services" title="บริการของเรา" bg="bg-base-100">
         <ServicesSection />
       </PageSection>
 
+      {/* Case Studies */}
       <PageSection id="case-studies" title="ตัวอย่างผลงาน" bg="bg-base-100">
         <CaseStudyRedacted
           className="bg-base-100"
@@ -157,6 +168,7 @@ const Home: FC = () => {
         />
       </PageSection>
 
+      {/* User Board */}
       <PageSection
         id="user-board"
         title="บอร์ดรายชื่อผู้สมัคร"
@@ -165,6 +177,7 @@ const Home: FC = () => {
         <UserBoard data={UserBoardData} />
       </PageSection>
 
+      {/* Testimonials */}
       <PageSection
         id="testimonials"
         title="เสียงตอบรับจากลูกค้า"
@@ -173,6 +186,7 @@ const Home: FC = () => {
         <TestimonialSlider />
       </PageSection>
 
+      {/* Portfolio Gallery */}
       <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
         <Suspense
           fallback={
@@ -185,6 +199,7 @@ const Home: FC = () => {
         </Suspense>
       </PageSection>
 
+      {/* Compliance FAQ */}
       <PageSection
         id="compliance-faq"
         title="คำถามด้านข้อกำหนด"
@@ -193,6 +208,7 @@ const Home: FC = () => {
         <ComplianceFAQ className="bg-base-100" />
       </PageSection>
 
+      {/* Support FAQ */}
       <PageSection id="faq" title="คำถามที่พบบ่อย" bg="bg-base-200">
         <Suspense
           fallback={

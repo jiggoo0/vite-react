@@ -1,10 +1,33 @@
-/** 💡 ประเภทของชื่อธีม */
+/**
+ * 💡 Theme Name Types
+ * -------------------
+ * กำหนดชื่อธีมที่รองรับในระบบ
+ */
 export type ThemeName = "light" | "dark" | "business" | "team";
 
+/**
+ * 🎨 Theme Color Type
+ * -------------------
+ * กำหนดโครงสร้างของค่าสีในแต่ละธีม
+ */
+export type ThemeColors = Readonly<{
+  primary: string;
+  secondary: string;
+  accent: string;
+  neutral: string;
+  "base-100": string;
+  "base-200": string;
+  "base-300": string;
+  info: string;
+  success: string;
+  warning: string;
+  error: string;
+}>;
+
 /** =======================
- * 🌞 Light Theme Colors
+ * 🌞 Light Theme
  * ===================== */
-export const lightThemeColors = {
+export const lightThemeColors: ThemeColors = {
   primary: "#2563EB",
   secondary: "#9333EA",
   accent: "#F59E0B",
@@ -16,12 +39,12 @@ export const lightThemeColors = {
   success: "#36D399",
   warning: "#FBBD23",
   error: "#F87272",
-} as const;
+};
 
 /** =======================
- * 🌙 Dark Theme Colors
+ * 🌙 Dark Theme
  * ===================== */
-export const darkThemeColors = {
+export const darkThemeColors: ThemeColors = {
   primary: "#3B82F6",
   secondary: "#8B5CF6",
   accent: "#FBBF24",
@@ -33,12 +56,12 @@ export const darkThemeColors = {
   success: "#4ADE80",
   warning: "#FACC15",
   error: "#F87171",
-} as const;
+};
 
 /** =======================
- * 💼 Business Theme Colors
+ * 💼 Business Theme
  * ===================== */
-export const businessThemeColors = {
+export const businessThemeColors: ThemeColors = {
   primary: "#0C4A6E",
   secondary: "#0284C7",
   accent: "#22D3EE",
@@ -50,12 +73,12 @@ export const businessThemeColors = {
   success: "#22C55E",
   warning: "#EAB308",
   error: "#DC2626",
-} as const;
+};
 
 /** =======================
- * 👥 Team Theme Colors
+ * 👥 Team Theme
  * ===================== */
-export const teamThemeColors = {
+export const teamThemeColors: ThemeColors = {
   primary: "#1D4ED8",
   secondary: "#9333EA",
   accent: "#F59E0B",
@@ -67,12 +90,12 @@ export const teamThemeColors = {
   success: "#36D399",
   warning: "#FBBD23",
   error: "#F87272",
-} as const;
+};
 
 /** =======================
- * 🔹 รวมทุกธีม
+ * 🔹 Theme Collection
  * ===================== */
-export const themes: Record<ThemeName, Record<string, string>> = {
+export const themes: Record<ThemeName, ThemeColors> = {
   light: lightThemeColors,
   dark: darkThemeColors,
   business: businessThemeColors,

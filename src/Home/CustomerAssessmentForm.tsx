@@ -1,4 +1,6 @@
 // src/Home/CustomerCreditForm.tsx
+"use client";
+
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -10,6 +12,9 @@ import {
   SubmitButton,
 } from "@/Home/components/Forms";
 
+// =======================
+// Types
+// =======================
 type CustomerCreditData = {
   name: string;
   email: string;
@@ -17,9 +22,12 @@ type CustomerCreditData = {
   existingDebt: number;
   paymentHistory: string;
   creditRating: string;
-  notes: string;
+  notes?: string;
 };
 
+// =======================
+// Component
+// =======================
 const CustomerCreditForm: React.FC = () => {
   const {
     register,
@@ -40,12 +48,14 @@ const CustomerCreditForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<CustomerCreditData> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // simulate API
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       console.log("ข้อมูลเครดิตลูกค้า:", data);
       alert("บันทึกการประเมินเครดิตเรียบร้อยแล้ว");
       reset();
     } catch (error) {
       console.error("เกิดข้อผิดพลาด:", error);
+      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
     }
   };
 
@@ -56,7 +66,7 @@ const CustomerCreditForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <FieldGroup columns={2}>
-        {/* ชื่อ */}
+        {/* ชื่อ-สกุล */}
         <InputField
           label="ชื่อ-สกุล"
           placeholder="กรอกชื่อของลูกค้า"
@@ -74,7 +84,10 @@ const CustomerCreditForm: React.FC = () => {
           error={errors.email?.message || null}
           {...register("email", {
             required: "กรุณากรอกอีเมล",
-            pattern: { value: /^\S+@\S+$/i, message: "รูปแบบอีเมลไม่ถูกต้อง" },
+            pattern: {
+              value: /^\S+@\S+$/i,
+              message: "รูปแบบอีเมลไม่ถูกต้อง",
+            },
           })}
         />
 
@@ -131,7 +144,9 @@ const CustomerCreditForm: React.FC = () => {
             { label: "D (ต้องปรับปรุง)", value: "D" },
           ]}
           error={errors.creditRating?.message || null}
-          {...register("creditRating", { required: "กรุณาเลือกคะแนนเครดิต" })}
+          {...register("creditRating", {
+            required: "กรุณาเลือกคะแนนเครดิต",
+          })}
         />
 
         {/* ข้อเสนอแนะ/หมายเหตุ */}
@@ -143,6 +158,7 @@ const CustomerCreditForm: React.FC = () => {
         />
       </FieldGroup>
 
+      {/* Submit Button */}
       <SubmitButton
         loading={isSubmitting}
         label="ส่งแบบฟอร์ม"

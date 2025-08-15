@@ -4,28 +4,28 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-// Contexts & Providers
+// 🌐 Context Providers
 import { ThemeProvider } from "@/context/ThemeProvider";
 
-// Router
+// 🛣 Router
 import AppRouter from "@/Router/AppRouter";
 
-// Styles
+// 🎨 Styles
 import "@/styles/global.css";
 import "@/styles/fonts.css";
 import "@/index.css";
 
-// Optional: Global Error Boundary
+// 🛡 Error Handling & Fallbacks
 import ErrorBoundary from "@/utils/common/ErrorBoundary";
-
-// Fallback loader สำหรับ Suspense
 import FallbackLoader from "@/utils/common/FallbackLoader";
 
 // ---------------------- Root Element ----------------------
-const rootElement = document.getElementById("root");
+let rootElement = document.getElementById("root");
 if (!rootElement) {
-  console.error("❌ Root element not found in DOM (#root)");
-  throw new Error("Cannot mount React app without root element");
+  console.warn("⚠️ Root element not found, creating one dynamically.");
+  rootElement = document.createElement("div");
+  rootElement.id = "root";
+  document.body.appendChild(rootElement);
 }
 
 // ---------------------- Render App ----------------------
@@ -45,5 +45,16 @@ root.render(
   </React.StrictMode>
 );
 
-// ---------------------- Log App Version ----------------------
-console.info(`🚀 App version: ${import.meta.env.VITE_APP_VERSION || "dev"}`);
+// ---------------------- Debug Info ----------------------
+console.groupCollapsed("📦 App Info");
+console.info("🚀 Version:", import.meta.env.VITE_APP_VERSION || "dev");
+console.info("🔧 Mode:", import.meta.env.MODE);
+console.info("🌍 Base URL:", import.meta.env.BASE_URL);
+console.groupEnd();
+
+// ---------------------- PWA / Service Worker ----------------------
+// if ("serviceWorker" in navigator) {
+//   navigator.serviceWorker.register("/sw.js").catch((err) => {
+//     console.error("SW registration failed:", err);
+//   });
+// }

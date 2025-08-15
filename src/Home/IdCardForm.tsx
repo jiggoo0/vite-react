@@ -1,12 +1,21 @@
 "use client";
 
-import React, { useState, ChangeEvent, FC, useMemo } from "react";
+import React, {
+  FC,
+  useState,
+  ChangeEvent,
+  useMemo,
+  InputHTMLAttributes,
+  SelectHTMLAttributes,
+} from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "@/styles/idcard.css";
 import { idCardConfig } from "@/config/idcardConfig";
 
-// ---------------------- Types ----------------------
+// =======================
+// Types
+// =======================
 interface FormData {
   officer: string;
   docNo: string;
@@ -27,7 +36,7 @@ interface FormData {
 
 type FormFieldName = keyof FormData;
 
-const initialFormData: FormData = Object.freeze({
+const initialFormData: Readonly<FormData> = {
   officer: "",
   docNo: "",
   cardPlace: "",
@@ -43,12 +52,19 @@ const initialFormData: FormData = Object.freeze({
   cardNumber: "",
   initCard: "",
   expCard: "",
-});
+};
 
-// ---------------------- Components ----------------------
+const requiredFields: FormFieldName[] = ["officer", "docNo", "fullName"];
+
+// =======================
+// Main Component
+// =======================
 const IdCardForm: FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
+  // ----------------------
+  // Handle Input Changes
+  // ----------------------
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -56,21 +72,26 @@ const IdCardForm: FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // ----------------------
+  // Validate Form
+  // ----------------------
   const validateForm = (): boolean => {
-    const requiredFields: FormFieldName[] = ["officer", "docNo", "fullName"];
-    const empty = requiredFields.filter((f) => !formData[f]?.trim());
-
-    if (empty.length) {
+    const emptyFields = requiredFields.filter((f) => !formData[f]?.trim());
+    if (emptyFields.length > 0) {
       Swal.fire({
         icon: "error",
         title: "กรอกข้อมูลไม่ครบ",
-        text: `กรุณากรอก: ${empty.join(", ")}`,
+        text: `กรุณากรอก: ${emptyFields.join(", ")}`,
+        confirmButtonColor: "#2563EB",
       });
       return false;
     }
     return true;
   };
 
+  // ----------------------
+  // Submit Form
+  // ----------------------
   const handleSubmit = () => {
     if (!validateForm()) return;
 
@@ -82,27 +103,32 @@ const IdCardForm: FC = () => {
     });
   };
 
+  // ----------------------
+  // Computed Full Address
+  // ----------------------
   const fullAddress = useMemo(
     () =>
-      `${formData.address} หมู่ ${formData.moo} ${formData.road} ${formData.tambol} / ${formData.district} / ${formData.province}`,
-    [
-      formData.address,
-      formData.moo,
-      formData.road,
-      formData.tambol,
-      formData.district,
-      formData.province,
-    ]
+      `${formData.address || ""} หมู่ ${formData.moo || ""} ${
+        formData.road || ""
+      } ${formData.tambol || ""} / ${formData.district || ""} / ${
+        formData.province || ""
+      }`,
+    [formData]
   );
 
   return (
     <section className="min-h-screen bg-base-200 px-4 sm:px-6 lg:px-8 py-6 sm:py-10 font-poppins">
       <div className="max-w-3xl mx-auto space-y-6">
-        <h1 className="text-2xl font-semibold text-center mb-6">
+        {/* =======================
+            Title
+        ======================= */}
+        <h1 className="text-2xl font-bold text-center mb-6">
           ฟอร์มบัตรประชาชน
         </h1>
 
-        {/* Form */}
+        {/* =======================
+            Form Section
+        ======================= */}
         <div className="bg-white rounded-xl shadow-md p-6 space-y-6">
           <form className="space-y-6">
             {/* Officer & Document No */}
@@ -112,6 +138,7 @@ const IdCardForm: FC = () => {
                 name="officer"
                 value={formData.officer}
                 onChange={handleChange}
+                required
                 options={[
                   { value: "", label: "กรุณาเลือกเจ้าหน้าที่" },
                   { value: "officer1", label: "เจ้าหน้าที่ 1" },
@@ -123,6 +150,7 @@ const IdCardForm: FC = () => {
                 name="docNo"
                 value={formData.docNo}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -138,6 +166,7 @@ const IdCardForm: FC = () => {
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
+              required
             />
 
             {/* Birthday & Province */}
@@ -221,48 +250,48 @@ const IdCardForm: FC = () => {
               />
             </div>
 
-            <div className="mt-4">
+            {/* Submit Button */}
+            <div className="pt-4">
               <button
                 type="button"
-                className="btn btn-blue w-full"
+                className="btn btn-primary w-full"
                 onClick={handleSubmit}
               >
-                Submit
+                ส่งข้อมูล
               </button>
             </div>
           </form>
         </div>
 
-        {/* ID Card Preview */}
+        {/* =======================
+            ID Card Preview
+        ======================= */}
         <div
           id="idcard-preview"
-          className="idcard-preview mt-8"
+          className="idcard-preview mt-8 border rounded-lg shadow relative overflow-hidden"
           style={{
             width: idCardConfig.cardWidth,
             height: idCardConfig.cardHeight,
             backgroundImage: `url(${idCardConfig.bgDefault})`,
-            position: "relative",
+            backgroundSize: "cover",
           }}
         >
           {Object.entries(idCardConfig.fields).map(([key, cfg]) => {
             const value =
               key === "address" ? fullAddress : formData[key as FormFieldName];
-
             return (
               <span
                 key={key}
-                className="idcard-field"
+                className="idcard-field absolute whitespace-nowrap"
                 style={{
-                  position: "absolute",
                   top: cfg.top,
                   left: cfg.left,
                   fontSize: cfg.fontSize,
                   fontWeight: cfg.fontWeight || "normal",
-                  whiteSpace: "nowrap",
                 }}
                 title={cfg.label}
               >
-                {value}
+                {value || ""}
               </span>
             );
           })}
@@ -272,32 +301,53 @@ const IdCardForm: FC = () => {
   );
 };
 
-// ---------------------- Reusable Inputs ----------------------
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+// =======================
+// Reusable Inputs
+// =======================
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  required?: boolean;
 }
 
-const FormInput: FC<InputProps> = ({ label, ...props }) => (
+const FormInput: FC<InputProps> = ({ label, required, ...props }) => (
   <div>
-    {label && <label className="block text-sm font-medium">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+    )}
     <input
       {...props}
-      className={`mt-1 block w-full border-gray-300 rounded-md px-3 py-2 ${props.className || ""}`}
+      className={`mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+        props.className || ""
+      }`}
     />
   </div>
 );
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   options: { value: string; label: string }[];
+  required?: boolean;
 }
 
-const FormSelect: FC<SelectProps> = ({ label, options, ...props }) => (
+const FormSelect: FC<SelectProps> = ({
+  label,
+  options,
+  required,
+  ...props
+}) => (
   <div>
-    {label && <label className="block text-sm font-medium">{label}</label>}
+    {label && (
+      <label className="block text-sm font-medium text-gray-700">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+    )}
     <select
       {...props}
-      className={`mt-1 block w-full border-gray-300 rounded-md px-3 py-2 ${props.className || ""}`}
+      className={`mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+        props.className || ""
+      }`}
     >
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>

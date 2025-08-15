@@ -87,7 +87,7 @@
   ::-webkit-scrollbar-thumb {
     background-color: theme("colors.primary");
     border-radius: 4px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -134,6 +134,7 @@
 
   .animate-slide {
     animation: slideBackground 20s ease-in-out infinite;
+    will-change: transform;
   }
 }
 
@@ -141,9 +142,13 @@
    Print Styles
    ======================= */
 @media print {
+  html,
   body {
     margin: 0;
     padding: 0;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 14pt;
   }
 
   .a4-card-wrapper {
@@ -155,5 +160,11 @@
     border: none !important;
     page-break-after: always;
     margin: 0 auto;
+  }
+
+  /* Remove interactive elements in print */
+  a,
+  button {
+    pointer-events: none !important;
   }
 }

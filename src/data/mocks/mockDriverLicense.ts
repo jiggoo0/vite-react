@@ -1,10 +1,11 @@
+// src/Home/SecretPage/DriverLicense/driverLicenseConfig.ts
 import {
   DriverLicenseConfig,
   DriverLicenseData,
 } from "@/Home/SecretPage/DriverLicense/types/driverLicense";
 
 /**
- * Configuration สำหรับการแสดงผลใบอนุญาตขับขี่
+ * 🔹 Configuration สำหรับการแสดงผลใบอนุญาตขับขี่
  */
 export const driverLicenseConfig: DriverLicenseConfig = {
   cardWidth: 860,
@@ -16,7 +17,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "300px",
       fontSize: "24px",
       fontWeight: 600,
-      color: "#000",
+      color: "#000000",
       label: "ชื่อ-นามสกุล",
       required: true,
     },
@@ -25,7 +26,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "300px",
       fontSize: "20px",
       fontWeight: 500,
-      color: "#000",
+      color: "#000000",
       label: "เลขบัตรประชาชน",
       required: true,
     },
@@ -34,7 +35,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "300px",
       fontSize: "20px",
       fontWeight: 500,
-      color: "#000",
+      color: "#000000",
       label: "วันเกิด",
       required: true,
     },
@@ -43,7 +44,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "560px",
       fontSize: "20px",
       fontWeight: 600,
-      color: "#000",
+      color: "#000000",
       label: "เลขที่ใบอนุญาต",
       required: true,
     },
@@ -52,7 +53,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "560px",
       fontSize: "20px",
       fontWeight: 500,
-      color: "#000",
+      color: "#000000",
       label: "วันหมดอายุ",
       required: true,
     },
@@ -69,7 +70,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
 };
 
 /**
- * ข้อมูลจำลองของผู้ถือใบอนุญาต
+ * 🔹 ข้อมูลจำลองของผู้ถือใบอนุญาต (สำหรับ preview)
  */
 export const mockDriverLicenseData: DriverLicenseData = {
   fullName: "สมชาย ใจดี",
