@@ -16,23 +16,26 @@ const ComingSoonServiceCard: FC<ComingSoonServiceCardProps> = ({ service }) => (
     viewport={{ once: true, amount: 0.3 }}
     tabIndex={0}
     aria-label={`บริการ ${service.title} กำลังจะเปิดให้บริการเร็ว ๆ นี้`}
-    className="relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 shadow-md focus-within:ring-2 focus-within:ring-yellow-400"
+    className="relative flex flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60 shadow-md focus-within:ring-2 focus-within:ring-yellow-400 transition-transform hover:-translate-y-1 hover:shadow-lg"
   >
+    {/* Service Image */}
     <img
       src={service.image}
       alt={service.altText}
       loading="lazy"
       decoding="async"
-      className="h-40 w-full rounded-xl object-cover brightness-75"
+      className="h-40 w-full rounded-t-2xl object-cover brightness-75 transition-transform duration-300 hover:scale-105"
     />
 
-    <div className="mt-4 space-y-1">
+    {/* Service Info */}
+    <div className="mt-4 px-3 pb-3 space-y-1">
       <h3 className="text-base font-semibold text-white">{service.title}</h3>
       <p className="text-sm text-base-content/70 leading-relaxed">
         {service.description}
       </p>
     </div>
 
+    {/* Coming Soon Badge */}
     {service.comingSoonNote && (
       <div
         aria-hidden="true"

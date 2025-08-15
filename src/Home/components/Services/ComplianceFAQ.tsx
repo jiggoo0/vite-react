@@ -36,27 +36,34 @@ const ComplianceFAQ: FC<ComplianceFAQProps> = ({
   subline = "โปร่งใสและปลอดภัย เพื่อความสบายใจของทุกฝ่าย",
 }) => {
   const data = items?.length ? items : defaultFAQ;
+
   return (
     <section className={clsx("py-12 md:py-16", className)}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-8">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-2xl md:text-3xl font-semibold">{headline}</h2>
-          <p className="opacity-80 mt-2">{subline}</p>
+          <p className="mt-2 text-base text-base-content/80">{subline}</p>
         </div>
-        <div className="join join-vertical w-full">
-          {data.map((qa, i) => (
-            <div
-              key={i}
-              className="collapse collapse-arrow join-item bg-base-200"
+
+        {/* FAQ List */}
+        <div className="flex flex-col gap-4">
+          {data.map((qa, idx) => (
+            <details
+              key={idx}
+              className="group border border-base-300 rounded-xl bg-base-100 p-4 hover:shadow-md transition-shadow"
             >
-              <input type="checkbox" aria-label={`toggle-faq-${i}`} />
-              <div className="collapse-title text-base md:text-lg font-medium">
+              <summary
+                className="cursor-pointer select-none text-base md:text-lg font-medium list-none marker:hidden flex justify-between items-center"
+                aria-label={`Toggle FAQ: ${qa.q}`}
+              >
                 {qa.q}
-              </div>
-              <div className="collapse-content">
-                <p className="opacity-80">{qa.a}</p>
-              </div>
-            </div>
+                <span className="ml-2 transition-transform group-open:rotate-180">
+                  ▼
+                </span>
+              </summary>
+              <p className="mt-2 text-base text-base-content/80">{qa.a}</p>
+            </details>
           ))}
         </div>
       </div>

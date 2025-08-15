@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FC, useMemo } from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import "@/styles/idcard.css";
 import { idCardConfig } from "@/config/idcardConfig";
 
+// ---------------------- Types ----------------------
 interface FormData {
   officer: string;
   docNo: string;
@@ -24,7 +25,9 @@ interface FormData {
   expCard: string;
 }
 
-const initialFormData: FormData = {
+type FormFieldName = keyof FormData;
+
+const initialFormData: FormData = Object.freeze({
   officer: "",
   docNo: "",
   cardPlace: "",
@@ -40,33 +43,57 @@ const initialFormData: FormData = {
   cardNumber: "",
   initCard: "",
   expCard: "",
-};
+});
 
-const IdCardForm: React.FC = () => {
+// ---------------------- Components ----------------------
+const IdCardForm: FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  // Handle input change
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit
-  const handleSubmit = () => {
-    const requiredFields: (keyof FormData)[] = ["officer", "docNo", "fullName"];
-    const emptyFields = requiredFields.filter((f) => !formData[f]);
-    if (emptyFields.length > 0) {
-      Swal.fire(
-        "Error",
-        `กรุณากรอกฟิลด์สำคัญ: ${emptyFields.join(", ")}`,
-        "error"
-      );
-      return;
+  const validateForm = (): boolean => {
+    const requiredFields: FormFieldName[] = ["officer", "docNo", "fullName"];
+    const empty = requiredFields.filter((f) => !formData[f]?.trim());
+
+    if (empty.length) {
+      Swal.fire({
+        icon: "error",
+        title: "กรอกข้อมูลไม่ครบ",
+        text: `กรุณากรอก: ${empty.join(", ")}`,
+      });
+      return false;
     }
-    Swal.fire("Success", "ส่งข้อมูลเรียบร้อย!", "success");
+    return true;
   };
+
+  const handleSubmit = () => {
+    if (!validateForm()) return;
+
+    Swal.fire({
+      icon: "success",
+      title: "ส่งข้อมูลเรียบร้อย",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  };
+
+  const fullAddress = useMemo(
+    () =>
+      `${formData.address} หมู่ ${formData.moo} ${formData.road} ${formData.tambol} / ${formData.district} / ${formData.province}`,
+    [
+      formData.address,
+      formData.moo,
+      formData.road,
+      formData.tambol,
+      formData.district,
+      formData.province,
+    ]
+  );
 
   return (
     <section className="min-h-screen bg-base-200 px-4 sm:px-6 lg:px-8 py-6 sm:py-10 font-poppins">
@@ -78,98 +105,73 @@ const IdCardForm: React.FC = () => {
         {/* Form */}
         <div className="bg-white rounded-xl shadow-md p-6 space-y-6">
           <form className="space-y-6">
-            {/* เจ้าหน้าที่ & เลขที่หนังสือ */}
+            {/* Officer & Document No */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium">
-                  เจ้าหน้าที่ดำเนินการ
-                </label>
-                <select
-                  className="mt-1 block w-full border-gray-300 rounded-md"
-                  name="officer"
-                  value={formData.officer}
-                  onChange={handleChange}
-                >
-                  <option value="">กรุณาเลือกเจ้าหน้าที่</option>
-                  <option value="officer1">เจ้าหน้าที่ 1</option>
-                  <option value="officer2">เจ้าหน้าที่ 2</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium">เลขที่หนังสือ</label>
-                <input
-                  className="mt-1 block w-full border-gray-300 rounded-md"
-                  type="text"
-                  name="docNo"
-                  value={formData.docNo}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            {/* สำนักทะเบียน */}
-            <div>
-              <label className="block text-sm font-medium">สำนักทะเบียนท้องถิ่น</label>
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                type="text"
-                name="cardPlace"
-                value={formData.cardPlace}
+              <FormSelect
+                label="เจ้าหน้าที่ดำเนินการ"
+                name="officer"
+                value={formData.officer}
+                onChange={handleChange}
+                options={[
+                  { value: "", label: "กรุณาเลือกเจ้าหน้าที่" },
+                  { value: "officer1", label: "เจ้าหน้าที่ 1" },
+                  { value: "officer2", label: "เจ้าหน้าที่ 2" },
+                ]}
+              />
+              <FormInput
+                label="เลขที่หนังสือ"
+                name="docNo"
+                value={formData.docNo}
                 onChange={handleChange}
               />
             </div>
 
-            {/* ชื่อ-สกุล */}
-            <div>
-              <label className="block text-sm font-medium">ชื่อ-สกุล</label>
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-            </div>
+            <FormInput
+              label="สำนักทะเบียนท้องถิ่น"
+              name="cardPlace"
+              value={formData.cardPlace}
+              onChange={handleChange}
+            />
 
-            {/* วันเกิด & จังหวัดเกิด */}
+            <FormInput
+              label="ชื่อ-สกุล"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+            />
+
+            {/* Birthday & Province */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                type="text"
-                placeholder="วัน/เดือน/ปี เกิด"
+              <FormInput
+                label="วัน/เดือน/ปี เกิด"
                 name="birthday"
                 value={formData.birthday}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                type="text"
-                placeholder="จังหวัดที่เกิด"
+              <FormInput
+                label="จังหวัดที่เกิด"
                 name="birthProvince"
                 value={formData.birthProvince}
                 onChange={handleChange}
               />
             </div>
 
-            {/* ที่อยู่ */}
+            {/* Address */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="ที่อยู่"
+              <FormInput
+                label="ที่อยู่"
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="หมู่"
+              <FormInput
+                label="หมู่"
                 name="moo"
                 value={formData.moo}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="ถนน"
+              <FormInput
+                label="ถนน"
                 name="road"
                 value={formData.road}
                 onChange={handleChange}
@@ -177,59 +179,52 @@ const IdCardForm: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="ตำบล"
+              <FormInput
+                label="ตำบล"
                 name="tambol"
                 value={formData.tambol}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="อำเภอ"
+              <FormInput
+                label="อำเภอ"
                 name="district"
                 value={formData.district}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="จังหวัด"
+              <FormInput
+                label="จังหวัด"
                 name="province"
                 value={formData.province}
                 onChange={handleChange}
               />
             </div>
 
-            {/* เลขบัตร & วันออก/หมด */}
+            {/* Card Number & Dates */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="เลขบัตรประชาชน"
+              <FormInput
+                label="เลขบัตรประชาชน"
                 name="cardNumber"
                 value={formData.cardNumber}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="วันออกบัตร"
+              <FormInput
+                label="วันออกบัตร"
                 name="initCard"
                 value={formData.initCard}
                 onChange={handleChange}
               />
-              <input
-                className="mt-1 block w-full border-gray-300 rounded-md"
-                placeholder="วันหมดอายุ"
+              <FormInput
+                label="วันหมดอายุ"
                 name="expCard"
                 value={formData.expCard}
                 onChange={handleChange}
               />
             </div>
 
-            {/* Submit */}
             <div className="mt-4">
               <button
                 type="button"
-                className="btn btn-blue"
+                className="btn btn-blue w-full"
                 onClick={handleSubmit}
               >
                 Submit
@@ -250,12 +245,8 @@ const IdCardForm: React.FC = () => {
           }}
         >
           {Object.entries(idCardConfig.fields).map(([key, cfg]) => {
-            let value: string | undefined = formData[key as keyof FormData];
-
-            // รวมที่อยู่เป็นบรรทัดเดียว
-            if (key === "address") {
-              value = `${formData.address} หมู่ที่ ${formData.moo} ${formData.road} ${formData.tambol} / ${formData.district} / ${formData.province}`;
-            }
+            const value =
+              key === "address" ? fullAddress : formData[key as FormFieldName];
 
             return (
               <span
@@ -280,5 +271,41 @@ const IdCardForm: React.FC = () => {
     </section>
   );
 };
+
+// ---------------------- Reusable Inputs ----------------------
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+}
+
+const FormInput: FC<InputProps> = ({ label, ...props }) => (
+  <div>
+    {label && <label className="block text-sm font-medium">{label}</label>}
+    <input
+      {...props}
+      className={`mt-1 block w-full border-gray-300 rounded-md px-3 py-2 ${props.className || ""}`}
+    />
+  </div>
+);
+
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  options: { value: string; label: string }[];
+}
+
+const FormSelect: FC<SelectProps> = ({ label, options, ...props }) => (
+  <div>
+    {label && <label className="block text-sm font-medium">{label}</label>}
+    <select
+      {...props}
+      className={`mt-1 block w-full border-gray-300 rounded-md px-3 py-2 ${props.className || ""}`}
+    >
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
 
 export default IdCardForm;

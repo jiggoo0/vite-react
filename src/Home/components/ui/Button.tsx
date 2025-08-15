@@ -1,37 +1,42 @@
 import { FC, ButtonHTMLAttributes, ReactNode } from "react";
+import clsx from "clsx";
+
+type ButtonVariant = "primary" | "secondary" | "ghost" | "outline";
+type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: "primary" | "secondary" | "ghost" | "outline";
-  size?: "sm" | "md" | "lg";
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   className?: string;
   type?: "button" | "submit" | "reset";
+  fullWidth?: boolean;
+  loading?: boolean;
 }
 
 /**
- * 🔹 Button Component
- *
- * - รองรับ variant, size, และ props ของ button ปกติ
- * - สามารถเพิ่ม className เพื่อ custom style เพิ่มเติมได้
+ * 🔹 Reusable Button Component
+ * - รองรับ variant, size, fullWidth, loading
+ * - ใช้ clsx เพื่อรวม class ได้สะอาดกว่า
  */
 const Button: FC<ButtonProps> = ({
   children,
   variant = "primary",
   size = "md",
-  className = "",
+  className,
   type = "button",
+  fullWidth = false,
+  loading = false,
+  disabled,
   ...props
 }) => {
-  const baseClass =
-    "btn font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
-
-  const sizeClasses: Record<string, string> = {
+  const sizeClasses: Record<ButtonSize, string> = {
     sm: "btn-sm",
     md: "btn-md",
     lg: "btn-lg",
   };
 
-  const variantClasses: Record<string, string> = {
+  const variantClasses: Record<ButtonVariant, string> = {
     primary: "btn-primary",
     secondary: "btn-secondary",
     ghost: "btn-ghost",
@@ -41,7 +46,14 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      className={`${baseClass} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      disabled={disabled || loading}
+      className={clsx(
+        "btn font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
+        sizeClasses[size],
+        variantClasses[variant],
+        { "w-full": fullWidth, loading },
+        className
+      )}
       {...props}
     >
       {children}

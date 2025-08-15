@@ -1,63 +1,54 @@
 import { Variants, easeInOut } from "framer-motion";
 
+interface MotionConfig {
+  duration?: number;
+  delay?: number;
+  distance?: number;
+}
+
 /**
  * 📦 Container Motion Variants
- * ใช้สำหรับห่อ container หลัก เพื่อให้ children animation stagger
+ * ใช้ห่อ container หลัก เพื่อให้ children animate แบบ stagger
  */
 export const containerVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      staggerChildren: 0.1, // children จะเริ่ม animate ทีละ 0.1s
-      duration: 0.5, // ความยาว animation ของ container
-      ease: easeInOut, // easing แบบ smooth
+      staggerChildren: 0.1,
+      duration: 0.5,
+      ease: easeInOut,
     },
   },
 };
 
 /**
- * 🔼 Fade In Up Motion Variants
- * ใช้สำหรับ element แต่ละตัว ให้ fade in + เลื่อนขึ้น
- * รองรับการส่ง index เพื่อ delay stagger
+ * 🔼 Fade In Up Motion Variants (พร้อม config)
+ * ใช้กับ element เดี่ยวหรือหลายตัว
  */
-export const fadeInUp: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: (i: number = 0) => ({
+export const fadeInUp = (
+  index: number = 0,
+  { duration = 0.3, delay = 0.1, distance = 20 }: MotionConfig = {}
+): Variants => ({
+  hidden: { opacity: 0, y: distance },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.3, // ความยาว animation ของ element
-      ease: easeInOut, // easing แบบ smooth
-      delay: i * 0.1, // stagger effect
+      duration,
+      ease: easeInOut,
+      delay: index * delay,
     },
-  }),
-};
+  },
+});
 
 /**
- * 🎯 Helper function สำหรับสร้าง Variants แบบ fadeInUp
- * สำหรับหลาย element พร้อม delay อัตโนมัติ
+ * 🎯 Generate Fade In Up Variants สำหรับหลาย element
  * @param count จำนวน element
- * @returns Array ของ Variants
+ * @param config ปรับแต่ง animation
  */
-export const generateFadeInUpVariants = (count: number): Variants[] => {
-  return Array.from({ length: count }, (_, i) => ({
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-        ease: easeInOut,
-        delay: i * 0.1,
-      },
-    },
-  }));
-};
+export const generateFadeInUpVariants = (
+  count: number,
+  config?: MotionConfig
+): Variants[] => Array.from({ length: count }, (_, i) => fadeInUp(i, config));

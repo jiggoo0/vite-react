@@ -1,69 +1,78 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const THEME_KEY = "theme";
 type Theme = "light" | "dark";
+const DEFAULT_THEME: Theme = "light";
+
+/** Type guard ตรวจสอบ theme */
+const isValidTheme = (value: unknown): value is Theme =>
+  value === "light" || value === "dark";
 
 /**
- * 🔄 useTheme
- *
- * - Hook สำหรับจัดการ Theme ของเว็บไซต์ (Light / Dark)
- * - รองรับ localStorage, prefers-color-scheme, และการ sync ข้าม tab
+ * 🔄 useTheme — จัดการ Theme (Light/Dark) แบบครบวงจร
+ * - โหลดค่าเริ่มต้นจาก localStorage หรือ prefers-color-scheme
+ * - Sync theme ข้าม Tab
+ * - ป้องกัน FOUC (Flash of Unstyled Content)
  */
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
+  const isInitialMount = useRef(true);
 
-  // ฟังก์ชันปรับ theme ทั้ง DOM และ localStorage
+  /** ✅ Apply theme to DOM & localStorage */
   const applyTheme = useCallback((nextTheme: Theme) => {
     setTheme(nextTheme);
 
-    if (typeof document !== "undefined") {
-      document.documentElement.classList.toggle("dark", nextTheme === "dark");
-      document.documentElement.setAttribute("data-theme", nextTheme);
-    }
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(nextTheme);
+    root.setAttribute("data-theme", nextTheme);
 
-    if (typeof window !== "undefined") {
+    try {
       localStorage.setItem(THEME_KEY, nextTheme);
+    } catch {
+      // ignore if localStorage is unavailable
     }
   }, []);
 
-  // โหลด theme เริ่มต้นจาก localStorage หรือ prefers-color-scheme
+  /** 🔹 Detect initial theme on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const savedTheme = localStorage.getItem(THEME_KEY) as Theme | null;
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
+    let initialTheme: Theme = DEFAULT_THEME;
 
-    const defaultTheme: Theme =
-      savedTheme === "light" || savedTheme === "dark"
-        ? savedTheme
+    try {
+      const saved = localStorage.getItem(THEME_KEY);
+      const prefersDark =
+        window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+
+      initialTheme = isValidTheme(saved)
+        ? saved
         : prefersDark
           ? "dark"
           : "light";
+    } catch {
+      // fallback to default theme
+    }
 
-    applyTheme(defaultTheme);
+    applyTheme(initialTheme);
+    isInitialMount.current = false;
   }, [applyTheme]);
 
-  // Sync theme ข้าม tab/window
+  /** 🔹 Sync theme across browser tabs */
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
-      if (
-        e.key === THEME_KEY &&
-        (e.newValue === "light" || e.newValue === "dark")
-      ) {
+      if (e.key === THEME_KEY && isValidTheme(e.newValue)) {
         applyTheme(e.newValue);
       }
     };
-
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
   }, [applyTheme]);
 
-  // Toggle theme
-  const toggleTheme = () => {
+  /** 🔹 Toggle theme manually */
+  const toggleTheme = useCallback(() => {
     applyTheme(theme === "dark" ? "light" : "dark");
-  };
+  }, [theme, applyTheme]);
 
-  return { theme, toggleTheme };
+  return { theme, toggleTheme, isInitialMount: isInitialMount.current };
 }

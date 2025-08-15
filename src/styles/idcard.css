@@ -2,19 +2,33 @@
 
 /* ตัว container preview ของบัตร */
 .idcard-preview {
+  --card-radius: 12px;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --card-font: "Kanit", sans-serif;
+
   background-size: cover;
   background-position: center;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
   overflow: hidden;
   position: relative;
-  font-family: "Kanit", sans-serif;
+  font-family: var(--card-font);
+  aspect-ratio: 856 / 539; /* รักษาสัดส่วนของบัตร */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.idcard-preview:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 /* ฟิลด์บนบัตร */
 .idcard-field {
   color: #000;
-  /* white-space: nowrap; กำหนดใน inline style เพื่อให้สามารถปรับตาม config */
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.8); /* ช่วยให้ตัวอักษรเด่น */
+  line-height: 1.2;
 }
 
 /* Style สำหรับ form input */
@@ -24,13 +38,14 @@ select {
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 0.875rem;
+  transition: all 0.2s ease;
 }
 
 input:focus,
 select:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
 /* ปุ่ม submit */
@@ -39,7 +54,13 @@ select:focus {
   border-radius: 0.375rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background-color 0.2s,
+    transform 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-blue {

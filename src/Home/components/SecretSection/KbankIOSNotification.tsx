@@ -5,9 +5,11 @@ import {
 } from "./KbankIOSNotification.mock";
 import KbankNotificationCard from "./KbankNotificationCard";
 
-const LOAD_DELAY_MS = 700;
+const LOAD_DELAY_MS = 700; // จำลองการโหลดข้อมูล
 
-// Loader ขณะรอข้อมูล
+// ==============================
+// Skeleton Loader
+// ==============================
 const SkeletonLoader: FC = () => (
   <section
     className="space-y-4 max-w-md mx-auto animate-pulse"
@@ -38,7 +40,9 @@ const SkeletonLoader: FC = () => (
   </section>
 );
 
-// กรณีไม่มีข้อมูลแจ้งเตือน
+// ==============================
+// Empty State
+// ==============================
 const EmptyState: FC = () => (
   <section
     className="min-h-[120px] flex items-center justify-center bg-base-100 rounded-3xl shadow-md p-6 border border-gray-200"
@@ -49,13 +53,15 @@ const EmptyState: FC = () => (
   </section>
 );
 
-// Component หลักแสดงรายการแจ้งเตือน
+// ==============================
+// KBank iOS Notification Component
+// ==============================
 const KbankIOSNotification: FC = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // โหลด mock data พร้อม delay เพื่อจำลอง fetch จริง
   useEffect(() => {
-    // จำลองการโหลดข้อมูลด้วย delay
     const timer = setTimeout(() => {
       setNotifications(kbankMockData);
       setLoading(false);
@@ -64,10 +70,13 @@ const KbankIOSNotification: FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Loader
   if (loading) return <SkeletonLoader />;
 
+  // Empty state
   if (notifications.length === 0) return <EmptyState />;
 
+  // แสดงรายการแจ้งเตือน
   return (
     <section
       className="space-y-4 max-w-md mx-auto"

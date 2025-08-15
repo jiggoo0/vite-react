@@ -1,50 +1,26 @@
-import { useEffect, useState, ReactNode } from "react";
-import { Theme, ThemeContext } from "./ThemeContext";
+import { createContext, ReactNode, useState, useEffect } from "react";
+import { ThemeContextType, ThemeMode } from "./types";
 
-/** 🔹 ตรวจสอบค่า theme ที่ถูกต้อง */
-const isValidTheme = (value: unknown): value is Theme =>
-  typeof value === "string" &&
-  ["light", "dark", "business", "team"].includes(value);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-/** 🌐 ThemeProvider */
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  /** 🔹 กำหนด theme เริ่มต้น */
-  const getDefaultTheme = (): Theme => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("theme");
-      if (isValidTheme(saved)) return saved;
+interface ThemeProviderProps {
+  children: ReactNode;
+  defaultTheme?: ThemeMode;
+}
 
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      return prefersDark ? "dark" : "light";
-    }
-    return "light";
-  };
+export const ThemeProvider = ({
+  children,
+  defaultTheme = "light",
+}: ThemeProviderProps) => {
+  const [theme, setTheme] = useState<ThemeMode>(defaultTheme);
 
-  const [theme, setTheme] = useState<Theme>(getDefaultTheme);
-
-  /** 🔹 ปรับ attribute และ localStorage เมื่อ theme เปลี่ยน */
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
+    document.documentElement.classList.remove(
+      theme === "light" ? "dark" : "light"
+    );
+    document.documentElement.classList.add(theme);
+    localStorage.setItem("app-theme", theme);
   }, [theme]);
-
-  /** 🔹 ฟังการเปลี่ยนแปลงระบบ dark mode */
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        setTheme(e.matches ? "dark" : "light");
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
@@ -52,3 +28,5 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     </ThemeContext.Provider>
   );
 };
+
+export default ThemeContext; // export context เฉพาะ component

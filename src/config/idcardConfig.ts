@@ -1,20 +1,38 @@
+/**
+ * 🆔 ID Card Config Types
+ */
+export type FontWeight = "normal" | "bold";
+
 export interface IdCardFieldConfig {
+  /** ระยะจากด้านบนของบัตร (px) */
   top: number;
+  /** ระยะจากด้านซ้ายของบัตร (px) */
   left: number;
+  /** ขนาดตัวอักษร (px) */
   fontSize: number;
-  fontWeight?: "normal" | "bold";
+  /** น้ำหนักตัวอักษร */
+  fontWeight?: FontWeight;
+  /** ป้ายกำกับของฟิลด์ */
   label?: string;
 }
 
 export interface IdCardConfig {
+  /** ความกว้างบัตร (px) */
   cardWidth: number;
+  /** ความสูงบัตร (px) */
   cardHeight: number;
+  /** พื้นหลังเริ่มต้น */
   bgDefault: string;
+  /** ตำแหน่งและสไตล์ของแต่ละฟิลด์ */
   fields: Record<string, IdCardFieldConfig>;
 }
 
+/**
+ * 🎨 Default ID Card Template (85.6mm x 53.98mm)
+ * Resolution: 856 x 539 px
+ */
 export const idCardConfig: IdCardConfig = {
-  cardWidth: 856, // ขนาดจริงประมาณ 85.6mm * 53.98mm => pixel 856*539
+  cardWidth: 856,
   cardHeight: 539,
   bgDefault: "/images/IDcard/bg.webp",
   fields: {
@@ -38,7 +56,12 @@ export const idCardConfig: IdCardConfig = {
       fontSize: 16,
       label: "วันเกิด / Date of Birth",
     },
-    address: { top: 250, left: 150, fontSize: 16, label: "ที่อยู่ / Address" },
+    address: {
+      top: 250,
+      left: 150,
+      fontSize: 16,
+      label: "ที่อยู่ / Address",
+    },
     initCard: {
       top: 400,
       left: 150,
@@ -65,3 +88,20 @@ export const idCardConfig: IdCardConfig = {
     },
   },
 };
+
+/**
+ * 🛠 Helper: สร้างฟิลด์ใหม่ได้ง่าย
+ */
+export const createField = (
+  top: number,
+  left: number,
+  fontSize: number,
+  fontWeight: FontWeight = "normal",
+  label?: string
+): IdCardFieldConfig => ({
+  top,
+  left,
+  fontSize,
+  fontWeight,
+  label,
+});

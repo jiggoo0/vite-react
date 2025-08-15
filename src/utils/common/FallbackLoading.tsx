@@ -1,29 +1,36 @@
-// ✅ src/utils/common/FallbackLoading.tsx — Improved Overlay Loader
+// ✅ src/utils/common/FallbackLoading.tsx — Professional Overlay Loader
 "use client";
 
 import { FC } from "react";
+import clsx from "clsx";
 
 interface FallbackLoadingProps {
   /** 💬 ข้อความที่แสดงบน loader สามารถกำหนดเองได้ */
   message?: string;
+  /** ✨ Optional: เพิ่ม className สำหรับ custom styling */
+  className?: string;
 }
 
 /**
  * ⏳ FallbackLoading
  *
- * - Overlay loader สำหรับ React Suspense หรือ async fetch
+ * Overlay loader สำหรับ React Suspense หรือ async fetch
  * - ใช้ backdrop + blur + spinner animation
  * - รองรับ accessibility: aria-live="polite", role="status"
+ * - สามารถปรับข้อความและเพิ่ม custom class ได้
  */
-const FallbackLoading: FC<FallbackLoadingProps> = ({ message }) => {
+const FallbackLoading: FC<FallbackLoadingProps> = ({ message, className }) => {
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm animate-fade-in"
+      className={clsx(
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm animate-fadeIn",
+        className
+      )}
       role="status"
       aria-live="polite"
     >
       <div className="flex flex-col items-center gap-4">
-        {/* SVG Spinner */}
+        {/* Spinner */}
         <svg
           className="h-12 w-12 animate-spin text-primary"
           xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +55,7 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({ message }) => {
 
         {/* Loading Text */}
         <p className="text-sm text-base-content/70 select-none">
-          {message || "กำลังโหลดหน้า..."}
+          {message || "กำลังโหลด..."}
         </p>
       </div>
     </div>

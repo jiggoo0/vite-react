@@ -40,25 +40,3 @@ export const A4CardWrapper: FC<{ children: ReactNode }> = ({ children }) => (
     {children}
   </div>
 );
-
-/* 
-  CSS สำหรับการพิมพ์ (เพิ่มใน global.css หรือ styles หลักของโปรเจกต์)
-
-  @media print {
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    .a4-card-wrapper {
-      max-width: 210mm !important;
-      min-height: 297mm !important;
-      width: 210mm !important;
-      height: 297mm !important;
-      box-shadow: none !important;
-      border: none !important;
-      page-break-after: always;
-      margin: 0 auto;
-    }
-  }
-*/

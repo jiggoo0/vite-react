@@ -1,8 +1,17 @@
 "use client";
 
-import { FC, ReactNode, Suspense, lazy } from "react";
+import {
+  FC,
+  ReactNode,
+  Suspense,
+  lazy,
+  useRef,
+  useEffect,
+  useState,
+} from "react";
+import clsx from "clsx";
 
-// Components
+// ======================= Components =======================
 import Hero from "@home/components/Hero/Hero";
 import About from "@home/components/About/About";
 import SellingPoints from "@home/components/SellingPoints/SellingPoints";
@@ -14,19 +23,18 @@ import TrustBadges from "@home/components/UserBoard/TrustBadges";
 import SectionContainer from "@common/SectionContainer";
 import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
 import { TestimonialSlider } from "@home/components/Testimonials/TestimonialSlider";
-
-// New sections
 import TrustMetricsBar from "@home/components/UserBoard/TrustMetricsBar";
 import SpeedGuaranteeBanner from "@home/components/SellingPoints/SpeedGuaranteeBanner";
 import CaseStudyRedacted from "@home/components/Portfolio/CaseStudyRedacted";
 import ComplianceFAQ from "@home/components/Services/ComplianceFAQ";
 
-// Lazy-loaded components
+// ======================= Lazy-loaded Components =======================
 const PortfolioGallery = lazy(
   () => import("@home/components/Portfolio/PortfolioGallery")
 );
 const SupportFAQ = lazy(() => import("@home/components/Portfolio/SupportFAQ"));
 
+// ======================= PageSection Wrapper =======================
 interface PageSectionProps {
   id: string;
   title: string;
@@ -39,48 +47,62 @@ const PageSection: FC<PageSectionProps> = ({
   title,
   children,
   bg = "",
-}) => (
-  <section
-    id={id}
-    aria-labelledby={`${id}-title`}
-    role="region"
-    tabIndex={-1}
-    className={`scroll-mt-24 py-12 sm:py-16 md:py-20 ${bg}`}
-  >
-    <h2 id={`${id}-title`} className="sr-only">
-      {title}
-    </h2>
-    <SectionContainer>{children}</SectionContainer>
-  </section>
-);
+}) => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      id={id}
+      aria-labelledby={`${id}-title`}
+      role="region"
+      tabIndex={-1}
+      className={clsx(
+        "scroll-mt-24 py-12 sm:py-16 md:py-20 transition-all duration-700 ease-in-out transform opacity-0 translate-y-6",
+        isVisible && "opacity-100 translate-y-0",
+        bg
+      )}
+    >
+      <h2 id={`${id}-title`} className="sr-only">
+        {title}
+      </h2>
+      <SectionContainer>{children}</SectionContainer>
+    </section>
+  );
+};
+
+// ======================= Home Page =======================
 const Home: FC = () => {
   const UserBoardData = [...UserBoardDataReadonly];
 
   return (
     <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
-      {/* Hero */}
       <PageSection id="hero" title="ฮีโร่เปิดหน้าเว็บไซต์" bg="bg-base-100">
         <Hero />
       </PageSection>
 
-      {/* Trust metrics */}
       <TrustMetricsBar className="bg-base-100" />
 
-      {/* About */}
       <PageSection id="about" title="เกี่ยวกับเรา" bg="bg-base-200">
         <About />
       </PageSection>
 
-      {/* Selling points */}
       <PageSection id="selling-points" title="จุดเด่นของเรา" bg="bg-base-100">
         <SellingPoints />
       </PageSection>
 
-      {/* Speed guarantee */}
       <SpeedGuaranteeBanner className="bg-base-100" />
 
-      {/* Features & Trust */}
       <PageSection
         id="features-trust"
         title="จุดเด่นและความน่าเชื่อถือ"
@@ -99,12 +121,10 @@ const Home: FC = () => {
         </div>
       </PageSection>
 
-      {/* Services */}
       <PageSection id="services" title="บริการของเรา" bg="bg-base-100">
         <ServicesSection />
       </PageSection>
 
-      {/* Case studies */}
       <PageSection id="case-studies" title="ตัวอย่างผลงาน" bg="bg-base-100">
         <CaseStudyRedacted
           className="bg-base-100"
@@ -137,7 +157,6 @@ const Home: FC = () => {
         />
       </PageSection>
 
-      {/* User board */}
       <PageSection
         id="user-board"
         title="บอร์ดรายชื่อผู้สมัคร"
@@ -146,7 +165,6 @@ const Home: FC = () => {
         <UserBoard data={UserBoardData} />
       </PageSection>
 
-      {/* Testimonials */}
       <PageSection
         id="testimonials"
         title="เสียงตอบรับจากลูกค้า"
@@ -155,7 +173,6 @@ const Home: FC = () => {
         <TestimonialSlider />
       </PageSection>
 
-      {/* Portfolio */}
       <PageSection id="portfolio" title="ผลงานที่ผ่านมา" bg="bg-base-100">
         <Suspense
           fallback={
@@ -168,7 +185,6 @@ const Home: FC = () => {
         </Suspense>
       </PageSection>
 
-      {/* Compliance FAQ */}
       <PageSection
         id="compliance-faq"
         title="คำถามด้านข้อกำหนด"
@@ -177,7 +193,6 @@ const Home: FC = () => {
         <ComplianceFAQ className="bg-base-100" />
       </PageSection>
 
-      {/* General FAQ */}
       <PageSection id="faq" title="คำถามที่พบบ่อย" bg="bg-base-200">
         <Suspense
           fallback={

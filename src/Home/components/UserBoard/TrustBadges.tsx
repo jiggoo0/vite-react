@@ -1,4 +1,5 @@
 import { ShieldCheck, Clock, Users, Lock, Award } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 
 type BadgeItem = {
   id: string;
@@ -40,23 +41,60 @@ const badges: BadgeItem[] = [
   },
 ];
 
-const BadgeCard = ({ icon, title, desc }: Omit<BadgeItem, "id">) => (
-  <div className="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all duration-300">
+// Framer Motion variants
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (custom: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: custom * 0.1,
+      duration: 0.4,
+      ease: "easeOut" as const,
+    },
+  }),
+};
+
+interface BadgeCardProps {
+  icon: JSX.Element;
+  title: string;
+  desc: string;
+  index: number;
+}
+
+const BadgeCard: React.FC<BadgeCardProps> = ({ icon, title, desc, index }) => (
+  <motion.article
+    className="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all duration-300"
+    variants={cardVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.2 }}
+    custom={index}
+    whileHover={{ y: -4, scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    aria-label={title}
+  >
     <div className="card-body items-center text-center p-6">
       <div className="mb-4">{icon}</div>
       <h3 className="card-title text-base font-bold mb-2">{title}</h3>
       <p className="text-sm text-gray-600 dark:text-gray-300">{desc}</p>
     </div>
-  </div>
+  </motion.article>
 );
 
 export default function TrustBadges() {
   return (
-    <section className="py-12 bg-base-200">
+    <section
+      className="py-12 bg-base-200"
+      aria-labelledby="trust-badges-heading"
+    >
       <div className="max-w-6xl mx-auto px-4">
+        <h2 id="trust-badges-heading" className="sr-only">
+          เหตุผลที่คุณวางใจเรา
+        </h2>
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {badges.map(({ id, ...badge }) => (
-            <BadgeCard key={id} {...badge} />
+          {badges.map(({ id, ...badge }, idx) => (
+            <BadgeCard key={id} {...badge} index={idx} />
           ))}
         </div>
       </div>

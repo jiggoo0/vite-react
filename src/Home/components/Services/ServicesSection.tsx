@@ -5,18 +5,21 @@ import ComingSoonServiceCard from "./ui/ComingSoonServiceCard";
 import SectionContainer from "@/utils/common/SectionContainer";
 
 const ServicesSection: FC = () => {
+  // แยกบริการที่พร้อมใช้งาน
   const availableServices = useMemo(
-    () => jpServices.filter(({ available }) => available),
+    () => jpServices.filter((service) => service.available),
     []
   );
 
+  // แยกบริการที่กำลังจะมา
   const comingSoonServices = useMemo(
-    () => jpServices.filter(({ available }) => !available),
+    () => jpServices.filter((service) => !service.available),
     []
   );
 
   return (
     <SectionContainer as="section" aria-labelledby="services-title">
+      {/* Header */}
       <header className="mb-10 text-center">
         <h2 id="services-title" className="text-3xl font-bold text-primary">
           บริการของเรา
@@ -27,10 +30,12 @@ const ServicesSection: FC = () => {
         </p>
       </header>
 
+      {/* Service Cards */}
       <div role="list" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {availableServices.map((service) => (
           <ServiceCard key={service.id} service={service} />
         ))}
+
         {comingSoonServices.map((service) => (
           <ComingSoonServiceCard key={service.id} service={service} />
         ))}

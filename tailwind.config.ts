@@ -2,8 +2,9 @@ import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
 
 const config: Config = {
-  darkMode: "class", // รองรับโหมดมืด
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"], // scan ไฟล์สำหรับ class
+  darkMode: "class", // Enables dark mode via class toggling
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+
   theme: {
     extend: {
       fontFamily: {
@@ -17,10 +18,12 @@ const config: Config = {
       },
     },
   },
+
   plugins: [daisyui],
+
   daisyui: {
     themes: [
-      /** 🌞 Light Theme */
+      // Custom Light Theme
       {
         light: {
           primary: "#2563eb",
@@ -46,7 +49,7 @@ const config: Config = {
         },
       },
 
-      /** 🌙 Dark Theme */
+      // Custom Dark Theme
       {
         dark: {
           primary: "#3b82f6",
@@ -72,7 +75,7 @@ const config: Config = {
         },
       },
 
-      /** 💼 Business Theme */
+      // Built-in Business Theme
       "business",
     ],
   },

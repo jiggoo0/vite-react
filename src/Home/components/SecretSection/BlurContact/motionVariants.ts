@@ -3,7 +3,8 @@ import { Variants, easeInOut } from "framer-motion";
 /**
  * 📦 Container Motion Variants
  * ใช้สำหรับ Motion Container หลัก
- * กำหนดค่า hidden/visible พร้อม staggerChildren
+ * - hidden: ซ่อน container
+ * - visible: แสดง container พร้อม stagger children
  */
 export const containerVariants: Variants = {
   hidden: {
@@ -14,7 +15,7 @@ export const containerVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      staggerChildren: 0.1, // children จะเริ่ม animate ทีละ 0.1s
+      staggerChildren: 0.12, // children จะเริ่ม animate ทีละ 0.12s
       duration: 0.5, // ความยาว animation ของ container
       ease: easeInOut, // easing แบบ smooth
     },
@@ -23,8 +24,8 @@ export const containerVariants: Variants = {
 
 /**
  * 🔼 Fade In Up Motion Variants
- * ใช้สำหรับ Element เดี่ยว ๆ เช่น Input, Button, Text
- * สามารถส่งค่า i (ลำดับ) เพื่อ delay animation
+ * ใช้สำหรับ element เดี่ยว ๆ เช่น Input, Button, Text
+ * @param i ลำดับของ element สำหรับ stagger delay
  */
 export const fadeInUp: Variants = {
   hidden: {
@@ -35,9 +36,17 @@ export const fadeInUp: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.3, // ความยาว animation ของ element
-      ease: easeInOut, // easing แบบ smooth
-      delay: i * 0.1, // stagger effect ตามลำดับ
+      duration: 0.35, // ปรับให้ slightly smoother
+      ease: easeInOut,
+      delay: i * 0.12, // stagger effect ตามลำดับ
     },
   }),
 };
+
+/**
+ * ✅ Usage Example:
+ * <motion.div variants={containerVariants} initial="hidden" animate="visible">
+ *   <motion.p custom={0} variants={fadeInUp}>Text 1</motion.p>
+ *   <motion.p custom={1} variants={fadeInUp}>Text 2</motion.p>
+ * </motion.div>
+ */

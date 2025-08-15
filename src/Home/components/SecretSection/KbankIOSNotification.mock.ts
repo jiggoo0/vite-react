@@ -1,10 +1,13 @@
-// types & interfaces
+// ==============================
+// Types & Interfaces
+// ==============================
+
 export interface KbankIOSNotification {
   /** รหัสแจ้งเตือน */
   id: string;
   /** หัวข้อแจ้งเตือน */
   title: string;
-  /** ข้อความรอง (เช่น ชื่อผู้ส่ง หรือ ประเภทบัตร) */
+  /** ข้อความรอง เช่น ชื่อผู้ส่ง หรือ ประเภทบัตร */
   subtitle?: string;
   /** เนื้อความหลักของแจ้งเตือน */
   message: string;
@@ -26,62 +29,59 @@ export interface KbankIOSNotification {
   qrCodeUrl?: string;
 }
 
+// ==============================
+// PromptPay QR Generator
+// ==============================
+
 /**
  * สร้าง PromptPay QR Payload string ตามสเปค EMV® QR Code
  * @param payee เบอร์โทรศัพท์ (0XXXXXXXXX) หรือ หมายเลขบัญชีพร้อมเพย์
- * @param amount จำนวนเงิน (รูปแบบ string เช่น "15000.00")
+ * @param amount จำนวนเงิน (string เช่น "15000.00")
  * @returns string Payload พร้อม CRC16 checksum สำหรับ QR code
  */
 export function generatePromptPayQR(payee: string, amount: string): string {
-  // ตรวจสอบว่าเป็นเบอร์โทร 0 นำหน้า 10 หลักหรือไม่
   const isPhone = /^0\d{9}$/.test(payee);
-
-  // แปลงเบอร์โทรเป็นรูปแบบ 66xxxxxxxxx (ตัด 0 ตัวหน้า เปลี่ยนเป็น 66)
   const payeeValue = isPhone ? `0066${payee.slice(1)}` : payee;
 
-  // สร้างฟิลด์ ID สำหรับเบอร์โทรหรือบัญชี (ตามสเปค PromptPay)
+  // Field ID สำหรับเบอร์โทรหรือบัญชี
   const idField = isPhone
     ? `0113${payeeValue}` // เบอร์โทร (ID 01, length 13)
     : `0213${payeeValue}`; // บัญชี (ID 02, length 13)
 
-  // สร้าง Payload เบื้องต้น (ตาม EMV QR)
+  // สร้าง Payload เบื้องต้น
   const payload =
     "000201" + // Payload Format Indicator
     "010211" + // Point of Initiation Method (static QR)
     "2937" + // Merchant Account Info Length 37 bytes
     "0016A000000677010111" + // Globally Unique Identifier สำหรับ PromptPay
-    idField + // เบอร์โทรหรือบัญชีพร้อมเพย์
+    idField +
     "5303764" + // สกุลเงิน THB (764)
-    `54${amount.length}${amount}` + // จำนวนเงิน พร้อมความยาว (length ของ amount)
-    "6304"; // CRC Placeholder (4 ตัว)
+    `54${amount.length}${amount}` + // จำนวนเงิน พร้อมความยาว
+    "6304"; // CRC placeholder
 
-  // คำนวณ CRC16 checksum และเติมท้าย Payload
-  const crc = computeCRC16(payload);
-
-  return payload + crc;
+  // เติม CRC16
+  return payload + computeCRC16(payload);
 }
 
 /**
- * คำนวณ CRC16-CCITT (0xFFFF) สำหรับตรวจสอบความถูกต้อง
- * ใช้ตรวจสอบและเติมข้อมูล CRC ใน Payload QR code
+ * คำนวณ CRC16-CCITT (0xFFFF) สำหรับตรวจสอบ Payload QR code
  */
 function computeCRC16(payload: string): string {
   let crc = 0xffff;
   for (let i = 0; i < payload.length; i++) {
     crc ^= payload.charCodeAt(i) << 8;
     for (let j = 0; j < 8; j++) {
-      if ((crc & 0x8000) !== 0) {
-        crc = (crc << 1) ^ 0x1021;
-      } else {
-        crc <<= 1;
-      }
+      crc = (crc & 0x8000) !== 0 ? (crc << 1) ^ 0x1021 : crc << 1;
       crc &= 0xffff;
     }
   }
   return crc.toString(16).toUpperCase().padStart(4, "0");
 }
 
-// Mock data ตัวอย่างแจ้งเตือน พร้อม QR Code แบบไดนามิก
+// ==============================
+// Mock Notification Data
+// ==============================
+
 export const kbankMockData: KbankIOSNotification[] = [
   {
     id: "noti-001",

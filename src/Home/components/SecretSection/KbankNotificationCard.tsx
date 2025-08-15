@@ -6,10 +6,9 @@ interface Props {
   data: KbankIOSNotification & { qrCodeUrl?: string };
 }
 
+// ฟังก์ชัน format จำนวนเงินเป็น THB
 const formatCurrency = (value: string | number | undefined) => {
-  if (value === undefined || value === null || isNaN(Number(value)))
-    return null;
-
+  if (!value || isNaN(Number(value))) return null;
   return Number(value).toLocaleString("th-TH", {
     style: "currency",
     currency: "THB",
@@ -17,6 +16,7 @@ const formatCurrency = (value: string | number | undefined) => {
   });
 };
 
+// ฟังก์ชัน format เวลาเป็นรูปแบบไทย
 const formatTime = (iso: string) => {
   try {
     return new Intl.DateTimeFormat("th-TH", {
@@ -32,6 +32,7 @@ const formatTime = (iso: string) => {
   }
 };
 
+// Component แสดงจำนวนเงิน
 const Amount: FC<{ amount?: string }> = ({ amount }) => {
   const formatted = useMemo(() => formatCurrency(amount), [amount]);
   if (!formatted) return null;
@@ -50,6 +51,7 @@ const Amount: FC<{ amount?: string }> = ({ amount }) => {
   );
 };
 
+// Component แสดงข้อมูลเพิ่มเติม + QR Code
 const AdditionalInfo: FC<{
   balanceAfter?: string;
   channel?: string;
@@ -100,7 +102,7 @@ const AdditionalInfo: FC<{
             <QRCode
               value={qrCodeUrl}
               size={64}
-              style={{ height: "100%", maxWidth: "100%", width: "100%" }}
+              style={{ width: "100%", height: "100%", maxWidth: "100%" }}
             />
           </div>
         )}
@@ -109,12 +111,16 @@ const AdditionalInfo: FC<{
   );
 };
 
+// ==============================
+// KBank Notification Card
+// ==============================
 const KbankNotificationCard: FC<Props> = ({ data }) => {
   return (
     <section
       className="rounded-3xl p-5 shadow bg-white border border-gray-200
                  hover:shadow-lg hover:-translate-y-1 transition-transform duration-200
-                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 max-w-md mx-auto"
+                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+                 max-w-md mx-auto"
       role="region"
       aria-labelledby={`notif-title-${data.id}`}
       tabIndex={0}
@@ -154,7 +160,7 @@ const KbankNotificationCard: FC<Props> = ({ data }) => {
       {/* Amount */}
       {data.type !== "failed" && <Amount amount={data.amount} />}
 
-      {/* Additional Info */}
+      {/* Additional Info + QR Code */}
       <AdditionalInfo
         balanceAfter={data.balanceAfter}
         channel={data.channel}

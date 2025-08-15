@@ -7,64 +7,56 @@ import Button from "@/Home/components/ui/Button";
 const THEME_KEY = "theme";
 
 const ThemeToggle = () => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  /** 🔹 Apply theme to document & localStorage */
-  const applyTheme = useCallback((useDark: boolean) => {
-    setIsDark(useDark);
+  /** ✅ Apply theme to DOM & Save to localStorage */
+  const applyTheme = useCallback((darkMode: boolean) => {
+    setIsDark(darkMode);
 
-    if (typeof document !== "undefined") {
-      document.documentElement.classList.toggle("dark", useDark);
-      document.documentElement.setAttribute(
-        "data-theme",
-        useDark ? "dark" : "light"
-      );
-    }
+    const root = document.documentElement;
+    root.classList.toggle("dark", darkMode);
+    root.setAttribute("data-theme", darkMode ? "dark" : "light");
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem(THEME_KEY, useDark ? "dark" : "light");
-    }
+    localStorage.setItem(THEME_KEY, darkMode ? "dark" : "light");
   }, []);
 
-  /** 🔹 Initialize theme on mount */
+  /** ✅ Initialize theme from localStorage or system preference */
   useEffect(() => {
-    setIsMounted(true);
-    if (typeof window === "undefined") return;
-
+    setMounted(true);
     const savedTheme = localStorage.getItem(THEME_KEY);
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    const defaultDark = savedTheme ? savedTheme === "dark" : prefersDark;
 
-    applyTheme(defaultDark);
+    applyTheme(savedTheme ? savedTheme === "dark" : prefersDark);
   }, [applyTheme]);
 
-  /** 🔹 Listen for theme changes in other tabs */
+  /** ✅ Sync theme across tabs */
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === THEME_KEY) {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === THEME_KEY && e.newValue) {
         applyTheme(e.newValue === "dark");
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, [applyTheme]);
 
-  /** 🔹 Toggle theme on button click */
+  /** ✅ Toggle theme */
   const toggleTheme = () => applyTheme(!isDark);
 
-  if (!isMounted) return null;
+  if (!mounted) return null;
 
   return (
     <Button
       onClick={toggleTheme}
       variant="ghost"
       className="rounded-full p-2"
-      aria-label="Toggle theme"
+      aria-label={`สลับเป็นโหมด${isDark ? "สว่าง" : "มืด"}`}
       aria-pressed={isDark}
+      title={isDark ? "โหมดสว่าง" : "โหมดมืด"}
       type="button"
     >
       {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}

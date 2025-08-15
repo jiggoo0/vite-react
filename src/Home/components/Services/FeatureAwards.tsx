@@ -23,17 +23,21 @@ const awards = [
 
 const FeatureAwards: FC = () => (
   <section aria-labelledby="awards-title" role="region" className="mt-12">
+    {/* Hidden heading for accessibility */}
     <h3 id="awards-title" className="sr-only">
       จุดเด่นและรางวัล
     </h3>
 
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {awards.map(({ icon, title, description }, i) => (
+      {awards.map(({ icon, title, description }, index) => (
         <article
-          key={i}
+          key={index}
           tabIndex={0}
           role="listitem"
-          className="flex items-start space-x-4 rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm transition-shadow hover:shadow-md focus-within:ring-2 focus-within:ring-primary"
+          className="flex items-start space-x-4 rounded-xl border border-base-300 
+                     bg-base-100 p-5 shadow-sm transition-shadow duration-300
+                     hover:shadow-md focus-within:ring-2 focus-within:ring-primary
+                     focus:outline-none"
         >
           <div className="flex-shrink-0">{icon}</div>
           <div>

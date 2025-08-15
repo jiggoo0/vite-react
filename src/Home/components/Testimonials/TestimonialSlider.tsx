@@ -24,6 +24,8 @@ const swipeConfidenceThreshold = 10000;
 const swipePower = (offset: number, velocity: number) =>
   Math.abs(offset) * velocity;
 
+const AUTO_PLAY_INTERVAL = 7000;
+
 export const TestimonialSlider: React.FC = () => {
   const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
   const testimonialIndex =
@@ -33,8 +35,9 @@ export const TestimonialSlider: React.FC = () => {
     setPage(([currentPage]) => [currentPage + newDirection, newDirection]);
   }, []);
 
+  // Auto paginate
   useEffect(() => {
-    const interval = setInterval(() => paginate(1), 7000);
+    const interval = setInterval(() => paginate(1), AUTO_PLAY_INTERVAL);
     return () => clearInterval(interval);
   }, [paginate]);
 
@@ -71,6 +74,7 @@ export const TestimonialSlider: React.FC = () => {
           <p className="text-gray-900 dark:text-gray-100 text-xl leading-relaxed mb-8 font-serif">
             “{testimonials[testimonialIndex].content}”
           </p>
+
           <div className="flex items-center space-x-5">
             <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg select-none">
               {testimonials[testimonialIndex].name.charAt(0)}
@@ -87,6 +91,7 @@ export const TestimonialSlider: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
+      {/* Navigation Buttons */}
       <button
         aria-label="Previous testimonial"
         onClick={() => paginate(-1)}
@@ -105,6 +110,7 @@ export const TestimonialSlider: React.FC = () => {
           <path d="M15 18l-6-6 6-6" />
         </svg>
       </button>
+
       <button
         aria-label="Next testimonial"
         onClick={() => paginate(1)}
@@ -123,6 +129,34 @@ export const TestimonialSlider: React.FC = () => {
           <path d="M9 18l6-6-6-6" />
         </svg>
       </button>
+
+      {/* Pagination Dots */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {testimonials.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setPage([idx, idx > testimonialIndex ? 1 : -1])}
+            className={`w-3 h-3 rounded-full transition-all ${
+              idx === testimonialIndex
+                ? "bg-indigo-600 dark:bg-indigo-400"
+                : "bg-gray-300 dark:bg-gray-600"
+            }`}
+            aria-label={`Go to testimonial ${idx + 1}`}
+            aria-current={idx === testimonialIndex ? "true" : undefined}
+          />
+        ))}
+      </div>
+
+      {/* Progress Bar */}
+      <div className="mt-2 h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <motion.div
+          key={testimonialIndex}
+          className="h-1 bg-indigo-500 dark:bg-indigo-400 rounded-full"
+          initial={{ width: 0 }}
+          animate={{ width: "100%" }}
+          transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: "linear" }}
+        />
+      </div>
     </div>
   );
 };

@@ -36,10 +36,9 @@ const BlurContact: FC<BlurContactProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Background rotation
+  // Rotate background images
   useEffect(() => {
     if (images.length <= 1) return;
-
     const interval = setInterval(() => {
       setFadeImage(true);
       setTimeout(() => {
@@ -47,7 +46,6 @@ const BlurContact: FC<BlurContactProps> = ({
         setFadeImage(false);
       }, 800);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [images.length]);
 
@@ -76,7 +74,7 @@ const BlurContact: FC<BlurContactProps> = ({
 
   return (
     <div className="relative w-full h-[28rem] sm:h-[32rem] rounded-xl overflow-hidden select-none font-sans shadow-md border border-gray-200">
-      {/* Background image */}
+      {/* Background Image */}
       <img
         src={images[currentImage]}
         alt="Background"
@@ -149,6 +147,7 @@ const BlurContact: FC<BlurContactProps> = ({
             className="btn bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition-transform duration-300 active:scale-95"
             onClick={handleSubmit}
             disabled={loading}
+            aria-label="ยืนยัน Security Key"
           >
             {loading ? (
               <span className="loading loading-spinner loading-sm"></span>

@@ -1,5 +1,4 @@
-// src/Router/AppRouter.tsx
-import { FC, Suspense, lazy } from "react";
+import { FC, Suspense, lazy, ReactNode } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // Layout & Wrappers
@@ -22,59 +21,77 @@ const CustomerAssessmentForm = lazy(
 const IdCardFormPage = lazy(() => import("@/Home/IdCardForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
+// ---------------------- Suspense Wrapper ----------------------
+const RouteSuspense: FC<{ children: ReactNode; message?: string }> = ({
+  children,
+  message,
+}) => (
+  <Suspense
+    fallback={<FallbackLoader message={message || "กำลังโหลดหน้า..."} />}
+  >
+    {children}
+  </Suspense>
+);
+
+// ---------------------- Helper to wrap lazy pages ----------------------
+const lazyPage = (Page: React.LazyExoticComponent<FC>, message?: string) => (
+  <RouteSuspense message={message}>
+    <Page />
+  </RouteSuspense>
+);
+
+// ---------------------- App Router ----------------------
 const AppRouter: FC = () => (
   <>
-    {/* Scroll to top when route changes */}
     <ScrollToTop />
-
-    {/* Global Error Boundary */}
     <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในการโหลดหน้าเว็บ">
-      <Suspense fallback={<FallbackLoader message="กำลังโหลดหน้า..." />}>
-        <Routes>
-          {/* --- Public Routes --- */}
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="form" element={<CustomerAssessmentForm />} />
-          </Route>
+      <Routes>
+        {/* Public Routes */}
+        <Route element={<Layout />}>
+          <Route index element={lazyPage(Home)} />
+          <Route path="login" element={lazyPage(Login)} />
+          <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
+        </Route>
 
-          {/* --- Authenticated Routes --- */}
+        {/* Authenticated Routes */}
+        <Route
+          element={
+            <GuardRoutes>
+              <Layout />
+            </GuardRoutes>
+          }
+        >
+          <Route path="secret" element={lazyPage(SecretPage)} />
+          <Route path="id-card" element={lazyPage(IdCardFormPage)} />
+        </Route>
+
+        {/* Admin-only Routes */}
+        <Route
+          path="admin"
+          element={
+            <RoleGuard allowedRoles={["admin"]}>
+              <Layout />
+            </RoleGuard>
+          }
+        >
           <Route
+            index
             element={
-              <GuardRoutes>
-                <Layout />
-              </GuardRoutes>
+              <div className="p-6 text-xl font-semibold text-white">
+                🛠️ Admin Dashboard
+              </div>
             }
-          >
-            <Route path="secret" element={<SecretPage />} />
-            <Route path="id-card" element={<IdCardFormPage />} />
-          </Route>
+          />
+          <Route path="secret" element={lazyPage(SecretPage)} />
+          <Route path="id-card" element={lazyPage(IdCardFormPage)} />
+        </Route>
 
-          {/* --- Admin-only Routes --- */}
-          <Route
-            path="admin"
-            element={
-              <RoleGuard allowedRoles={["admin"]}>
-                <Layout />
-              </RoleGuard>
-            }
-          >
-            <Route
-              index
-              element={
-                <div className="p-6 text-xl font-semibold text-white">
-                  🛠️ Admin Dashboard
-                </div>
-              }
-            />
-            <Route path="secret" element={<SecretPage />} />
-            <Route path="id-card" element={<IdCardFormPage />} />
-          </Route>
-
-          {/* --- Error Pages --- */}
-          <Route path="403" element={<Forbidden />} />
-        </Routes>
-      </Suspense>
+        {/* Error Pages */}
+        <Route
+          path="403"
+          element={lazyPage(Forbidden, "กำลังโหลดหน้า 403...")}
+        />
+      </Routes>
     </ErrorBoundary>
   </>
 );

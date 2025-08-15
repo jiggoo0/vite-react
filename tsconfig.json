@@ -1,17 +1,12 @@
 {
   "compilerOptions": {
-    // กำหนด Target ของ JavaScript output
-    "target": "ES2020",
-    // Module system สำหรับ bundler เช่น Vite
-    "module": "ESNext",
+    "target": "ES2020", // Target ของ JavaScript output
+    "module": "ESNext", // Module system สำหรับ bundler เช่น Vite
     "moduleResolution": "node",
-    // Libraries ที่ TypeScript จะรู้จัก
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    // การใช้ JSX สำหรับ React 17+ (automatic runtime)
-    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Libraries ที่ TypeScript จะรู้จัก
+    "jsx": "react-jsx", // การใช้ JSX สำหรับ React 17+ (automatic runtime)
 
-    // Base directory สำหรับ paths
-    "baseUrl": ".",
+    "baseUrl": ".", // Base directory สำหรับ paths
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
@@ -24,24 +19,21 @@
       "@layout/*": ["src/Layout/*"],
       "@router/*": ["src/Router/*"],
       "@home/*": ["src/Home/*"],
-      "@api/*": ["src/api/*"]
+      "@api/*": ["src/api/*"],
+      "@services/*": ["src/services/*"]
     },
 
-    // ไดเรกทอรีสำหรับ build output และ root ของ source
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "./dist", // ไดเรกทอรีสำหรับ build output
+    "rootDir": "./src", // root ของ source
 
-    // ความเข้มงวดของ TypeScript
-    "strict": true,
+    "strict": true, // ความเข้มงวดของ TypeScript
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
 
-    // โมดูล interoperability
-    "esModuleInterop": true,
+    "esModuleInterop": true, // โมดูล interoperability
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
 
-    // การตั้งค่าการตรวจสอบไฟล์
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "skipLibCheck": true

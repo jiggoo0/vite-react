@@ -1,5 +1,8 @@
+"use client";
+
 import { FC } from "react";
 import { Rocket, TimerReset } from "lucide-react";
+import { motion } from "framer-motion";
 import clsx from "clsx";
 
 export interface SpeedGuaranteeBannerProps {
@@ -22,32 +25,72 @@ const SpeedGuaranteeBanner: FC<SpeedGuaranteeBannerProps> = ({
   contactHref = "https://line.me/R/ti/p/@yourid",
 }) => {
   return (
-    <section className={clsx("py-6", className)}>
+    <section
+      className={clsx("py-6 bg-base-100", className)}
+      aria-labelledby="speed-banner-title"
+    >
       <div className="container mx-auto px-4">
-        <div className="alert bg-base-200 shadow-md">
-          <Rocket className="w-5 h-5" />
-          <div>
-            <h3 className="font-semibold">{title}</h3>
-            <p className="text-sm opacity-80">{desc}</p>
-            <ul className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+        <motion.div
+          className="alert flex flex-col md:flex-row items-start md:items-center bg-base-200 shadow-lg rounded-xl gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          {/* Icon */}
+          <motion.div
+            whileHover={{ rotate: [0, 15, -15, 0] }}
+            whileTap={{ scale: 0.9 }}
+            className="flex-shrink-0"
+          >
+            <Rocket className="w-6 h-6 text-primary" aria-hidden="true" />
+          </motion.div>
+
+          {/* Text Content */}
+          <div className="flex-1">
+            <h3
+              id="speed-banner-title"
+              className="font-semibold text-lg md:text-xl"
+            >
+              {title}
+            </h3>
+            <p className="text-sm opacity-80 mt-1">{desc}</p>
+
+            {/* Bullets */}
+            <ul className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
               {bullets.map((b, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <TimerReset className="w-4 h-4" />
+                <motion.li
+                  key={i}
+                  className="flex items-center gap-2 transition-all hover:text-primary focus-within:text-primary cursor-pointer"
+                  whileHover={{ x: 4 }}
+                  whileFocus={{ x: 4 }}
+                >
+                  <TimerReset
+                    className="w-4 h-4 text-primary flex-shrink-0"
+                    aria-hidden="true"
+                  />
                   <span>{b}</span>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
-          <div className="ml-auto">
+
+          {/* Call-to-Action */}
+          <motion.div
+            className="mt-3 md:mt-0 md:ml-auto flex-shrink-0"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <a
-              className="btn btn-primary"
+              className="btn btn-primary transition-transform focus:outline-none focus:ring-2 focus:ring-primary"
               href={contactHref}
-              aria-label="คุยเร่งด่วน"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="คุยเร่งด่วนผ่าน LINE"
             >
               คุยเร่งด่วน
             </a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
