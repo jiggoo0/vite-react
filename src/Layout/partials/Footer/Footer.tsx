@@ -7,15 +7,7 @@ import {
 } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 
-interface SocialLink {
-  href: string;
-  label: string;
-  text: string;
-  icon: FC<{ className?: string }>;
-}
-
-/** 🔹 ช่องทางติดต่อ */
-const socialLinks: SocialLink[] = [
+const socialLinks = [
   {
     href: "https://lin.ee/gVptUhR",
     label: "LINE",
@@ -49,15 +41,13 @@ const socialLinks: SocialLink[] = [
 ];
 
 const Footer: FC = () => {
-  const currentYear = new Date().getFullYear();
-
+  const year = new Date().getFullYear();
   return (
     <footer
       className="bg-base-200 border-t border-base-content/10 dark:border-base-content/20 py-10"
       role="contentinfo"
     >
       <div className="max-w-7xl mx-auto px-4 text-center space-y-8">
-        {/* 🔹 Social Links */}
         <nav
           aria-label="ช่องทางติดต่อ"
           className="flex flex-wrap justify-center gap-6 text-sm text-neutral-600 dark:text-neutral-400"
@@ -82,13 +72,11 @@ const Footer: FC = () => {
           ))}
         </nav>
 
-        {/* 🔹 Divider */}
         <div className="h-px w-2/3 mx-auto bg-base-content/10 dark:bg-base-content/20" />
 
-        {/* 🔹 Footer Bottom */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none leading-relaxed">
-          &copy; {currentYear}{" "}
-          <span className="font-semibold">JP Visual & Docs</span> — Powered by{" "}
+          &copy; {year} <span className="font-semibold">JP Visual & Docs</span>{" "}
+          — Powered by{" "}
           <a
             href="https://applicationlab.dev"
             target="_blank"

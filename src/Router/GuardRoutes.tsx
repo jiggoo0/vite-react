@@ -5,27 +5,30 @@ interface GuardRoutesProps {
   children: ReactNode;
 }
 
-type User = {
-  username: string;
-  role: "admin" | "user";
-};
+// ✅ User type
+type User = { username: string; role: "admin" | "user" };
 
+// ✅ Type guard แบบปลอดภัย
 const isValidUser = (data: unknown): data is User => {
   if (typeof data !== "object" || data === null) return false;
-  const user = data as Partial<User>;
+
+  const candidate = data as Record<string, unknown>;
   return (
-    typeof user.username === "string" &&
-    (user.role === "admin" || user.role === "user")
+    typeof candidate.username === "string" &&
+    (candidate.role === "admin" || candidate.role === "user")
   );
 };
 
+// ✅ Parse user จาก localStorage
 const parseUserFromStorage = (): User | null => {
-  const raw = localStorage.getItem("user");
-  if (!raw) return null;
   try {
+    const raw = localStorage.getItem("user");
+    if (!raw) return null;
+
     const parsed = JSON.parse(raw);
     return isValidUser(parsed) ? parsed : null;
-  } catch {
+  } catch (error) {
+    console.error("Failed to parse user from storage:", error);
     return null;
   }
 };
@@ -44,13 +47,13 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
     setIsAuthenticated(true);
   }, [navigate]);
 
-  if (isAuthenticated === null) {
+  // Loading state
+  if (isAuthenticated === null)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <span className="loading loading-spinner loading-lg text-primary" />
       </div>
     );
-  }
 
   if (!isAuthenticated) return null;
 

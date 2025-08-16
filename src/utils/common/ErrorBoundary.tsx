@@ -1,12 +1,12 @@
 "use client";
 
-import React, { Component, ReactNode, ErrorInfo } from "react";
+import { Component, ReactNode, ErrorInfo } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
-  fallbackMessage?: string; // ข้อความ fallback กรณี error
-  fallbackComponent?: ReactNode; // สามารถส่ง component เองได้
-  onError?: (error: Error, info: ErrorInfo) => void; // callback เมื่อเกิด error
+  fallbackMessage?: string;
+  fallbackComponent?: ReactNode;
+  onError?: (error: Error, info: ErrorInfo) => void;
 }
 
 interface ErrorBoundaryState {
@@ -17,7 +17,7 @@ interface ErrorBoundaryState {
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false, error: undefined };
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {

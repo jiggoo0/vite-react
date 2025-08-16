@@ -7,16 +7,13 @@ import { LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import Button from "@/Home/components/ui/Button";
 
-/**
- * 🔹 LogoutButton
- *
- * - ปุ่มสำหรับออกจากระบบ
- * - รองรับสถานะ loading ขณะ logout
- */
 const LogoutButton = () => {
-  const { logout } = useAuth();
+  const auth = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  // ถ้า useAuth ไม่มี logout ให้ fallback เป็น async no-op
+  const logout = auth.logout ?? (async () => {});
 
   const handleLogout = async () => {
     setLoading(true);
@@ -39,7 +36,7 @@ const LogoutButton = () => {
       aria-busy={loading}
       aria-label="ออกจากระบบ"
     >
-      <LogOut className="w-4 h-4" />
+      <LogOut className="w-4 h-4" aria-hidden="true" />
       <span>ออกจากระบบ</span>
     </Button>
   );

@@ -1,14 +1,11 @@
+"use client";
+
 import { FC, useMemo } from "react";
 import QRCode from "react-qr-code";
-import { KbankIOSNotification } from "./KbankIOSNotification.mock";
 
-interface Props {
-  data: KbankIOSNotification & { qrCodeUrl?: string };
-}
-
-// ฟังก์ชัน format จำนวนเงินเป็น THB
-const formatCurrency = (value: string | number | undefined) => {
-  if (!value || isNaN(Number(value))) return null;
+// ─── ฟังก์ชันช่วย format ──────────────────────
+const formatCurrency = (value?: string | number) => {
+  if (value === undefined || isNaN(Number(value))) return null;
   return Number(value).toLocaleString("th-TH", {
     style: "currency",
     currency: "THB",
@@ -16,7 +13,6 @@ const formatCurrency = (value: string | number | undefined) => {
   });
 };
 
-// ฟังก์ชัน format เวลาเป็นรูปแบบไทย
 const formatTime = (iso: string) => {
   try {
     return new Intl.DateTimeFormat("th-TH", {
@@ -32,7 +28,7 @@ const formatTime = (iso: string) => {
   }
 };
 
-// Component แสดงจำนวนเงิน
+// ─── Component แสดงจำนวนเงิน ──────────────────────
 const Amount: FC<{ amount?: string }> = ({ amount }) => {
   const formatted = useMemo(() => formatCurrency(amount), [amount]);
   if (!formatted) return null;
@@ -51,14 +47,22 @@ const Amount: FC<{ amount?: string }> = ({ amount }) => {
   );
 };
 
-// Component แสดงข้อมูลเพิ่มเติม + QR Code
-const AdditionalInfo: FC<{
+// ─── Component แสดงข้อมูลเพิ่มเติม + QR Code ──────────────────────
+interface AdditionalInfoProps {
   balanceAfter?: string;
   channel?: string;
   transactionId: string;
   time: string;
   qrCodeUrl?: string;
-}> = ({ balanceAfter, channel, transactionId, time, qrCodeUrl }) => {
+}
+
+const AdditionalInfo: FC<AdditionalInfoProps> = ({
+  balanceAfter,
+  channel,
+  transactionId,
+  time,
+  qrCodeUrl,
+}) => {
   const formattedBalance = useMemo(
     () => formatCurrency(balanceAfter),
     [balanceAfter]
@@ -76,18 +80,21 @@ const AdditionalInfo: FC<{
             <span className="font-medium">วันที่: </span>
             <time dateTime={time}>{formattedTime}</time>
           </div>
+
           {formattedBalance && (
             <div>
               <span className="font-medium">ยอดเงินคงเหลือ: </span>
               {formattedBalance}
             </div>
           )}
+
           {channel && (
             <div>
               <span className="font-medium">ช่องทาง: </span>
               {channel}
             </div>
           )}
+
           <div>
             <span className="font-medium">รหัสธุรกรรม: </span>
             {transactionId || "-"}
@@ -111,10 +118,25 @@ const AdditionalInfo: FC<{
   );
 };
 
-// ==============================
-// KBank Notification Card
-// ==============================
-const KbankNotificationCard: FC<Props> = ({ data }) => {
+// ─── Props สำหรับ KbankNotificationCard ──────────────────────
+interface KbankNotificationCardProps {
+  data: {
+    id: string;
+    type?: string;
+    title?: string;
+    subtitle?: string;
+    message?: string;
+    amount?: string;
+    balanceAfter?: string;
+    channel?: string;
+    transactionId: string;
+    time: string;
+    qrCodeUrl?: string;
+  };
+}
+
+// ─── KBank Notification Card ──────────────────────
+const KbankNotificationCard: FC<KbankNotificationCardProps> = ({ data }) => {
   return (
     <section
       className="rounded-3xl p-5 shadow bg-white border border-gray-200
@@ -172,4 +194,6 @@ const KbankNotificationCard: FC<Props> = ({ data }) => {
   );
 };
 
+// ─── Export ──────────────────────
 export default KbankNotificationCard;
+export { Amount, AdditionalInfo };

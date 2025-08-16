@@ -1,65 +1,54 @@
-// src/hooks/useAuth.ts
 import { useState, useEffect } from "react";
 
 export type User = {
   username: string;
-  role: "admin" | "user" | "temp";
+  role: "admin" | "user";
 };
 
-/**
- * 🔑 useAuth
- *
- * - Hook สำหรับจัดการสถานะ Authentication แบบ client-side
- * - อ่าน/เขียนข้อมูล user จาก localStorage
- * - มีสถานะ loading สำหรับตรวจสอบข้อมูลตอน mount
- * - มีฟังก์ชัน login/logout เพื่อแก้ไขสถานะ user และ localStorage
- */
+export const parseUserFromStorage = (): User | null => {
+  const raw = localStorage.getItem("user");
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw);
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      "username" in parsed &&
+      typeof (parsed as { username?: unknown }).username === "string" &&
+      "role" in parsed &&
+      (["admin", "user"] as const).includes(
+        (parsed as { role?: unknown }).role as User["role"]
+      )
+    ) {
+      return parsed as User;
+    }
+  } catch (error) {
+    console.error("Failed to parse user from storage:", error);
+  }
+
+  return null;
+};
+
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-
-        if (
-          typeof parsed === "object" &&
-          parsed !== null &&
-          typeof parsed.username === "string" &&
-          (parsed.role === "admin" ||
-            parsed.role === "user" ||
-            parsed.role === "temp")
-        ) {
-          setUser(parsed);
-        } else {
-          localStorage.removeItem("user");
-        }
-      } catch {
-        localStorage.removeItem("user");
-      }
-    }
-
-    setLoading(false);
+    const storedUser = parseUserFromStorage();
+    setUser(storedUser);
   }, []);
 
-  const login = (userData: User) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
+  const isAuthenticated = Boolean(user);
+
+  // ✅ เพิ่ม logout function
+  const logout = async () => {
+    try {
+      localStorage.removeItem("user"); // ล้าง user จาก storage
+      setUser(null); // อัพเดต state
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-  };
-
-  return {
-    user,
-    loading,
-    isAuthenticated: !!user,
-    login,
-    logout,
-  };
+  return { user, isAuthenticated, logout };
 };

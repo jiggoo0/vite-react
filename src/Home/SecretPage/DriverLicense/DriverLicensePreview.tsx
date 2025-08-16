@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import { FC } from "react"; // ตัด React ที่ไม่ได้ใช้
 import { driverLicenseConfig } from "./types/driverLicenseConfig";
 import {
   DriverLicenseData,
@@ -54,11 +54,11 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => (
               top: cfg.top,
               left: cfg.left,
               fontSize: cfg.fontSize,
-              fontWeight: cfg.fontWeight || "normal",
-              color: cfg.color || "#000",
+              fontWeight: cfg.fontWeight ?? "normal",
+              color: cfg.color ?? "#000",
             }}
           >
-            {value}
+            {value ?? ""}
           </span>
         );
       }

@@ -14,15 +14,17 @@ const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<number | null>(null);
 
-  // ตรวจสอบ scroll position
+  /** ตรวจสอบ scroll position */
   const handleScroll = useCallback(() => {
     setIsVisible(window.scrollY > 300);
   }, []);
 
-  // ติด listener scroll และ debounce
+  /** ติด listener scroll และ debounce */
   useEffect(() => {
     const onScroll = () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
       timeoutRef.current = window.setTimeout(handleScroll, 50);
     };
 
@@ -34,18 +36,19 @@ const BackToTop = () => {
     };
   }, [handleScroll]);
 
-  // ฟังก์ชัน scroll กลับไปด้านบน
+  /** scroll กลับไปด้านบน */
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // className แบบ dynamic สำหรับ animation และ visibility
+  /** className dynamic สำหรับ animation และ visibility */
   const buttonClasses = `
     flex items-center justify-center
     rounded-full p-3 text-white shadow-lg
     transition-all duration-300 ease-in-out
     ${isVisible ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-0 pointer-events-none"}
-    bg-primary hover:bg-primary/90 dark:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/50
+    bg-primary hover:bg-primary/90 dark:bg-primary-dark
+    focus:outline-none focus:ring-2 focus:ring-primary/50
   `;
 
   return (

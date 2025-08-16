@@ -1,7 +1,3 @@
-// ========================
-// DaisyUI Custom Themes
-// ========================
-
 export const lightTheme = {
   primary: "#2563EB",
   "primary-focus": "#1D4ED8",

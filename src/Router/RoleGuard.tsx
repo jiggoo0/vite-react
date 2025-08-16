@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface RoleGuardProps {
@@ -10,26 +10,26 @@ interface User {
   role: "admin" | "user";
 }
 
+// ✅ Type guard แบบปลอดภัย
 const isUserWithAllowedRole = (
   obj: unknown,
   allowedRoles: Array<"admin" | "user">
 ): obj is User => {
+  if (typeof obj !== "object" || obj === null) return false;
+
+  const candidate = obj as Record<string, unknown>;
   return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "role" in obj &&
-    typeof (obj as Record<string, unknown>).role === "string" &&
-    allowedRoles.includes((obj as Record<string, unknown>).role as User["role"])
+    typeof candidate.role === "string" &&
+    allowedRoles.includes(candidate.role as "admin" | "user")
   );
 };
 
-const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
+const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
   const navigate = useNavigate();
   const [authorized, setAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
-
     if (!stored) {
       setAuthorized(false);
       setTimeout(() => navigate("/login", { replace: true }), 0);
@@ -38,7 +38,6 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
 
     try {
       const parsed = JSON.parse(stored);
-
       if (isUserWithAllowedRole(parsed, allowedRoles)) {
         setAuthorized(true);
       } else {
@@ -46,24 +45,25 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
         setAuthorized(false);
         setTimeout(() => navigate("/403", { replace: true }), 0);
       }
-    } catch {
+    } catch (error) {
+      console.error("Failed to parse user:", error);
       localStorage.removeItem("user");
       setAuthorized(false);
       setTimeout(() => navigate("/login", { replace: true }), 0);
     }
   }, [allowedRoles, navigate]);
 
-  if (authorized === null) {
+  // Loading state
+  if (authorized === null)
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-100">
         <span
           className="loading loading-spinner loading-lg text-primary"
-          role="status"
           aria-label="Loading"
+          role="status"
         />
       </div>
     );
-  }
 
   if (!authorized) return null;
 

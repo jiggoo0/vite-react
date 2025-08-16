@@ -1,6 +1,7 @@
+// src/ThemeProvider/ThemeProvider.tsx
 "use client";
 
-import { ReactNode, useState, useEffect } from "react"; // Removed Dispatch, SetStateAction
+import { ReactNode, useState, useEffect } from "react";
 import { ThemeContext } from "./ThemeContext";
 import { ThemeMode } from "./types";
 
@@ -26,12 +27,7 @@ export const ThemeProvider = ({
   }, [theme]);
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        setTheme, // ✅ TypeScript infers Dispatch<SetStateAction<ThemeMode>>
-      }}
-    >
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -6,7 +6,7 @@ import ThemeToggle from "@layout/ui/ThemeToggle";
 import LogoutButton from "@home/components/common/LogoutButton";
 import { useAuth } from "@hooks/useAuth";
 
-const Header: FC = () => {
+const Header: FC = (): JSX.Element => {
   const { isAuthenticated } = useAuth();
 
   return (
@@ -31,7 +31,7 @@ const Header: FC = () => {
           ) : (
             <Link
               to="/login"
-              className="btn btn-primary btn-sm transition-all duration-200 hover:brightness-110 focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              className="btn btn-primary btn-sm transition-all duration-200 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               aria-label="เข้าสู่ระบบ"
             >
               เข้าสู่ระบบ

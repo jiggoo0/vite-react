@@ -1,5 +1,5 @@
-import { createContext } from "react";
-import { Dispatch, SetStateAction } from "react";
+// src/ThemeProvider/ThemeContext.ts
+import { createContext, Dispatch, SetStateAction } from "react";
 import { ThemeMode } from "./types";
 
 /** 🖌️ Type for the ThemeContext */

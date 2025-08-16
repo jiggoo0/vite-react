@@ -1,16 +1,14 @@
-import React, { FC } from "react";
-
 interface TrustBadgeProps {
   count: number;
   label?: string;
-  className?: string; // สำหรับ custom style เพิ่มเติม
+  className?: string;
 }
 
-const TrustBadge: FC<TrustBadgeProps> = ({
+const TrustBadge = ({
   count,
   label = "ลูกค้ามั่นใจในเรา",
   className = "",
-}) => {
+}: TrustBadgeProps) => {
   return (
     <div className={`flex flex-col items-center ${className}`}>
       <div

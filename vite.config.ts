@@ -21,19 +21,34 @@ export default defineConfig({
       "@services": path.resolve(__dirname, "src/services"),
     },
   },
+  define: {
+    "process.env.NODE_ENV": JSON.stringify(
+      process.env.NODE_ENV || "production"
+    ),
+  },
   build: {
+    target: "esnext",
+    sourcemap: true,
+    minify: "esbuild",
+    outDir: "dist",
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("react")) return "vendor_react";
+            if (id.includes("react-dom")) return "vendor_react-dom";
+            if (id.includes("react-router-dom")) return "vendor_react-router";
             if (id.includes("lodash")) return "vendor_lodash";
             if (id.includes("axios")) return "vendor_axios";
             return "vendor_misc";
           }
         },
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
-    chunkSizeWarningLimit: 1000,
   },
+  cacheDir: "node_modules/.vite",
 });

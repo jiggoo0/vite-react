@@ -1,42 +1,37 @@
 {
   "compilerOptions": {
-    "target": "ES2020", // Target ของ JavaScript output
-    "module": "ESNext", // Module system สำหรับ bundler เช่น Vite
-    "moduleResolution": "node",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Libraries ที่ TypeScript จะรู้จัก
-    "jsx": "react-jsx", // การใช้ JSX สำหรับ React 17+ (automatic runtime)
-
-    "baseUrl": ".", // Base directory สำหรับ paths
-    "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
-      "@styles/*": ["src/styles/*"],
-      "@data/*": ["src/data/*"],
-      "@components/*": ["src/components/*"],
-      "@common/*": ["src/utils/common/*"],
-      "@utils/*": ["src/utils/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@layout/*": ["src/Layout/*"],
-      "@router/*": ["src/Router/*"],
-      "@home/*": ["src/Home/*"],
-      "@api/*": ["src/api/*"],
-      "@services/*": ["src/services/*"]
-    },
-
-    "outDir": "./dist", // ไดเรกทอรีสำหรับ build output
-    "rootDir": "./src", // root ของ source
-
-    "strict": true, // เปิด strict mode
-    "noImplicitAny": true, // ป้องกัน any แบบไม่ตั้งใจ
-    "noFallthroughCasesInSwitch": true, // ป้องกัน switch case หล่นไป
-
-    "esModuleInterop": true, // โมดูล interoperability
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "skipLibCheck": true
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@home/*": ["Home/*"],
+      "@assets/*": ["assets/*"],
+      "@styles/*": ["styles/*"],
+      "@data/*": ["data/*"],
+      "@components/*": ["components/*"],
+      "@common/*": ["utils/common/*"],
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"],
+      "@layout/*": ["Layout/*"],
+      "@router/*": ["Router/*"],
+      "@api/*": ["api/*"],
+      "@services/*": ["services/*"]
+    },
+    "types": ["vite/client"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

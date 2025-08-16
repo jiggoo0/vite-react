@@ -1,11 +1,9 @@
 import { FC, ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 
-// Layout Components
 import Navbar from "@layout/Navbar";
 import Footer from "@layout/partials/Footer";
 
-// Utility / Floating Components
 import ChatWidget from "@utils/common/ChatWidget";
 import DisclaimerModal from "@utils/common/DisclaimerModal";
 import BackToTop from "@utils/common/BackToTop";
@@ -14,31 +12,17 @@ interface LayoutProps {
   children?: ReactNode;
 }
 
-/**
- * 🏗️ Main App Layout
- * - Includes Navbar, Footer
- * - Handles floating utility widgets
- * - Supports React Router Outlet
- */
 const Layout: FC<LayoutProps> = ({ children }) => {
   const floatingComponents = [ChatWidget, BackToTop, DisclaimerModal];
 
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content transition-colors duration-300">
-      {/* =======================
-          Header / Navbar
-      ======================= */}
-      <header
-        role="banner"
-        aria-label="เว็บไซต์ส่วนหัว"
-        className="sticky top-0 z-50 bg-base-100 shadow-sm transition-shadow duration-300"
-      >
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-base-100 shadow-sm transition-shadow duration-300">
         <Navbar />
       </header>
 
-      {/* =======================
-          Main Content
-      ======================= */}
+      {/* Main Content */}
       <main
         id="main-content"
         role="main"
@@ -52,16 +36,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         </div>
       </main>
 
-      {/* =======================
-          Footer
-      ======================= */}
+      {/* Footer */}
       <footer role="contentinfo" className="mt-auto">
         <Footer />
       </footer>
 
-      {/* =======================
-          Floating / Utility Components
-      ======================= */}
+      {/* Floating Utilities */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-4 pointer-events-none">
         {floatingComponents.map((Component, idx) => (
           <div key={idx} className="pointer-events-auto">

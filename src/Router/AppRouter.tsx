@@ -1,17 +1,16 @@
+// src/Router/AppRouter.tsx
 import { FC, Suspense, lazy, ReactNode, ComponentType } from "react";
 import { Routes, Route } from "react-router-dom";
 
-// 🌐 Layout & Utilities
 import Layout from "@/Layout/Layout";
 import ScrollToTop from "@/utils/common/ScrollToTop";
 import FallbackLoader from "@/utils/common/FallbackLoader";
 import ErrorBoundary from "@/utils/common/ErrorBoundary";
 
-// 🛡 Guards
 import GuardRoutes from "@/Router/GuardRoutes";
 import RoleGuard from "@/Router/RoleGuard";
 
-// 📦 Lazy Imports
+// Lazy load pages
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
@@ -21,13 +20,13 @@ const CustomerAssessmentForm = lazy(
 const IdCardFormPage = lazy(() => import("@/Home/IdCardForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
-// ======================================================
-// Suspense Wrapper
-// ======================================================
-const RouteSuspense: FC<{ children: ReactNode; message?: string }> = ({
-  children,
-  message,
-}) => (
+// Suspense wrapper
+interface RouteSuspenseProps {
+  children: ReactNode;
+  message?: string;
+}
+
+const RouteSuspense: FC<RouteSuspenseProps> = ({ children, message }) => (
   <Suspense
     fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}
   >
@@ -35,10 +34,8 @@ const RouteSuspense: FC<{ children: ReactNode; message?: string }> = ({
   </Suspense>
 );
 
-// ======================================================
-// Type-Safe Lazy Page Wrapper
-// ======================================================
-function lazyPage<P extends object>(
+// Helper function for lazy pages with type-safe default
+function lazyPage<P extends Record<string, unknown> = Record<string, unknown>>(
   Page: ComponentType<P>,
   props?: P,
   message?: string
@@ -50,14 +47,11 @@ function lazyPage<P extends object>(
   );
 }
 
-// ======================================================
-// App Router
-// ======================================================
 const AppRouter: FC = () => (
   <>
     <ScrollToTop />
     <Routes>
-      {/* ================== Public Routes ================== */}
+      {/* Public routes */}
       <Route element={<Layout />}>
         <Route
           index
@@ -71,7 +65,7 @@ const AppRouter: FC = () => (
         <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
       </Route>
 
-      {/* ================== Guarded Routes ================== */}
+      {/* Guarded routes */}
       <Route
         element={
           <GuardRoutes>
@@ -83,7 +77,7 @@ const AppRouter: FC = () => (
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
-      {/* ================== Admin Routes ================== */}
+      {/* Admin routes */}
       <Route
         path="admin"
         element={
@@ -104,7 +98,7 @@ const AppRouter: FC = () => (
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
-      {/* ================== Fallback Routes ================== */}
+      {/* Fallback */}
       <Route
         path="*"
         element={lazyPage(Forbidden, {}, "กำลังโหลดหน้า 403...")}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { testimonials } from "@data/testimonialsData";
 
@@ -36,7 +36,6 @@ const TestimonialSlider: React.FC = () => {
     setPage(([currentPage]) => [currentPage + newDirection, newDirection]);
   }, []);
 
-  // Auto-pagination effect
   useEffect(() => {
     const interval = setInterval(() => paginate(1), AUTO_PLAY_INTERVAL);
     return () => clearInterval(interval);
@@ -46,7 +45,6 @@ const TestimonialSlider: React.FC = () => {
 
   return (
     <div className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl bg-white dark:bg-gray-900 p-8 shadow-2xl">
-      {/* Animated testimonial */}
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={id}
@@ -63,7 +61,7 @@ const TestimonialSlider: React.FC = () => {
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.3}
-          onDragEnd={(e, { offset, velocity }) => {
+          onDragEnd={(_, { offset, velocity }) => {
             const swipe = swipePower(offset.x, velocity.x);
             if (swipe < -SWIPE_CONFIDENCE_THRESHOLD) paginate(1);
             else if (swipe > SWIPE_CONFIDENCE_THRESHOLD) paginate(-1);
@@ -95,7 +93,6 @@ const TestimonialSlider: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Buttons */}
       {["left", "right"].map((dir) => {
         const isLeft = dir === "left";
         return (
@@ -103,7 +100,9 @@ const TestimonialSlider: React.FC = () => {
             key={dir}
             aria-label={isLeft ? "Previous testimonial" : "Next testimonial"}
             onClick={() => paginate(isLeft ? -1 : 1)}
-            className={`absolute top-1/2 ${isLeft ? "left-4" : "right-4"} -translate-y-1/2 rounded-full bg-indigo-100 dark:bg-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-700 p-3 shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition`}
+            className={`absolute top-1/2 ${
+              isLeft ? "left-4" : "right-4"
+            } -translate-y-1/2 rounded-full bg-indigo-100 dark:bg-indigo-800 hover:bg-indigo-200 dark:hover:bg-indigo-700 p-3 shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +120,6 @@ const TestimonialSlider: React.FC = () => {
         );
       })}
 
-      {/* Pagination Dots */}
       <div className="flex justify-center mt-6 space-x-2">
         {testimonials.map((_, idx) => (
           <button
@@ -138,7 +136,6 @@ const TestimonialSlider: React.FC = () => {
         ))}
       </div>
 
-      {/* Progress Bar */}
       <div className="mt-2 h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <motion.div
           key={testimonialIndex}

@@ -17,30 +17,34 @@ const ChatWidget = () => {
   const autoCloseTimer = useRef<number | null>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
 
+  /** Toggle เปิด/ปิด widget */
   const toggleChat = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  // ปิดอัตโนมัติหลัง 15 วินาที
+  /** ปิด widget อัตโนมัติหลัง 15 วินาที */
   useEffect(() => {
     if (isOpen) {
       autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), 15000);
     }
     return () => {
-      if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current);
+      if (autoCloseTimer.current) {
+        clearTimeout(autoCloseTimer.current);
+        autoCloseTimer.current = null;
+      }
     };
   }, [isOpen]);
 
-  // ปิดด้วย Escape key
+  /** ปิด widget ด้วย Escape key */
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
     };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // โฟกัส widget เมื่อเปิด
+  /** โฟกัส widget เมื่อเปิด */
   useEffect(() => {
     if (isOpen && widgetRef.current) {
       widgetRef.current.focus();
@@ -56,7 +60,7 @@ const ChatWidget = () => {
           tabIndex={-1}
           role="dialog"
           aria-label="ช่องทางติดต่อ"
-          className="w-80 max-w-[90vw] rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 shadow-xl p-5 text-center space-y-4 transform transition-all duration-300 ease-out animate-fadeInUp"
+          className="w-80 max-w-[90vw] rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 shadow-xl p-5 text-center space-y-4 transform transition-all duration-300 ease-out animate-fadeInUp focus:outline-none"
         >
           <p className="text-base font-semibold text-gray-800 dark:text-gray-200">
             ติดต่อเราผ่านช่องทางโซเชียล

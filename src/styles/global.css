@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* =======================
-   Fonts
-======================= */
 @font-face {
   font-family: "THSarabunNew";
   src:
@@ -45,9 +42,6 @@
   font-display: swap;
 }
 
-/* =======================
-   Base Styles
-======================= */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -80,24 +74,25 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
+
   ::-webkit-scrollbar-thumb {
     background-color: theme("colors.primary");
     border-radius: 4px;
     transition: background-color 0.3s ease;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background-color: theme("colors-primary-focus");
+    background-color: theme("colors.primary-focus");
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  /* Buttons & Links */
   button,
   a {
     transition:
@@ -112,6 +107,7 @@
     transform: scale(1.05);
     outline: none;
   }
+
   button:focus,
   a:focus {
     outline: 2px solid theme("colors.primary");
@@ -146,38 +142,38 @@
   }
 }
 
-/* =======================
-   Components
-======================= */
 @layer components {
   .btn-primary {
     @apply bg-primary text-white font-bold py-2 px-4 rounded shadow hover:bg-primary-focus transition;
   }
+
   .card {
     @apply bg-base-200 p-4 rounded-lg shadow-md transition hover:shadow-lg;
   }
+
   .badge {
     @apply inline-block bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full;
   }
+
   .hero-section {
     @apply relative w-full min-h-[60vh] flex flex-col justify-center items-start text-white overflow-hidden;
   }
+
   .a4-card-wrapper {
     @apply max-w-[210mm] min-h-[297mm] w-[210mm] h-[297mm] mx-auto my-4 p-4 bg-white shadow-lg rounded;
     break-inside: avoid;
   }
 }
 
-/* =======================
-   Utilities
-======================= */
 @layer utilities {
   .text-shadow {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
+
   .transition-fast {
     transition: all 0.15s ease-in-out !important;
   }
+
   .scroll-smooth {
     scroll-behavior: smooth;
   }

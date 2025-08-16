@@ -1,18 +1,15 @@
-// src/AppProviders.tsx
+// src/context/AppProviders.tsx
 "use client";
 
-import React, { ReactNode, FC } from "react";
+import { ReactNode, FC } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "./ThemeProvider";
+import ThemeProvider from "../ThemeProvider/ThemeProvider";
 
-/**
- * 🌐 AppProviders
- * --------------
- * Wrapper สำหรับ context หลักของแอป:
- * - BrowserRouter สำหรับ routing
- * - ThemeProvider สำหรับ theme management
- */
-const AppProviders: FC<{ children: ReactNode }> = ({ children }) => {
+interface AppProvidersProps {
+  children: ReactNode;
+}
+
+const AppProviders: FC<AppProvidersProps> = ({ children }) => {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL || "/"}>
       <ThemeProvider>{children}</ThemeProvider>
