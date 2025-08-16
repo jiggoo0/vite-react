@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { FC } from "react";
-import { ArrowRight } from "lucide-react";
+import { FC } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 type PortfolioCTAProps = {
   href: string;

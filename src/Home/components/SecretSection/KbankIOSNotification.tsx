@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 import {
   KbankIOSNotification as NotificationType,
   kbankMockData,
-} from "./KbankIOSNotification.mock";
-import KbankNotificationCard from "./KbankNotificationCard";
+} from './KbankIOSNotification.mock';
+import KbankNotificationCard from './KbankNotificationCard';
 
 const LOAD_DELAY_MS = 700; // จำลองการโหลดข้อมูล
 
@@ -18,10 +18,7 @@ const SkeletonLoader: FC = () => (
     aria-live="polite"
   >
     {[...Array(3)].map((_, index) => (
-      <div
-        key={index}
-        className="bg-white border border-gray-200 rounded-3xl p-4 shadow space-y-2"
-      >
+      <div key={index} className="bg-white border border-gray-200 rounded-3xl p-4 shadow space-y-2">
         <div className="flex items-center gap-3">
           <div className="w-7 h-7 bg-gray-200 rounded-sm" />
           <div className="w-8 h-8 bg-gray-200 rounded-full" />

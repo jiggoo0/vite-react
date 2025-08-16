@@ -1,7 +1,7 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 /** 🎨 Theme Options */
-export type Theme = "light" | "dark" | "business" | "team";
+export type Theme = 'light' | 'dark' | 'business' | 'team';
 
 /** 🧩 Theme Context Type */
 export interface ThemeContextType {
@@ -12,6 +12,4 @@ export interface ThemeContextType {
 }
 
 /** 🌐 Theme Context */
-export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

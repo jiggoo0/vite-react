@@ -1,4 +1,4 @@
-import { Variants, easeInOut } from "framer-motion";
+import { Variants, easeInOut } from 'framer-motion';
 
 /**
  * 📦 Container Motion Variants

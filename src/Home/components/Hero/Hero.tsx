@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { HeroBackground, HeroBadge, HeroStats } from "./index";
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { HeroBackground, HeroBadge, HeroStats } from './index';
 
 const Hero = () => {
   return (
@@ -19,7 +19,7 @@ const Hero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           viewport={{ once: true, amount: 0.6 }}
           className="text-3xl sm:text-5xl font-bold leading-tight tracking-tight"
         >
@@ -29,7 +29,7 @@ const Hero = () => {
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
+          transition={{ delay: 0.1, duration: 0.5, ease: 'easeOut' }}
           viewport={{ once: true, amount: 0.6 }}
           className="mx-auto max-w-xl text-neutral-400 text-base sm:text-lg"
         >
@@ -39,7 +39,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+          transition={{ delay: 0.2, duration: 0.5, ease: 'easeOut' }}
           viewport={{ once: true, amount: 0.6 }}
           className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4"
           role="group"

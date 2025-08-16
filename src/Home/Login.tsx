@@ -1,17 +1,17 @@
 // src/Home/Login.tsx
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import bcrypt from "bcryptjs";
-import { users } from "@/data/users";
-import { useTempCodeAuth } from "@/hooks/useTempCodeAuth";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
+import { users } from '@/data/users';
+import { useTempCodeAuth } from '@/hooks/useTempCodeAuth';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -32,35 +32,29 @@ const Login: React.FC = () => {
         const match = await bcrypt.compare(password, user.passwordHash);
         if (match) {
           localStorage.setItem(
-            "user",
-            JSON.stringify({ username: user.username, role: user.role })
+            'user',
+            JSON.stringify({ username: user.username, role: user.role }),
           );
-          navigate("/secret", { replace: true });
+          navigate('/secret', { replace: true });
           return;
         } else {
-          setError("รหัสผ่านไม่ถูกต้อง");
+          setError('รหัสผ่านไม่ถูกต้อง');
           return;
         }
       }
 
       // ตรวจสอบ temp code login
-      const tempLoginSuccess = await loginWithTempCode(
-        trimmedUsername,
-        password
-      );
+      const tempLoginSuccess = await loginWithTempCode(trimmedUsername, password);
 
       if (tempLoginSuccess) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ username: trimmedUsername, role: "temp" })
-        );
-        navigate("/secret", { replace: true });
+        localStorage.setItem('user', JSON.stringify({ username: trimmedUsername, role: 'temp' }));
+        navigate('/secret', { replace: true });
         return;
       }
 
-      setError(tempError || "ไม่พบผู้ใช้นี้ในระบบ หรือรหัสผ่านไม่ถูกต้อง");
+      setError(tempError || 'ไม่พบผู้ใช้นี้ในระบบ หรือรหัสผ่านไม่ถูกต้อง');
     } catch {
-      setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+      setError('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
     } finally {
       setLoading(false);
     }
@@ -69,9 +63,7 @@ const Login: React.FC = () => {
   return (
     <section className="min-h-screen flex items-center justify-center px-4 bg-base-100 text-base-content">
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-lg rounded-2xl p-8 space-y-6">
-        <h1 className="text-2xl font-bold text-center text-primary">
-          เข้าสู่ระบบ
-        </h1>
+        <h1 className="text-2xl font-bold text-center text-primary">เข้าสู่ระบบ</h1>
 
         {error && (
           <div
@@ -115,7 +107,7 @@ const Login: React.FC = () => {
             disabled={loading}
             aria-busy={loading}
           >
-            {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
+            {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
           </button>
         </form>
       </div>

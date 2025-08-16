@@ -1,26 +1,17 @@
-"use client";
+'use client';
 
-import React, { useRef, useEffect, useState } from "react";
-import { driverLicenseConfig } from "@/data/mocks/mockDriverLicense";
-import {
-  DriverLicenseData,
-  DriverLicenseFieldKeys,
-} from "./types/driverLicense";
-import TextField from "./ui/TextField";
-import PhotoField from "./ui/PhotoField";
+import React, { useRef, useEffect, useState } from 'react';
+import { driverLicenseConfig } from '@/data/mocks/mockDriverLicense';
+import { DriverLicenseData, DriverLicenseFieldKeys } from './types/driverLicense';
+import TextField from './ui/TextField';
+import PhotoField from './ui/PhotoField';
 
 export interface DriverLicensePreviewProps {
   data: DriverLicenseData;
-  onFieldUpdate?: (
-    key: DriverLicenseFieldKeys,
-    updates: { top: string; left: string }
-  ) => void;
+  onFieldUpdate?: (key: DriverLicenseFieldKeys, updates: { top: string; left: string }) => void;
 }
 
-const DriverLicensePreview: React.FC<DriverLicensePreviewProps> = ({
-  data,
-  onFieldUpdate,
-}) => {
+const DriverLicensePreview: React.FC<DriverLicensePreviewProps> = ({ data, onFieldUpdate }) => {
   const { cardWidth, cardHeight, bgDefault, fields } = driverLicenseConfig;
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -29,22 +20,17 @@ const DriverLicensePreview: React.FC<DriverLicensePreviewProps> = ({
   useEffect(() => {
     const handleResize = () => {
       if (!containerRef.current) return;
-      const parentWidth =
-        containerRef.current.parentElement?.clientWidth || cardWidth;
+      const parentWidth = containerRef.current.parentElement?.clientWidth || cardWidth;
       setScale(Math.min(parentWidth / cardWidth, 1));
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [cardWidth]);
 
   // 📌 อัปเดตตำแหน่งกลับไปยัง parent
-  const handlePositionChange = (
-    key: DriverLicenseFieldKeys,
-    top: string,
-    left: string
-  ) => {
+  const handlePositionChange = (key: DriverLicenseFieldKeys, top: string, left: string) => {
     onFieldUpdate?.(key, { top, left });
   };
 
@@ -52,7 +38,7 @@ const DriverLicensePreview: React.FC<DriverLicensePreviewProps> = ({
     <div
       ref={containerRef}
       className="flex justify-center items-center"
-      style={{ width: "100%", overflow: "auto" }}
+      style={{ width: '100%', overflow: 'auto' }}
     >
       <div
         className="relative shadow-lg border rounded-lg overflow-hidden"
@@ -60,10 +46,10 @@ const DriverLicensePreview: React.FC<DriverLicensePreviewProps> = ({
           width: `${cardWidth}px`,
           height: `${cardHeight}px`,
           backgroundImage: `url(${bgDefault})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           transform: `scale(${scale})`,
-          transformOrigin: "top left",
+          transformOrigin: 'top left',
         }}
       >
         {(
@@ -73,17 +59,17 @@ const DriverLicensePreview: React.FC<DriverLicensePreviewProps> = ({
           ][]
         ).map(([key, cfg]) => {
           // 🔹 Cast ให้เป็น string ชัดเจน
-          const value = String(data[key] || "");
+          const value = String(data[key] || '');
 
-          if (key === "photo") {
+          if (key === 'photo') {
             return (
               <PhotoField
                 key={key}
                 src={value}
                 top={cfg.top}
                 left={cfg.left}
-                width={cfg.width || "120px"}
-                height={cfg.height || "150px"}
+                width={cfg.width || '120px'}
+                height={cfg.height || '150px'}
                 borderRadius="8px"
                 onPositionChange={(t, l) => handlePositionChange(key, t, l)}
               />

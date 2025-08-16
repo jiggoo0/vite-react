@@ -1,4 +1,4 @@
-import { Variants, easeInOut } from "framer-motion";
+import { Variants, easeInOut } from 'framer-motion';
 
 interface MotionConfig {
   duration?: number;
@@ -29,7 +29,7 @@ export const containerVariants: Variants = {
  */
 export const fadeInUp = (
   index: number = 0,
-  { duration = 0.3, delay = 0.1, distance = 20 }: MotionConfig = {}
+  { duration = 0.3, delay = 0.1, distance = 20 }: MotionConfig = {},
 ): Variants => ({
   hidden: { opacity: 0, y: distance },
   visible: {
@@ -48,7 +48,5 @@ export const fadeInUp = (
  * @param count จำนวน element
  * @param config ปรับแต่ง animation
  */
-export const generateFadeInUpVariants = (
-  count: number,
-  config?: MotionConfig
-): Variants[] => Array.from({ length: count }, (_, i) => fadeInUp(i, config));
+export const generateFadeInUpVariants = (count: number, config?: MotionConfig): Variants[] =>
+  Array.from({ length: count }, (_, i) => fadeInUp(i, config));

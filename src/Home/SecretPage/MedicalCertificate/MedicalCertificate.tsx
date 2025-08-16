@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { FC } from "react";
+import { FC } from 'react';
 
 // Type ของข้อมูลใบความเห็นแพทย์
 export interface MedicalCertificateData {
@@ -26,9 +26,7 @@ export interface MedicalCertificateData {
 }
 
 // Card wrapper ปกติ
-export const CardWrapper: FC<{ children: React.ReactNode }> = ({
-  children,
-}) => (
+export const CardWrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
   <div
     className="
       bg-white dark:bg-base-100
@@ -43,9 +41,7 @@ export const CardWrapper: FC<{ children: React.ReactNode }> = ({
 );
 
 // A4 wrapper สำหรับ print
-export const A4CardWrapper: FC<{ children: React.ReactNode }> = ({
-  children,
-}) => (
+export const A4CardWrapper: FC<{ children: React.ReactNode }> = ({ children }) => (
   <div
     className="
       a4-card-wrapper
@@ -58,8 +54,8 @@ export const A4CardWrapper: FC<{ children: React.ReactNode }> = ({
       sm:max-w-full sm:min-h-auto
     "
     style={{
-      width: "100%",
-      boxSizing: "border-box",
+      width: '100%',
+      boxSizing: 'border-box',
       fontFamily: "'Krut', sans-serif",
     }}
   >
@@ -68,18 +64,12 @@ export const A4CardWrapper: FC<{ children: React.ReactNode }> = ({
 );
 
 // คอมโพเนนต์ Medical Certificate พร้อม print A4
-export const MedicalCertificate: FC<{ data: MedicalCertificateData }> = ({
-  data,
-}) => {
+export const MedicalCertificate: FC<{ data: MedicalCertificateData }> = ({ data }) => {
   return (
     <A4CardWrapper>
       {/* Header */}
       <div className="text-center mb-6">
-        <img
-          src="/fonts/krut.webp"
-          alt="Krut Logo"
-          className="mx-auto mb-2 w-20 h-auto"
-        />
+        <img src="/fonts/krut.webp" alt="Krut Logo" className="mx-auto mb-2 w-20 h-auto" />
         <h1 className="text-xl font-bold mb-1">ใบความเห็นแพทย์</h1>
         <p className="text-sm text-gray-600">{data.hospital}</p>
         <p className="text-sm text-gray-600">{data.ministryOffice}</p>
@@ -101,16 +91,14 @@ export const MedicalCertificate: FC<{ data: MedicalCertificateData }> = ({
           <strong>ข้าพเจ้า:</strong> {data.doctorName}
         </p>
         <p>
-          <strong>ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่:</strong>{" "}
-          {data.doctorLicenseNo}
+          <strong>ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่:</strong> {data.doctorLicenseNo}
         </p>
       </div>
 
       {/* Patient info */}
       <div className="mb-4 text-sm">
         <p>
-          <strong>ได้ตรวจร่างกาย:</strong> {data.patientTitle}{" "}
-          {data.patientName}
+          <strong>ได้ตรวจร่างกาย:</strong> {data.patientTitle} {data.patientName}
         </p>
         <p>
           <strong>สถานที่อยู่:</strong> {data.address}
@@ -136,16 +124,14 @@ export const MedicalCertificate: FC<{ data: MedicalCertificateData }> = ({
       {/* Attendance */}
       <div className="mb-4 text-sm">
         <p>
-          <strong>ผู้ป่วยได้มารับการตรวจรักษาในวันนี้จริง:</strong>{" "}
-          {data.attendedToday ? "✓" : "✗"}
+          <strong>ผู้ป่วยได้มารับการตรวจรักษาในวันนี้จริง:</strong> {data.attendedToday ? '✓' : '✗'}
         </p>
       </div>
 
       {/* Rest period */}
       <div className="mb-4 text-sm">
         <p>
-          <strong>ให้หยุดพัก:</strong> ตั้งแต่วันที่ {data.restFromDate}{" "}
-          ถึงวันที่ {data.restToDate}
+          <strong>ให้หยุดพัก:</strong> ตั้งแต่วันที่ {data.restFromDate} ถึงวันที่ {data.restToDate}
         </p>
         {data.otherNote && (
           <p>

@@ -1,10 +1,10 @@
-import { FC } from "react";
-import { Link } from "react-router-dom";
+import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
-import Logo from "@layout/ui/Logo";
-import ThemeToggle from "@layout/ui/ThemeToggle";
-import LogoutButton from "@home/components/common/LogoutButton";
-import { useAuth } from "@hooks/useAuth";
+import Logo from '@layout/ui/Logo';
+import ThemeToggle from '@layout/ui/ThemeToggle';
+import LogoutButton from '@home/components/common/LogoutButton';
+import { useAuth } from '@hooks/useAuth';
 
 const Header: FC = () => {
   const { isAuthenticated } = useAuth();

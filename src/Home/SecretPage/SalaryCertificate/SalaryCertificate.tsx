@@ -1,6 +1,6 @@
 // src/Home/SecretPage/SalaryCertificate.tsx
-import React from "react";
-import { mockSalaryCertificate } from "./mockSalaryCertificate";
+import React from 'react';
+import { mockSalaryCertificate } from './mockSalaryCertificate';
 
 const SalaryCertificate: React.FC = () => {
   const data = mockSalaryCertificate;
@@ -24,23 +24,19 @@ const SalaryCertificate: React.FC = () => {
       </div>
 
       {/* ─── Title ─────────────────────────────── */}
-      <h1 className="text-center text-[20pt] font-bold my-6 underline">
-        หนังสือรับรองเงินเดือน
-      </h1>
+      <h1 className="text-center text-[20pt] font-bold my-6 underline">หนังสือรับรองเงินเดือน</h1>
 
       {/* ─── Body ─────────────────────────────── */}
       <div className="whitespace-pre-line text-justify tracking-wide">
-        บริษัทฯ ขอรับรองว่า <strong>นาย {data.employeeName}</strong>{" "}
-        เป็นพนักงานของบริษัทฯ โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {data.startDate}{" "}
-        จนถึงปัจจุบัน ดำรงตำแหน่ง {data.position} สังกัดแผนก {data.department}
+        บริษัทฯ ขอรับรองว่า <strong>นาย {data.employeeName}</strong> เป็นพนักงานของบริษัทฯ
+        โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {data.startDate} จนถึงปัจจุบัน ดำรงตำแหน่ง {data.position}{' '}
+        สังกัดแผนก {data.department}
         <br />
         <br />
         โดยมีรายได้ประจำดังนี้:
         <ul className="ml-8 list-disc">
           <li>เงินเดือนประจำ: {data.salary.toLocaleString()} บาท / เดือน</li>
-          <li>
-            ค่าตำแหน่ง: {data.positionAllowance.toLocaleString()} บาท / เดือน
-          </li>
+          <li>ค่าตำแหน่ง: {data.positionAllowance.toLocaleString()} บาท / เดือน</li>
           <li>ค่าครองชีพ: {data.costOfLiving.toLocaleString()} บาท / เดือน</li>
         </ul>
         <br />
@@ -60,13 +56,8 @@ const SalaryCertificate: React.FC = () => {
       <div className="mt-10 text-[14pt]">
         <p className="underline font-bold">หมายเหตุ</p>
         <ol className="list-decimal ml-6">
-          <li>
-            หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น
-          </li>
-          <li>
-            หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด
-            จึงจะถือว่าสมบูรณ์
-          </li>
+          <li>หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น</li>
+          <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด จึงจะถือว่าสมบูรณ์</li>
         </ol>
       </div>
 

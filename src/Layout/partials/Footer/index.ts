@@ -1,2 +1,2 @@
 // src/Layout/partials/Footer/index.ts
-export { default } from "./Footer";
+export { default } from './Footer';

@@ -1,5 +1,5 @@
 // src/Home/components/Forms/FormWrapper.tsx
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from 'react';
 
 type FormWrapperProps = {
   title?: string;
@@ -10,11 +10,11 @@ type FormWrapperProps = {
 };
 
 const FormWrapper: React.FC<FormWrapperProps> = ({
-  title = "ฟอร์ม",
-  description = "",
+  title = 'ฟอร์ม',
+  description = '',
   children,
   onSubmit,
-  className = "",
+  className = '',
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,12 +30,12 @@ const FormWrapper: React.FC<FormWrapperProps> = ({
       if (onSubmit) {
         await onSubmit();
       }
-      setSuccess("บันทึกข้อมูลสำเร็จ");
+      setSuccess('บันทึกข้อมูลสำเร็จ');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+        setError('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
       }
     } finally {
       setLoading(false);
@@ -60,7 +60,7 @@ const FormWrapper: React.FC<FormWrapperProps> = ({
             disabled={loading}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
-            {loading ? "กำลังบันทึก..." : "บันทึก"}
+            {loading ? 'กำลังบันทึก...' : 'บันทึก'}
           </button>
         </div>
       </form>

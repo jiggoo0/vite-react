@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { FC, useState, useCallback } from "react";
-import DriverLicenseForm from "./DriverLicenseForm";
-import DriverLicensePreview from "./DriverLicensePreview";
-import { DriverLicenseData } from "./types/driverLicense";
-import { CardWrapper } from "../common/CardWrapper";
-import { mockDriverLicenseData } from "@/data/mocks/mockDriverLicense";
+import { FC, useState, useCallback } from 'react';
+import DriverLicenseForm from './DriverLicenseForm';
+import DriverLicensePreview from './DriverLicensePreview';
+import { DriverLicenseData } from './types/driverLicense';
+import { CardWrapper } from '../common/CardWrapper';
+import { mockDriverLicenseData } from '@/data/mocks/mockDriverLicense';
 
 const DriverLicenseSection: FC = () => {
   const [data, setData] = useState<DriverLicenseData>(mockDriverLicenseData);

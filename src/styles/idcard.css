@@ -4,7 +4,7 @@
 .idcard-preview {
   --card-radius: 12px;
   --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --card-font: "Kanit", sans-serif;
+  --card-font: 'Kanit', sans-serif;
 
   background-size: cover;
   background-position: center;

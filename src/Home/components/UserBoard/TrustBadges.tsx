@@ -1,5 +1,5 @@
-import { ShieldCheck, Clock, Users, Lock, Award } from "lucide-react";
-import { motion, Variants } from "framer-motion";
+import { ShieldCheck, Clock, Users, Lock, Award } from 'lucide-react';
+import { motion, Variants } from 'framer-motion';
 
 type BadgeItem = {
   id: string;
@@ -10,34 +10,34 @@ type BadgeItem = {
 
 const badges: BadgeItem[] = [
   {
-    id: "secure",
+    id: 'secure',
     icon: <ShieldCheck className="w-10 h-10 text-primary" />,
-    title: "ข้อมูลปลอดภัยตามมาตรฐานสากล",
-    desc: "ระบบเข้ารหัสและป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต",
+    title: 'ข้อมูลปลอดภัยตามมาตรฐานสากล',
+    desc: 'ระบบเข้ารหัสและป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต',
   },
   {
-    id: "temporary-access",
+    id: 'temporary-access',
     icon: <Clock className="w-10 h-10 text-primary" />,
-    title: "การเข้าถึงชั่วคราว",
-    desc: "รหัสเข้าถึงมีเวลาจำกัดเพื่อความปลอดภัยสูงสุด",
+    title: 'การเข้าถึงชั่วคราว',
+    desc: 'รหัสเข้าถึงมีเวลาจำกัดเพื่อความปลอดภัยสูงสุด',
   },
   {
-    id: "personal-login",
+    id: 'personal-login',
     icon: <Lock className="w-10 h-10 text-primary" />,
-    title: "ล็อกอินด้วยรหัสเฉพาะบุคคล",
-    desc: "รองรับรหัสเฉพาะผู้ใช้ที่ตรวจสอบแล้วเท่านั้น",
+    title: 'ล็อกอินด้วยรหัสเฉพาะบุคคล',
+    desc: 'รองรับรหัสเฉพาะผู้ใช้ที่ตรวจสอบแล้วเท่านั้น',
   },
   {
-    id: "trusted",
+    id: 'trusted',
     icon: <Award className="w-10 h-10 text-primary" />,
-    title: "ความน่าเชื่อถือสูง",
-    desc: "ผ่านการทดสอบและรับรองโดยทีมพัฒนามืออาชีพ",
+    title: 'ความน่าเชื่อถือสูง',
+    desc: 'ผ่านการทดสอบและรับรองโดยทีมพัฒนามืออาชีพ',
   },
   {
-    id: "multi-level",
+    id: 'multi-level',
     icon: <Users className="w-10 h-10 text-primary" />,
-    title: "รองรับผู้ใช้หลายระดับ",
-    desc: "กำหนดสิทธิ์ตามระดับผู้ใช้อย่างชัดเจน",
+    title: 'รองรับผู้ใช้หลายระดับ',
+    desc: 'กำหนดสิทธิ์ตามระดับผู้ใช้อย่างชัดเจน',
   },
 ];
 
@@ -50,7 +50,7 @@ const cardVariants: Variants = {
     transition: {
       delay: custom * 0.1,
       duration: 0.4,
-      ease: "easeOut" as const,
+      ease: 'easeOut' as const,
     },
   }),
 };
@@ -84,10 +84,7 @@ const BadgeCard: React.FC<BadgeCardProps> = ({ icon, title, desc, index }) => (
 
 export default function TrustBadges() {
   return (
-    <section
-      className="py-12 bg-base-200"
-      aria-labelledby="trust-badges-heading"
-    >
+    <section className="py-12 bg-base-200" aria-labelledby="trust-badges-heading">
       <div className="max-w-6xl mx-auto px-4">
         <h2 id="trust-badges-heading" className="sr-only">
           เหตุผลที่คุณวางใจเรา

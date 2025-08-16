@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { tryUserTempLogin } from "@/data/UserTempCodes";
+import { useState } from 'react';
+import { tryUserTempLogin } from '@/data/UserTempCodes';
 
 interface TempCodeAuthResult {
   isLoggedIn: boolean;
@@ -13,7 +13,7 @@ export function useTempCodeAuth(): TempCodeAuthResult {
 
   const login = async (userId: string, code: string): Promise<boolean> => {
     if (!userId.trim() || !code) {
-      setError("กรุณากรอกชื่อผู้ใช้และรหัสชั่วคราว");
+      setError('กรุณากรอกชื่อผู้ใช้และรหัสชั่วคราว');
       setIsLoggedIn(false);
       return false;
     }
@@ -26,13 +26,13 @@ export function useTempCodeAuth(): TempCodeAuthResult {
         return true;
       } else {
         setIsLoggedIn(false);
-        setError("รหัสชั่วคราวไม่ถูกต้อง หรือ หมดอายุแล้ว หรือใช้ไปแล้ว");
+        setError('รหัสชั่วคราวไม่ถูกต้อง หรือ หมดอายุแล้ว หรือใช้ไปแล้ว');
         return false;
       }
     } catch (err) {
-      console.error("Temp code login error:", err);
+      console.error('Temp code login error:', err);
       setIsLoggedIn(false);
-      setError("เกิดข้อผิดพลาดในการตรวจสอบรหัส");
+      setError('เกิดข้อผิดพลาดในการตรวจสอบรหัส');
       return false;
     }
   };

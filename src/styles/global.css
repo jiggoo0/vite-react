@@ -6,40 +6,40 @@
    Fonts
    ======================= */
 @font-face {
-  font-family: "THSarabunNew";
+  font-family: 'THSarabunNew';
   src:
-    url("/fonts/THSarabunNew.woff2") format("woff2"),
-    url("/fonts/THSarabunNew.woff") format("woff");
+    url('/fonts/THSarabunNew.woff2') format('woff2'),
+    url('/fonts/THSarabunNew.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "THSarabunNew";
+  font-family: 'THSarabunNew';
   src:
-    url("/fonts/THSarabunNew-Bold.woff2") format("woff2"),
-    url("/fonts/THSarabunNew-Bold.woff") format("woff");
+    url('/fonts/THSarabunNew-Bold.woff2') format('woff2'),
+    url('/fonts/THSarabunNew-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "THSarabunNew";
+  font-family: 'THSarabunNew';
   src:
-    url("/fonts/THSarabunNew-Italic.woff2") format("woff2"),
-    url("/fonts/THSarabunNew-Italic.woff") format("woff");
+    url('/fonts/THSarabunNew-Italic.woff2') format('woff2'),
+    url('/fonts/THSarabunNew-Italic.woff') format('woff');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "THSarabunNew";
+  font-family: 'THSarabunNew';
   src:
-    url("/fonts/THSarabunNew-BoldItalic.woff2") format("woff2"),
-    url("/fonts/THSarabunNew-BoldItalic.woff") format("woff");
+    url('/fonts/THSarabunNew-BoldItalic.woff2') format('woff2'),
+    url('/fonts/THSarabunNew-BoldItalic.woff') format('woff');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -52,7 +52,7 @@
   html {
     scroll-behavior: smooth;
     font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
-    font-family: "THSarabunNew", "Noto Sans Thai", "Roboto", sans-serif;
+    font-family: 'THSarabunNew', 'Noto Sans Thai', 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -65,7 +65,7 @@
   }
 
   ::selection {
-    background-color: theme("colors.primary");
+    background-color: theme('colors.primary');
     color: #fff;
   }
 
@@ -74,7 +74,7 @@
   *::after {
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: theme("colors.primary") transparent;
+    scrollbar-color: theme('colors.primary') transparent;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -85,13 +85,13 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: theme("colors.primary");
+    background-color: theme('colors.primary');
     border-radius: 4px;
     transition: background-color 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: theme("colors.primary-focus");
+    background-color: theme('colors.primary-focus');
   }
 
   ::-webkit-scrollbar-track {

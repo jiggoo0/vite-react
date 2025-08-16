@@ -1,24 +1,22 @@
-"use client";
+'use client';
 
-import { useState, useMemo, useCallback } from "react";
-import { portfolioItems } from "@/data/portfolioItems";
-import { cn } from "@/utils/cn";
-import PortfolioFilter from "./ui/PortfolioFilter";
-import PortfolioCTA from "./ui/PortfolioCTA";
+import { useState, useMemo, useCallback } from 'react';
+import { portfolioItems } from '@/data/portfolioItems';
+import { cn } from '@/utils/cn';
+import PortfolioFilter from './ui/PortfolioFilter';
+import PortfolioCTA from './ui/PortfolioCTA';
 
 const PortfolioGallery: React.FC = () => {
   const categories = useMemo(
     () => Array.from(new Set(portfolioItems.map((item) => item.category))),
-    []
+    [],
   );
 
-  const [activeCategory, setActiveCategory] = useState<string>(
-    () => categories[0] ?? ""
-  );
+  const [activeCategory, setActiveCategory] = useState<string>(() => categories[0] ?? '');
 
   const filteredItems = useMemo(
     () => portfolioItems.filter((item) => item.category === activeCategory),
-    [activeCategory]
+    [activeCategory],
   );
 
   const handleCategoryChange = useCallback((category: string) => {
@@ -26,11 +24,7 @@ const PortfolioGallery: React.FC = () => {
   }, []);
 
   return (
-    <section
-      id="portfolio-gallery"
-      aria-labelledby="portfolio-gallery-title"
-      className="space-y-8"
-    >
+    <section id="portfolio-gallery" aria-labelledby="portfolio-gallery-title" className="space-y-8">
       <h2 id="portfolio-gallery-title" className="sr-only">
         แกลเลอรีผลงานที่ผ่านมา
       </h2>
@@ -46,8 +40,8 @@ const PortfolioGallery: React.FC = () => {
           <article
             key={id}
             className={cn(
-              "overflow-hidden rounded-xl bg-white shadow-md transition-transform hover:scale-[1.02]",
-              "dark:bg-neutral-900"
+              'overflow-hidden rounded-xl bg-white shadow-md transition-transform hover:scale-[1.02]',
+              'dark:bg-neutral-900',
             )}
           >
             <img
@@ -58,9 +52,7 @@ const PortfolioGallery: React.FC = () => {
               decoding="async"
             />
             <div className="space-y-2 p-4">
-              <h3 className="text-lg font-semibold text-base-content">
-                {title}
-              </h3>
+              <h3 className="text-lg font-semibold text-base-content">{title}</h3>
               <p className="text-sm text-muted">{category}</p>
 
               {link && (

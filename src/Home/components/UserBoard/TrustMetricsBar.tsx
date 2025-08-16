@@ -1,6 +1,6 @@
-import { FC } from "react";
-import clsx from "clsx";
-import { motion } from "framer-motion";
+import { FC } from 'react';
+import clsx from 'clsx';
+import { motion } from 'framer-motion';
 
 export type Metric = {
   key: string;
@@ -14,10 +14,10 @@ export interface TrustMetricsBarProps {
 }
 
 const defaultMetrics: Metric[] = [
-  { key: "exp", label: "ประสบการณ์", value: "8+ ปี" },
-  { key: "satisfaction", label: "ความพึงพอใจ", value: "98–99%" },
-  { key: "sla", label: "ส่งทันนัด", value: "99%+" },
-  { key: "privacy", label: "ความลับ", value: "กฎข้อแรก" },
+  { key: 'exp', label: 'ประสบการณ์', value: '8+ ปี' },
+  { key: 'satisfaction', label: 'ความพึงพอใจ', value: '98–99%' },
+  { key: 'sla', label: 'ส่งทันนัด', value: '99%+' },
+  { key: 'privacy', label: 'ความลับ', value: 'กฎข้อแรก' },
 ];
 
 // Motion Config
@@ -32,10 +32,7 @@ const TrustMetricsBar: FC<TrustMetricsBarProps> = ({ className, metrics }) => {
   const data = metrics?.length ? metrics : defaultMetrics;
 
   return (
-    <section
-      className={clsx("py-6 md:py-8", className)}
-      aria-label="ตัวชี้วัดความเชื่อมั่น"
-    >
+    <section className={clsx('py-6 md:py-8', className)} aria-label="ตัวชี้วัดความเชื่อมั่น">
       <div className="container mx-auto px-4">
         <dl className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
           {data.map((m, idx) => (

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { FC, useState } from "react";
+import { FC, useState } from 'react';
 
 const DocumentDownload: FC = () => {
-  const [docCode, setDocCode] = useState("");
+  const [docCode, setDocCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ const DocumentDownload: FC = () => {
     setSuccess(false);
 
     if (!docCode.trim()) {
-      setError("กรุณากรอกรหัสเอกสาร");
+      setError('กรุณากรอกรหัสเอกสาร');
       return;
     }
 
@@ -23,14 +23,14 @@ const DocumentDownload: FC = () => {
       // 🔹 ตัวอย่างเรียก API หรือเช็ครหัสจริงกับ ADMIN
       await new Promise<void>((res) => setTimeout(res, 800)); // simulate delay
 
-      const isValid = docCode === "ADMIN123"; // ตัวอย่างเช็ครหัส
+      const isValid = docCode === 'ADMIN123'; // ตัวอย่างเช็ครหัส
       if (isValid) {
         setSuccess(true);
       } else {
-        setError("รหัสเอกสารถูกต้องไม่ถูกต้อง กรุณาลองใหม่");
+        setError('รหัสเอกสารถูกต้องไม่ถูกต้อง กรุณาลองใหม่');
       }
     } catch {
-      setError("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");
+      setError('เกิดข้อผิดพลาด โปรดลองอีกครั้ง');
     } finally {
       setLoading(false);
     }
@@ -63,38 +63,23 @@ const DocumentDownload: FC = () => {
           disabled={loading}
           aria-label="ตรวจสอบรหัสเอกสาร"
         >
-          {loading ? (
-            <span className="loading loading-spinner loading-sm" />
-          ) : (
-            "ตรวจสอบรหัสเอกสาร"
-          )}
+          {loading ? <span className="loading loading-spinner loading-sm" /> : 'ตรวจสอบรหัสเอกสาร'}
         </button>
       </form>
 
       {error && (
-        <p
-          className="text-error text-center mt-4 font-semibold"
-          role="alert"
-          aria-live="assertive"
-        >
+        <p className="text-error text-center mt-4 font-semibold" role="alert" aria-live="assertive">
           {error}
         </p>
       )}
 
       {success && (
-        <p
-          className="text-success text-center mt-4 font-semibold"
-          role="alert"
-          aria-live="polite"
-        >
+        <p className="text-success text-center mt-4 font-semibold" role="alert" aria-live="polite">
           รหัสเอกสารถูกต้อง ✅ สามารถดาวน์โหลดเอกสารได้ที่ ADMIN
         </p>
       )}
 
-      <p
-        id="doc-code-note"
-        className="mt-6 text-center text-sm text-gray-500 italic"
-      >
+      <p id="doc-code-note" className="mt-6 text-center text-sm text-gray-500 italic">
         *หมายเหตุ: รหัสเอกสารติดต่อ ADMIN เท่านั้น
       </p>
     </section>

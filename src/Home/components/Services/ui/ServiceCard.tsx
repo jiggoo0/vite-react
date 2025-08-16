@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { FC } from "react";
-import { ServiceType } from "@/data/services";
+import { FC } from 'react';
+import { ServiceType } from '@/data/services';
 
 interface ServiceCardProps {
   service: ServiceType;
@@ -31,17 +31,11 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
 
       {/* Service Info */}
       <div className="flex flex-col flex-1 space-y-2 p-4">
-        <h3 className="text-lg font-semibold text-base-content">
-          {service.title}
-        </h3>
-        <p className="text-sm text-base-content/70 leading-relaxed">
-          {service.description}
-        </p>
+        <h3 className="text-lg font-semibold text-base-content">{service.title}</h3>
+        <p className="text-sm text-base-content/70 leading-relaxed">{service.description}</p>
 
         {/* Price */}
-        {service.price && (
-          <p className="text-sm font-medium text-green-600">{service.price}</p>
-        )}
+        {service.price && <p className="text-sm font-medium text-green-600">{service.price}</p>}
 
         {/* Coming Soon Badge */}
         {!service.available && service.comingSoonNote && (

@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from "react";
-import { cn } from "@/utils/cn";
+import { FC, PropsWithChildren } from 'react';
+import { cn } from '@/utils/cn';
 
 interface SectionWrapperProps extends PropsWithChildren<object> {
   /** 🎨 เพิ่มเติม className สำหรับปรับแต่ง container */
@@ -15,12 +15,7 @@ interface SectionWrapperProps extends PropsWithChildren<object> {
  */
 const SectionWrapper: FC<SectionWrapperProps> = ({ children, className }) => {
   return (
-    <div
-      className={cn(
-        "w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8",
-        className
-      )}
-    >
+    <div className={cn('w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8', className)}>
       {children}
     </div>
   );

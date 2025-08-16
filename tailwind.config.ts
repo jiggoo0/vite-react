@@ -1,74 +1,87 @@
-import type { Config } from "tailwindcss";
-import daisyui from "daisyui";
+import type { Config } from 'tailwindcss';
+import daisyui from 'daisyui';
 
-// 🎨 Theme Config
+// 🎨 Custom Light Theme
 const lightTheme = {
-  primary: "#2563eb",
-  "primary-focus": "#1d4ed8",
-  "primary-content": "#ffffff",
-  secondary: "#9333ea",
-  "secondary-focus": "#7e22ce",
-  "secondary-content": "#ffffff",
-  accent: "#f59e0b",
-  "accent-focus": "#d97706",
-  "accent-content": "#000000",
-  neutral: "#374151",
-  "neutral-focus": "#1f2937",
-  "neutral-content": "#ffffff",
-  "base-100": "#ffffff",
-  "base-200": "#f3f4f6",
-  "base-300": "#e5e7eb",
-  "base-content": "#1f2937",
-  info: "#3ABFF8",
-  success: "#36D399",
-  warning: "#FBBD23",
-  error: "#F87272",
+  primary: '#2563eb',
+  'primary-focus': '#1d4ed8',
+  'primary-content': '#ffffff',
+
+  secondary: '#9333ea',
+  'secondary-focus': '#7e22ce',
+  'secondary-content': '#ffffff',
+
+  accent: '#f59e0b',
+  'accent-focus': '#d97706',
+  'accent-content': '#000000',
+
+  neutral: '#374151',
+  'neutral-focus': '#1f2937',
+  'neutral-content': '#ffffff',
+
+  'base-100': '#ffffff',
+  'base-200': '#f3f4f6',
+  'base-300': '#e5e7eb',
+  'base-content': '#1f2937',
+
+  info: '#3ABFF8',
+  success: '#36D399',
+  warning: '#FBBD23',
+  error: '#F87272',
 };
 
+// 🌙 Custom Dark Theme
 const darkTheme = {
-  primary: "#3b82f6",
-  "primary-focus": "#2563eb",
-  "primary-content": "#ffffff",
-  secondary: "#a78bfa",
-  "secondary-focus": "#9333ea",
-  "secondary-content": "#000000",
-  accent: "#fbbf24",
-  "accent-focus": "#f59e0b",
-  "accent-content": "#000000",
-  neutral: "#d1d5db",
-  "neutral-focus": "#9ca3af",
-  "neutral-content": "#1f2937",
-  "base-100": "#1f2937",
-  "base-200": "#111827",
-  "base-300": "#374151",
-  "base-content": "#f3f4f6",
-  info: "#60a5fa",
-  success: "#4ade80",
-  warning: "#fbbf24",
-  error: "#f87171",
+  primary: '#3b82f6',
+  'primary-focus': '#2563eb',
+  'primary-content': '#ffffff',
+
+  secondary: '#a78bfa',
+  'secondary-focus': '#9333ea',
+  'secondary-content': '#000000',
+
+  accent: '#fbbf24',
+  'accent-focus': '#f59e0b',
+  'accent-content': '#000000',
+
+  neutral: '#d1d5db',
+  'neutral-focus': '#9ca3af',
+  'neutral-content': '#1f2937',
+
+  'base-100': '#1f2937',
+  'base-200': '#111827',
+  'base-300': '#374151',
+  'base-content': '#f3f4f6',
+
+  info: '#60a5fa',
+  success: '#4ade80',
+  warning: '#fbbf24',
+  error: '#f87171',
 };
 
+// ⚙️ Tailwind Config
 const config: Config = {
-  darkMode: "class",
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: 'class',
+
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 
   theme: {
     extend: {
       fontFamily: {
-        sarabun: ["THSarabunNew", "Noto Sans Thai", "Roboto", "sans-serif"],
+        sarabun: ['THSarabunNew', 'Noto Sans Thai', 'Roboto', 'sans-serif'],
       },
       colors: {
         brand: {
-          light: "#2563eb",
-          dark: "#3b82f6",
+          light: '#2563eb',
+          dark: '#3b82f6',
         },
       },
       container: {
         center: true,
         padding: {
-          DEFAULT: "1rem",
-          sm: "2rem",
-          lg: "4rem",
+          DEFAULT: '1rem',
+          sm: '2rem',
+          lg: '4rem',
         },
       },
     },
@@ -80,7 +93,7 @@ const config: Config = {
     themes: [
       { light: lightTheme },
       { dark: darkTheme },
-      "business", // built-in daisyUI theme
+      'business', // daisyUI built-in theme
     ],
   },
 };

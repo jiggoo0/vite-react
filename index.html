@@ -6,54 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>JP Visual & Docs</title>
-    <meta
-      name="description"
-      content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร"
-    />
+    <meta name="description" content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร" />
     <meta name="author" content="JP Visual & Docs Team" />
     <meta name="theme-color" content="#2563EB" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="JP Visual & Docs" />
-    <meta
-      property="og:description"
-      content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร"
-    />
+    <meta property="og:description" content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร" />
     <meta property="og:url" content="https://404notfontjp.vercel.app/" />
-    <meta
-      property="og:image"
-      content="https://404notfontjp.vercel.app/og-image.png"
-    />
+    <meta property="og:image" content="https://404notfontjp.vercel.app/og-image.png" />
+    <meta property="og:locale" content="th_TH" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="JP Visual & Docs" />
-    <meta
-      name="twitter:description"
-      content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร"
-    />
-    <meta
-      name="twitter:image"
-      content="https://404notfontjp.vercel.app/twitter-image.png"
-    />
+    <meta name="twitter:description" content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร" />
+    <meta name="twitter:image" content="https://404notfontjp.vercel.app/twitter-image.png" />
 
     <!-- Icons -->
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Preload fonts -->
+    <!-- Preload Fonts -->
     <link
       rel="preload"
       href="/fonts/YourFont.woff2"
       as="font"
       type="font/woff2"
-      crossorigin
+      crossorigin="anonymous"
     />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- SEO -->
+    <meta name="robots" content="index, follow" />
   </head>
 
-  <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
+  <body class="bg-white text-gray-900 antialiased dark:bg-gray-900 dark:text-white">
+    <noscript>
+      <p>เว็บไซต์นี้ต้องการเปิดใช้งาน JavaScript เพื่อการทำงานที่สมบูรณ์</p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

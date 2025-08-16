@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, {
   FC,
@@ -7,11 +7,11 @@ import React, {
   useMemo,
   InputHTMLAttributes,
   SelectHTMLAttributes,
-} from "react";
-import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
-import "@/styles/idcard.css";
-import { idCardConfig } from "@/config/idcardConfig";
+} from 'react';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import '@/styles/idcard.css';
+import { idCardConfig } from '@/config/idcardConfig';
 
 // =======================
 // Types
@@ -37,24 +37,24 @@ interface FormData {
 type FormFieldName = keyof FormData;
 
 const initialFormData: Readonly<FormData> = {
-  officer: "",
-  docNo: "",
-  cardPlace: "",
-  fullName: "",
-  birthday: "",
-  birthProvince: "",
-  address: "",
-  moo: "",
-  road: "",
-  tambol: "",
-  district: "",
-  province: "",
-  cardNumber: "",
-  initCard: "",
-  expCard: "",
+  officer: '',
+  docNo: '',
+  cardPlace: '',
+  fullName: '',
+  birthday: '',
+  birthProvince: '',
+  address: '',
+  moo: '',
+  road: '',
+  tambol: '',
+  district: '',
+  province: '',
+  cardNumber: '',
+  initCard: '',
+  expCard: '',
 };
 
-const requiredFields: FormFieldName[] = ["officer", "docNo", "fullName"];
+const requiredFields: FormFieldName[] = ['officer', 'docNo', 'fullName'];
 
 // =======================
 // Main Component
@@ -65,9 +65,7 @@ const IdCardForm: FC = () => {
   // ----------------------
   // Handle Input Changes
   // ----------------------
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -79,10 +77,10 @@ const IdCardForm: FC = () => {
     const emptyFields = requiredFields.filter((f) => !formData[f]?.trim());
     if (emptyFields.length > 0) {
       Swal.fire({
-        icon: "error",
-        title: "กรอกข้อมูลไม่ครบ",
-        text: `กรุณากรอก: ${emptyFields.join(", ")}`,
-        confirmButtonColor: "#2563EB",
+        icon: 'error',
+        title: 'กรอกข้อมูลไม่ครบ',
+        text: `กรุณากรอก: ${emptyFields.join(', ')}`,
+        confirmButtonColor: '#2563EB',
       });
       return false;
     }
@@ -96,8 +94,8 @@ const IdCardForm: FC = () => {
     if (!validateForm()) return;
 
     Swal.fire({
-      icon: "success",
-      title: "ส่งข้อมูลเรียบร้อย",
+      icon: 'success',
+      title: 'ส่งข้อมูลเรียบร้อย',
       timer: 1500,
       showConfirmButton: false,
     });
@@ -108,12 +106,10 @@ const IdCardForm: FC = () => {
   // ----------------------
   const fullAddress = useMemo(
     () =>
-      `${formData.address || ""} หมู่ ${formData.moo || ""} ${
-        formData.road || ""
-      } ${formData.tambol || ""} / ${formData.district || ""} / ${
-        formData.province || ""
-      }`,
-    [formData]
+      `${formData.address || ''} หมู่ ${formData.moo || ''} ${
+        formData.road || ''
+      } ${formData.tambol || ''} / ${formData.district || ''} / ${formData.province || ''}`,
+    [formData],
   );
 
   return (
@@ -122,9 +118,7 @@ const IdCardForm: FC = () => {
         {/* =======================
             Title
         ======================= */}
-        <h1 className="text-2xl font-bold text-center mb-6">
-          ฟอร์มบัตรประชาชน
-        </h1>
+        <h1 className="text-2xl font-bold text-center mb-6">ฟอร์มบัตรประชาชน</h1>
 
         {/* =======================
             Form Section
@@ -140,9 +134,9 @@ const IdCardForm: FC = () => {
                 onChange={handleChange}
                 required
                 options={[
-                  { value: "", label: "กรุณาเลือกเจ้าหน้าที่" },
-                  { value: "officer1", label: "เจ้าหน้าที่ 1" },
-                  { value: "officer2", label: "เจ้าหน้าที่ 2" },
+                  { value: '', label: 'กรุณาเลือกเจ้าหน้าที่' },
+                  { value: 'officer1', label: 'เจ้าหน้าที่ 1' },
+                  { value: 'officer2', label: 'เจ้าหน้าที่ 2' },
                 ]}
               />
               <FormInput
@@ -193,18 +187,8 @@ const IdCardForm: FC = () => {
                 value={formData.address}
                 onChange={handleChange}
               />
-              <FormInput
-                label="หมู่"
-                name="moo"
-                value={formData.moo}
-                onChange={handleChange}
-              />
-              <FormInput
-                label="ถนน"
-                name="road"
-                value={formData.road}
-                onChange={handleChange}
-              />
+              <FormInput label="หมู่" name="moo" value={formData.moo} onChange={handleChange} />
+              <FormInput label="ถนน" name="road" value={formData.road} onChange={handleChange} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -252,11 +236,7 @@ const IdCardForm: FC = () => {
 
             {/* Submit Button */}
             <div className="pt-4">
-              <button
-                type="button"
-                className="btn btn-primary w-full"
-                onClick={handleSubmit}
-              >
+              <button type="button" className="btn btn-primary w-full" onClick={handleSubmit}>
                 ส่งข้อมูล
               </button>
             </div>
@@ -273,12 +253,11 @@ const IdCardForm: FC = () => {
             width: idCardConfig.cardWidth,
             height: idCardConfig.cardHeight,
             backgroundImage: `url(${idCardConfig.bgDefault})`,
-            backgroundSize: "cover",
+            backgroundSize: 'cover',
           }}
         >
           {Object.entries(idCardConfig.fields).map(([key, cfg]) => {
-            const value =
-              key === "address" ? fullAddress : formData[key as FormFieldName];
+            const value = key === 'address' ? fullAddress : formData[key as FormFieldName];
             return (
               <span
                 key={key}
@@ -287,11 +266,11 @@ const IdCardForm: FC = () => {
                   top: cfg.top,
                   left: cfg.left,
                   fontSize: cfg.fontSize,
-                  fontWeight: cfg.fontWeight || "normal",
+                  fontWeight: cfg.fontWeight || 'normal',
                 }}
                 title={cfg.label}
               >
-                {value || ""}
+                {value || ''}
               </span>
             );
           })}
@@ -319,7 +298,7 @@ const FormInput: FC<InputProps> = ({ label, required, ...props }) => (
     <input
       {...props}
       className={`mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-        props.className || ""
+        props.className || ''
       }`}
     />
   </div>
@@ -331,12 +310,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   required?: boolean;
 }
 
-const FormSelect: FC<SelectProps> = ({
-  label,
-  options,
-  required,
-  ...props
-}) => (
+const FormSelect: FC<SelectProps> = ({ label, options, required, ...props }) => (
   <div>
     {label && (
       <label className="block text-sm font-medium text-gray-700">
@@ -346,7 +320,7 @@ const FormSelect: FC<SelectProps> = ({
     <select
       {...props}
       className={`mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-        props.className || ""
+        props.className || ''
       }`}
     >
       {options.map((opt) => (

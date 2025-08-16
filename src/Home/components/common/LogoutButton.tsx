@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
 
-import { useAuth } from "@/hooks/useAuth";
-import Button from "@/Home/components/ui/Button";
+import { useAuth } from '@/hooks/useAuth';
+import Button from '@/Home/components/ui/Button';
 
 /**
  * 🔹 LogoutButton
@@ -22,9 +22,9 @@ const LogoutButton = () => {
     setLoading(true);
     try {
       await logout();
-      navigate("/login", { replace: true });
+      navigate('/login', { replace: true });
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error('Logout failed:', error);
       setLoading(false);
     }
   };

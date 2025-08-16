@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 
 interface HeroBackgroundProps {
   className?: string;
 }
 
-const HeroBackground = ({ className = "" }: HeroBackgroundProps) => {
+const HeroBackground = ({ className = '' }: HeroBackgroundProps) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ['start end', 'end start'],
   });
 
   // Parallax slow movement
@@ -23,7 +23,7 @@ const HeroBackground = ({ className = "" }: HeroBackgroundProps) => {
       ref={ref}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
+      transition={{ duration: 1.2, ease: 'easeOut' }}
       aria-hidden="true"
       className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}
     >

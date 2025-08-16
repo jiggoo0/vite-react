@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 /**
  * ✅ AboutQuote (Improved)
@@ -10,7 +10,7 @@ const AboutQuote = () => {
     <motion.figure
       initial={{ opacity: 0, y: 30, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
       viewport={{ once: true }}
       className="mt-24 px-4 text-center max-w-3xl mx-auto"
       aria-label="คติประจำทีม JP Visual & Docs"
@@ -27,12 +27,10 @@ const AboutQuote = () => {
         "
       >
         {/* Decorative Quote Mark */}
-        <span className="absolute -top-6 left-0 text-6xl text-primary/20 select-none">
-          “
-        </span>
+        <span className="absolute -top-6 left-0 text-6xl text-primary/20 select-none">“</span>
 
         <span className="relative z-10 text-xl md:text-2xl font-semibold">
-          ยินดีร่วมงานทุกสาย วงการกฎข้อแรกของเราคือ{" "}
+          ยินดีร่วมงานทุกสาย วงการกฎข้อแรกของเราคือ{' '}
           <span className="text-primary">ความลับของลูกค้า</span>
         </span>
       </blockquote>

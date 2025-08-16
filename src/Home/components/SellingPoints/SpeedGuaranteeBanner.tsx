@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { FC } from "react";
-import { Rocket, TimerReset } from "lucide-react";
-import { motion } from "framer-motion";
-import clsx from "clsx";
+import { FC } from 'react';
+import { Rocket, TimerReset } from 'lucide-react';
+import { motion } from 'framer-motion';
+import clsx from 'clsx';
 
 export interface SpeedGuaranteeBannerProps {
   className?: string;
@@ -15,26 +15,19 @@ export interface SpeedGuaranteeBannerProps {
 
 const SpeedGuaranteeBanner: FC<SpeedGuaranteeBannerProps> = ({
   className,
-  title = "คิวด่วนพร้อม — งานไว เนียน ส่งตามนัด",
-  desc = "รองรับงานเร่ง 24 ชม.* ตามระดับความยาก + คิวที่ว่าง",
-  bullets = [
-    "จัดคิวทันทีหลังยืนยันขอบเขต",
-    "อัปเดตสถานะโปร่งใส",
-    "ส่งไฟล์ปลอดภัย ลิงก์หมดอายุ",
-  ],
-  contactHref = "https://line.me/R/ti/p/@yourid",
+  title = 'คิวด่วนพร้อม — งานไว เนียน ส่งตามนัด',
+  desc = 'รองรับงานเร่ง 24 ชม.* ตามระดับความยาก + คิวที่ว่าง',
+  bullets = ['จัดคิวทันทีหลังยืนยันขอบเขต', 'อัปเดตสถานะโปร่งใส', 'ส่งไฟล์ปลอดภัย ลิงก์หมดอายุ'],
+  contactHref = 'https://line.me/R/ti/p/@yourid',
 }) => {
   return (
-    <section
-      className={clsx("py-6 bg-base-100", className)}
-      aria-labelledby="speed-banner-title"
-    >
+    <section className={clsx('py-6 bg-base-100', className)} aria-labelledby="speed-banner-title">
       <div className="container mx-auto px-4">
         <motion.div
           className="alert flex flex-col md:flex-row items-start md:items-center bg-base-200 shadow-lg rounded-xl gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
         >
           {/* Icon */}
           <motion.div
@@ -47,10 +40,7 @@ const SpeedGuaranteeBanner: FC<SpeedGuaranteeBannerProps> = ({
 
           {/* Text Content */}
           <div className="flex-1">
-            <h3
-              id="speed-banner-title"
-              className="font-semibold text-lg md:text-xl"
-            >
+            <h3 id="speed-banner-title" className="font-semibold text-lg md:text-xl">
               {title}
             </h3>
             <p className="text-sm opacity-80 mt-1">{desc}</p>
@@ -64,10 +54,7 @@ const SpeedGuaranteeBanner: FC<SpeedGuaranteeBannerProps> = ({
                   whileHover={{ x: 4 }}
                   whileFocus={{ x: 4 }}
                 >
-                  <TimerReset
-                    className="w-4 h-4 text-primary flex-shrink-0"
-                    aria-hidden="true"
-                  />
+                  <TimerReset className="w-4 h-4 text-primary flex-shrink-0" aria-hidden="true" />
                   <span>{b}</span>
                 </motion.li>
               ))}

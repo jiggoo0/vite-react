@@ -1,25 +1,25 @@
 // src/Home/SecretPage/Reviews/ReviewsGallery.tsx
-import React from "react";
-import ReviewCard from "./ui/ReviewCard";
+import React from 'react';
+import ReviewCard from './ui/ReviewCard';
 
 const reviews = [
   {
     id: 1,
-    name: "คุณสมชาย",
-    image: "/images/reviews/review1.webp",
-    comment: "บริการดีเยี่ยม ประทับใจมาก",
+    name: 'คุณสมชาย',
+    image: '/images/reviews/review1.webp',
+    comment: 'บริการดีเยี่ยม ประทับใจมาก',
   },
   {
     id: 2,
-    name: "คุณศิริพร",
-    image: "/images/reviews/review2.webp",
-    comment: "ใช้งานง่าย ทีมงานให้คำแนะนำดีมาก",
+    name: 'คุณศิริพร',
+    image: '/images/reviews/review2.webp',
+    comment: 'ใช้งานง่าย ทีมงานให้คำแนะนำดีมาก',
   },
   {
     id: 3,
-    name: "คุณธนพล",
-    image: "/images/reviews/review3.webp",
-    comment: "รวดเร็วและปลอดภัย แนะนำเลยครับ",
+    name: 'คุณธนพล',
+    image: '/images/reviews/review3.webp',
+    comment: 'รวดเร็วและปลอดภัย แนะนำเลยครับ',
   },
 ];
 

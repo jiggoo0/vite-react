@@ -152,6 +152,9 @@
 - main.tsx
 - services/
   - driverLicenseOcr.ts
+- tests/
+  - App.test.tsx
+  - setup.ts
 - types/
   - IUser.ts
   - custom.d.ts
@@ -545,7 +548,8 @@ Map / Location (ถ้ามีสำนักงานจริง)
 1. Loading Speed: Optimize ภาพและสคริปต์, ใช้ lazy loading
 
 1. Accessibility: Alt text ภาพ, ARIA roles, contrast color
-   https://404notfontjp.vercel.app/
+
+https://404notfontjp.vercel.app/
 
 1. รับแก้ Statement หรือสลิปไหม?
 
@@ -605,3 +609,5 @@ Map / Location (ถ้ามีสำนักงานจริง)
 #การจัดการเอกสาร
 #ช่องทางธุรกิจ
 #การตรวจสอบระบบ
+
+หลังจากนี้จะส่งโค้ดปัจจุบันที่ใช้งานอยู้ให้ปรับตามแนวทาง

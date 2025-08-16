@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
 interface TrustBadgeProps {
   count: number;
@@ -8,8 +8,8 @@ interface TrustBadgeProps {
 
 export const TrustBadge: FC<TrustBadgeProps> = ({
   count,
-  label = "ลูกค้ามั่นใจในเรา",
-  className = "",
+  label = 'ลูกค้ามั่นใจในเรา',
+  className = '',
 }) => {
   return (
     <div className={`flex flex-col items-center ${className}`}>

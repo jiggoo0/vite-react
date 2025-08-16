@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from 'react';
+import { Dialog } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface DisclaimerModalProps {
   title?: string;
@@ -21,11 +21,11 @@ interface DisclaimerModalProps {
  * - รองรับ dark mode และ transition animation
  */
 const DisclaimerModal = ({
-  title = "⚠️ แจ้งเพื่อทราบ",
+  title = '⚠️ แจ้งเพื่อทราบ',
   description = `เว็บไซต์นี้ไม่ใช่สถาบันการเงิน และไม่มีบริการปล่อยสินเชื่อในทุกกรณี
 ทีม JP Visual & Docs ให้บริการเฉพาะด้านงานเอกสารและระบบเท่านั้น`,
-  storageKey = "seen_disclaimer",
-  confirmLabel = "รับทราบแล้ว",
+  storageKey = 'seen_disclaimer',
+  confirmLabel = 'รับทราบแล้ว',
   onConfirm,
 }: DisclaimerModalProps) => {
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ const DisclaimerModal = ({
   }, [storageKey]);
 
   const handleClose = () => {
-    localStorage.setItem(storageKey, "true");
+    localStorage.setItem(storageKey, 'true');
     setOpen(false);
     onConfirm?.();
   };
@@ -55,10 +55,7 @@ const DisclaimerModal = ({
           aria-label="คำชี้แจงทางกฎหมาย"
         >
           {/* Overlay */}
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            aria-hidden="true"
-          />
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
 
           {/* Modal */}
           <div className="fixed inset-0 flex items-center justify-center p-4">
@@ -79,9 +76,7 @@ const DisclaimerModal = ({
               </button>
 
               {/* Title */}
-              <Dialog.Title className="text-lg font-bold mb-2">
-                {title}
-              </Dialog.Title>
+              <Dialog.Title className="text-lg font-bold mb-2">{title}</Dialog.Title>
 
               {/* Description */}
               <Dialog.Description className="text-sm leading-relaxed mb-4 whitespace-pre-line">

@@ -1,7 +1,7 @@
 // ✅ src/utils/common/MobileMenu.tsx — Mobile Drawer Menu (Production Ready)
-"use client";
+'use client';
 
-import { FC, useEffect } from "react";
+import { FC, useEffect } from 'react';
 
 interface MobileMenuProps {
   open: boolean;
@@ -22,15 +22,15 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
     if (!open) return;
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     };
 
-    document.addEventListener("keydown", handleEsc);
-    document.body.style.overflow = "hidden"; // ป้องกัน scroll background
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden'; // ป้องกัน scroll background
 
     return () => {
-      document.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = ""; // คืนค่า scroll
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = ''; // คืนค่า scroll
     };
   }, [open, onClose]);
 
@@ -53,32 +53,16 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
         aria-label="เมนูมือถือ"
       >
         <nav className="flex flex-col gap-5 text-lg font-medium">
-          <a
-            href="/"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
+          <a href="/" onClick={onClose} className="hover:text-primary transition-colors">
             หน้าแรก
           </a>
-          <a
-            href="/#portfolio"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
+          <a href="/#portfolio" onClick={onClose} className="hover:text-primary transition-colors">
             ผลงาน
           </a>
-          <a
-            href="/#services"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
+          <a href="/#services" onClick={onClose} className="hover:text-primary transition-colors">
             บริการ
           </a>
-          <a
-            href="/#about"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
+          <a href="/#about" onClick={onClose} className="hover:text-primary transition-colors">
             เกี่ยวกับเรา
           </a>
         </nav>

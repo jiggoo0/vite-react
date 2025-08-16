@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { FC } from "react";
-import { motion } from "framer-motion";
-import { ServiceType } from "@/data/services";
+import { FC } from 'react';
+import { motion } from 'framer-motion';
+import { ServiceType } from '@/data/services';
 
 interface ComingSoonServiceCardProps {
   service: ServiceType;
@@ -12,7 +12,7 @@ const ComingSoonServiceCard: FC<ComingSoonServiceCardProps> = ({ service }) => (
   <motion.article
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4, ease: "easeOut" }}
+    transition={{ duration: 0.4, ease: 'easeOut' }}
     viewport={{ once: true, amount: 0.3 }}
     tabIndex={0}
     aria-label={`บริการ ${service.title} กำลังจะเปิดให้บริการเร็ว ๆ นี้`}
@@ -30,9 +30,7 @@ const ComingSoonServiceCard: FC<ComingSoonServiceCardProps> = ({ service }) => (
     {/* Service Info */}
     <div className="mt-4 px-3 pb-3 space-y-1">
       <h3 className="text-base font-semibold text-white">{service.title}</h3>
-      <p className="text-sm text-base-content/70 leading-relaxed">
-        {service.description}
-      </p>
+      <p className="text-sm text-base-content/70 leading-relaxed">{service.description}</p>
     </div>
 
     {/* Coming Soon Badge */}

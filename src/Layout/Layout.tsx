@@ -1,14 +1,14 @@
-import { FC, ReactNode } from "react";
-import { Outlet } from "react-router-dom";
+import { FC, ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 
 // Layout Components
-import Navbar from "@layout/Navbar";
-import Footer from "@layout/partials/Footer";
+import Navbar from '@layout/Navbar';
+import Footer from '@layout/partials/Footer';
 
 // Utility / Floating Components
-import ChatWidget from "@utils/common/ChatWidget";
-import DisclaimerModal from "@utils/common/DisclaimerModal";
-import BackToTop from "@utils/common/BackToTop";
+import ChatWidget from '@utils/common/ChatWidget';
+import DisclaimerModal from '@utils/common/DisclaimerModal';
+import BackToTop from '@utils/common/BackToTop';
 
 interface LayoutProps {
   children?: ReactNode;
@@ -43,9 +43,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         aria-atomic="true"
         className="flex-grow w-full focus:outline-none"
       >
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          {children ?? <Outlet />}
-        </div>
+        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">{children ?? <Outlet />}</div>
       </main>
 
       {/* =======================

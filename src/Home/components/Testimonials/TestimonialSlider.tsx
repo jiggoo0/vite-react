@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { testimonials } from "@data/testimonialsData";
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { testimonials } from '@data/testimonialsData';
 
 const variants = {
   enter: (direction: number) => ({
@@ -21,8 +21,7 @@ const variants = {
 };
 
 const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) =>
-  Math.abs(offset) * velocity;
+const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
 const AUTO_PLAY_INTERVAL = 7000;
 
@@ -52,7 +51,7 @@ export const TestimonialSlider: React.FC = () => {
           animate="center"
           exit="exit"
           transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
+            x: { type: 'spring', stiffness: 300, damping: 30 },
             opacity: { duration: 0.3 },
             scale: { duration: 0.3 },
           }}
@@ -138,11 +137,11 @@ export const TestimonialSlider: React.FC = () => {
             onClick={() => setPage([idx, idx > testimonialIndex ? 1 : -1])}
             className={`w-3 h-3 rounded-full transition-all ${
               idx === testimonialIndex
-                ? "bg-indigo-600 dark:bg-indigo-400"
-                : "bg-gray-300 dark:bg-gray-600"
+                ? 'bg-indigo-600 dark:bg-indigo-400'
+                : 'bg-gray-300 dark:bg-gray-600'
             }`}
             aria-label={`Go to testimonial ${idx + 1}`}
-            aria-current={idx === testimonialIndex ? "true" : undefined}
+            aria-current={idx === testimonialIndex ? 'true' : undefined}
           />
         ))}
       </div>
@@ -153,8 +152,8 @@ export const TestimonialSlider: React.FC = () => {
           key={testimonialIndex}
           className="h-1 bg-indigo-500 dark:bg-indigo-400 rounded-full"
           initial={{ width: 0 }}
-          animate={{ width: "100%" }}
-          transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: "linear" }}
+          animate={{ width: '100%' }}
+          transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: 'linear' }}
         />
       </div>
     </div>

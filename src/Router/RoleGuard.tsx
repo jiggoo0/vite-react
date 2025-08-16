@@ -1,25 +1,25 @@
-import { ReactNode, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ReactNode, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface RoleGuardProps {
-  allowedRoles: Array<"admin" | "user">;
+  allowedRoles: Array<'admin' | 'user'>;
   children: ReactNode;
 }
 
 interface User {
-  role: "admin" | "user";
+  role: 'admin' | 'user';
 }
 
 const isUserWithAllowedRole = (
   obj: unknown,
-  allowedRoles: Array<"admin" | "user">
+  allowedRoles: Array<'admin' | 'user'>,
 ): obj is User => {
   return (
-    typeof obj === "object" &&
+    typeof obj === 'object' &&
     obj !== null &&
-    "role" in obj &&
-    typeof (obj as Record<string, unknown>).role === "string" &&
-    allowedRoles.includes((obj as Record<string, unknown>).role as User["role"])
+    'role' in obj &&
+    typeof (obj as Record<string, unknown>).role === 'string' &&
+    allowedRoles.includes((obj as Record<string, unknown>).role as User['role'])
   );
 };
 
@@ -28,11 +28,11 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
   const [authorized, setAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
+    const stored = localStorage.getItem('user');
 
     if (!stored) {
       setAuthorized(false);
-      setTimeout(() => navigate("/login", { replace: true }), 0);
+      setTimeout(() => navigate('/login', { replace: true }), 0);
       return;
     }
 
@@ -42,14 +42,14 @@ const RoleGuard = ({ allowedRoles, children }: RoleGuardProps) => {
       if (isUserWithAllowedRole(parsed, allowedRoles)) {
         setAuthorized(true);
       } else {
-        localStorage.removeItem("user");
+        localStorage.removeItem('user');
         setAuthorized(false);
-        setTimeout(() => navigate("/403", { replace: true }), 0);
+        setTimeout(() => navigate('/403', { replace: true }), 0);
       }
     } catch {
-      localStorage.removeItem("user");
+      localStorage.removeItem('user');
       setAuthorized(false);
-      setTimeout(() => navigate("/login", { replace: true }), 0);
+      setTimeout(() => navigate('/login', { replace: true }), 0);
     }
   }, [allowedRoles, navigate]);
 

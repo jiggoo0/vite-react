@@ -1,8 +1,8 @@
 // ✅ src/utils/common/ScrollToTop.tsx — รีเซ็ตตำแหน่ง Scroll เมื่อเปลี่ยนเส้นทาง (SPA Compatible)
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface ScrollToTopProps {
   /** ถ้า false จะ scroll แบบทันที */
@@ -20,7 +20,7 @@ const ScrollToTop = ({ smooth = true }: ScrollToTopProps): null => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+    window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
   }, [pathname, smooth]);
 
   return null;

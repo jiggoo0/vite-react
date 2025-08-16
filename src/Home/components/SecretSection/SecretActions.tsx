@@ -1,10 +1,10 @@
 // src/Home/components/SecretSection/SecretActions.tsx
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type SecretActionsProps = {
   /** กำหนดสิทธิ์ผู้ใช้งาน: "admin" หรือ "user" */
-  role: "admin" | "user";
+  role: 'admin' | 'user';
 };
 
 /**
@@ -19,8 +19,8 @@ const SecretActions: FC<SecretActionsProps> = ({ role }) => {
 
   // ออกจากระบบ ลบ localStorage และ redirect ไปหน้า login
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login", { replace: true });
+    localStorage.removeItem('user');
+    navigate('/login', { replace: true });
   };
 
   return (
@@ -29,17 +29,17 @@ const SecretActions: FC<SecretActionsProps> = ({ role }) => {
       <button
         type="button"
         className="btn btn-primary transition-transform duration-200 hover:scale-105"
-        onClick={() => alert("Manage your jobs feature coming soon!")}
+        onClick={() => alert('Manage your jobs feature coming soon!')}
       >
         จัดการงานของฉัน
       </button>
 
       {/* ปุ่ม Admin เฉพาะ role = admin */}
-      {role === "admin" && (
+      {role === 'admin' && (
         <button
           type="button"
           className="btn btn-secondary transition-transform duration-200 hover:scale-105"
-          onClick={() => navigate("/admin")}
+          onClick={() => navigate('/admin')}
         >
           เข้าสู่แผงควบคุม Admin
         </button>

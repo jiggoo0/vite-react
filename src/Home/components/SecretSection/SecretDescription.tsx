@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 type User = {
   username: string;
-  role: "admin" | "user";
+  role: 'admin' | 'user';
 };
 
 interface SecretDescriptionProps {
@@ -28,12 +28,12 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
       </h2>
 
       <p className="mb-2 text-gray-700">
-        ยินดีต้อนรับ <strong className="text-primary">{user.username}</strong>{" "}
-        👋 หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น
+        ยินดีต้อนรับ <strong className="text-primary">{user.username}</strong> 👋
+        หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น
       </p>
 
       <p className="text-gray-700">
-        คุณสามารถจัดการงานของคุณได้อย่างปลอดภัย และมีสิทธิ์เป็น{" "}
+        คุณสามารถจัดการงานของคุณได้อย่างปลอดภัย และมีสิทธิ์เป็น{' '}
         <strong className="capitalize text-secondary">{user.role}</strong>
       </p>
     </section>

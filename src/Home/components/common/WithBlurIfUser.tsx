@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
 interface WithBlurProps {
   isNormalUser: boolean;
@@ -6,11 +6,7 @@ interface WithBlurProps {
   blurText?: string;
 }
 
-const WithBlurIfUser: FC<WithBlurProps> = ({
-  isNormalUser,
-  children,
-  blurText,
-}) => {
+const WithBlurIfUser: FC<WithBlurProps> = ({ isNormalUser, children, blurText }) => {
   if (!isNormalUser) return <>{children}</>;
 
   return (

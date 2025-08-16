@@ -1,12 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import {
-  CheckCircleIcon,
-  ShieldCheckIcon,
-  BoltIcon,
-} from "@heroicons/react/24/solid";
-import { motion, Variants } from "framer-motion";
+import React from 'react';
+import { CheckCircleIcon, ShieldCheckIcon, BoltIcon } from '@heroicons/react/24/solid';
+import { motion, Variants } from 'framer-motion';
 
 interface Point {
   id: number;
@@ -19,20 +15,20 @@ const points: Point[] = [
   {
     id: 1,
     icon: <ShieldCheckIcon className="h-10 w-10 text-green-500" />,
-    title: "ความลับปลอดภัย",
-    description: "ข้อมูลและเอกสารของคุณถูกเก็บเป็นความลับอย่างเข้มงวด",
+    title: 'ความลับปลอดภัย',
+    description: 'ข้อมูลและเอกสารของคุณถูกเก็บเป็นความลับอย่างเข้มงวด',
   },
   {
     id: 2,
     icon: <BoltIcon className="h-10 w-10 text-yellow-400" />,
-    title: "งานไวใน 24 ชม.",
-    description: "บริการรวดเร็ว พร้อมส่งงานภายใน 24 ชั่วโมง",
+    title: 'งานไวใน 24 ชม.',
+    description: 'บริการรวดเร็ว พร้อมส่งงานภายใน 24 ชั่วโมง',
   },
   {
     id: 3,
     icon: <CheckCircleIcon className="h-10 w-10 text-blue-500" />,
-    title: "พร้อมลุยทุกเคส",
-    description: "ทีมงานมืออาชีพพร้อมรับทุกโจทย์และความต้องการ",
+    title: 'พร้อมลุยทุกเคส',
+    description: 'ทีมงานมืออาชีพพร้อมรับทุกโจทย์และความต้องการ',
   },
 ];
 
@@ -52,7 +48,7 @@ const itemVariants: Variants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: 'easeOut' },
   },
 };
 
@@ -81,9 +77,7 @@ export default function SellingPoints() {
           >
             {icon}
           </motion.div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            {title}
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
           <p className="text-gray-600 dark:text-gray-300">{description}</p>
         </motion.article>
       ))}

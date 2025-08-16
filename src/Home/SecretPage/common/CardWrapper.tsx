@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
 /**
  * CardWrapper - ใช้เป็น container ทั่วไปสำหรับเนื้อหา
@@ -33,8 +33,8 @@ export const A4CardWrapper: FC<{ children: ReactNode }> = ({ children }) => (
       sm:max-w-full sm:min-h-auto
     "
     style={{
-      width: "100%",
-      boxSizing: "border-box",
+      width: '100%',
+      boxSizing: 'border-box',
     }}
   >
     {children}
