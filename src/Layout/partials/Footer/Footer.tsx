@@ -42,6 +42,7 @@ const socialLinks = [
 
 const Footer: FC = () => {
   const year = new Date().getFullYear();
+
   return (
     <footer
       className="bg-base-200 border-t border-base-content/10 dark:border-base-content/20 py-10"

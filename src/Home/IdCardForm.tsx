@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo, useState } from "react";
+import { FC, memo, useState, ChangeEvent, FormEvent } from "react";
 import clsx from "clsx";
 
 // ---------------------- Types ----------------------
@@ -15,6 +15,61 @@ interface FormData {
   address: string;
 }
 
+// ---------------------- Reusable Input ----------------------
+interface InputFieldProps {
+  label: string;
+  name: keyof FormData;
+  value: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+}
+
+const InputField: FC<InputFieldProps> = ({
+  label,
+  name,
+  value,
+  type = "text",
+  placeholder,
+  required = true,
+  onChange,
+}) => {
+  const isTextArea = type === "textarea";
+  const sharedClass =
+    "border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400";
+
+  return (
+    <div className="flex flex-col space-y-1">
+      <label htmlFor={name} className="font-medium">
+        {label}
+      </label>
+      {isTextArea ? (
+        <textarea
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          className={sharedClass}
+        />
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          className={sharedClass}
+        />
+      )}
+    </div>
+  );
+};
+
 // ---------------------- Component ----------------------
 const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
   const [formData, setFormData] = useState<FormData>({
@@ -25,13 +80,13 @@ const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log("ID Card Form Submitted:", formData);
     // TODO: implement actual submit logic
@@ -41,61 +96,48 @@ const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
     <form
       onSubmit={handleSubmit}
       className={clsx(
-        "bg-white rounded-xl shadow-md p-6 w-full space-y-4",
+        "bg-white rounded-xl shadow-md p-6 w-full space-y-6",
         className
       )}
     >
-      <h2 className="text-xl font-semibold mb-4">ฟอร์มบัตรประชาชน</h2>
+      <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน</h2>
 
-      <div className="flex flex-col space-y-3">
-        <label className="font-medium">ชื่อ-นามสกุล</label>
-        <input
-          type="text"
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="กรอกชื่อ-นามสกุล"
-        />
-      </div>
+      <InputField
+        label="ชื่อ-นามสกุล"
+        name="fullName"
+        value={formData.fullName}
+        placeholder="กรอกชื่อ-นามสกุล"
+        onChange={handleChange}
+      />
 
-      <div className="flex flex-col space-y-3">
-        <label className="font-medium">เลขบัตรประชาชน</label>
-        <input
-          type="text"
-          name="idNumber"
-          value={formData.idNumber}
-          onChange={handleChange}
-          className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="กรอกเลขบัตรประชาชน"
-        />
-      </div>
+      <InputField
+        label="เลขบัตรประชาชน"
+        name="idNumber"
+        value={formData.idNumber}
+        placeholder="กรอกเลขบัตรประชาชน"
+        onChange={handleChange}
+      />
 
-      <div className="flex flex-col space-y-3">
-        <label className="font-medium">วันเกิด</label>
-        <input
-          type="date"
-          name="birthDate"
-          value={formData.birthDate}
-          onChange={handleChange}
-          className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-      </div>
+      <InputField
+        label="วันเกิด"
+        name="birthDate"
+        value={formData.birthDate}
+        type="date"
+        onChange={handleChange}
+      />
 
-      <div className="flex flex-col space-y-3">
-        <label className="font-medium">ที่อยู่</label>
-        <textarea
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="กรอกที่อยู่"
-        />
-      </div>
+      <InputField
+        label="ที่อยู่"
+        name="address"
+        value={formData.address}
+        type="textarea"
+        placeholder="กรอกที่อยู่"
+        onChange={handleChange}
+      />
 
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+        className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
       >
         บันทึก
       </button>

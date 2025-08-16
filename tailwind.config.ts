@@ -9,10 +9,9 @@ const config: Config = {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
       },
-      // สามารถ extend colors เพิ่มเติมได้ถ้าจำเป็น
       colors: {
         brand: {
-          DEFAULT: "#2563eb", // ใช้เป็น main brand color
+          DEFAULT: "#2563eb",
           light: "#3b82f6",
           dark: "#1e40af",
         },
@@ -21,12 +20,8 @@ const config: Config = {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: [
-      { light: lightTheme },
-      { dark: darkTheme },
-      { team: teamThemeColors },
-    ],
-    darkTheme: "dark", // default dark theme
+    themes: [{ light: lightTheme }, { dark: darkTheme }, { team: teamThemeColors }],
+    darkTheme: "dark",
   },
 };
 

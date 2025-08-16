@@ -1,4 +1,3 @@
-// src/Home/Login.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -25,7 +24,7 @@ const Login: React.FC = () => {
     const trimmedUsername = username.trim();
 
     try {
-      // ตรวจสอบ user ปกติ
+      // ตรวจสอบผู้ใช้ปกติ
       const user = users.find((u) => u.username === trimmedUsername);
 
       if (user) {
@@ -44,11 +43,7 @@ const Login: React.FC = () => {
       }
 
       // ตรวจสอบ temp code login
-      const tempLoginSuccess = await loginWithTempCode(
-        trimmedUsername,
-        password
-      );
-
+      const tempLoginSuccess = await loginWithTempCode(trimmedUsername, password);
       if (tempLoginSuccess) {
         localStorage.setItem(
           "user",
@@ -59,7 +54,8 @@ const Login: React.FC = () => {
       }
 
       setError(tempError || "ไม่พบผู้ใช้นี้ในระบบ หรือรหัสผ่านไม่ถูกต้อง");
-    } catch {
+    } catch (err) {
+      console.error("Login error:", err);
       setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
     } finally {
       setLoading(false);
@@ -69,9 +65,7 @@ const Login: React.FC = () => {
   return (
     <section className="min-h-screen flex items-center justify-center px-4 bg-base-100 text-base-content">
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-lg rounded-2xl p-8 space-y-6">
-        <h1 className="text-2xl font-bold text-center text-primary">
-          เข้าสู่ระบบ
-        </h1>
+        <h1 className="text-2xl font-bold text-center text-primary">เข้าสู่ระบบ</h1>
 
         {error && (
           <div

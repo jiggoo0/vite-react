@@ -1,6 +1,6 @@
 import { FC, ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
-import { Loader2 } from "lucide-react"; // ใช้ไอคอน loader เล็กๆ จาก lucide-react
+import { Loader2 } from "lucide-react";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "outline";
 type ButtonSize = "sm" | "md" | "lg";
@@ -15,12 +15,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
 }
 
-/**
- * 🔹 Reusable Button Component
- * - รองรับ variant, size, fullWidth, loading
- * - ใช้ clsx เพื่อรวม class ได้สะอาด
- * - เพิ่ม visual loading indicator
- */
 const Button: FC<ButtonProps> = ({
   children,
   variant = "primary",

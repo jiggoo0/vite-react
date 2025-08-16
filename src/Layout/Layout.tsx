@@ -17,12 +17,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content transition-colors duration-300">
-      {/* Header */}
       <header className="sticky top-0 z-50 bg-base-100 shadow-sm transition-shadow duration-300">
         <Navbar />
       </header>
 
-      {/* Main Content */}
       <main
         id="main-content"
         role="main"
@@ -36,12 +34,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer role="contentinfo" className="mt-auto">
         <Footer />
       </footer>
 
-      {/* Floating Utilities */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-4 pointer-events-none">
         {floatingComponents.map((Component, idx) => (
           <div key={idx} className="pointer-events-auto">

@@ -1,36 +1,20 @@
-/**
- * 🆔 ID Card Config Types
- */
 export type FontWeight = "normal" | "bold";
 
 export interface IdCardFieldConfig {
-  /** ระยะจากด้านบนของบัตร (px) */
   top: number;
-  /** ระยะจากด้านซ้ายของบัตร (px) */
   left: number;
-  /** ขนาดตัวอักษร (px) */
   fontSize: number;
-  /** น้ำหนักตัวอักษร */
   fontWeight?: FontWeight;
-  /** ป้ายกำกับของฟิลด์ */
   label?: string;
 }
 
 export interface IdCardConfig {
-  /** ความกว้างบัตร (px) */
   cardWidth: number;
-  /** ความสูงบัตร (px) */
   cardHeight: number;
-  /** พื้นหลังเริ่มต้น */
   bgDefault: string;
-  /** ตำแหน่งและสไตล์ของแต่ละฟิลด์ */
   fields: Record<string, IdCardFieldConfig>;
 }
 
-/**
- * 🎨 Default ID Card Template (85.6mm x 53.98mm)
- * Resolution: 856 x 539 px
- */
 export const idCardConfig: IdCardConfig = {
   cardWidth: 856,
   cardHeight: 539,
@@ -89,14 +73,6 @@ export const idCardConfig: IdCardConfig = {
   },
 };
 
-/**
- * 🛠 Helper: สร้างฟิลด์ใหม่ได้ง่าย
- * @param top ระยะจากด้านบน (px)
- * @param left ระยะจากด้านซ้าย (px)
- * @param fontSize ขนาดตัวอักษร (px)
- * @param fontWeight น้ำหนักตัวอักษร (default: normal)
- * @param label ป้ายกำกับของฟิลด์ (optional)
- */
 export const createField = (
   top: number,
   left: number,

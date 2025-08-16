@@ -11,21 +11,17 @@ const Header: FC = (): JSX.Element => {
 
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b border-base-content/10 bg-base-100 shadow-sm"
+      className="sticky top-0 z-50 w-full border-b border-base-content/10 bg-base-100 shadow-sm transition-colors duration-300"
       role="banner"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        {/* 🔹 Logo */}
         <div className="flex-shrink-0">
           <Logo />
         </div>
 
-        {/* 🔹 Navigation & User Actions */}
         <nav aria-label="การนำทางผู้ใช้" className="flex items-center gap-3">
-          {/* Theme Toggle */}
           <ThemeToggle />
 
-          {/* Auth Actions */}
           {isAuthenticated ? (
             <LogoutButton />
           ) : (

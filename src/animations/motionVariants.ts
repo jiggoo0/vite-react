@@ -1,6 +1,6 @@
 import { Variants, easeInOut } from "framer-motion";
 
-interface MotionConfig {
+export interface MotionConfig {
   duration?: number;
   delay?: number;
   distance?: number;
@@ -8,7 +8,7 @@ interface MotionConfig {
 
 /**
  * 📦 Container Motion Variants
- * ใช้ห่อ container หลัก เพื่อให้ children animate แบบ stagger
+ * ห่อ container หลัก เพื่อให้ children animate แบบ stagger
  */
 export const containerVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -29,19 +29,22 @@ export const containerVariants: Variants = {
  */
 export const fadeInUp = (
   index: number = 0,
-  { duration = 0.3, delay = 0.1, distance = 20 }: MotionConfig = {}
-): Variants => ({
-  hidden: { opacity: 0, y: distance },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration,
-      ease: easeInOut,
-      delay: index * delay,
+  config: MotionConfig = {}
+): Variants => {
+  const { duration = 0.3, delay = 0.1, distance = 20 } = config;
+  return {
+    hidden: { opacity: 0, y: distance },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration,
+        ease: easeInOut,
+        delay: index * delay,
+      },
     },
-  },
-});
+  };
+};
 
 /**
  * 🎯 Generate Fade In Up Variants สำหรับหลาย element

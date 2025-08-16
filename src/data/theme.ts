@@ -1,4 +1,8 @@
-export const lightTheme = {
+// src/data/theme.ts
+
+export type ThemeColors = Record<string, string>;
+
+export const lightTheme: ThemeColors = {
   primary: "#2563EB",
   "primary-focus": "#1D4ED8",
   "primary-content": "#FFFFFF",
@@ -21,7 +25,7 @@ export const lightTheme = {
   error: "#F87272",
 };
 
-export const darkTheme = {
+export const darkTheme: ThemeColors = {
   primary: "#3B82F6",
   "primary-focus": "#2563EB",
   "primary-content": "#FFFFFF",
@@ -44,7 +48,7 @@ export const darkTheme = {
   error: "#F87171",
 };
 
-export const teamThemeColors = {
+export const teamThemeColors: ThemeColors = {
   primary: "#1D4ED8",
   "primary-focus": "#1E40AF",
   "primary-content": "#FFFFFF",

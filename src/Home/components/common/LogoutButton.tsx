@@ -8,17 +8,14 @@ import { useAuth } from "@/hooks/useAuth";
 import Button from "@/Home/components/ui/Button";
 
 const LogoutButton = () => {
-  const auth = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  // ถ้า useAuth ไม่มี logout ให้ fallback เป็น async no-op
-  const logout = auth.logout ?? (async () => {});
 
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await logout();
+      if (logout) await logout();
       navigate("/login", { replace: true });
     } catch (error) {
       console.error("Logout failed:", error);
@@ -37,7 +34,7 @@ const LogoutButton = () => {
       aria-label="ออกจากระบบ"
     >
       <LogOut className="w-4 h-4" aria-hidden="true" />
-      <span>ออกจากระบบ</span>
+      <span className={loading ? "opacity-70" : ""}>ออกจากระบบ</span>
     </Button>
   );
 };

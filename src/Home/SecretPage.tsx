@@ -12,6 +12,7 @@ import KbankNotificationCard from "@home/components/SecretSection/KbankNotificat
 import BlurContact from "@home/components/SecretSection/BlurContact/BlurContact";
 import DriverLicenseFormPage from "@home/SecretPage/DriverLicense/DriverLicenseForm";
 import IdCardForm from "@home/IdCardForm";
+import ErrorBoundary from "@utils/common/ErrorBoundary";
 
 // ======================= Hooks =======================
 import { useProtectedAuth } from "@hooks/useProtectedAuth";
@@ -25,7 +26,7 @@ import { kbankMockData } from "@home/components/SecretSection/KbankIOSNotificati
 // ======================= Styles =======================
 import "@styles/driverLicense.css";
 
-// ======================= Lazy-loaded =======================
+// ======================= Lazy-loaded Components =======================
 const RegistrationPreview = lazy(
   () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
 );
@@ -65,6 +66,8 @@ const LoadingSpinner: FC<{ size?: "sm" | "md" | "lg" }> = memo(
           "w-16 h-16": size === "lg",
         }
       )}
+      role="status"
+      aria-label="Loading content..."
     />
   )
 );
@@ -90,43 +93,44 @@ interface SectionProps {
   delay?: number;
 }
 
-const AllUserSection: FC<SectionProps> = ({ isNormalUser, delay = 0 }) => (
+const AllUserSection: FC<SectionProps> = memo(({ isNormalUser, delay = 0 }) => (
   <div className="space-y-6">
-    {/** Registration */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
-        <Suspense fallback={<LoadingSpinner size="md" />}>
-          <RegistrationPreview {...mockRegistrationData} />
-        </Suspense>
+        <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Registration Preview">
+          <Suspense fallback={<LoadingSpinner size="md" />}>
+            <RegistrationPreview {...mockRegistrationData} />
+          </Suspense>
+        </ErrorBoundary>
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/** Salary Certificate */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 100}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
-        <Suspense fallback={<LoadingSpinner size="md" />}>
-          <SalaryCertificate data={mockSalaryCertificate} />
-        </Suspense>
+        <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Salary Certificate">
+          <Suspense fallback={<LoadingSpinner size="md" />}>
+            <SalaryCertificate data={mockSalaryCertificate} />
+          </Suspense>
+        </ErrorBoundary>
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/** Medical Certificate */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 200}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
-        <Suspense fallback={<LoadingSpinner size="md" />}>
-          <MedicalCertificate data={mockMedicalCertificate} />
-        </Suspense>
+        <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Medical Certificate">
+          <Suspense fallback={<LoadingSpinner size="md" />}>
+            <MedicalCertificate data={mockMedicalCertificate} />
+          </Suspense>
+        </ErrorBoundary>
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/** ID Card */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 300}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
         <IdCardForm />
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/** KBank Notification */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 400}`)}>
       <div className="space-y-5">
         {kbankMockData.map((item) => (
@@ -137,19 +141,20 @@ const AllUserSection: FC<SectionProps> = ({ isNormalUser, delay = 0 }) => (
       </div>
     </CardWrapper>
   </div>
-);
+));
+AllUserSection.displayName = "AllUserSection";
 
-const DriverLicenseSection: FC<SectionProps> = ({
-  isNormalUser,
-  delay = 200,
-}) => (
-  <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
-    <h2 className="text-xl font-semibold mb-4">ฟอร์มใบขับขี่</h2>
-    <WithBlurIfUser isNormalUser={isNormalUser}>
-      <DriverLicenseFormPage />
-    </WithBlurIfUser>
-  </CardWrapper>
+const DriverLicenseSection: FC<SectionProps> = memo(
+  ({ isNormalUser, delay = 200 }) => (
+    <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
+      <h2 className="text-xl font-semibold mb-4">ฟอร์มใบขับขี่</h2>
+      <WithBlurIfUser isNormalUser={isNormalUser}>
+        <DriverLicenseFormPage />
+      </WithBlurIfUser>
+    </CardWrapper>
+  )
 );
+DriverLicenseSection.displayName = "DriverLicenseSection";
 
 // ======================= Secret Page =======================
 const SecretPage: FC = () => {
@@ -170,27 +175,22 @@ const SecretPage: FC = () => {
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
       <div className="container max-w-7xl mx-auto space-y-8 sm:space-y-10 lg:space-y-12">
-        {/** Header */}
         <CardWrapper className="animate-fadeInUp">
           <SecretHeader />
         </CardWrapper>
 
         <main className="space-y-8 sm:space-y-10 lg:space-y-12">
-          {/** Description */}
           <CardWrapper className="animate-fadeInUp delay-50">
             <SecretDescription user={{ ...user, role: effectiveRole }} />
           </CardWrapper>
 
-          {/** Document Download */}
           <CardWrapper className="animate-fadeInUp delay-100">
             <DocumentDownload />
           </CardWrapper>
 
-          {/** Sections */}
           <DriverLicenseSection isNormalUser={isNormalUser} />
           <AllUserSection isNormalUser={isNormalUser} />
 
-          {/** Contact */}
           <CardWrapper className="animate-fadeInUp delay-500">
             <BlurContact
               imageUrl="/images/admin-contact.jpg"
@@ -199,7 +199,6 @@ const SecretPage: FC = () => {
           </CardWrapper>
         </main>
 
-        {/** Actions */}
         <CardWrapper className="animate-fadeInUp delay-600">
           <SecretActions role={effectiveRole} />
         </CardWrapper>

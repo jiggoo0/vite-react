@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  FC,
-  ReactNode,
-  Suspense,
-  lazy,
-  useRef,
-  useEffect,
-  useState,
-} from "react";
+import { FC, ReactNode, Suspense, lazy, useRef, useEffect, useState } from "react";
 import clsx from "clsx";
 
 // ======================= Components =======================
@@ -25,13 +17,11 @@ import SpeedGuaranteeBanner from "@home/components/SellingPoints/SpeedGuaranteeB
 import CaseStudyRedacted from "@home/components/Portfolio/CaseStudyRedacted";
 import ComplianceFAQ from "@home/components/Services/ComplianceFAQ";
 import SectionContainer from "@common/SectionContainer";
-import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
 import TestimonialSlider from "@home/components/Testimonials/TestimonialSlider";
+import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
 
 // ======================= Lazy-loaded Components =======================
-const PortfolioGallery = lazy(
-  () => import("@home/components/Portfolio/PortfolioGallery")
-);
+const PortfolioGallery = lazy(() => import("@home/components/Portfolio/PortfolioGallery"));
 const SupportFAQ = lazy(() => import("@home/components/Portfolio/SupportFAQ"));
 
 // ======================= Page Section Wrapper =======================
@@ -42,12 +32,7 @@ interface PageSectionProps {
   bgClass?: string;
 }
 
-const PageSection: FC<PageSectionProps> = ({
-  id,
-  title,
-  children,
-  bgClass = "bg-base-100",
-}) => {
+const PageSection: FC<PageSectionProps> = ({ id, title, children, bgClass = "bg-base-100" }) => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -77,9 +62,7 @@ const PageSection: FC<PageSectionProps> = ({
         bgClass
       )}
     >
-      <h2 id={`${id}-title`} className="sr-only">
-        {title}
-      </h2>
+      <h2 id={`${id}-title`} className="sr-only">{title}</h2>
       <SectionContainer>{children}</SectionContainer>
     </section>
   );
@@ -87,36 +70,34 @@ const PageSection: FC<PageSectionProps> = ({
 
 // ======================= Home Page =======================
 const Home: FC = () => {
-  // แปลง readonly เป็น mutable array
-  const userBoardData: IUser[] = [...UserBoardDataReadonly];
+  const userBoardData: IUser[] = [...UserBoardDataReadonly]; // mutable copy
 
   return (
     <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
+
+      {/* Hero Section */}
       <PageSection id="hero" title="Hero Section" bgClass="bg-base-100">
         <Hero />
       </PageSection>
 
+      {/* Trust Metrics */}
       <TrustMetricsBar className="bg-base-100" />
 
+      {/* About Section */}
       <PageSection id="about" title="About Us" bgClass="bg-base-200">
         <About />
       </PageSection>
 
-      <PageSection
-        id="selling-points"
-        title="Selling Points"
-        bgClass="bg-base-100"
-      >
+      {/* Selling Points */}
+      <PageSection id="selling-points" title="Selling Points" bgClass="bg-base-100">
         <SellingPoints />
       </PageSection>
 
+      {/* Speed Guarantee */}
       <SpeedGuaranteeBanner className="bg-base-100" />
 
-      <PageSection
-        id="features-trust"
-        title="Features & Trust"
-        bgClass="bg-base-200"
-      >
+      {/* Features & Trust */}
+      <PageSection id="features-trust" title="Features & Trust" bgClass="bg-base-200">
         <div className="md:flex md:space-x-12 space-y-12 md:space-y-0">
           <FeatureList className="md:flex-1" />
           <FeatureAwards className="md:flex-1" />
@@ -126,10 +107,12 @@ const Home: FC = () => {
         </div>
       </PageSection>
 
+      {/* Services Section */}
       <PageSection id="services" title="Services" bgClass="bg-base-100">
         <ServicesSection />
       </PageSection>
 
+      {/* Case Studies */}
       <PageSection id="case-studies" title="Case Studies" bgClass="bg-base-100">
         <CaseStudyRedacted
           className="bg-base-100"
@@ -162,49 +145,35 @@ const Home: FC = () => {
         />
       </PageSection>
 
+      {/* User Board */}
       <PageSection id="user-board" title="User Board" bgClass="bg-base-200">
         <UserBoard data={userBoardData} />
       </PageSection>
 
+      {/* Testimonials */}
       <PageSection id="testimonials" title="Testimonials" bgClass="bg-base-100">
         <TestimonialSlider />
       </PageSection>
 
-      <PageSection
-        id="portfolio"
-        title="Portfolio Gallery"
-        bgClass="bg-base-100"
-      >
-        <Suspense
-          fallback={
-            <div className="text-center py-16 animate-pulse">
-              Loading portfolio...
-            </div>
-          }
-        >
+      {/* Portfolio Gallery */}
+      <PageSection id="portfolio" title="Portfolio Gallery" bgClass="bg-base-100">
+        <Suspense fallback={<div className="text-center py-16 animate-pulse">Loading portfolio...</div>}>
           <PortfolioGallery />
         </Suspense>
       </PageSection>
 
-      <PageSection
-        id="compliance-faq"
-        title="Compliance FAQ"
-        bgClass="bg-base-100"
-      >
+      {/* Compliance FAQ */}
+      <PageSection id="compliance-faq" title="Compliance FAQ" bgClass="bg-base-100">
         <ComplianceFAQ />
       </PageSection>
 
+      {/* Support FAQ */}
       <PageSection id="faq" title="FAQ" bgClass="bg-base-200">
-        <Suspense
-          fallback={
-            <div className="text-center py-16 animate-pulse">
-              Loading FAQ...
-            </div>
-          }
-        >
+        <Suspense fallback={<div className="text-center py-16 animate-pulse">Loading FAQ...</div>}>
           <SupportFAQ />
         </Suspense>
       </PageSection>
+
     </main>
   );
 };

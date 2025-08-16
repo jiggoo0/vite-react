@@ -3,7 +3,6 @@
 import { FC, ReactNode, Suspense } from "react";
 import { A4CardWrapper as OriginalA4CardWrapper } from "@home/SecretPage/common/CardWrapper";
 
-/** Props สำหรับ A4CardWrapper */
 interface A4CardWrapperProps {
   children: ReactNode;
   className?: string;
@@ -16,22 +15,15 @@ const A4CardWrapper: FC<A4CardWrapperProps> = ({ children, className }) => (
   </OriginalA4CardWrapper>
 );
 
-/** Props สำหรับ LazyA4Card */
 interface LazyA4CardProps {
-  /** เนื้อหาที่ต้องการ render ภายใน A4Card */
   children: ReactNode;
-
-  /** ขนาดของ Loading Spinner (default: md) */
   loadingSize?: "lg" | "md" | "sm";
-
-  /** ClassName เสริมสำหรับ wrapper */
   className?: string;
 }
 
 /** Spinner Loader Component */
 const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
-  const sizeClass =
-    size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
+  const sizeClass = size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
 
   return (
     <div className="flex justify-center items-center py-8">
@@ -45,17 +37,11 @@ const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
 };
 
 /** A4 Card + Suspense Wrapper */
-const LazyA4Card: FC<LazyA4CardProps> = ({
-  children,
-  loadingSize = "md",
-  className,
-}) => {
-  return (
-    <Suspense fallback={<LoadingSpinner size={loadingSize} />}>
-      <A4CardWrapper className={className}>{children}</A4CardWrapper>
-    </Suspense>
-  );
-};
+const LazyA4Card: FC<LazyA4CardProps> = ({ children, loadingSize = "md", className }) => (
+  <Suspense fallback={<LoadingSpinner size={loadingSize} />}>
+    <A4CardWrapper className={className}>{children}</A4CardWrapper>
+  </Suspense>
+);
 
 export default LazyA4Card;
 export { LoadingSpinner };
