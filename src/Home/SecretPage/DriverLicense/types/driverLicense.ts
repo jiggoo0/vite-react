@@ -1,44 +1,32 @@
-// ✅ src/Home/SecretPage/DriverLicense/types/driverLicense.ts
+export type DriverLicenseFieldKeys =
+  | "fullName"
+  | "idNumber"
+  | "dob"
+  | "issueDate"
+  | "expiryDate"
+  | "address"
+  | "photo"
+  | "licenseType"
+  | "bloodType";
 
-/**
- * ข้อมูลจริงของผู้ถือใบอนุญาต
- */
 export interface DriverLicenseData {
   fullName: string;
-  dob: string;
   idNumber: string;
-  licenseNumber: string;
+  dob: string;
+  issueDate: string;
   expiryDate: string;
+  address: string;
   photo: string;
-  /** ข้อมูลเพิ่มเติมสามารถเก็บเป็น key-value pair ได้ */
-  [key: string]: unknown;
+  licenseType: string;
+  bloodType: string;
 }
 
-/** Keys ของ field บนใบขับขี่ */
-export type DriverLicenseFieldKeys = keyof DriverLicenseData;
-
-/**
- * การตั้งค่าสำหรับแต่ละ field บน card
- */
 export interface DriverLicenseFieldConfig {
   top: string;
   left: string;
+  fontSize?: string;
+  fontWeight?: string;
+  color?: string;
   width?: string;
   height?: string;
-  fontSize?: string;
-  fontWeight?: string | number;
-  color?: string;
-  label: string;
-  required?: boolean;
-  placeholder?: string;
-}
-
-/**
- * การตั้งค่าใบขับขี่ทั้งหมด
- */
-export interface DriverLicenseConfig {
-  cardWidth: number;
-  cardHeight: number;
-  bgDefault: string;
-  fields: Record<DriverLicenseFieldKeys, DriverLicenseFieldConfig>;
 }

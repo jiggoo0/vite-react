@@ -1,15 +1,15 @@
-import { createContext } from 'react';
+import { createContext } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { ThemeMode } from "./types";
 
-/** 🎨 Theme Options */
-export type Theme = 'light' | 'dark' | 'business' | 'team';
-
-/** 🧩 Theme Context Type */
+/** 🖌️ Type for the ThemeContext */
 export interface ThemeContextType {
-  /** Current active theme */
-  theme: Theme;
-  /** Function to update the theme */
-  setTheme: (theme: Theme) => void;
+  theme: ThemeMode;
+  setTheme: Dispatch<SetStateAction<ThemeMode>>;
 }
 
-/** 🌐 Theme Context */
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+/** 🌐 ThemeContext with default values */
+export const ThemeContext = createContext<ThemeContextType>({
+  theme: "light",
+  setTheme: () => {}, // default noop function
+});

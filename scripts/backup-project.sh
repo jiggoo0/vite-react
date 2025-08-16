@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 # 📍 Config
@@ -15,13 +14,16 @@ log() {
   echo "[$(date '+%H:%M:%S')] $*"
 }
 
+# 🔒 ตรวจสอบการเข้าถึง storage
 if [[ ! -d "/storage/emulated/0" ]]; then
   log "❌ Storage access not found. Run: termux-setup-storage"
   exit 1
 fi
 
+# 📂 สร้างโฟลเดอร์ backup
 mkdir -p "$LOCAL_FOLDER" "$ANDROID_BACKUP_DIR"
 
+# 🧹 ลบ backup เก่าทิ้ง
 log "🧹 Cleaning old local backup folders..."
 cd "$LOCAL_BACKUP_DIR" || { log "❌ Cannot cd to $LOCAL_BACKUP_DIR"; exit 1; }
 ls -1dt backup_* 2>/dev/null | tail -n +6 | xargs -r rm -rf --
@@ -30,6 +32,7 @@ log "🧹 Cleaning old ZIP files on Android..."
 cd "$ANDROID_BACKUP_DIR" || { log "❌ Cannot cd to $ANDROID_BACKUP_DIR"; exit 1; }
 ls -1dt backup_*.zip 2>/dev/null | tail -n +6 | xargs -r rm -f --
 
+# 📁 คัดลอกไฟล์ไปยัง local backup
 log "📁 Copying files to $LOCAL_FOLDER ..."
 EXCLUDES=(
   "node_modules"
@@ -50,10 +53,12 @@ done
 
 rsync -a "${RSYNC_EXCLUDES[@]}" "$SRC_DIR/" "$LOCAL_FOLDER/"
 
+# 📦 สร้าง ZIP
 log "📦 Creating ZIP at $ZIP_FILE ..."
 cd "$LOCAL_BACKUP_DIR" || { log "❌ Cannot cd to $LOCAL_BACKUP_DIR"; exit 1; }
 zip -r -q "$ZIP_FILE" "$FOLDER_NAME"
 
+# ✅ ตรวจสอบผลลัพธ์
 if [[ -f "$ZIP_FILE" ]]; then
   log "✅ Backup completed."
   log "   📁 Folder: $LOCAL_FOLDER"

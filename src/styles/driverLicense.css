@@ -17,9 +17,9 @@
   --color-text-muted: #374151;
 
   /* Font */
-  --font-family-base: 'Kanit', sans-serif;
+  --font-family-base: "Kanit", sans-serif;
 
-  /* Spacing */
+  /* Border Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -29,7 +29,7 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Auto Dark Mode */
+/* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary: #3b82f6;
@@ -56,10 +56,10 @@
 .dl-card {
   max-width: 500px;
   margin-inline: auto;
+  padding: 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1rem;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
   box-shadow: var(--shadow-md);
   font-family: var(--font-family-base);
   transition:
@@ -103,7 +103,6 @@
   outline: none;
 }
 
-/* Disabled state */
 .dl-form input:disabled,
 .dl-form select:disabled {
   background-color: var(--color-bg-light);
@@ -171,8 +170,8 @@
   width: 120px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  display: block;
   object-fit: cover;
+  display: block;
   background-color: var(--color-bg);
   aspect-ratio: 4 / 3;
 }

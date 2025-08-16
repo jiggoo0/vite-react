@@ -1,6 +1,11 @@
-import { FC } from 'react';
-import { FaLine, FaInstagram, FaEnvelope, FaFacebookMessenger } from 'react-icons/fa';
-import { SiTiktok } from 'react-icons/si';
+import { FC } from "react";
+import {
+  FaLine,
+  FaInstagram,
+  FaEnvelope,
+  FaFacebookMessenger,
+} from "react-icons/fa";
+import { SiTiktok } from "react-icons/si";
 
 interface SocialLink {
   href: string;
@@ -12,33 +17,33 @@ interface SocialLink {
 /** 🔹 ช่องทางติดต่อ */
 const socialLinks: SocialLink[] = [
   {
-    href: 'https://lin.ee/gVptUhR',
-    label: 'LINE',
-    text: 'LINE: @462FQFC',
+    href: "https://lin.ee/gVptUhR",
+    label: "LINE",
+    text: "LINE: @462FQFC",
     icon: FaLine,
   },
   {
-    href: 'https://www.instagram.com/jpsystem.official',
-    label: 'Instagram',
-    text: '@jpsystem.official',
+    href: "https://www.instagram.com/jpsystem.official",
+    label: "Instagram",
+    text: "@jpsystem.official",
     icon: FaInstagram,
   },
   {
-    href: 'mailto:contact@jpsystem.dev',
-    label: 'Email',
-    text: 'contact@jpsystem.dev',
+    href: "mailto:contact@jpsystem.dev",
+    label: "Email",
+    text: "contact@jpsystem.dev",
     icon: FaEnvelope,
   },
   {
-    href: 'https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share',
-    label: 'Messenger',
-    text: 'Messenger',
+    href: "https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share",
+    label: "Messenger",
+    text: "Messenger",
     icon: FaFacebookMessenger,
   },
   {
-    href: 'https://www.tiktok.com/@jaopa.zerofour',
-    label: 'TikTok',
-    text: '@jaopa.zerofour',
+    href: "https://www.tiktok.com/@jaopa.zerofour",
+    label: "TikTok",
+    text: "@jaopa.zerofour",
     icon: SiTiktok,
   },
 ];
@@ -82,7 +87,8 @@ const Footer: FC = () => {
 
         {/* 🔹 Footer Bottom */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none leading-relaxed">
-          &copy; {currentYear} <span className="font-semibold">JP Visual & Docs</span> — Powered by{' '}
+          &copy; {currentYear}{" "}
+          <span className="font-semibold">JP Visual & Docs</span> — Powered by{" "}
           <a
             href="https://applicationlab.dev"
             target="_blank"

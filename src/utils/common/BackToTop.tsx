@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { useEffect, useState, useCallback, useRef } from "react";
+import { ArrowUp } from "lucide-react";
 
 /**
  * ⬆️ BackToTop
@@ -26,17 +26,17 @@ const BackToTop = () => {
       timeoutRef.current = window.setTimeout(handleScroll, 50);
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [handleScroll]);
 
   // ฟังก์ชัน scroll กลับไปด้านบน
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // className แบบ dynamic สำหรับ animation และ visibility
@@ -44,7 +44,7 @@ const BackToTop = () => {
     flex items-center justify-center
     rounded-full p-3 text-white shadow-lg
     transition-all duration-300 ease-in-out
-    ${isVisible ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-0 pointer-events-none'}
+    ${isVisible ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-0 pointer-events-none"}
     bg-primary hover:bg-primary/90 dark:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/50
   `;
 

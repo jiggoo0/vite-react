@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 
-import { useAuth } from '@/hooks/useAuth';
-import Button from '@/Home/components/ui/Button';
+import { useAuth } from "@/hooks/useAuth";
+import Button from "@/Home/components/ui/Button";
 
 /**
  * 🔹 LogoutButton
@@ -22,9 +22,9 @@ const LogoutButton = () => {
     setLoading(true);
     try {
       await logout();
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
       setLoading(false);
     }
   };
@@ -37,9 +37,10 @@ const LogoutButton = () => {
       className="gap-2 text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
       disabled={loading}
       aria-busy={loading}
+      aria-label="ออกจากระบบ"
     >
       <LogOut className="w-4 h-4" />
-      ออกจากระบบ
+      <span>ออกจากระบบ</span>
     </Button>
   );
 };

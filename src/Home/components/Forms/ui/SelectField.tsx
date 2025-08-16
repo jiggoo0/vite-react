@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 
 type Option = {
   label: string;
@@ -13,7 +13,10 @@ type SelectFieldProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 };
 
 const SelectFieldUI = forwardRef<HTMLSelectElement, SelectFieldProps>(
-  ({ label, name, options, error = null, required, className = '', ...rest }, ref) => {
+  (
+    { label, name, options, error = null, required, className = "", ...rest },
+    ref
+  ) => {
     return (
       <div className={`flex flex-col ${className}`}>
         <label htmlFor={name} className="mb-1 font-medium text-gray-700">
@@ -26,7 +29,7 @@ const SelectFieldUI = forwardRef<HTMLSelectElement, SelectFieldProps>(
           ref={ref}
           required={required}
           className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 
-            ${error ? 'border-red-500' : 'border-gray-300'}`}
+            ${error ? "border-red-500" : "border-gray-300"}`}
           {...rest}
         >
           <option value="">-- กรุณาเลือก --</option>
@@ -40,8 +43,8 @@ const SelectFieldUI = forwardRef<HTMLSelectElement, SelectFieldProps>(
         {error && <span className="mt-1 text-sm text-red-500">{error}</span>}
       </div>
     );
-  },
+  }
 );
 
-SelectFieldUI.displayName = 'SelectFieldUI';
+SelectFieldUI.displayName = "SelectFieldUI";
 export default SelectFieldUI;

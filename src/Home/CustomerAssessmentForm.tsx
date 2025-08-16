@@ -1,8 +1,8 @@
 // src/Home/CustomerCreditForm.tsx
-'use client';
+"use client";
 
-import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
   FormWrapper,
   FieldGroup,
@@ -10,7 +10,7 @@ import {
   SelectFieldUI,
   TextareaField,
   SubmitButton,
-} from '@/Home/components/Forms';
+} from "@/Home/components/Forms";
 
 // =======================
 // Types
@@ -36,13 +36,13 @@ const CustomerCreditForm: React.FC = () => {
     reset,
   } = useForm<CustomerCreditData>({
     defaultValues: {
-      name: '',
-      email: '',
+      name: "",
+      email: "",
       monthlyIncome: 0,
       existingDebt: 0,
-      paymentHistory: '',
-      creditRating: '',
-      notes: '',
+      paymentHistory: "",
+      creditRating: "",
+      notes: "",
     },
   });
 
@@ -50,12 +50,12 @@ const CustomerCreditForm: React.FC = () => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('ข้อมูลเครดิตลูกค้า:', data);
-      alert('บันทึกการประเมินเครดิตเรียบร้อยแล้ว');
+      console.log("ข้อมูลเครดิตลูกค้า:", data);
+      alert("บันทึกการประเมินเครดิตเรียบร้อยแล้ว");
       reset();
     } catch (error) {
-      console.error('เกิดข้อผิดพลาด:', error);
-      alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      console.error("เกิดข้อผิดพลาด:", error);
+      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
     }
   };
 
@@ -72,7 +72,7 @@ const CustomerCreditForm: React.FC = () => {
           placeholder="กรอกชื่อของลูกค้า"
           required
           error={errors.name?.message || null}
-          {...register('name', { required: 'กรุณากรอกชื่อ' })}
+          {...register("name", { required: "กรุณากรอกชื่อ" })}
         />
 
         {/* อีเมล */}
@@ -82,11 +82,11 @@ const CustomerCreditForm: React.FC = () => {
           placeholder="example@email.com"
           required
           error={errors.email?.message || null}
-          {...register('email', {
-            required: 'กรุณากรอกอีเมล',
+          {...register("email", {
+            required: "กรุณากรอกอีเมล",
             pattern: {
               value: /^\S+@\S+$/i,
-              message: 'รูปแบบอีเมลไม่ถูกต้อง',
+              message: "รูปแบบอีเมลไม่ถูกต้อง",
             },
           })}
         />
@@ -98,9 +98,9 @@ const CustomerCreditForm: React.FC = () => {
           placeholder="0"
           required
           error={errors.monthlyIncome?.message || null}
-          {...register('monthlyIncome', {
-            required: 'กรุณากรอกรายได้ต่อเดือน',
-            min: { value: 0, message: 'ต้องมากกว่า 0' },
+          {...register("monthlyIncome", {
+            required: "กรุณากรอกรายได้ต่อเดือน",
+            min: { value: 0, message: "ต้องมากกว่า 0" },
           })}
         />
 
@@ -111,9 +111,9 @@ const CustomerCreditForm: React.FC = () => {
           placeholder="0"
           required
           error={errors.existingDebt?.message || null}
-          {...register('existingDebt', {
-            required: 'กรุณากรอกหนี้สินปัจจุบัน',
-            min: { value: 0, message: 'ต้องมากกว่า 0' },
+          {...register("existingDebt", {
+            required: "กรุณากรอกหนี้สินปัจจุบัน",
+            min: { value: 0, message: "ต้องมากกว่า 0" },
           })}
         />
 
@@ -122,14 +122,14 @@ const CustomerCreditForm: React.FC = () => {
           label="ประวัติการชำระ"
           required
           options={[
-            { label: 'ดีมาก', value: 'excellent' },
-            { label: 'ดี', value: 'good' },
-            { label: 'ปานกลาง', value: 'average' },
-            { label: 'ไม่ดี', value: 'poor' },
+            { label: "ดีมาก", value: "excellent" },
+            { label: "ดี", value: "good" },
+            { label: "ปานกลาง", value: "average" },
+            { label: "ไม่ดี", value: "poor" },
           ]}
           error={errors.paymentHistory?.message || null}
-          {...register('paymentHistory', {
-            required: 'กรุณาเลือกประวัติการชำระ',
+          {...register("paymentHistory", {
+            required: "กรุณาเลือกประวัติการชำระ",
           })}
         />
 
@@ -138,14 +138,14 @@ const CustomerCreditForm: React.FC = () => {
           label="คะแนนเครดิตปัจจุบัน"
           required
           options={[
-            { label: 'A (ยอดเยี่ยม)', value: 'A' },
-            { label: 'B (ดี)', value: 'B' },
-            { label: 'C (พอใช้)', value: 'C' },
-            { label: 'D (ต้องปรับปรุง)', value: 'D' },
+            { label: "A (ยอดเยี่ยม)", value: "A" },
+            { label: "B (ดี)", value: "B" },
+            { label: "C (พอใช้)", value: "C" },
+            { label: "D (ต้องปรับปรุง)", value: "D" },
           ]}
           error={errors.creditRating?.message || null}
-          {...register('creditRating', {
-            required: 'กรุณาเลือกคะแนนเครดิต',
+          {...register("creditRating", {
+            required: "กรุณาเลือกคะแนนเครดิต",
           })}
         />
 
@@ -154,12 +154,16 @@ const CustomerCreditForm: React.FC = () => {
           label="หมายเหตุเพิ่มเติม"
           placeholder="เขียนข้อเสนอแนะหรือหมายเหตุ"
           rows={4}
-          {...register('notes')}
+          {...register("notes")}
         />
       </FieldGroup>
 
       {/* Submit Button */}
-      <SubmitButton loading={isSubmitting} label="ส่งแบบฟอร์ม" loadingLabel="กำลังส่ง..." />
+      <SubmitButton
+        loading={isSubmitting}
+        label="ส่งแบบฟอร์ม"
+        loadingLabel="กำลังส่ง..."
+      />
     </FormWrapper>
   );
 };

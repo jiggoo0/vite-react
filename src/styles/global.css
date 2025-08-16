@@ -4,42 +4,42 @@
 
 /* =======================
    Fonts
-   ======================= */
+======================= */
 @font-face {
-  font-family: 'THSarabunNew';
+  font-family: "THSarabunNew";
   src:
-    url('/fonts/THSarabunNew.woff2') format('woff2'),
-    url('/fonts/THSarabunNew.woff') format('woff');
+    url("/fonts/THSarabunNew.woff2") format("woff2"),
+    url("/fonts/THSarabunNew.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'THSarabunNew';
+  font-family: "THSarabunNew";
   src:
-    url('/fonts/THSarabunNew-Bold.woff2') format('woff2'),
-    url('/fonts/THSarabunNew-Bold.woff') format('woff');
+    url("/fonts/THSarabunNew-Bold.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'THSarabunNew';
+  font-family: "THSarabunNew";
   src:
-    url('/fonts/THSarabunNew-Italic.woff2') format('woff2'),
-    url('/fonts/THSarabunNew-Italic.woff') format('woff');
+    url("/fonts/THSarabunNew-Italic.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-Italic.woff") format("woff");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'THSarabunNew';
+  font-family: "THSarabunNew";
   src:
-    url('/fonts/THSarabunNew-BoldItalic.woff2') format('woff2'),
-    url('/fonts/THSarabunNew-BoldItalic.woff') format('woff');
+    url("/fonts/THSarabunNew-BoldItalic.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-BoldItalic.woff") format("woff");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -47,12 +47,13 @@
 
 /* =======================
    Base Styles
-   ======================= */
+======================= */
 @layer base {
   html {
     scroll-behavior: smooth;
     font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
-    font-family: 'THSarabunNew', 'Noto Sans Thai', 'Roboto', sans-serif;
+    font-family:
+      "THSarabunNew", "Sarabun", "Noto Sans Thai", "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -60,12 +61,13 @@
 
   body {
     @apply bg-base-100 text-base-content;
-    line-height: 1.6;
+    line-height: 1.7;
+    letter-spacing: 0.5px;
     min-height: 100dvh;
   }
 
   ::selection {
-    background-color: theme('colors.primary');
+    background-color: theme("colors.primary");
     color: #fff;
   }
 
@@ -74,26 +76,23 @@
   *::after {
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.primary') transparent;
+    scrollbar-color: theme("colors.primary") transparent;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Scrollbar Styles */
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-
   ::-webkit-scrollbar-thumb {
-    background-color: theme('colors.primary');
+    background-color: theme("colors.primary");
     border-radius: 4px;
     transition: background-color 0.3s ease;
   }
-
   ::-webkit-scrollbar-thumb:hover {
-    background-color: theme('colors.primary-focus');
+    background-color: theme("colors-primary-focus");
   }
-
   ::-webkit-scrollbar-track {
     background: transparent;
   }
@@ -108,7 +107,17 @@
     will-change: transform, color, background-color;
   }
 
-  /* Reduced Motion */
+  button:hover,
+  a:hover {
+    transform: scale(1.05);
+    outline: none;
+  }
+  button:focus,
+  a:focus {
+    outline: 2px solid theme("colors.primary");
+    outline-offset: 2px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -119,13 +128,12 @@
     }
   }
 
-  /* Slide Background Animation */
   @keyframes slideBackground {
     0% {
       transform: translateX(0) scale(0.55);
     }
     50% {
-      transform: translateX(10%) scale(0.6);
+      transform: translateX(5%) scale(0.575);
     }
     100% {
       transform: translateX(0) scale(0.55);
@@ -139,32 +147,38 @@
 }
 
 /* =======================
-   Print Styles
-   ======================= */
-@media print {
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    background: #fff !important;
-    color: #000 !important;
-    font-size: 14pt;
+   Components
+======================= */
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-bold py-2 px-4 rounded shadow hover:bg-primary-focus transition;
   }
-
+  .card {
+    @apply bg-base-200 p-4 rounded-lg shadow-md transition hover:shadow-lg;
+  }
+  .badge {
+    @apply inline-block bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full;
+  }
+  .hero-section {
+    @apply relative w-full min-h-[60vh] flex flex-col justify-center items-start text-white overflow-hidden;
+  }
   .a4-card-wrapper {
-    max-width: 210mm !important;
-    min-height: 297mm !important;
-    width: 210mm !important;
-    height: 297mm !important;
-    box-shadow: none !important;
-    border: none !important;
-    page-break-after: always;
-    margin: 0 auto;
+    @apply max-w-[210mm] min-h-[297mm] w-[210mm] h-[297mm] mx-auto my-4 p-4 bg-white shadow-lg rounded;
+    break-inside: avoid;
   }
+}
 
-  /* Remove interactive elements in print */
-  a,
-  button {
-    pointer-events: none !important;
+/* =======================
+   Utilities
+======================= */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  .transition-fast {
+    transition: all 0.15s ease-in-out !important;
+  }
+  .scroll-smooth {
+    scroll-behavior: smooth;
   }
 }

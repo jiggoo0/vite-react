@@ -1,27 +1,33 @@
-'use client';
+"use client";
 
-import { FC } from 'react';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Clock4, Zap } from 'lucide-react';
+import { FC } from "react";
+import { motion } from "framer-motion";
+import { ShieldCheck, Clock4, Zap } from "lucide-react";
 
+/** =======================
+ * Hero Stats Data
+ * ======================= */
 const stats = [
   {
     icon: ShieldCheck,
-    color: 'text-green-500',
-    label: 'ความลับปลอดภัย',
+    color: "text-green-500",
+    label: "ความลับปลอดภัย",
   },
   {
     icon: Clock4,
-    color: 'text-yellow-400',
-    label: 'งานไวใน 24 ชม.',
+    color: "text-yellow-400",
+    label: "งานไวใน 24 ชม.",
   },
   {
     icon: Zap,
-    color: 'text-blue-500',
-    label: 'พร้อมลุยทุกเคส',
+    color: "text-blue-500",
+    label: "พร้อมลุยทุกเคส",
   },
 ];
 
+/** =======================
+ * Framer Motion Variants
+ * ======================= */
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -29,7 +35,7 @@ const containerVariants = {
     y: 0,
     transition: {
       staggerChildren: 0.15,
-      when: 'beforeChildren',
+      when: "beforeChildren",
     },
   },
 };
@@ -39,6 +45,9 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+/** =======================
+ * HeroStats Component
+ * ======================= */
 const HeroStats: FC = () => {
   return (
     <motion.div
@@ -64,8 +73,14 @@ const HeroStats: FC = () => {
             transition-shadow duration-300 hover:shadow-xl cursor-pointer
           "
         >
-          <Icon className={`${color} w-8 h-8`} strokeWidth={2.2} aria-hidden="true" />
-          <span className="text-base font-semibold text-white whitespace-nowrap">{label}</span>
+          <Icon
+            className={`${color} w-8 h-8`}
+            strokeWidth={2.2}
+            aria-hidden="true"
+          />
+          <span className="text-base font-semibold text-white whitespace-nowrap">
+            {label}
+          </span>
         </motion.div>
       ))}
     </motion.div>

@@ -1,20 +1,25 @@
-'use client';
+"use client";
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 interface HeroBackgroundProps {
   className?: string;
 }
 
-const HeroBackground = ({ className = '' }: HeroBackgroundProps) => {
-  const ref = useRef(null);
+/** =======================
+ * Hero Background Component
+ * ======================= */
+const HeroBackground = ({ className = "" }: HeroBackgroundProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Scroll progress for parallax effects
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
 
-  // Parallax slow movement
+  // Parallax transformations
   const yGlow = useTransform(scrollYProgress, [0, 1], [0, 50]);
   const yDots = useTransform(scrollYProgress, [0, 1], [0, 30]);
 
@@ -23,7 +28,7 @@ const HeroBackground = ({ className = '' }: HeroBackgroundProps) => {
       ref={ref}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.2, ease: 'easeOut' }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
       aria-hidden="true"
       className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}
     >
@@ -32,8 +37,7 @@ const HeroBackground = ({ className = '' }: HeroBackgroundProps) => {
         style={{ y: yGlow }}
         className="
           absolute -top-32 left-1/2 -translate-x-1/2 
-          w-[80vw] h-[80vw] 
-          sm:w-[50vw] sm:h-[50vw] 
+          w-[80vw] h-[80vw] sm:w-[50vw] sm:h-[50vw] 
           rounded-full bg-blue-500/20 blur-3xl z-10
         "
       />

@@ -1,6 +1,5 @@
-export type ThemeMode = 'light' | 'dark';
+/** Possible theme modes for the application */
+export type ThemeMode = "light" | "dark";
 
-export interface ThemeContextType {
-  theme: ThemeMode;
-  setTheme: (theme: ThemeMode) => void;
-}
+/** You can extend this type if you add more themes later */
+export type Theme = ThemeMode | "business" | "custom";

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { FC, useEffect, useMemo, useState, KeyboardEvent } from 'react';
-import { motion } from 'framer-motion';
-import { containerVariants, fadeInUp } from './motionVariants';
+import { FC, useEffect, useMemo, useState, KeyboardEvent } from "react";
+import { motion } from "framer-motion";
+import { containerVariants, fadeInUp } from "./motionVariants";
 
 export interface BlurContactProps {
   imageUrl?: string;
@@ -12,24 +12,27 @@ export interface BlurContactProps {
 }
 
 const DEFAULT_IMAGES = [
-  '/images/contact/bg1.jpg',
-  '/images/contact/bg2.jpg',
-  '/images/contact/bg3.jpg',
-  '/images/contact/bg4.jpg',
-  '/images/contact/bg5.jpg',
-  '/images/contact/bg6.jpg',
+  "/images/contact/bg1.jpg",
+  "/images/contact/bg2.jpg",
+  "/images/contact/bg3.jpg",
+  "/images/contact/bg4.jpg",
+  "/images/contact/bg5.jpg",
+  "/images/contact/bg6.jpg",
 ];
 
 const BlurContact: FC<BlurContactProps> = ({
   imageUrl,
-  contactText = 'กรอกรหัส Security Key เพื่อยืนยันความปลอดภัย',
+  contactText = "กรอกรหัส Security Key เพื่อยืนยันความปลอดภัย",
   onSubmitSecurityKey,
-  installPassword = 'สอบถามdmin',
+  installPassword = "สอบถามadmin",
 }) => {
-  const images = useMemo(() => (imageUrl ? [imageUrl] : DEFAULT_IMAGES), [imageUrl]);
+  const images = useMemo(
+    () => (imageUrl ? [imageUrl] : DEFAULT_IMAGES),
+    [imageUrl]
+  );
   const [currentImage, setCurrentImage] = useState(0);
   const [fadeImage, setFadeImage] = useState(false);
-  const [securityKey, setSecurityKey] = useState('');
+  const [securityKey, setSecurityKey] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -54,19 +57,19 @@ const BlurContact: FC<BlurContactProps> = ({
     try {
       if (onSubmitSecurityKey) {
         const valid = await onSubmitSecurityKey(securityKey);
-        if (!valid) setError('Security Key ไม่ถูกต้อง');
+        if (!valid) setError("Security Key ไม่ถูกต้อง");
       } else if (securityKey !== installPassword) {
-        setError('รหัสไม่ถูกต้อง');
+        setError("รหัสไม่ถูกต้อง");
       }
     } catch {
-      setError('เกิดข้อผิดพลาด โปรดลองอีกครั้ง');
+      setError("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");
     } finally {
       setLoading(false);
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleSubmit();
+    if (e.key === "Enter") handleSubmit();
   };
 
   return (
@@ -76,10 +79,12 @@ const BlurContact: FC<BlurContactProps> = ({
         src={images[currentImage]}
         alt="Background"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-          fadeImage ? 'opacity-0' : 'opacity-30'
+          fadeImage ? "opacity-0" : "opacity-30"
         }`}
         draggable={false}
-        onError={(e) => ((e.target as HTMLImageElement).src = DEFAULT_IMAGES[0])}
+        onError={(e) =>
+          ((e.target as HTMLImageElement).src = DEFAULT_IMAGES[0])
+        }
       />
 
       {/* Overlay */}
@@ -87,7 +92,7 @@ const BlurContact: FC<BlurContactProps> = ({
 
       {/* Motion Container */}
       <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center px-6 z-10 text-gray-800"
+        className="absolute inset-0 flex flex-col items-center justify-center px-6 z-10 text-gray-800 dark:text-gray-100"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -98,10 +103,10 @@ const BlurContact: FC<BlurContactProps> = ({
           custom={0}
           variants={fadeInUp}
         >
-          <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center shadow-lg dark:bg-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-8 h-8 text-gray-600"
+              className="w-8 h-8 text-gray-600 dark:text-gray-200"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -128,7 +133,7 @@ const BlurContact: FC<BlurContactProps> = ({
           <input
             type="password"
             placeholder="••••••••"
-            className="input w-full text-lg text-gray-700 bg-white border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 rounded-md shadow-sm transition-all duration-300 hover:scale-[1.02]"
+            className="input w-full text-lg text-gray-700 bg-white border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 rounded-md shadow-sm transition-all duration-300 hover:scale-[1.02] dark:bg-gray-800 dark:text-gray-100"
             value={securityKey}
             onChange={(e) => {
               setSecurityKey(e.target.value);
@@ -137,14 +142,19 @@ const BlurContact: FC<BlurContactProps> = ({
             onKeyDown={handleKeyDown}
             autoComplete="off"
             spellCheck={false}
+            aria-label="กรอกรหัส Security Key"
           />
           <button
-            className="btn bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition-transform duration-300 active:scale-95"
+            className="btn bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition-transform duration-300 active:scale-95 flex items-center justify-center"
             onClick={handleSubmit}
             disabled={loading}
             aria-label="ยืนยัน Security Key"
           >
-            {loading ? <span className="loading loading-spinner loading-sm"></span> : 'ยืนยัน'}
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "ยืนยัน"
+            )}
           </button>
 
           {/* Badge */}
@@ -159,6 +169,7 @@ const BlurContact: FC<BlurContactProps> = ({
             className="mt-4 text-sm text-red-500 font-medium text-center max-w-md px-2 select-text animate-pulse"
             custom={2}
             variants={fadeInUp}
+            role="alert"
           >
             {error}
           </motion.p>

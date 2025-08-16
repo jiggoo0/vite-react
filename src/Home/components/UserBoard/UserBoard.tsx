@@ -1,8 +1,7 @@
-import { FC, useMemo, useState, useCallback } from 'react';
+"use client";
 
-/**
- * ข้อมูลผู้ใช้งาน
- */
+import { FC, useMemo, useState, useCallback } from "react";
+
 export interface IUser {
   application_id: string;
   citizen_id: string;
@@ -17,38 +16,32 @@ export interface IUser {
 }
 
 const DEADLINE_DAYS = 65;
-const CORRECT_CODE = '9780';
+const CORRECT_CODE = "9780";
 
-/**
- * คำนวณวันครบกำหนดจากวันที่ยื่น
- */
 const getDeadline = (createdAt: string) => {
   const d = new Date(createdAt);
   d.setDate(d.getDate() + DEADLINE_DAYS);
-  return d.toLocaleDateString('th-TH');
+  return d.toLocaleDateString("th-TH");
 };
 
-type DisplayKey = keyof IUser | 'deadline';
+type DisplayKey = keyof IUser | "deadline";
 
-/**
- * Map สำหรับการแสดง Label และการคำนวณค่า
- */
 const labelMap: Record<
   DisplayKey,
   { label: string; compute?: (val: unknown, row?: IUser) => string }
 > = {
-  application_id: { label: 'รหัสใบสมัคร' },
-  full_name: { label: 'ชื่อ-นามสกุล' },
-  first_name: { label: 'ชื่อ' },
-  last_name: { label: 'นามสกุล' },
-  citizen_id: { label: 'เลขบัตร' },
-  mobile: { label: 'เบอร์มือถือ' },
-  address: { label: 'ที่อยู่' },
-  province: { label: 'จังหวัด' },
-  status: { label: 'สถานะ' },
+  application_id: { label: "รหัสใบสมัคร" },
+  full_name: { label: "ชื่อ-นามสกุล" },
+  first_name: { label: "ชื่อ" },
+  last_name: { label: "นามสกุล" },
+  citizen_id: { label: "เลขบัตร" },
+  mobile: { label: "เบอร์มือถือ" },
+  address: { label: "ที่อยู่" },
+  province: { label: "จังหวัด" },
+  status: { label: "สถานะ" },
   created_at: {
-    label: 'วันที่ยื่น',
-    compute: (val) => new Date(val as string).toLocaleDateString('th-TH'),
+    label: "วันที่ยื่น",
+    compute: (val) => new Date(val as string).toLocaleDateString("th-TH"),
   },
   deadline: {
     label: `ครบกำหนด (${DEADLINE_DAYS} วัน)`,
@@ -63,27 +56,29 @@ interface UserBoardProps {
 
 const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [page, setPage] = useState(1);
-  const [codeInput, setCodeInput] = useState('');
+  const [codeInput, setCodeInput] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const displayKeys = useMemo(() => Object.keys(labelMap) as DisplayKey[], []);
-  const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
+  const totalPages = useMemo(
+    () => Math.ceil(data.length / pageSize),
+    [data.length, pageSize]
+  );
   const pageData = useMemo(
     () => data.slice((page - 1) * pageSize, page * pageSize),
-    [data, page, pageSize],
+    [data, page, pageSize]
   );
 
   const gotoPage = useCallback(
     (num: number) => {
       if (num < 1 || num > totalPages) return;
       setPage(num);
-      document.getElementById('user-table')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+      document
+        .getElementById("user-table")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     },
-    [totalPages],
+    [totalPages]
   );
 
   const handleCodeSubmit = useCallback(
@@ -91,10 +86,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
       e.preventDefault();
       const isValid = codeInput.trim() === CORRECT_CODE;
       setIsAuthorized(isValid);
-      setErrorMsg(isValid ? '' : 'รหัสไม่ถูกต้อง กรุณาลองใหม่');
-      if (isValid) setCodeInput('');
+      setErrorMsg(isValid ? "" : "รหัสไม่ถูกต้อง กรุณาลองใหม่");
+      if (isValid) setCodeInput("");
     },
-    [codeInput],
+    [codeInput]
   );
 
   const renderCodeForm = () => (
@@ -103,7 +98,9 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
       className="w-full max-w-md bg-white p-6 rounded-lg shadow-md mb-6"
       aria-label="Form กรอกรหัสเพื่อดูข้อมูล"
     >
-      <h2 className="text-2xl font-semibold mb-4 text-center">กรุณากรอกรหัสเพื่อดูข้อมูล</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">
+        กรุณากรอกรหัสเพื่อดูข้อมูล
+      </h2>
       <div className="flex gap-3">
         <input
           type="password"
@@ -133,12 +130,14 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
     <div
       id="user-table"
       className={`relative overflow-x-auto w-full max-w-full sm:max-w-6xl rounded-lg shadow-md bg-white transition-all duration-500 ${
-        isAuthorized ? 'blur-0' : 'blur-md pointer-events-none select-none'
+        isAuthorized ? "blur-0" : "blur-md pointer-events-none select-none"
       }`}
     >
       {!isAuthorized && (
         <div className="absolute inset-0 bg-white bg-opacity-60 flex justify-center items-center rounded-lg">
-          <p className="text-gray-500 font-semibold text-lg">กรุณากรอกรหัสเพื่อดูข้อมูล</p>
+          <p className="text-gray-500 font-semibold text-lg">
+            กรุณากรอกรหัสเพื่อดูข้อมูล
+          </p>
         </div>
       )}
       <table className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm">
@@ -146,12 +145,12 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
           <tr className="bg-gray-100">
             {displayKeys.map((key) => {
               const style: React.CSSProperties =
-                key === 'full_name'
-                  ? { width: '20%' }
-                  : key === 'address'
-                    ? { width: '25%' }
-                    : key === 'status' || key === 'province'
-                      ? { width: '10%' }
+                key === "full_name"
+                  ? { width: "20%" }
+                  : key === "address"
+                    ? { width: "25%" }
+                    : key === "status" || key === "province"
+                      ? { width: "10%" }
                       : {};
               return (
                 <th
@@ -175,7 +174,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
                 const compute = labelMap[key]?.compute;
                 const value = compute
                   ? compute(user[key as keyof IUser], user)
-                  : (user[key as keyof IUser] ?? '');
+                  : (user[key as keyof IUser] ?? "");
                 return (
                   <td
                     key={key}
@@ -200,7 +199,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
             onClick={() => gotoPage(page - 1)}
             disabled={page === 1}
             className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold min-w-[60px] ${
-              page === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'
+              page === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
             }`}
           >
             Prev
@@ -212,8 +211,8 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
               onClick={() => gotoPage(num)}
               className={`px-3 sm:px-5 py-2 rounded border font-semibold min-w-[40px] ${
                 num === page
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'hover:bg-gray-200 border-gray-400'
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "hover:bg-gray-200 border-gray-400"
               }`}
             >
               {num}
@@ -224,7 +223,9 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
             onClick={() => gotoPage(page + 1)}
             disabled={page === totalPages}
             className={`px-3 sm:px-5 py-2 rounded border border-gray-400 font-semibold min-w-[60px] ${
-              page === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'
+              page === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-200"
             }`}
           >
             Next

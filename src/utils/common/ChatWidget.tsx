@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle } from 'lucide-react';
-import SocialIcons from './SocialIcons';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { MessageCircle } from "lucide-react";
+import SocialIcons from "./SocialIcons";
 
 /**
  * 📬 ChatWidget
@@ -34,10 +34,10 @@ const ChatWidget = () => {
   // ปิดด้วย Escape key
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false);
+      if (e.key === "Escape") setIsOpen(false);
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
   // โฟกัส widget เมื่อเปิด

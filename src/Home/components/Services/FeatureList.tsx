@@ -1,20 +1,28 @@
-'use client';
+"use client";
 
-import { FC } from 'react';
-import { CheckCircleIcon } from 'lucide-react';
+import { FC } from "react";
+import { CheckCircleIcon } from "lucide-react";
+import clsx from "clsx";
 
-// จุดเด่นของบริการ
+interface FeatureListProps {
+  /** เพิ่ม Tailwind class ภายนอก */
+  className?: string;
+}
+
 const features: string[] = [
-  'วิเคราะห์และปรับโปรไฟล์ลูกค้าแบบมืออาชีพ',
-  'บริการดูแลเอกสารครบวงจร ยื่นตรงธนาคาร/สถานทูต',
-  'สลิปสมจริง ตรวจสอบได้จริง พร้อม QR Code',
-  'ระบบหลังบ้านและ AI ดูแลกลุ่มลูกค้า',
-  'บริการระดับสูงสุด ทั้งด้านเอกสารและภาพลักษณ์',
+  "วิเคราะห์และปรับโปรไฟล์ลูกค้าแบบมืออาชีพ",
+  "บริการดูแลเอกสารครบวงจร ยื่นตรงธนาคาร/สถานทูต",
+  "สลิปสมจริง ตรวจสอบได้จริง พร้อม QR Code",
+  "ระบบหลังบ้านและ AI ดูแลกลุ่มลูกค้า",
+  "บริการระดับสูงสุด ทั้งด้านเอกสารและภาพลักษณ์",
 ];
 
-const FeatureList: FC = () => (
-  <section aria-labelledby="feature-list-title" role="region" className="mt-8">
-    {/* Hidden heading for accessibility */}
+const FeatureList: FC<FeatureListProps> = ({ className }) => (
+  <section
+    aria-labelledby="feature-list-title"
+    role="region"
+    className={clsx("mt-8", className)}
+  >
     <h3 id="feature-list-title" className="sr-only">
       จุดเด่นของบริการ
     </h3>
@@ -23,9 +31,9 @@ const FeatureList: FC = () => (
       {features.map((feature, index) => (
         <li
           key={index}
-          className="flex items-start space-x-3 rounded-md p-1 
+          className="flex items-start space-x-3 rounded-md p-2 
                      focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/80 
-                     transition-all hover:bg-base-200 dark:hover:bg-gray-800"
+                     transition-colors hover:bg-base-200 dark:hover:bg-gray-800"
           tabIndex={0}
         >
           <CheckCircleIcon

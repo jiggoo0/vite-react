@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { FC } from 'react';
-import ServicesSection from '@/Home/components/Services/ServicesSection';
+import { FC } from "react";
+import ServicesSection from "@/Home/components/Services/ServicesSection";
 
 const Services: FC = () => (
   <section

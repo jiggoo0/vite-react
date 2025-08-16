@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 
 /**
  * 📊 ScrollProgress
@@ -18,7 +18,8 @@ const ScrollProgress = () => {
       if (!ticking.current) {
         window.requestAnimationFrame(() => {
           const scrollTop = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const docHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
           const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
           setScrollProgress(progress);
           ticking.current = false;
@@ -27,10 +28,10 @@ const ScrollProgress = () => {
       }
     };
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress(); // ตั้งค่าเริ่มต้นตอนโหลด
 
-    return () => window.removeEventListener('scroll', updateProgress);
+    return () => window.removeEventListener("scroll", updateProgress);
   }, []);
 
   return (

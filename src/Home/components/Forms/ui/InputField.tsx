@@ -1,5 +1,5 @@
 // src/Home/components/Forms/ui/InputField.tsx
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 
 type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -8,7 +8,7 @@ type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ label, name, error = null, required, className = '', ...rest }, ref) => {
+  ({ label, name, error = null, required, className = "", ...rest }, ref) => {
     return (
       <div className={`flex flex-col ${className}`}>
         {/* Label */}
@@ -23,7 +23,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           ref={ref}
           required={required}
           className={`px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 
-            ${error ? 'border-red-500' : 'border-gray-300'}`}
+            ${error ? "border-red-500" : "border-gray-300"}`}
           {...rest}
         />
 
@@ -31,9 +31,9 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         {error && <span className="mt-1 text-sm text-red-500">{error}</span>}
       </div>
     );
-  },
+  }
 );
 
-InputField.displayName = 'InputField';
+InputField.displayName = "InputField";
 
 export default InputField;

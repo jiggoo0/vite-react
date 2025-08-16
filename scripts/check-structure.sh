@@ -53,150 +53,242 @@ done
 
 
 
-บันทึกข้อความ: รายละเอียดโปรเจกต์ projectjp
+บันทึกข้อความ: รายละเอียดโปรเจกต์ 
+📥 pnpm found! Installing dependencies...
+Downloading react-icons@5.5.0: 22.22 MB/22.22 MB, done
+Packages: +710
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 755, reused 0, downloaded 710, added 710, done
+. prepare$ husky install
+│ husky - Git hooks installed
+└─ Done in 1.9s
+dependencies:
 
-1. ข้อมูลระบบและเครื่องมือ
+@faker-js/faker 9.9.0
 
-Package Manager: pnpm v10.14.0
+@headlessui/react 2.2.7
 
-Node Environment: Termux (Android)
+@heroicons/react 2.2.0
 
-Framework / Library: React 18
+@radix-ui/react-slot 1.2.3
 
-Build Tool: Vite v7.1.2
+axios 1.11.0
+
+bcryptjs 3.0.2
+
+clsx 2.1.1
+
+crypto-browserify 3.12.1
+
+framer-motion 12.23.12
+
+html2canvas 1.4.1
+
+install 0.13.0
+
+jspdf 3.0.1
+
+lucide-react 0.537.0 (0.539.0 is available)
+
+pnpm 10.14.0
+
+react 18.3.1 (19.1.1 is available)
+
+react-dom 18.3.1 (19.1.1 is available)
+
+react-hook-form 7.62.0
+
+react-icons 5.5.0
+
+react-qr-code 2.0.18
+
+react-router-dom 7.8.1
+
+sweetalert2 11.22.3 (11.22.4 is available)
+
+tailwind-merge 3.3.1
+
+theme-change 2.5.0
+
+tsconfig.json 1.0.11
+
+uuid 11.1.0
+
+zod 4.0.17
+
+
+devDependencies:
+
+@eslint/js 9.33.0
+
+@tailwindcss/aspect-ratio 0.4.2
+
+@tailwindcss/forms 0.5.10
+
+@tailwindcss/line-clamp 0.4.4
+
+@tailwindcss/typography 0.5.16
+
+@testing-library/jest-dom 6.7.0
+
+@testing-library/react 16.3.0
+
+@testing-library/user-event 14.6.1
+
+@types/jest 30.0.0
+
+@types/node 24.3.0
+
+@types/react 18.3.23 (19.1.10 is available)
+
+@types/react-dom 18.3.7 (19.1.7 is available)
+
+@typescript-eslint/eslint-plugin 8.39.1
+
+@typescript-eslint/parser 8.39.1
+
+@vitejs/plugin-react 5.0.0
+
+autoprefixer 10.4.21
+
+daisyui 3.9.4 (5.0.50 is available)
+
+esbuild 0.25.8 (0.25.9 is available)
+
+eslint 9.33.0
+
+eslint-config-prettier 10.1.8
+
+eslint-plugin-prettier 5.5.4
+
+eslint-plugin-react 7.37.5
+
+eslint-plugin-react-hooks 5.2.0
+
+eslint-plugin-react-refresh 0.4.20
+
+globals 16.3.0
+
+husky 8.0.3 (9.1.7 is available)
+
+lint-staged 16.1.5
+
+postcss 8.5.6
+
+prettier 3.6.2
+
+tailwindcss 3.4.17 (4.1.12 is available)
+
+ts-node 10.9.2
+
+tsconfig-paths 4.2.0
+
+typescript 5.9.2
+
+typescript-eslint 8.39.0 (8.39.1 is available)
+
+vite 7.1.2
+
+vite-tsconfig-paths 5.1.4
+
+vitest 3.2.4
+
+zip-a-folder 3.1.9
+
+
+Done in 1m 17s using pnpm v10.14.0
+🗑️ Removing log files...
+✅ Clean completed successfully.
+
+
+---
+
+🛠️ Dev@JP ~/projectjp ❯ pd
+
+> vite-react@7.1.1 dev /data/data/com.termux/files/home/projectjp
+vite
+
+
+
+VITE v7.1.2  ready in 1740 ms
+➜  Local:   http://localhost:5173/
+➜  Network: use --host to expose
+➜  press h + enter to show help
+
+╭── 🌼 daisyUI 3.9.4 https://daisyui.com
+│
+├── 3 themes are enabled. How to add more themes: https://daisyui.com/docs/themes
+╰── 💚 Support daisyUI project: https://opencollective.com/daisyui
+
+
+---
+
+🛠️ Dev@JP ~/projectjp ❯ pb
+
+> vite-react@7.1.1 build /data/data/com.termux/files/home/projectjp
+tsc -b && vite build
+
+
+
+vite v7.1.2 building for production...
+╭── 🌼 daisyUI 3.9.4 https://daisyui.com
+│
+├── 3 themes are enabled. How to add more themes: https://daisyui.com/docs/themes
+╰── ⭐️ Star daisyUI project on GitHub: https://github.com/saadeghi/daisyui
+
+transforming (4) src/styles/fonts.css
+
+╭── 🌼 daisyUI 3.9.4 https://daisyui.com
+│
+├── 3 themes are enabled. How to add more themes: https://daisyui.com/docs/themes
+╰── 💚 Support daisyUI project: https://opencollective.com/daisyui
+
+✓ 3268 modules transformed.
+
+dist/index.html                                   2.79 kB │ gzip:   1.03 kB
+dist/assets/SecretPage-6VDldoUo.css               2.88 kB │ gzip:   0.89 kB
+dist/assets/index-DBhZAgQV.css                  106.39 kB │ gzip:  16.04 kB
+dist/assets/403-CgHziCDS.js                       0.61 kB │ gzip:   0.40 kB
+dist/assets/IdCardForm-BKHXvkej.js                2.16 kB │ gzip:   0.79 kB
+dist/assets/MedicalCertificate-BeONQfXB.js        2.28 kB │ gzip:   0.79 kB
+dist/assets/SalaryCertificate-BZASUtfO.js         3.53 kB │ gzip:   1.28 kB
+dist/assets/RegistrationPreview-WBfU-0H3.js       4.06 kB │ gzip:   1.70 kB
+dist/assets/PortfolioGallery-Dc8Jw2H1.js          4.51 kB │ gzip:   1.94 kB
+dist/assets/SupportFAQ-BBhJj7h9.js                5.96 kB │ gzip:   1.92 kB
+dist/assets/Login-S44IIrHM.js                     6.17 kB │ gzip:   2.91 kB
+dist/assets/CustomerAssessmentForm-Ct1JCPQG.js    7.33 kB │ gzip:   2.27 kB
+dist/assets/index-Bvnvwkr-.js                    19.51 kB │ gzip:   6.53 kB
+dist/assets/SecretPage-CWf1f6Dj.js               24.56 kB │ gzip:   8.22 kB
+dist/assets/Home-BjnIASvv.js                     66.68 kB │ gzip:  16.46 kB
+dist/assets/vendor_react-u5eJe2Lx.js            343.80 kB │ gzip: 113.92 kB
+dist/assets/vendor_misc-CIr7XjA7.js             848.17 kB │ gzip: 265.34 kB
+
+✓ built in 33.72s
+
+
+---
+
+🛠️ Dev@JP ~/projectjp ❯ pnpm lint
+
+> vite-react@7.1.1 lint /data/data/com.termux/files/home/projectjp
+eslint .
+
 
 
 
 ---
 
-2. Dependencies (ไลบรารีสำหรับรันโปรเจกต์)
+🛠️ Dev@JP ~/projectjp ❯ pnpm type-check
 
-ไลบรารี	เวอร์ชันปัจจุบัน	เวอร์ชันใหม่
+> vite-react@7.1.1 type-check /data/data/com.termux/files/home/projectjp
+tsc --noEmit
 
-@faker-js/faker	9.9.0	-
-@headlessui/react	2.2.7	-
-@heroicons/react	2.2.0	-
-@radix-ui/react-slot	1.2.3	-
-axios	1.11.0	-
-bcryptjs	3.0.2	-
-clsx	2.1.1	-
-crypto-browserify	3.12.1	-
-framer-motion	12.23.12	-
-html2canvas	1.4.1	-
-install	0.13.0	-
-jspdf	3.0.1	-
-lucide-react	0.537.0	0.539.0
-react	18.3.1	19.1.1
-react-dom	18.3.1	19.1.1
-react-hook-form	7.62.0	-
-react-icons	5.5.0	-
-react-qr-code	2.0.18	-
-react-router-dom	7.8.0	-
-sweetalert2	11.22.3	11.22.4
-tailwind-merge	3.3.1	-
-theme-change	2.5.0	-
-tsconfig.json	1.0.11	-
-uuid	11.1.0	-
-zod	4.0.17	-
 
 
 
 ---
 
-3. DevDependencies (ไลบรารีสำหรับพัฒนา / build / lint)
-
-ไลบรารี	เวอร์ชันปัจจุบัน	เวอร์ชันใหม่
-
-@eslint/js	9.33.0	-
-@tailwindcss/aspect-ratio	0.4.2	-
-@tailwindcss/forms	0.5.10	-
-@tailwindcss/line-clamp	0.4.4	-
-@tailwindcss/typography	0.5.16	-
-@types/node	24.2.1	-
-@types/react	18.3.23	19.1.10
-@types/react-dom	18.3.7	19.1.7
-@typescript-eslint/eslint-plugin	8.39.1	-
-@typescript-eslint/parser	8.39.1	-
-@vitejs/plugin-react	5.0.0	-
-autoprefixer	10.4.21	-
-daisyui	3.9.4	5.0.50
-esbuild	0.25.8	0.25.9
-eslint	9.33.0	-
-eslint-config-prettier	10.1.8	-
-eslint-plugin-prettier	5.5.4	-
-eslint-plugin-react	7.37.5	-
-eslint-plugin-react-hooks	5.2.0	-
-eslint-plugin-react-refresh	0.4.20	-
-globals	16.3.0	-
-husky	8.0.3	9.1.7
-lint-staged	16.1.5	-
-postcss	8.5.6	-
-prettier	3.6.2	-
-tailwindcss	3.4.17	4.1.12
-ts-node	10.9.2	-
-tsconfig-paths	4.2.0	-
-typescript	5.9.2	-
-typescript-eslint	8.39.0	8.39.1
-vite	7.1.2	-
-vite-tsconfig-paths	5.1.4	-
-zip-a-folder	3.1.9	-
-
-
-
----
-
-4. คำสั่งที่ใช้งาน
-
-คำสั่ง	การทำงาน
-
-pnpm dev / vite	รันโปรเจกต์ในโหมด development (http://localhost:5173/)
-pnpm build / vite build	สร้างไฟล์ production build
-pnpm preview / vite preview	Preview production build (http://localhost:4173/)
-pnpm type-check / tsc --noEmit	ตรวจสอบ TypeScript type errors
-pnpm lint / eslint .	ตรวจสอบโค้ดตามกฎ ESLint
-
-
-
----
-
-5. รายละเอียดการ Build / Preview
-
-Production build ใช้เวลา: 51.50 วินาที
-
-ขนาดไฟล์หลัก (gzip)
-
-vendor_react.js: 113.61 KB
-
-vendor_misc.js: 286.17 KB
-
-Home.js: 16.39 KB
-
-SecretPage.js: 9.25 KB
-
-index.js: 6.31 KB
-
-
-daisyUI: 3 themes เปิดใช้งาน, สามารถเพิ่มได้ตาม docs
-
-
-
----
-
-6. สรุปสภาพแวดล้อม
-
-Frontend Stack: React + Vite + TailwindCSS + daisyUI + TypeScript
-
-Form / UI Library: react-hook-form, Headless UI, Heroicons, Radix UI Slot
-
-Utility / Helper: clsx, uuid, crypto-browserify, theme-change
-
-Effects / Animation: framer-motion, html2canvas, jspdf
-
-Alerts / Dialogs: sweetalert2
-
-Lint / Formatter: ESLint + Prettier + Husky + lint-staged
-
-Dev Workflow: pnpm, vite, ts-node, tsconfig-paths
+🛠️ Dev@JP ~/projectjp
 
 บันทึกข้อความ: หน้าเว็บไซต์ JP Visual & Docs เวอร์ชันปัจจุบันน
 

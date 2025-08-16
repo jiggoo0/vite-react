@@ -1,25 +1,22 @@
-// mockMedicalCertificate.ts
-import { MedicalCertificateData } from './MedicalCertificate';
+import { MedicalCertificateData } from "./types/medicalCertificate";
 
 export const mockMedicalCertificate: MedicalCertificateData = {
-  referenceNo: 'MC-2566-0456', // เลขที่เอกสารตามมาตรฐาน
-  hospital: 'โรงพยาบาลราชวิถี', // โรงพยาบาลจริงในไทย
-  ministryOffice: 'สำนักงานสาธารณสุขจังหวัดกรุงเทพมหานคร', // หน่วยงานต้นทาง
-  date: '13 สิงหาคม 2566', // วันที่ออกเอกสาร (พ.ศ.)
-  doctorName: 'นพ.วรชัย สร้างสุข', // แพทย์ตรวจจริง
-  doctorLicenseNo: '45678/2562', // เลขใบอนุญาตแพทย์
-  patientTitle: 'นางสาว', // คำนำหน้าผู้ป่วย
-  patientName: 'อารีรัตน์ ใจดี', // ชื่อผู้ป่วย
-  address: '123/89 หมู่ 5 ถนนพระราม 6 แขวงสามเสนใน เขตพญาไท กรุงเทพฯ 10400', // ที่อยู่ผู้ป่วย
-  citizenId: '3101701234567', // เลขบัตรประชาชนตัวอย่าง 13 หลัก
-  examinedDate: '13 สิงหาคม 2566', // วันที่ตรวจจริง
-  diagnosis: 'ไข้หวัดใหญ่ (Influenza) ระยะเริ่มต้น', // วินิจฉัยโรค
-  doctorSummary:
-    'ผู้ป่วยมีอาการไอ น้ำมูกและมีไข้ต่ำ ควรพักผ่อน รับประทานน้ำและยาตามแพทย์สั่ง หากอาการไม่ดีขึ้นภายใน 3 วัน ให้กลับมาตรวจซ้ำ', // ข้อแนะนำแพทย์
-  attendedToday: true, // มาตรวจจริง
-  restFromDate: '13 สิงหาคม 2566', // เริ่มหยุดพัก
-  restToDate: '15 สิงหาคม 2566', // สิ้นสุดหยุดพัก
-  otherNote: 'งดออกกำลังกายหนัก และหลีกเลี่ยงสถานที่แออัด', // ข้อสังเกตเพิ่มเติม
-  doctorSigner: 'นพ.วรชัย สร้างสุข', // ลายเซ็นแพทย์
-  patientSigner: 'อารีรัตน์ ใจดี', // ลายเซ็นผู้ป่วย
+  referenceNo: "MC-2025-001",
+  hospital: "โรงพยาบาลตัวอย่าง",
+  ministryOffice: "สำนักงานสาธารณสุขจังหวัด",
+  date: "2025-08-16",
+  doctorName: "นพ. สมชาย ใจดี",
+  doctorLicenseNo: "1234567890",
+  patientTitle: "นาย",
+  patientName: "สมชาย ทดสอบ",
+  address: "123 หมู่ 4 ต.ตัวอย่าง อ.เมือง จ.กรุงเทพฯ 10100",
+  citizenId: "1234567890123",
+  examinedDate: "2025-08-15",
+  diagnosis: "ปกติ",
+  doctorSummary: "สามารถปฏิบัติงานได้ตามปกติ",
+  restFromDate: "2025-08-16",
+  restToDate: "2025-08-18",
+  otherNote: "ไม่มีข้อสังเกตเพิ่มเติม",
+  doctorSigner: "นพ. สมชาย ใจดี",
+  patientSigner: "สมชาย ทดสอบ",
 };

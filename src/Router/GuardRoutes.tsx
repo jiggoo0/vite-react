@@ -1,5 +1,5 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GuardRoutesProps {
   children: ReactNode;
@@ -7,17 +7,20 @@ interface GuardRoutesProps {
 
 type User = {
   username: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
 };
 
 const isValidUser = (data: unknown): data is User => {
-  if (typeof data !== 'object' || data === null) return false;
+  if (typeof data !== "object" || data === null) return false;
   const user = data as Partial<User>;
-  return typeof user.username === 'string' && (user.role === 'admin' || user.role === 'user');
+  return (
+    typeof user.username === "string" &&
+    (user.role === "admin" || user.role === "user")
+  );
 };
 
 const parseUserFromStorage = (): User | null => {
-  const raw = localStorage.getItem('user');
+  const raw = localStorage.getItem("user");
   if (!raw) return null;
   try {
     const parsed = JSON.parse(raw);
@@ -35,7 +38,7 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
     const user = parseUserFromStorage();
     if (!user) {
       setIsAuthenticated(false);
-      setTimeout(() => navigate('/login', { replace: true }), 0);
+      setTimeout(() => navigate("/login", { replace: true }), 0);
       return;
     }
     setIsAuthenticated(true);

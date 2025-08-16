@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { FC, ReactNode, Suspense } from 'react';
-import { A4CardWrapper as OriginalA4CardWrapper } from '@home/SecretPage/common/CardWrapper';
+import { FC, ReactNode, Suspense } from "react";
+import { A4CardWrapper as OriginalA4CardWrapper } from "@home/SecretPage/common/CardWrapper";
 
-/** ปรับให้รองรับ className */
+/** Props สำหรับ A4CardWrapper */
 interface A4CardWrapperProps {
   children: ReactNode;
   className?: string;
 }
 
-/** Wrapper ใหม่ที่ extend className */
+/** Wrapper ใหม่ที่รองรับ className */
 const A4CardWrapper: FC<A4CardWrapperProps> = ({ children, className }) => (
   <OriginalA4CardWrapper>
     <div className={className}>{children}</div>
@@ -18,19 +18,20 @@ const A4CardWrapper: FC<A4CardWrapperProps> = ({ children, className }) => (
 
 /** Props สำหรับ LazyA4Card */
 interface LazyA4CardProps {
-  /** เนื้อหาที่ต้องการ render ใน A4Card */
+  /** เนื้อหาที่ต้องการ render ภายใน A4Card */
   children: ReactNode;
 
-  /** ขนาดของ Loading Spinner (default: lg) */
-  loadingSize?: 'lg' | 'md' | 'sm';
+  /** ขนาดของ Loading Spinner (default: md) */
+  loadingSize?: "lg" | "md" | "sm";
 
   /** ClassName เสริมสำหรับ wrapper */
   className?: string;
 }
 
 /** Spinner Loader Component */
-const LoadingSpinner: FC<{ size?: 'lg' | 'md' | 'sm' }> = ({ size = 'lg' }) => {
-  const sizeClass = size === 'lg' ? 'loading-lg' : size === 'md' ? 'loading-md' : 'loading-sm';
+const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
+  const sizeClass =
+    size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
 
   return (
     <div className="flex justify-center items-center py-8">
@@ -44,7 +45,11 @@ const LoadingSpinner: FC<{ size?: 'lg' | 'md' | 'sm' }> = ({ size = 'lg' }) => {
 };
 
 /** A4 Card + Suspense Wrapper */
-const LazyA4Card: FC<LazyA4CardProps> = ({ children, loadingSize = 'md', className }) => {
+const LazyA4Card: FC<LazyA4CardProps> = ({
+  children,
+  loadingSize = "md",
+  className,
+}) => {
   return (
     <Suspense fallback={<LoadingSpinner size={loadingSize} />}>
       <A4CardWrapper className={className}>{children}</A4CardWrapper>

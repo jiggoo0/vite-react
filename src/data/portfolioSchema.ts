@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * ✅ PortfolioItemSchema
@@ -8,8 +8,14 @@ import { z } from 'zod';
 export const PortfolioItemSchema = z.object({
   id: z.string(),
   title: z.string(),
-  category: z.enum(['Website', 'Dashboard', 'Landing Page', 'Mobile App', 'Graphic']),
-  image: z.string().min(1, { message: 'Image path is required' }),
+  category: z.enum([
+    "Website",
+    "Dashboard",
+    "Landing Page",
+    "Mobile App",
+    "Graphic",
+  ]),
+  image: z.string().min(1, { message: "Image path is required" }),
   description: z.string().optional(),
   link: z.string().url().optional(),
 });

@@ -1,7 +1,7 @@
 /**
  * 🆔 ID Card Config Types
  */
-export type FontWeight = 'normal' | 'bold';
+export type FontWeight = "normal" | "bold";
 
 export interface IdCardFieldConfig {
   /** ระยะจากด้านบนของบัตร (px) */
@@ -34,70 +34,75 @@ export interface IdCardConfig {
 export const idCardConfig: IdCardConfig = {
   cardWidth: 856,
   cardHeight: 539,
-  bgDefault: '/images/IDcard/bg.webp',
+  bgDefault: "/images/IDcard/bg.webp",
   fields: {
     cardNumber: {
       top: 50,
       left: 600,
       fontSize: 18,
-      fontWeight: 'bold',
-      label: 'เลขประจำตัวประชาชน / Identification Number',
+      fontWeight: "bold",
+      label: "เลขประจำตัวประชาชน / Identification Number",
     },
     fullName: {
       top: 150,
       left: 150,
       fontSize: 18,
-      fontWeight: 'bold',
-      label: 'ชื่อ-สกุล / Name & Last Name',
+      fontWeight: "bold",
+      label: "ชื่อ-สกุล / Name & Last Name",
     },
     birthday: {
       top: 200,
       left: 150,
       fontSize: 16,
-      label: 'วันเกิด / Date of Birth',
+      label: "วันเกิด / Date of Birth",
     },
     address: {
       top: 250,
       left: 150,
       fontSize: 16,
-      label: 'ที่อยู่ / Address',
+      label: "ที่อยู่ / Address",
     },
     initCard: {
       top: 400,
       left: 150,
       fontSize: 14,
-      label: 'วันออกบัตร / Issued Date',
+      label: "วันออกบัตร / Issued Date",
     },
     expCard: {
       top: 400,
       left: 450,
       fontSize: 14,
-      label: 'วันหมดอายุ / Expiry Date',
+      label: "วันหมดอายุ / Expiry Date",
     },
     officer: {
       top: 450,
       left: 150,
       fontSize: 14,
-      label: 'เจ้าหน้าที่ / Officer',
+      label: "เจ้าหน้าที่ / Officer",
     },
     cardPlace: {
       top: 480,
       left: 150,
       fontSize: 14,
-      label: 'สำนักทะเบียน / Card Place',
+      label: "สำนักทะเบียน / Card Place",
     },
   },
 };
 
 /**
  * 🛠 Helper: สร้างฟิลด์ใหม่ได้ง่าย
+ * @param top ระยะจากด้านบน (px)
+ * @param left ระยะจากด้านซ้าย (px)
+ * @param fontSize ขนาดตัวอักษร (px)
+ * @param fontWeight น้ำหนักตัวอักษร (default: normal)
+ * @param label ป้ายกำกับของฟิลด์ (optional)
  */
 export const createField = (
   top: number,
   left: number,
   fontSize: number,
-  fontWeight: FontWeight = 'normal',
-  label?: string,
+  fontWeight: FontWeight = "normal",
+  label?: string
 ): IdCardFieldConfig => ({
   top,
   left,

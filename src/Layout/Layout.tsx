@@ -1,24 +1,28 @@
-import { FC, ReactNode } from 'react';
-import { Outlet } from 'react-router-dom';
+import { FC, ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
 // Layout Components
-import Navbar from '@layout/Navbar';
-import Footer from '@layout/partials/Footer';
+import Navbar from "@layout/Navbar";
+import Footer from "@layout/partials/Footer";
 
 // Utility / Floating Components
-import ChatWidget from '@utils/common/ChatWidget';
-import DisclaimerModal from '@utils/common/DisclaimerModal';
-import BackToTop from '@utils/common/BackToTop';
+import ChatWidget from "@utils/common/ChatWidget";
+import DisclaimerModal from "@utils/common/DisclaimerModal";
+import BackToTop from "@utils/common/BackToTop";
 
 interface LayoutProps {
   children?: ReactNode;
 }
 
 /**
- * App main layout
- * Includes Navbar, Footer, and utility floating widgets.
+ * 🏗️ Main App Layout
+ * - Includes Navbar, Footer
+ * - Handles floating utility widgets
+ * - Supports React Router Outlet
  */
 const Layout: FC<LayoutProps> = ({ children }) => {
+  const floatingComponents = [ChatWidget, BackToTop, DisclaimerModal];
+
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content transition-colors duration-300">
       {/* =======================
@@ -43,7 +47,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         aria-atomic="true"
         className="flex-grow w-full focus:outline-none"
       >
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">{children ?? <Outlet />}</div>
+        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+          {children ?? <Outlet />}
+        </div>
       </main>
 
       {/* =======================
@@ -56,9 +62,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       {/* =======================
           Floating / Utility Components
       ======================= */}
-      <div className="pointer-events-none fixed bottom-4 right-4 z-50 flex flex-col gap-4">
-        {[ChatWidget, BackToTop, DisclaimerModal].map((Component, index) => (
-          <div key={index} className="pointer-events-auto">
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-4 pointer-events-none">
+        {floatingComponents.map((Component, idx) => (
+          <div key={idx} className="pointer-events-auto">
             <Component />
           </div>
         ))}

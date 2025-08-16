@@ -15,7 +15,7 @@ export interface IUser {
   address: string;
 
   /** 🔹 สถานะการอนุมัติ */
-  status: 'approved' | 'pending' | 'rejected';
+  status: "approved" | "pending" | "rejected";
 
   /** 🔹 รหัสใบสมัคร (ถ้ามี) */
   applicationId?: string;
@@ -27,5 +27,5 @@ export interface IUser {
   dob: string;
 
   /** 🔹 เพศ */
-  gender: 'male' | 'female';
+  gender: "male" | "female";
 }

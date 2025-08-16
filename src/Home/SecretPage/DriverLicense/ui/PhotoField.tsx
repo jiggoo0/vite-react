@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import FieldDraggable from './FieldDraggable';
+import React from "react";
+import FieldDraggable from "./FieldDraggable";
 
 interface PhotoFieldProps {
   src: string;
@@ -20,12 +20,12 @@ const PhotoField: React.FC<PhotoFieldProps> = ({
   src,
   top,
   left,
-  width = '120px',
-  height = '150px',
-  borderRadius = '8px',
-  borderColor = '#ccc',
-  borderWidth = '1px',
-  background = '#fff',
+  width = "120px",
+  height = "150px",
+  borderRadius = "8px",
+  borderColor = "#ccc",
+  borderWidth = "1px",
+  background = "#fff",
   onPositionChange,
 }) => {
   return (
@@ -37,13 +37,13 @@ const PhotoField: React.FC<PhotoFieldProps> = ({
         style={{
           width,
           height,
-          objectFit: 'cover',
+          objectFit: "cover",
           borderRadius,
           border: `${borderWidth} solid ${borderColor}`,
           background,
-          display: 'block',
-          pointerEvents: 'none', // ป้องกันไม่ให้ลากรูปแทนฟิลด์
-          userSelect: 'none',
+          display: "block",
+          pointerEvents: "none", // ป้องกันไม่ให้ลากรูปแทนฟิลด์
+          userSelect: "none",
         }}
       />
     </FieldDraggable>

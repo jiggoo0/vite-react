@@ -1,4 +1,4 @@
-import { FC, ReactNode, ElementType } from 'react';
+import { FC, ReactNode, ElementType } from "react";
 
 interface SectionContainerProps extends React.HTMLAttributes<HTMLElement> {
   /** 👶 Content ภายใน Container */
@@ -19,12 +19,15 @@ interface SectionContainerProps extends React.HTMLAttributes<HTMLElement> {
  */
 const SectionContainer: FC<SectionContainerProps> = ({
   children,
-  className = '',
-  as: Tag = 'div',
+  className = "",
+  as: Tag = "div",
   ...props
 }) => {
   return (
-    <Tag className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`} {...props}>
+    <Tag
+      className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}
+      {...props}
+    >
       {children}
     </Tag>
   );

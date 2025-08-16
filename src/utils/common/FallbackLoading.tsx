@@ -1,8 +1,8 @@
 // ✅ src/utils/common/FallbackLoading.tsx — Professional Overlay Loader
-'use client';
+"use client";
 
-import { FC } from 'react';
-import clsx from 'clsx';
+import { FC } from "react";
+import clsx from "clsx";
 
 interface FallbackLoadingProps {
   /** 💬 ข้อความที่แสดงบน loader สามารถกำหนดเองได้ */
@@ -23,8 +23,8 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({ message, className }) => {
   return (
     <div
       className={clsx(
-        'fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm animate-fadeIn',
-        className,
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm animate-fadeIn",
+        className
       )}
       role="status"
       aria-live="polite"
@@ -54,7 +54,9 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({ message, className }) => {
         </svg>
 
         {/* Loading Text */}
-        <p className="text-sm text-base-content/70 select-none">{message || 'กำลังโหลด...'}</p>
+        <p className="text-sm text-base-content/70 select-none">
+          {message || "กำลังโหลด..."}
+        </p>
       </div>
     </div>
   );

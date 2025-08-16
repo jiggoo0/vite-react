@@ -1,26 +1,43 @@
-import { FC, Suspense, lazy, ReactNode, ComponentType } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Layout from '@/Layout/Layout';
-import ScrollToTop from '@/utils/common/ScrollToTop';
-import FallbackLoader from '@/utils/common/FallbackLoader';
-import ErrorBoundary from '@/utils/common/ErrorBoundary';
-import GuardRoutes from '@/Router/GuardRoutes';
-import RoleGuard from '@/Router/RoleGuard';
+import { FC, Suspense, lazy, ReactNode, ComponentType } from "react";
+import { Routes, Route } from "react-router-dom";
 
-const Home = lazy(() => import('@/Home/Home'));
-const Login = lazy(() => import('@/Home/Login'));
-const SecretPage = lazy(() => import('@/Home/SecretPage'));
-const CustomerAssessmentForm = lazy(() => import('@/Home/CustomerAssessmentForm'));
-const IdCardFormPage = lazy(() => import('@/Home/IdCardForm'));
-const Forbidden = lazy(() => import('@/utils/common/403'));
+// 🌐 Layout & Utilities
+import Layout from "@/Layout/Layout";
+import ScrollToTop from "@/utils/common/ScrollToTop";
+import FallbackLoader from "@/utils/common/FallbackLoader";
+import ErrorBoundary from "@/utils/common/ErrorBoundary";
 
-const RouteSuspense: FC<{ children: ReactNode; message?: string }> = ({ children, message }) => (
-  <Suspense fallback={<FallbackLoader message={message || 'กำลังโหลดหน้า...'} />}>
+// 🛡 Guards
+import GuardRoutes from "@/Router/GuardRoutes";
+import RoleGuard from "@/Router/RoleGuard";
+
+// 📦 Lazy Imports
+const Home = lazy(() => import("@/Home/Home"));
+const Login = lazy(() => import("@/Home/Login"));
+const SecretPage = lazy(() => import("@/Home/SecretPage"));
+const CustomerAssessmentForm = lazy(
+  () => import("@/Home/CustomerAssessmentForm")
+);
+const IdCardFormPage = lazy(() => import("@/Home/IdCardForm"));
+const Forbidden = lazy(() => import("@/utils/common/403"));
+
+// ======================================================
+// Suspense Wrapper
+// ======================================================
+const RouteSuspense: FC<{ children: ReactNode; message?: string }> = ({
+  children,
+  message,
+}) => (
+  <Suspense
+    fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}
+  >
     {children}
   </Suspense>
 );
 
-// Generic lazyPage แบบ type-safe
+// ======================================================
+// Type-Safe Lazy Page Wrapper
+// ======================================================
 function lazyPage<P extends object>(
   Page: ComponentType<P>,
   props?: P,
@@ -28,15 +45,19 @@ function lazyPage<P extends object>(
 ) {
   return (
     <RouteSuspense message={message}>
-      <Page {...(props ?? {} as P)} />
+      <Page {...(props ?? ({} as P))} />
     </RouteSuspense>
   );
 }
 
+// ======================================================
+// App Router
+// ======================================================
 const AppRouter: FC = () => (
   <>
     <ScrollToTop />
     <Routes>
+      {/* ================== Public Routes ================== */}
       <Route element={<Layout />}>
         <Route
           index
@@ -50,21 +71,44 @@ const AppRouter: FC = () => (
         <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
       </Route>
 
-      <Route element={<GuardRoutes><Layout /></GuardRoutes>}>
+      {/* ================== Guarded Routes ================== */}
+      <Route
+        element={
+          <GuardRoutes>
+            <Layout />
+          </GuardRoutes>
+        }
+      >
         <Route path="secret" element={lazyPage(SecretPage)} />
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
-      <Route path="admin" element={<RoleGuard allowedRoles={['admin']}><Layout /></RoleGuard>}>
+      {/* ================== Admin Routes ================== */}
+      <Route
+        path="admin"
+        element={
+          <RoleGuard allowedRoles={["admin"]}>
+            <Layout />
+          </RoleGuard>
+        }
+      >
         <Route
           index
-          element={<div className="p-6 text-xl font-semibold text-white">🛠️ Admin Dashboard</div>}
+          element={
+            <div className="p-6 text-xl font-semibold text-white">
+              🛠️ Admin Dashboard
+            </div>
+          }
         />
         <Route path="secret" element={lazyPage(SecretPage)} />
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
-      <Route path="*" element={lazyPage(Forbidden, {}, 'กำลังโหลดหน้า 403...')} />
+      {/* ================== Fallback Routes ================== */}
+      <Route
+        path="*"
+        element={lazyPage(Forbidden, {}, "กำลังโหลดหน้า 403...")}
+      />
     </Routes>
   </>
 );

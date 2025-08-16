@@ -11,8 +11,8 @@ lerna-debug.log*
 *.local
 
 # Backup directories
-.backup/           # ป้องกัน ESLint scan และ Git tracking ไฟล์สำรอง
-*.bak              # เผื่อบางระบบใช้ .bak สำหรับสำเนา
+.backup/
+*.bak
 
 # Build output
 dist/
@@ -50,13 +50,13 @@ Desktop.ini
 # Vercel / Deployment platforms
 .vercel/
 
-# Lockfiles (ถ้าใช้หลายระบบจัดการ)
+# Lockfiles
 package-lock.json
 yarn.lock
 .pnpm-debug.log
 
 # Others (optional)
-*.pem         # ป้องกันกุญแจ SSL หรือ SSH เผลอติดไป
+*.pem
 *.crt
 *.key
 *.cert

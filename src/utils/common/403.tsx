@@ -1,7 +1,7 @@
 // ✅ src/utils/common/403.tsx — Forbidden (403) Page
 
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { FC } from "react";
+import { Link } from "react-router-dom";
 
 /**
  * ❌ Forbidden Page (403)

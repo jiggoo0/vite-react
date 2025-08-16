@@ -1,5 +1,7 @@
-import { ShieldCheck, Clock, Users, Lock, Award } from 'lucide-react';
-import { motion, Variants } from 'framer-motion';
+"use client";
+
+import { ShieldCheck, Clock, Users, Lock, Award } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 
 type BadgeItem = {
   id: string;
@@ -10,38 +12,38 @@ type BadgeItem = {
 
 const badges: BadgeItem[] = [
   {
-    id: 'secure',
+    id: "secure",
     icon: <ShieldCheck className="w-10 h-10 text-primary" />,
-    title: 'ข้อมูลปลอดภัยตามมาตรฐานสากล',
-    desc: 'ระบบเข้ารหัสและป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต',
+    title: "ข้อมูลปลอดภัยตามมาตรฐานสากล",
+    desc: "ระบบเข้ารหัสและป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต",
   },
   {
-    id: 'temporary-access',
+    id: "temporary-access",
     icon: <Clock className="w-10 h-10 text-primary" />,
-    title: 'การเข้าถึงชั่วคราว',
-    desc: 'รหัสเข้าถึงมีเวลาจำกัดเพื่อความปลอดภัยสูงสุด',
+    title: "การเข้าถึงชั่วคราว",
+    desc: "รหัสเข้าถึงมีเวลาจำกัดเพื่อความปลอดภัยสูงสุด",
   },
   {
-    id: 'personal-login',
+    id: "personal-login",
     icon: <Lock className="w-10 h-10 text-primary" />,
-    title: 'ล็อกอินด้วยรหัสเฉพาะบุคคล',
-    desc: 'รองรับรหัสเฉพาะผู้ใช้ที่ตรวจสอบแล้วเท่านั้น',
+    title: "ล็อกอินด้วยรหัสเฉพาะบุคคล",
+    desc: "รองรับรหัสเฉพาะผู้ใช้ที่ตรวจสอบแล้วเท่านั้น",
   },
   {
-    id: 'trusted',
+    id: "trusted",
     icon: <Award className="w-10 h-10 text-primary" />,
-    title: 'ความน่าเชื่อถือสูง',
-    desc: 'ผ่านการทดสอบและรับรองโดยทีมพัฒนามืออาชีพ',
+    title: "ความน่าเชื่อถือสูง",
+    desc: "ผ่านการทดสอบและรับรองโดยทีมพัฒนามืออาชีพ",
   },
   {
-    id: 'multi-level',
+    id: "multi-level",
     icon: <Users className="w-10 h-10 text-primary" />,
-    title: 'รองรับผู้ใช้หลายระดับ',
-    desc: 'กำหนดสิทธิ์ตามระดับผู้ใช้อย่างชัดเจน',
+    title: "รองรับผู้ใช้หลายระดับ",
+    desc: "กำหนดสิทธิ์ตามระดับผู้ใช้อย่างชัดเจน",
   },
 ];
 
-// Framer Motion variants
+// Motion Variants
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (custom: number) => ({
@@ -50,7 +52,7 @@ const cardVariants: Variants = {
     transition: {
       delay: custom * 0.1,
       duration: 0.4,
-      ease: 'easeOut' as const,
+      ease: "easeOut" as const,
     },
   }),
 };
@@ -64,31 +66,39 @@ interface BadgeCardProps {
 
 const BadgeCard: React.FC<BadgeCardProps> = ({ icon, title, desc, index }) => (
   <motion.article
-    className="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all duration-300"
+    className="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary"
     variants={cardVariants}
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true, amount: 0.2 }}
     custom={index}
-    whileHover={{ y: -4, scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
+    whileHover={{ y: -4, scale: 1.03 }}
+    whileTap={{ scale: 0.97 }}
     aria-label={title}
   >
-    <div className="card-body items-center text-center p-6">
+    <div className="card-body flex flex-col items-center text-center p-6">
       <div className="mb-4">{icon}</div>
-      <h3 className="card-title text-base font-bold mb-2">{title}</h3>
-      <p className="text-sm text-gray-600 dark:text-gray-300">{desc}</p>
+      <h3 className="card-title text-base md:text-lg font-semibold mb-2">
+        {title}
+      </h3>
+      <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
+        {desc}
+      </p>
     </div>
   </motion.article>
 );
 
-export default function TrustBadges() {
+const TrustBadges: React.FC = () => {
   return (
-    <section className="py-12 bg-base-200" aria-labelledby="trust-badges-heading">
+    <section
+      className="py-12 bg-base-200"
+      aria-labelledby="trust-badges-heading"
+    >
       <div className="max-w-6xl mx-auto px-4">
         <h2 id="trust-badges-heading" className="sr-only">
           เหตุผลที่คุณวางใจเรา
         </h2>
+
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {badges.map(({ id, ...badge }, idx) => (
             <BadgeCard key={id} {...badge} index={idx} />
@@ -97,4 +107,6 @@ export default function TrustBadges() {
       </div>
     </section>
   );
-}
+};
+
+export default TrustBadges;

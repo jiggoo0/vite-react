@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { motion } from 'framer-motion';
-import clsx from 'clsx';
+import { FC } from "react";
+import { motion } from "framer-motion";
+import clsx from "clsx";
 
 type Case = {
   id: string;
@@ -18,29 +18,35 @@ export interface CaseStudyRedactedProps {
   subline?: string;
 }
 
+// Animation variants
 const variants = {
   hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0 },
 };
 
-const Redact: FC<{ label?: string }> = ({ label = 'REDACTED' }) => (
-  <span className="bg-black text-black px-1 rounded-sm select-none">{label}</span>
+// REDACTED label component
+const Redact: FC<{ label?: string }> = ({ label = "REDACTED" }) => (
+  <span className="bg-black text-black px-1 rounded-sm select-none">
+    {label}
+  </span>
 );
 
 const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
   className,
   items,
-  headline = 'Case Study (ข้อมูลถูกปกปิดตามนโยบาย)',
-  subline = 'แสดงเฉพาะสิ่งส่งมอบที่เปิดเผยได้ โดยซ่อนข้อมูลลูกค้า/แบรนด์/เมทาดาต้าสำคัญ',
+  headline = "Case Study ()",
+  subline = "  //  ",
 }) => {
   return (
-    <section className={clsx('py-12 md:py-16', className)}>
+    <section className={clsx("py-12 md:py-16", className)}>
       <div className="container mx-auto px-4">
+        {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold">{headline}</h2>
           <p className="opacity-80 mt-2">{subline}</p>
         </div>
 
+        {/* Grid of case studies */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {items.map((it, idx) => (
             <motion.article
@@ -48,36 +54,47 @@ const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: idx * 0.05 }}
+              transition={{ delay: idx * 0.05, duration: 0.4 }}
               variants={variants}
-              className="card bg-base-200 overflow-hidden"
+              className="card bg-base-200 overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-shadow"
             >
+              {/* Image */}
               <figure className="relative">
                 <img
                   src={it.imageSrc}
                   alt={it.title}
                   loading="lazy"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
                 />
-                {/* แถบปกปิด */}
+                {/* Overlay warning */}
                 <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/50 to-transparent text-white text-xs">
-                  ข้อมูลอ่อนไหวบางส่วนถูกซ่อน
+                  
                 </div>
               </figure>
+
+              {/* Body */}
               <div className="card-body">
-                <h3 className="card-title text-lg">
-                  {it.title} {it.redactedFields?.includes('client') && <Redact />}
+                <h3 className="card-title text-lg font-semibold">
+                  {it.title}{" "}
+                  {it.redactedFields?.includes("client") && <Redact />}
                 </h3>
                 <p className="opacity-80">
-                  {it.summary} {it.redactedFields?.includes('brand') && <Redact label="BRAND" />}
+                  {it.summary}{" "}
+                  {it.redactedFields?.includes("brand") && (
+                    <Redact label="BRAND" />
+                  )}
                 </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {it.tags?.map((t) => (
-                    <div key={t} className="badge badge-outline">
-                      {t}
-                    </div>
-                  ))}
-                </div>
+
+                {/* Tags */}
+                {it.tags && it.tags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {it.tags.map((t) => (
+                      <span key={t} className="badge badge-outline">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.article>
           ))}

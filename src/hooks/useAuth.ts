@@ -1,9 +1,9 @@
 // src/hooks/useAuth.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export type User = {
   username: string;
-  role: 'admin' | 'user' | 'temp';
+  role: "admin" | "user" | "temp";
 };
 
 /**
@@ -19,24 +19,26 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('user');
+    const stored = localStorage.getItem("user");
 
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
 
         if (
-          typeof parsed === 'object' &&
+          typeof parsed === "object" &&
           parsed !== null &&
-          typeof parsed.username === 'string' &&
-          (parsed.role === 'admin' || parsed.role === 'user' || parsed.role === 'temp')
+          typeof parsed.username === "string" &&
+          (parsed.role === "admin" ||
+            parsed.role === "user" ||
+            parsed.role === "temp")
         ) {
           setUser(parsed);
         } else {
-          localStorage.removeItem('user');
+          localStorage.removeItem("user");
         }
       } catch {
-        localStorage.removeItem('user');
+        localStorage.removeItem("user");
       }
     }
 
@@ -44,12 +46,12 @@ export const useAuth = () => {
   }, []);
 
   const login = (userData: User) => {
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     setUser(null);
   };
 

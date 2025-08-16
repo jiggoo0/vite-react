@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { Component, ReactNode, ErrorInfo } from 'react';
+import React, { Component, ReactNode, ErrorInfo } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -25,7 +25,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('💥 Uncaught error:', error, errorInfo);
+    console.error("💥 Uncaught error:", error, errorInfo);
     this.props.onError?.(error, errorInfo);
   }
 
@@ -45,10 +45,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             aria-live="assertive"
             className="flex min-h-screen flex-col items-center justify-center bg-base-100 text-base-content p-6 text-center"
           >
-            <h1 className="text-2xl sm:text-3xl font-bold mb-3">เกิดข้อผิดพลาด</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-3">
+              เกิดข้อผิดพลาด
+            </h1>
 
             <p className="mb-4 text-sm text-base-content/70">
-              {fallbackMessage || 'ขอโทษในความไม่สะดวก กรุณารีเฟรชหน้าใหม่ หรือลองอีกครั้งภายหลัง'}
+              {fallbackMessage ||
+                "ขอโทษในความไม่สะดวก กรุณารีเฟรชหน้าใหม่ หรือลองอีกครั้งภายหลัง"}
             </p>
 
             {error?.message && (

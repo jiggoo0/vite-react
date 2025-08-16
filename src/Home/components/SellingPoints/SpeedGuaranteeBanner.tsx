@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { FC } from 'react';
-import { Rocket, TimerReset } from 'lucide-react';
-import { motion } from 'framer-motion';
-import clsx from 'clsx';
+import { FC } from "react";
+import { Rocket, TimerReset } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import clsx from "clsx";
 
 export interface SpeedGuaranteeBannerProps {
   className?: string;
@@ -13,21 +13,38 @@ export interface SpeedGuaranteeBannerProps {
   contactHref?: string;
 }
 
+const bulletVariants: Variants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: i * 0.1, duration: 0.4, ease: "easeOut" },
+  }),
+};
+
 const SpeedGuaranteeBanner: FC<SpeedGuaranteeBannerProps> = ({
   className,
-  title = 'คิวด่วนพร้อม — งานไว เนียน ส่งตามนัด',
-  desc = 'รองรับงานเร่ง 24 ชม.* ตามระดับความยาก + คิวที่ว่าง',
-  bullets = ['จัดคิวทันทีหลังยืนยันขอบเขต', 'อัปเดตสถานะโปร่งใส', 'ส่งไฟล์ปลอดภัย ลิงก์หมดอายุ'],
-  contactHref = 'https://line.me/R/ti/p/@yourid',
+  title = "คิวด่วนพร้อม — งานไว เนียน ส่งตามนัด",
+  desc = "รองรับงานเร่ง 24 ชม.* ตามระดับความยาก + คิวที่ว่าง",
+  bullets = [
+    "จัดคิวทันทีหลังยืนยันขอบเขต",
+    "อัปเดตสถานะโปร่งใส",
+    "ส่งไฟล์ปลอดภัย ลิงก์หมดอายุ",
+  ],
+  contactHref = "https://line.me/R/ti/p/@yourid",
 }) => {
   return (
-    <section className={clsx('py-6 bg-base-100', className)} aria-labelledby="speed-banner-title">
+    <section
+      className={clsx("py-6 bg-base-100", className)}
+      aria-labelledby="speed-banner-title"
+      role="region"
+    >
       <div className="container mx-auto px-4">
         <motion.div
-          className="alert flex flex-col md:flex-row items-start md:items-center bg-base-200 shadow-lg rounded-xl gap-4"
+          className="alert flex flex-col md:flex-row items-start md:items-center bg-base-200 shadow-lg rounded-xl gap-4 p-4 md:p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {/* Icon */}
           <motion.div
@@ -40,43 +57,52 @@ const SpeedGuaranteeBanner: FC<SpeedGuaranteeBannerProps> = ({
 
           {/* Text Content */}
           <div className="flex-1">
-            <h3 id="speed-banner-title" className="font-semibold text-lg md:text-xl">
+            <h3
+              id="speed-banner-title"
+              className="font-semibold text-lg md:text-xl"
+            >
               {title}
             </h3>
-            <p className="text-sm opacity-80 mt-1">{desc}</p>
+            <p className="text-sm text-base-content/80 mt-1">{desc}</p>
 
             {/* Bullets */}
-            <ul className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+            <ul
+              className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 gap-y-1 text-sm"
+              aria-label="รายการคุณสมบัติคิวด่วน"
+            >
               {bullets.map((b, i) => (
                 <motion.li
                   key={i}
-                  className="flex items-center gap-2 transition-all hover:text-primary focus-within:text-primary cursor-pointer"
-                  whileHover={{ x: 4 }}
-                  whileFocus={{ x: 4 }}
+                  custom={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  variants={bulletVariants}
+                  tabIndex={0}
+                  className="flex items-center gap-2 cursor-pointer rounded focus:outline-none focus:ring-2 focus:ring-primary transition-colors hover:text-primary focus:text-primary"
                 >
-                  <TimerReset className="w-4 h-4 text-primary flex-shrink-0" aria-hidden="true" />
-                  <span>{b}</span>
+                  <TimerReset
+                    className="w-4 h-4 text-primary flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span className="text-base-content/80">{b}</span>
                 </motion.li>
               ))}
             </ul>
           </div>
 
           {/* Call-to-Action */}
-          <motion.div
-            className="mt-3 md:mt-0 md:ml-auto flex-shrink-0"
+          <motion.a
+            href={contactHref}
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            className="mt-3 md:mt-0 md:ml-auto btn btn-primary transition-transform focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="คุยเร่งด่วนผ่าน LINE"
           >
-            <a
-              className="btn btn-primary transition-transform focus:outline-none focus:ring-2 focus:ring-primary"
-              href={contactHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="คุยเร่งด่วนผ่าน LINE"
-            >
-              คุยเร่งด่วน
-            </a>
-          </motion.div>
+            คุยเร่งด่วน
+          </motion.a>
         </motion.div>
       </div>
     </section>

@@ -1,10 +1,14 @@
 // src/Home/SecretPage/SalaryCertificate.tsx
-import React from 'react';
-import { mockSalaryCertificate } from './mockSalaryCertificate';
+"use client";
 
-const SalaryCertificate: React.FC = () => {
-  const data = mockSalaryCertificate;
+import React, { FC } from "react";
+import { SalaryCertificateData } from "./mockSalaryCertificate";
 
+interface SalaryCertificateProps {
+  data: SalaryCertificateData;
+}
+
+const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
   return (
     <div
       className="
@@ -15,7 +19,6 @@ const SalaryCertificate: React.FC = () => {
     >
       {/* ─── Header ─────────────────────────────── */}
       <div className="flex justify-between items-start">
-        {/* โลโก้ถูกเอาออก */}
         <div className="text-right leading-tight">
           <p className="text-[18pt] font-bold">{data.companyName}</p>
           <p className="text-[16pt] font-bold">{data.companyNameEn}</p>
@@ -24,24 +27,27 @@ const SalaryCertificate: React.FC = () => {
       </div>
 
       {/* ─── Title ─────────────────────────────── */}
-      <h1 className="text-center text-[20pt] font-bold my-6 underline">หนังสือรับรองเงินเดือน</h1>
+      <h1 className="text-center text-[20pt] font-bold my-6 underline">
+        หนังสือรับรองเงินเดือน
+      </h1>
 
       {/* ─── Body ─────────────────────────────── */}
       <div className="whitespace-pre-line text-justify tracking-wide">
-        บริษัทฯ ขอรับรองว่า <strong>นาย {data.employeeName}</strong> เป็นพนักงานของบริษัทฯ
-        โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {data.startDate} จนถึงปัจจุบัน ดำรงตำแหน่ง {data.position}{' '}
-        สังกัดแผนก {data.department}
+        บริษัทฯ ขอรับรองว่า <strong>นาย {data.employeeName}</strong>{" "}
+        เป็นพนักงานของบริษัทฯ โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {data.startDate}{" "}
+        จนถึงปัจจุบัน ดำรงตำแหน่ง {data.position} สังกัดแผนก {data.department}.
         <br />
         <br />
         โดยมีรายได้ประจำดังนี้:
         <ul className="ml-8 list-disc">
           <li>เงินเดือนประจำ: {data.salary.toLocaleString()} บาท / เดือน</li>
-          <li>ค่าตำแหน่ง: {data.positionAllowance.toLocaleString()} บาท / เดือน</li>
+          <li>
+            ค่าตำแหน่ง: {data.positionAllowance.toLocaleString()} บาท / เดือน
+          </li>
           <li>ค่าครองชีพ: {data.costOfLiving.toLocaleString()} บาท / เดือน</li>
         </ul>
         <br />
-        ออกให้ ณ วันที่ {data.issueDate}
-        <br />
+        ออกให้ ณ วันที่ {data.issueDate}{" "}
         เพื่อใช้เป็นหลักฐานประกอบการยืนยันการเป็นพนักงานของบริษัทฯ เท่านั้น
       </div>
 
@@ -56,8 +62,13 @@ const SalaryCertificate: React.FC = () => {
       <div className="mt-10 text-[14pt]">
         <p className="underline font-bold">หมายเหตุ</p>
         <ol className="list-decimal ml-6">
-          <li>หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น</li>
-          <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด จึงจะถือว่าสมบูรณ์</li>
+          <li>
+            หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น
+          </li>
+          <li>
+            หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด
+            จึงจะถือว่าสมบูรณ์
+          </li>
         </ol>
       </div>
 
@@ -73,4 +84,5 @@ const SalaryCertificate: React.FC = () => {
   );
 };
 
+SalaryCertificate.displayName = "SalaryCertificate";
 export default SalaryCertificate;

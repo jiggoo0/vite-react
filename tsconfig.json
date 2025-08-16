@@ -26,9 +26,9 @@
     "outDir": "./dist", // ไดเรกทอรีสำหรับ build output
     "rootDir": "./src", // root ของ source
 
-    "strict": true, // ความเข้มงวดของ TypeScript
-    "noImplicitAny": true,
-    "noFallthroughCasesInSwitch": true,
+    "strict": true, // เปิด strict mode
+    "noImplicitAny": true, // ป้องกัน any แบบไม่ตั้งใจ
+    "noFallthroughCasesInSwitch": true, // ป้องกัน switch case หล่นไป
 
     "esModuleInterop": true, // โมดูล interoperability
     "allowSyntheticDefaultImports": true,
