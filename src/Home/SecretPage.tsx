@@ -11,7 +11,7 @@ import DocumentDownload from "@home/components/SecretSection/DocumentDownload";
 import KbankNotificationCard from "@home/components/SecretSection/KbankNotificationCard";
 import BlurContact from "@home/components/SecretSection/BlurContact/BlurContact";
 import DriverLicenseFormPage from "@home/SecretPage/DriverLicense/DriverLicenseForm";
-import IdCardForm from "@home/IdCardForm";
+import IdCardFormWithOCR from "@home/components/Forms/IdCardFormWithOCR";
 import ErrorBoundary from "@utils/common/ErrorBoundary";
 
 // ======================= Hooks =======================
@@ -55,22 +55,17 @@ const CardWrapper: FC<CardWrapperProps> = memo(({ children, className }) => (
 ));
 CardWrapper.displayName = "CardWrapper";
 
-const LoadingSpinner: FC<{ size?: "sm" | "md" | "lg" }> = memo(
-  ({ size = "md" }) => (
-    <div
-      className={clsx(
-        "animate-spin border-4 border-t-4 border-gray-300 rounded-full mx-auto",
-        {
-          "w-6 h-6": size === "sm",
-          "w-10 h-10": size === "md",
-          "w-16 h-16": size === "lg",
-        }
-      )}
-      role="status"
-      aria-label="Loading content..."
-    />
-  )
-);
+const LoadingSpinner: FC<{ size?: "sm" | "md" | "lg" }> = memo(({ size = "md" }) => (
+  <div
+    className={clsx("animate-spin border-4 border-t-4 border-gray-300 rounded-full mx-auto", {
+      "w-6 h-6": size === "sm",
+      "w-10 h-10": size === "md",
+      "w-16 h-16": size === "lg",
+    })}
+    role="status"
+    aria-label="Loading content..."
+  />
+));
 LoadingSpinner.displayName = "LoadingSpinner";
 
 interface WithBlurProps {
@@ -79,11 +74,7 @@ interface WithBlurProps {
 }
 
 const WithBlurIfUser: FC<WithBlurProps> = memo(({ isNormalUser, children }) =>
-  isNormalUser ? (
-    <div className="blur-sm pointer-events-none select-none">{children}</div>
-  ) : (
-    <>{children}</>
-  )
+  isNormalUser ? <div className="blur-sm pointer-events-none select-none">{children}</div> : <>{children}</>
 );
 WithBlurIfUser.displayName = "WithBlurIfUser";
 
@@ -127,7 +118,7 @@ const AllUserSection: FC<SectionProps> = memo(({ isNormalUser, delay = 0 }) => (
 
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 300}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
-        <IdCardForm />
+        <IdCardFormWithOCR />
       </WithBlurIfUser>
     </CardWrapper>
 
@@ -144,28 +135,27 @@ const AllUserSection: FC<SectionProps> = memo(({ isNormalUser, delay = 0 }) => (
 ));
 AllUserSection.displayName = "AllUserSection";
 
-const DriverLicenseSection: FC<SectionProps> = memo(
-  ({ isNormalUser, delay = 200 }) => (
-    <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
-      <h2 className="text-xl font-semibold mb-4">ฟอร์มใบขับขี่</h2>
-      <WithBlurIfUser isNormalUser={isNormalUser}>
-        <DriverLicenseFormPage />
-      </WithBlurIfUser>
-    </CardWrapper>
-  )
-);
+const DriverLicenseSection: FC<SectionProps> = memo(({ isNormalUser, delay = 200 }) => (
+  <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
+    <h2 className="text-xl font-semibold mb-4">ฟอร์มใบขับขี่</h2>
+    <WithBlurIfUser isNormalUser={isNormalUser}>
+      <DriverLicenseFormPage />
+    </WithBlurIfUser>
+  </CardWrapper>
+));
 DriverLicenseSection.displayName = "DriverLicenseSection";
 
 // ======================= Secret Page =======================
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
 
-  if (loading)
+  if (loading) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-base-100">
         <LoadingSpinner size="lg" />
       </section>
     );
+  }
 
   if (!user) return null;
 
@@ -192,10 +182,7 @@ const SecretPage: FC = () => {
           <AllUserSection isNormalUser={isNormalUser} />
 
           <CardWrapper className="animate-fadeInUp delay-500">
-            <BlurContact
-              imageUrl="/images/admin-contact.jpg"
-              contactText="ติดต่อฝ่ายสนับสนุน"
-            />
+            <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />
           </CardWrapper>
         </main>
 

@@ -3,8 +3,10 @@
 import { FC, memo, useState, ChangeEvent, FormEvent } from "react";
 import clsx from "clsx";
 
-// ---------------------- Types ----------------------
-interface IdCardFormProps {
+// =======================
+// Types
+// =======================
+interface IdCardFormWithOCRProps {
   className?: string;
 }
 
@@ -15,7 +17,9 @@ interface FormData {
   address: string;
 }
 
-// ---------------------- Reusable Input ----------------------
+// =======================
+// Reusable Input Component
+// =======================
 interface InputFieldProps {
   label: string;
   name: keyof FormData;
@@ -70,8 +74,10 @@ const InputField: FC<InputFieldProps> = ({
   );
 };
 
-// ---------------------- Component ----------------------
-const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
+// =======================
+// Main Component
+// =======================
+const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     idNumber: "",
@@ -79,11 +85,34 @@ const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
     address: "",
   });
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const [ocrLoading, setOcrLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // =======================
+  // OCR Simulation / Upload
+  // =======================
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImagePreview(URL.createObjectURL(file));
+    setOcrLoading(true);
+
+    // Simulate OCR (replace with actual OCR API)
+    setTimeout(() => {
+      setFormData({
+        fullName: "สมชาย ใจดี",
+        idNumber: "1234567890123",
+        birthDate: "1990-01-01",
+        address: "123/45 ถนนสุขใจ แขวงสุขใจ เขตสุขใจ กรุงเทพฯ",
+      });
+      setOcrLoading(false);
+    }, 1500);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -100,10 +129,24 @@ const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
         className
       )}
     >
-      <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน</h2>
+      <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน (OCR)</h2>
+
+      {/* Upload ID Card */}
+      <div className="flex flex-col space-y-2">
+        <label className="font-medium">อัปโหลดรูปบัตรประชาชน</label>
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+        {ocrLoading && <p className="text-blue-500">กำลังอ่านข้อมูลจากภาพ...</p>}
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Preview"
+            className="mt-2 max-h-40 object-contain rounded-md border"
+          />
+        )}
+      </div>
 
       <InputField
-        label="ชื่อ-นามสกุล"
+        label="ชื่อ-สกุล"
         name="fullName"
         value={formData.fullName}
         placeholder="กรอกชื่อ-นามสกุล"
@@ -121,16 +164,16 @@ const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
       <InputField
         label="วันเกิด"
         name="birthDate"
-        value={formData.birthDate}
         type="date"
+        value={formData.birthDate}
         onChange={handleChange}
       />
 
       <InputField
         label="ที่อยู่"
         name="address"
-        value={formData.address}
         type="textarea"
+        value={formData.address}
         placeholder="กรอกที่อยู่"
         onChange={handleChange}
       />
@@ -145,5 +188,5 @@ const IdCardForm: FC<IdCardFormProps> = ({ className }) => {
   );
 };
 
-IdCardForm.displayName = "IdCardForm";
-export default memo(IdCardForm);
+IdCardFormWithOCR.displayName = "IdCardFormWithOCR";
+export default memo(IdCardFormWithOCR);

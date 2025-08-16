@@ -40,7 +40,7 @@ export default defineConfig({
             if (id.includes("react-dom")) return "vendor_react-dom";
             if (id.includes("react-router-dom")) return "vendor_react-router";
             if (id.includes("lodash")) return "vendor_lodash";
-            if (id.includes("axios")) return "vendor_axios";
+            // axios และ lib อื่น ๆ รวมกับ vendor_misc
             return "vendor_misc";
           }
         },
