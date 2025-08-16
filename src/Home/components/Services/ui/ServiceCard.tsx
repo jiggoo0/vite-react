@@ -7,6 +7,7 @@ interface ServiceCardProps {
   service: ServiceType;
 }
 
+/** สร้างลิงก์ LINE พร้อมข้อความ */
 const createLineLink = (message: string) =>
   `https://lin.ee/sOKDUEg?text=${encodeURIComponent(message)}`;
 
@@ -18,7 +19,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
     <article
       tabIndex={0}
       aria-label={`บริการ: ${service.title}`}
-      className="relative flex flex-col overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-lg focus-within:ring-2 focus-within:ring-primary"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-lg focus-within:ring-2 focus-within:ring-primary"
     >
       {/* Service Image */}
       <img
@@ -47,7 +48,7 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
         {!service.available && service.comingSoonNote && (
           <span
             aria-hidden="true"
-            className="inline-block rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800 mt-2"
+            className="inline-block mt-2 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800"
           >
             🚧 {service.comingSoonNote}
           </span>

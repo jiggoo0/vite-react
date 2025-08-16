@@ -3,7 +3,7 @@
 import { FC, ReactNode, lazy, Suspense, memo } from "react";
 import clsx from "clsx";
 
-// Components
+// ======================= Components =======================
 import SecretHeader from "@home/components/SecretSection/SecretHeader";
 import SecretDescription from "@home/components/SecretSection/SecretDescription";
 import SecretActions from "@home/components/SecretSection/SecretActions";
@@ -13,19 +13,19 @@ import BlurContact from "@home/components/SecretSection/BlurContact/BlurContact"
 import DriverLicenseFormPage from "@home/SecretPage/DriverLicense/DriverLicenseForm";
 import IdCardForm from "@home/IdCardForm";
 
-// Hooks
+// ======================= Hooks =======================
 import { useProtectedAuth } from "@hooks/useProtectedAuth";
 
-// Mock Data
+// ======================= Mock Data =======================
 import { mockRegistrationData } from "@home/SecretPage/RegistrationPreview/mockRegistrationData";
 import { mockSalaryCertificate } from "@home/SecretPage/SalaryCertificate/mockSalaryCertificate";
 import { mockMedicalCertificate } from "@home/SecretPage/MedicalCertificate/mockMedicalCertificate";
 import { kbankMockData } from "@home/components/SecretSection/KbankIOSNotification.mock";
 
-// Styles
+// ======================= Styles =======================
 import "@styles/driverLicense.css";
 
-// Lazy-loaded Components
+// ======================= Lazy-loaded =======================
 const RegistrationPreview = lazy(
   () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
 );
@@ -36,7 +36,7 @@ const MedicalCertificate = lazy(
   () => import("@home/SecretPage/MedicalCertificate/MedicalCertificate")
 );
 
-// Shared Components
+// ======================= Shared Components =======================
 interface CardWrapperProps {
   children: ReactNode;
   className?: string;
@@ -84,7 +84,7 @@ const WithBlurIfUser: FC<WithBlurProps> = memo(({ isNormalUser, children }) =>
 );
 WithBlurIfUser.displayName = "WithBlurIfUser";
 
-// Sections
+// ======================= Sections =======================
 interface SectionProps {
   isNormalUser: boolean;
   delay?: number;
@@ -92,7 +92,7 @@ interface SectionProps {
 
 const AllUserSection: FC<SectionProps> = ({ isNormalUser, delay = 0 }) => (
   <div className="space-y-6">
-    {/* Registration */}
+    {/** Registration */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
         <Suspense fallback={<LoadingSpinner size="md" />}>
@@ -101,7 +101,7 @@ const AllUserSection: FC<SectionProps> = ({ isNormalUser, delay = 0 }) => (
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/* Salary Certificate */}
+    {/** Salary Certificate */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 100}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
         <Suspense fallback={<LoadingSpinner size="md" />}>
@@ -110,7 +110,7 @@ const AllUserSection: FC<SectionProps> = ({ isNormalUser, delay = 0 }) => (
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/* Medical Certificate */}
+    {/** Medical Certificate */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 200}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
         <Suspense fallback={<LoadingSpinner size="md" />}>
@@ -119,14 +119,14 @@ const AllUserSection: FC<SectionProps> = ({ isNormalUser, delay = 0 }) => (
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/* ID Card */}
+    {/** ID Card */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 300}`)}>
       <WithBlurIfUser isNormalUser={isNormalUser}>
         <IdCardForm />
       </WithBlurIfUser>
     </CardWrapper>
 
-    {/* KBank Notification */}
+    {/** KBank Notification */}
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 400}`)}>
       <div className="space-y-5">
         {kbankMockData.map((item) => (
@@ -151,17 +151,16 @@ const DriverLicenseSection: FC<SectionProps> = ({
   </CardWrapper>
 );
 
-// Secret Page
+// ======================= Secret Page =======================
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
 
-  if (loading) {
+  if (loading)
     return (
       <section className="min-h-screen flex items-center justify-center bg-base-100">
         <LoadingSpinner size="lg" />
       </section>
     );
-  }
 
   if (!user) return null;
 
@@ -171,27 +170,27 @@ const SecretPage: FC = () => {
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
       <div className="container max-w-7xl mx-auto space-y-8 sm:space-y-10 lg:space-y-12">
-        {/* Header */}
+        {/** Header */}
         <CardWrapper className="animate-fadeInUp">
           <SecretHeader />
         </CardWrapper>
 
         <main className="space-y-8 sm:space-y-10 lg:space-y-12">
-          {/* Description */}
+          {/** Description */}
           <CardWrapper className="animate-fadeInUp delay-50">
             <SecretDescription user={{ ...user, role: effectiveRole }} />
           </CardWrapper>
 
-          {/* Document download */}
+          {/** Document Download */}
           <CardWrapper className="animate-fadeInUp delay-100">
             <DocumentDownload />
           </CardWrapper>
 
-          {/* Sections */}
+          {/** Sections */}
           <DriverLicenseSection isNormalUser={isNormalUser} />
           <AllUserSection isNormalUser={isNormalUser} />
 
-          {/* Contact */}
+          {/** Contact */}
           <CardWrapper className="animate-fadeInUp delay-500">
             <BlurContact
               imageUrl="/images/admin-contact.jpg"
@@ -200,7 +199,7 @@ const SecretPage: FC = () => {
           </CardWrapper>
         </main>
 
-        {/* Actions */}
+        {/** Actions */}
         <CardWrapper className="animate-fadeInUp delay-600">
           <SecretActions role={effectiveRole} />
         </CardWrapper>

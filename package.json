@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "check": "pnpm lint && pnpm type-check"
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
@@ -25,6 +26,7 @@
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "crypto-browserify": "3.12.1",
+    "dayjs": "1.11.13",
     "framer-motion": "^12.23.12",
     "html2canvas": "1.4.1",
     "install": "0.13.0",

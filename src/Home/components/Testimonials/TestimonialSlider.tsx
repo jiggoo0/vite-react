@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+"use client";
+
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { testimonials } from "@data/testimonialsData";
 
@@ -8,11 +10,7 @@ const variants = {
     opacity: 0,
     scale: 0.8,
   }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
+  center: { x: 0, opacity: 1, scale: 1 },
   exit: (direction: number) => ({
     x: direction < 0 ? 300 : -300,
     opacity: 0,
@@ -23,28 +21,59 @@ const variants = {
 const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const AUTO_PLAY_INTERVAL = 7000;
 
-const swipePower = (offset: number, velocity: number) =>
-  Math.abs(offset) * velocity;
+const swipePower = (offset: number, velocity: number) => offset * velocity;
 
 const TestimonialSlider: React.FC = () => {
   const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
+  const intervalRef = useRef<NodeJS.Timeout>();
 
-  const testimonialIndex =
-    ((page % testimonials.length) + testimonials.length) % testimonials.length;
+  const testimonialIndex = useMemo(
+    () =>
+      ((page % testimonials.length) + testimonials.length) %
+      testimonials.length,
+    [page]
+  );
 
   const paginate = useCallback((newDirection: number) => {
     setPage(([currentPage]) => [currentPage + newDirection, newDirection]);
   }, []);
 
+  // Auto-play with pause on hover/focus
   useEffect(() => {
-    const interval = setInterval(() => paginate(1), AUTO_PLAY_INTERVAL);
-    return () => clearInterval(interval);
+    const start = () => {
+      intervalRef.current = setInterval(() => paginate(1), AUTO_PLAY_INTERVAL);
+    };
+    const stop = () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+
+    start();
+    return () => stop(); // ✅ return function only
   }, [paginate]);
 
   const { content, name, role, id } = testimonials[testimonialIndex];
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl bg-white dark:bg-gray-900 p-8 shadow-2xl">
+    <div
+      className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl bg-white dark:bg-gray-900 p-8 shadow-2xl"
+      onMouseEnter={() =>
+        intervalRef.current && clearInterval(intervalRef.current)
+      }
+      onMouseLeave={() => {
+        intervalRef.current = setInterval(
+          () => paginate(1),
+          AUTO_PLAY_INTERVAL
+        );
+      }}
+      onFocus={() => intervalRef.current && clearInterval(intervalRef.current)}
+      onBlur={() => {
+        intervalRef.current = setInterval(
+          () => paginate(1),
+          AUTO_PLAY_INTERVAL
+        );
+      }}
+    >
+      {/* Slides */}
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={id}
@@ -76,7 +105,6 @@ const TestimonialSlider: React.FC = () => {
           <p className="text-gray-900 dark:text-gray-100 text-xl leading-relaxed mb-8 font-serif">
             “{content}”
           </p>
-
           <div className="flex items-center space-x-5">
             <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg select-none">
               {name.charAt(0)}
@@ -93,6 +121,7 @@ const TestimonialSlider: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
+      {/* Navigation */}
       {["left", "right"].map((dir) => {
         const isLeft = dir === "left";
         return (
@@ -120,6 +149,7 @@ const TestimonialSlider: React.FC = () => {
         );
       })}
 
+      {/* Pagination Dots */}
       <div className="flex justify-center mt-6 space-x-2">
         {testimonials.map((_, idx) => (
           <button
@@ -136,6 +166,7 @@ const TestimonialSlider: React.FC = () => {
         ))}
       </div>
 
+      {/* Progress Bar */}
       <div className="mt-2 h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <motion.div
           key={testimonialIndex}

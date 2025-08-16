@@ -38,15 +38,23 @@ const ServicesSection: FC = () => {
       </header>
 
       {/* Service Cards */}
-      <div role="list" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul
+        role="list"
+        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        aria-label="รายการบริการของเรา"
+      >
         {availableServices.map((service) => (
-          <ServiceCard key={service.id} service={service} />
+          <li key={service.id}>
+            <ServiceCard service={service} />
+          </li>
         ))}
 
         {comingSoonServices.map((service) => (
-          <ComingSoonServiceCard key={service.id} service={service} />
+          <li key={service.id}>
+            <ComingSoonServiceCard service={service} />
+          </li>
         ))}
-      </div>
+      </ul>
     </SectionContainer>
   );
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import { FC } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
@@ -34,8 +36,8 @@ const Redact: FC<{ label?: string }> = ({ label = "REDACTED" }) => (
 const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
   className,
   items,
-  headline = "Case Study ()",
-  subline = "  //  ",
+  headline = "Case Study (REDACTED)",
+  subline = "ข้อมูลบางส่วนถูกปกปิดเพื่อความเป็นส่วนตัว",
 }) => {
   return (
     <section className={clsx("py-12 md:py-16", className)}>
@@ -48,9 +50,9 @@ const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
 
         {/* Grid of case studies */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          {items.map((it, idx) => (
+          {items.map((item, idx) => (
             <motion.article
-              key={it.id}
+              key={item.id}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
@@ -61,40 +63,40 @@ const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
               {/* Image */}
               <figure className="relative">
                 <img
-                  src={it.imageSrc}
-                  alt={it.title}
+                  src={item.imageSrc}
+                  alt={item.title}
                   loading="lazy"
                   className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
                 />
                 {/* Overlay warning */}
                 <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/50 to-transparent text-white text-xs">
-                  
+                  REDACTED
                 </div>
               </figure>
 
               {/* Body */}
               <div className="card-body">
                 <h3 className="card-title text-lg font-semibold">
-                  {it.title}{" "}
-                  {it.redactedFields?.includes("client") && <Redact />}
+                  {item.title}{" "}
+                  {item.redactedFields?.includes("client") && <Redact />}
                 </h3>
                 <p className="opacity-80">
-                  {it.summary}{" "}
-                  {it.redactedFields?.includes("brand") && (
+                  {item.summary}{" "}
+                  {item.redactedFields?.includes("brand") && (
                     <Redact label="BRAND" />
                   )}
                 </p>
 
                 {/* Tags */}
-                {it.tags && it.tags.length > 0 && (
+                {item.tags?.length ? (
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {it.tags.map((t) => (
-                      <span key={t} className="badge badge-outline">
-                        {t}
+                    {item.tags.map((tag) => (
+                      <span key={tag} className="badge badge-outline">
+                        {tag}
                       </span>
                     ))}
                   </div>
-                )}
+                ) : null}
               </div>
             </motion.article>
           ))}

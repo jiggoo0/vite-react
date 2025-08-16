@@ -33,6 +33,7 @@ const PortfolioGallery: React.FC = () => {
       aria-labelledby="portfolio-gallery-title"
       className="space-y-8"
     >
+      {/* Hidden accessible heading for screen readers */}
       <h2 id="portfolio-gallery-title" className="sr-only">
         แกลเลอรีผลงานที่ผ่านมา
       </h2>
@@ -49,8 +50,10 @@ const PortfolioGallery: React.FC = () => {
         {filteredItems.map(({ id, image, title, category, link }) => (
           <article
             key={id}
+            tabIndex={0}
+            aria-label={`Portfolio item: ${title}`}
             className={cn(
-              "overflow-hidden rounded-xl bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-xl",
+              "overflow-hidden rounded-xl bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-xl focus-within:ring-2 focus-within:ring-primary",
               "dark:bg-neutral-900 dark:shadow-gray-800/50"
             )}
           >

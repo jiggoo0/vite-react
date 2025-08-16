@@ -18,12 +18,15 @@ const Services: FC = () => (
     {/* Decorative gradient background */}
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-y-0 -left-10 -z-10 w-[500px] rounded-full 
-                 bg-gradient-to-br from-primary/30 to-secondary/30 blur-[120px] opacity-40"
+      className="pointer-events-none absolute inset-y-0 -left-10 -z-10 w-[500px] 
+                 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 
+                 blur-[120px] opacity-40"
     />
 
-    {/* Main services section */}
-    <ServicesSection />
+    {/* Main services content */}
+    <div className="relative z-10">
+      <ServicesSection />
+    </div>
   </section>
 );
 

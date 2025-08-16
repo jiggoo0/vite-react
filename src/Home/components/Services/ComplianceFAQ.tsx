@@ -66,7 +66,9 @@ const ComplianceFAQ: FC<ComplianceFAQProps> = ({
                   ▼
                 </span>
               </summary>
-              <p className="mt-2 text-base text-base-content/80">{qa.a}</p>
+              <div className="mt-2 text-base text-base-content/80 overflow-hidden transition-all duration-300 ease-in-out">
+                <p>{qa.a}</p>
+              </div>
             </details>
           ))}
         </div>

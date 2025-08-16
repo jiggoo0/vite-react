@@ -18,15 +18,15 @@ import SellingPoints from "@home/components/SellingPoints/SellingPoints";
 import { ServicesSection } from "@home/components/Services";
 import FeatureList from "@home/components/Services/FeatureList";
 import FeatureAwards from "@home/components/Services/FeatureAwards";
-import UserBoard from "@home/components/UserBoard/UserBoard";
+import UserBoard, { IUser } from "@home/components/UserBoard/UserBoard";
 import TrustBadges from "@home/components/UserBoard/TrustBadges";
-import SectionContainer from "@common/SectionContainer";
-import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
-import TestimonialSlider from "@home/components/Testimonials/TestimonialSlider"; // <- default import
 import TrustMetricsBar from "@home/components/UserBoard/TrustMetricsBar";
 import SpeedGuaranteeBanner from "@home/components/SellingPoints/SpeedGuaranteeBanner";
 import CaseStudyRedacted from "@home/components/Portfolio/CaseStudyRedacted";
 import ComplianceFAQ from "@home/components/Services/ComplianceFAQ";
+import SectionContainer from "@common/SectionContainer";
+import { UserBoard as UserBoardDataReadonly } from "../data/UserBoard";
+import TestimonialSlider from "@home/components/Testimonials/TestimonialSlider";
 
 // ======================= Lazy-loaded Components =======================
 const PortfolioGallery = lazy(
@@ -52,12 +52,16 @@ const PageSection: FC<PageSectionProps> = ({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const currentRef = sectionRef.current;
+    if (!currentRef) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.15 }
+      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
     );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
+
+    observer.observe(currentRef);
+    return () => observer.unobserve(currentRef);
   }, []);
 
   return (
@@ -83,7 +87,8 @@ const PageSection: FC<PageSectionProps> = ({
 
 // ======================= Home Page =======================
 const Home: FC = () => {
-  const userBoardData = [...UserBoardDataReadonly];
+  // แปลง readonly เป็น mutable array
+  const userBoardData: IUser[] = [...UserBoardDataReadonly];
 
   return (
     <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">

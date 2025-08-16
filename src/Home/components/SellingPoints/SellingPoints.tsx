@@ -79,12 +79,14 @@ const SellingPoints: FC = () => {
           >
             {icon}
           </motion.div>
+
           <h3
             id={`point-title-${id}`}
             className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white"
           >
             {title}
           </h3>
+
           <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
             {description}
           </p>
