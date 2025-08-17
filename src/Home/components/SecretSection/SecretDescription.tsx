@@ -4,18 +4,13 @@ import { FC } from "react";
 
 type User = {
   username: string;
-  role: "admin" | "user";
+  role: "admin" | "user" | "manager";
 };
 
 interface SecretDescriptionProps {
-  /** ข้อมูลผู้ใช้ที่เข้าสู่ระบบ */
   user: User;
 }
 
-/**
- * SecretDescription
- * แสดงข้อความต้อนรับและคำอธิบายพื้นที่เฉพาะสมาชิก
- */
 const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
   return (
     <section
@@ -44,7 +39,6 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
         </strong>
       </p>
 
-      {/* Optional subtle highlight bar */}
       <div className="mt-4 h-1 w-20 bg-primary rounded-full opacity-70"></div>
     </section>
   );

@@ -1,26 +1,29 @@
 import { FC, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// ✅ เพิ่ม role ใหม่ manager
+type UserRole = "admin" | "user" | "manager";
+
 interface RoleGuardProps {
-  allowedRoles: Array<"admin" | "user">;
+  allowedRoles: UserRole[];
   children: ReactNode;
 }
 
 interface User {
-  role: "admin" | "user";
+  role: UserRole;
 }
 
 // ✅ Type guard แบบปลอดภัย
 const isUserWithAllowedRole = (
   obj: unknown,
-  allowedRoles: Array<"admin" | "user">
+  allowedRoles: UserRole[]
 ): obj is User => {
   if (typeof obj !== "object" || obj === null) return false;
 
   const candidate = obj as Record<string, unknown>;
   return (
     typeof candidate.role === "string" &&
-    allowedRoles.includes(candidate.role as "admin" | "user")
+    allowedRoles.includes(candidate.role as UserRole)
   );
 };
 
@@ -54,7 +57,7 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
   }, [allowedRoles, navigate]);
 
   // Loading state
-  if (authorized === null)
+  if (authorized === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-100">
         <span
@@ -64,6 +67,7 @@ const RoleGuard: FC<RoleGuardProps> = ({ allowedRoles, children }) => {
         />
       </div>
     );
+  }
 
   if (!authorized) return null;
 

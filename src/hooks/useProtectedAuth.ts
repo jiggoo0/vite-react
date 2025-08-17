@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export type User = {
   username: string;
-  role: "admin" | "user" | "temp";
+  role: "admin" | "user" | "temp" | "manager";
 };
 
 /** Type guard สำหรับตรวจสอบ object เป็น User โดยไม่ใช้ any */
@@ -15,7 +15,7 @@ const isUser = (obj: unknown): obj is User => {
   return (
     typeof u.username === "string" &&
     typeof u.role === "string" &&
-    ["admin", "user", "temp"].includes(u.role)
+    ["admin", "user", "temp", "manager"].includes(u.role)
   );
 };
 

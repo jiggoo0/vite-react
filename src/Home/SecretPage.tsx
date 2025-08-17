@@ -36,6 +36,12 @@ const SalaryCertificate = lazy(
 const MedicalCertificate = lazy(
   () => import("@home/SecretPage/MedicalCertificate/MedicalCertificate")
 );
+const SpecialBranchCertificate = lazy(
+  () =>
+    import(
+      "@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate"
+    )
+);
 
 // ======================= Shared Components =======================
 interface CardWrapperProps {
@@ -55,79 +61,88 @@ const CardWrapper: FC<CardWrapperProps> = memo(({ children, className }) => (
 ));
 CardWrapper.displayName = "CardWrapper";
 
-const LoadingSpinner: FC<{ size?: "sm" | "md" | "lg" }> = memo(({ size = "md" }) => (
-  <div
-    className={clsx("animate-spin border-4 border-t-4 border-gray-300 rounded-full mx-auto", {
-      "w-6 h-6": size === "sm",
-      "w-10 h-10": size === "md",
-      "w-16 h-16": size === "lg",
-    })}
-    role="status"
-    aria-label="Loading content..."
-  />
-));
+const LoadingSpinner: FC<{ size?: "sm" | "md" | "lg" }> = memo(
+  ({ size = "md" }) => (
+    <div
+      className={clsx(
+        "animate-spin border-4 border-t-4 border-gray-300 rounded-full mx-auto",
+        {
+          "w-6 h-6": size === "sm",
+          "w-10 h-10": size === "md",
+          "w-16 h-16": size === "lg",
+        }
+      )}
+      role="status"
+      aria-label="Loading content..."
+    />
+  )
+);
 LoadingSpinner.displayName = "LoadingSpinner";
 
 interface WithBlurProps {
-  isNormalUser: boolean;
+  isBlurred: boolean;
   children: ReactNode;
 }
 
-const WithBlurIfUser: FC<WithBlurProps> = memo(({ isNormalUser, children }) =>
-  isNormalUser ? <div className="blur-sm pointer-events-none select-none">{children}</div> : <>{children}</>
+const WithBlur: FC<WithBlurProps> = memo(({ isBlurred, children }) =>
+  isBlurred ? (
+    <div className="blur-sm pointer-events-none select-none">{children}</div>
+  ) : (
+    <>{children}</>
+  )
 );
-WithBlurIfUser.displayName = "WithBlurIfUser";
+WithBlur.displayName = "WithBlur";
 
 // ======================= Sections =======================
 interface SectionProps {
-  isNormalUser: boolean;
+  isBlurred: boolean;
   delay?: number;
 }
 
-const AllUserSection: FC<SectionProps> = memo(({ isNormalUser, delay = 0 }) => (
+const AllUserSection: FC<SectionProps> = memo(({ isBlurred, delay = 0 }) => (
   <div className="space-y-6">
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
-      <WithBlurIfUser isNormalUser={isNormalUser}>
+      <WithBlur isBlurred={isBlurred}>
         <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Registration Preview">
           <Suspense fallback={<LoadingSpinner size="md" />}>
             <RegistrationPreview {...mockRegistrationData} />
           </Suspense>
         </ErrorBoundary>
-      </WithBlurIfUser>
+      </WithBlur>
     </CardWrapper>
 
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 100}`)}>
-      <WithBlurIfUser isNormalUser={isNormalUser}>
+      <WithBlur isBlurred={isBlurred}>
         <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Salary Certificate">
           <Suspense fallback={<LoadingSpinner size="md" />}>
             <SalaryCertificate data={mockSalaryCertificate} />
           </Suspense>
         </ErrorBoundary>
-      </WithBlurIfUser>
+      </WithBlur>
     </CardWrapper>
 
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 200}`)}>
-      <WithBlurIfUser isNormalUser={isNormalUser}>
+      <WithBlur isBlurred={isBlurred}>
         <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Medical Certificate">
           <Suspense fallback={<LoadingSpinner size="md" />}>
             <MedicalCertificate data={mockMedicalCertificate} />
           </Suspense>
         </ErrorBoundary>
-      </WithBlurIfUser>
+      </WithBlur>
     </CardWrapper>
 
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 300}`)}>
-      <WithBlurIfUser isNormalUser={isNormalUser}>
+      <WithBlur isBlurred={isBlurred}>
         <IdCardFormWithOCR />
-      </WithBlurIfUser>
+      </WithBlur>
     </CardWrapper>
 
     <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay + 400}`)}>
       <div className="space-y-5">
         {kbankMockData.map((item) => (
-          <WithBlurIfUser key={item.id} isNormalUser={isNormalUser}>
+          <WithBlur key={item.id} isBlurred={isBlurred}>
             <KbankNotificationCard data={item} />
-          </WithBlurIfUser>
+          </WithBlur>
         ))}
       </div>
     </CardWrapper>
@@ -135,14 +150,16 @@ const AllUserSection: FC<SectionProps> = memo(({ isNormalUser, delay = 0 }) => (
 ));
 AllUserSection.displayName = "AllUserSection";
 
-const DriverLicenseSection: FC<SectionProps> = memo(({ isNormalUser, delay = 200 }) => (
-  <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
-    <h2 className="text-xl font-semibold mb-4">ฟอร์มใบขับขี่</h2>
-    <WithBlurIfUser isNormalUser={isNormalUser}>
-      <DriverLicenseFormPage />
-    </WithBlurIfUser>
-  </CardWrapper>
-));
+const DriverLicenseSection: FC<SectionProps> = memo(
+  ({ isBlurred, delay = 200 }) => (
+    <CardWrapper className={clsx("animate-fadeInUp", `delay-${delay}`)}>
+      <h2 className="text-xl font-semibold mb-4">ฟอร์มใบขับขี่</h2>
+      <WithBlur isBlurred={isBlurred}>
+        <DriverLicenseFormPage />
+      </WithBlur>
+    </CardWrapper>
+  )
+);
 DriverLicenseSection.displayName = "DriverLicenseSection";
 
 // ======================= Secret Page =======================
@@ -159,8 +176,15 @@ const SecretPage: FC = () => {
 
   if (!user) return null;
 
-  const effectiveRole = user.role === "temp" ? "user" : user.role;
-  const isNormalUser = effectiveRole === "user";
+  type EffectiveRole = "admin" | "user" | "manager";
+
+  const effectiveRole: EffectiveRole =
+    user.role === "temp" ? "user" : (user.role as EffectiveRole);
+
+  const isAdmin = effectiveRole === "admin";
+  const isManager = effectiveRole === "manager";
+
+  const shouldBlur = !isAdmin;
 
   return (
     <section className="min-h-screen bg-base-200 text-base-content px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
@@ -178,11 +202,24 @@ const SecretPage: FC = () => {
             <DocumentDownload />
           </CardWrapper>
 
-          <DriverLicenseSection isNormalUser={isNormalUser} />
-          <AllUserSection isNormalUser={isNormalUser} />
+          <DriverLicenseSection isBlurred={shouldBlur} />
+          <AllUserSection isBlurred={shouldBlur} />
+
+          {(isManager || isAdmin) && (
+            <CardWrapper className="animate-fadeInUp delay-450">
+              <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดใน Special Branch Certificate">
+                <Suspense fallback={<LoadingSpinner size="md" />}>
+                  <SpecialBranchCertificate />
+                </Suspense>
+              </ErrorBoundary>
+            </CardWrapper>
+          )}
 
           <CardWrapper className="animate-fadeInUp delay-500">
-            <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />
+            <BlurContact
+              imageUrl="/images/admin-contact.jpg"
+              contactText="ติดต่อฝ่ายสนับสนุน"
+            />
           </CardWrapper>
         </main>
 

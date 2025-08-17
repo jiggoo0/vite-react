@@ -34,8 +34,12 @@
     - SalaryCertificate/
       - SalaryCertificate.tsx
       - mockSalaryCertificate.ts
+    - SpecialBranchCertificate/
+      - SpecialBranchCertificate.mock.ts
+      - SpecialBranchCertificate.tsx
     - common/
       - CardWrapper.tsx
+      - LoadingSpinner.tsx
   - components/
     - About/
       - About.tsx
@@ -47,6 +51,8 @@
         - AboutTitle.tsx
     - Forms/
       - FormWrapper.tsx
+      - IdCardFormWithOCR.tsx
+      - IdCardPreview.tsx
       - SelectField.tsx
       - SubmitButton.tsx
       - index.ts
@@ -72,6 +78,7 @@
         - PortfolioCTA.tsx
         - PortfolioFilter.tsx
     - SecretSection/
+      - AllUserSection.tsx
       - BlurContact/
         - BlurContact.tsx
         - motionVariants.ts
@@ -136,7 +143,7 @@
 - api/
   - chat.ts
 - config/
-  - idcardConfig.ts
+  - idCardConfig.ts
 - context/
   - AppProviders.tsx
   - types.ts

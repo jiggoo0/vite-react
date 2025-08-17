@@ -5,8 +5,8 @@ interface GuardRoutesProps {
   children: ReactNode;
 }
 
-// ✅ User type
-type User = { username: string; role: "admin" | "user" };
+// ✅ User type ปรับให้รองรับ manager
+type User = { username: string; role: "admin" | "user" | "manager" };
 
 // ✅ Type guard แบบปลอดภัย
 const isValidUser = (data: unknown): data is User => {
@@ -15,7 +15,7 @@ const isValidUser = (data: unknown): data is User => {
   const candidate = data as Record<string, unknown>;
   return (
     typeof candidate.username === "string" &&
-    (candidate.role === "admin" || candidate.role === "user")
+    ["admin", "user", "manager"].includes(candidate.role as string)
   );
 };
 
@@ -48,12 +48,13 @@ const GuardRoutes: FC<GuardRoutesProps> = ({ children }) => {
   }, [navigate]);
 
   // Loading state
-  if (isAuthenticated === null)
+  if (isAuthenticated === null) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <span className="loading loading-spinner loading-lg text-primary" />
       </div>
     );
+  }
 
   if (!isAuthenticated) return null;
 
