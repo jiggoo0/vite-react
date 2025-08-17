@@ -12,6 +12,10 @@ import "@/index.css";
 import ErrorBoundary from "@/utils/common/ErrorBoundary";
 import FallbackLoader from "@/utils/common/FallbackLoader";
 
+/**
+ * 🔹 Ensure root element exists
+ * - สร้าง root dynamically ถ้าไม่มี
+ */
 const ensureRootElement = (): HTMLElement => {
   const existingRoot = document.getElementById("root");
   if (existingRoot) return existingRoot;
@@ -23,6 +27,9 @@ const ensureRootElement = (): HTMLElement => {
   return div;
 };
 
+/**
+ * 🌱 React Root
+ */
 const root = ReactDOM.createRoot(ensureRootElement());
 
 root.render(
@@ -37,6 +44,9 @@ root.render(
   </React.StrictMode>
 );
 
+/**
+ * 📦 Dev Info Logger
+ */
 if (import.meta.env.DEV) {
   console.groupCollapsed("📦 App Info");
   console.info("🚀 Version:", import.meta.env.VITE_APP_VERSION ?? "dev");
@@ -46,6 +56,9 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
+/**
+ * 🔧 Service Worker Registration (Production)
+ */
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register("/sw.js")

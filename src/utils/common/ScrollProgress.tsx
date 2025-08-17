@@ -1,44 +1,50 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 /**
  * 📊 ScrollProgress
  *
  * - แสดงแถบความคืบหน้าแนวนอนด้านบนเมื่อ scroll หน้าเว็บ
- * - ใช้ window.scrollY และ document scrollHeight คำนวณ
- * - รองรับ transition smooth และ dark mode
+ * - รองรับ smooth transition และ dark mode
+ * - ใช้ requestAnimationFrame ลด re-render
  */
 const ScrollProgress = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
 
-  useEffect(() => {
-    const updateProgress = () => {
-      if (!ticking.current) {
-        window.requestAnimationFrame(() => {
-          const scrollTop = window.scrollY;
-          const docHeight =
-            document.documentElement.scrollHeight - window.innerHeight;
-          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-          setScrollProgress(progress);
-          ticking.current = false;
-        });
-        ticking.current = true;
-      }
-    };
-
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress(); // ตั้งค่าเริ่มต้นตอนโหลด
-
-    return () => window.removeEventListener("scroll", updateProgress);
+  const updateProgress = useCallback(() => {
+    if (!ticking.current) {
+      window.requestAnimationFrame(() => {
+        const scrollTop = window.scrollY;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        setProgress(pct);
+        ticking.current = false;
+      });
+      ticking.current = true;
+    }
   }, []);
 
+  useEffect(() => {
+    // ตั้งค่าเริ่มต้น
+    updateProgress();
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress); // รองรับ resize
+
+    return () => {
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, [updateProgress]);
+
   return (
-    <div className="fixed top-0 left-0 z-[9999] w-full h-1 bg-transparent pointer-events-none">
+    <div className="fixed top-0 left-0 z-[9999] w-full h-1 pointer-events-none bg-transparent">
       <div
         className="h-full bg-primary dark:bg-primary-dark transition-all duration-300 ease-out"
-        style={{ width: `${scrollProgress}%` }}
+        style={{ width: `${progress}%` }}
       />
     </div>
   );

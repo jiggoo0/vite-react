@@ -11,7 +11,7 @@ describe("AppRouter", () => {
       </AppProviders>
     );
 
-    // สมมติว่ามีข้อความ "Home" อยู่ในหน้าแรก
-    expect(screen.getByText(/Home/i)).toBeInTheDocument();
+    const homeLink = screen.getByRole("link", { name: /หน้าแรก/i });
+    expect(homeLink).toBeInTheDocument();
   });
 });

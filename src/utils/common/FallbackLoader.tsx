@@ -1,4 +1,3 @@
-// ✅ src/utils/common/FallbackLoader.tsx — Professional Centered Loader
 "use client";
 
 import { FC } from "react";
@@ -16,10 +15,10 @@ interface FallbackLoaderProps {
 /**
  * ⏳ FallbackLoader
  *
- * - Loader แบบ center overlay สำหรับ React Suspense หรือ async fetch
- * - รองรับ dark mode, responsive, animation
- * - Accessibility: role="status" + aria-live="polite"
- * - สามารถปรับข้อความ, ขนาด spinner และ styling ภายนอกได้
+ * - Center overlay loader สำหรับ React Suspense หรือ async fetch
+ * - รองรับ dark mode, responsive, animation smooth
+ * - Accessibility: aria-busy="true", role="status", aria-live="polite"
+ * - ปรับข้อความ, ขนาด spinner และ styling ภายนอกได้
  */
 const FallbackLoader: FC<FallbackLoaderProps> = ({
   message,
@@ -29,22 +28,26 @@ const FallbackLoader: FC<FallbackLoaderProps> = ({
   const spinnerSizeCls = {
     sm: "h-6 w-6",
     md: "h-10 w-10 sm:h-12 sm:w-12",
-    lg: "h-16 w-16",
+    lg: "h-16 w-16 sm:h-20 sm:w-20",
   };
 
   return (
     <div
       className={clsx(
-        "flex min-h-[50vh] w-full items-center justify-center text-center animate-fade-in bg-base-100 dark:bg-zinc-900 p-4",
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/70 dark:bg-zinc-900/70 backdrop-blur-sm animate-fadeIn p-4",
         className
       )}
       role="status"
       aria-live="polite"
+      aria-busy="true"
     >
       <div className="flex flex-col items-center gap-4 sm:gap-5">
         {/* Spinner */}
         <svg
-          className={clsx("animate-spin text-primary", spinnerSizeCls[size])}
+          className={clsx(
+            "animate-spin text-primary dark:text-primary-dark",
+            spinnerSizeCls[size]
+          )}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

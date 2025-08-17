@@ -2,13 +2,15 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { ArrowUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 /**
- * ⬆️ BackToTop
+ * ⬆️ BackToTop (Professional)
  *
- * - แสดงปุ่มกลับไปด้านบนเมื่อ scroll มากกว่า 300px
- * - รองรับ smooth scroll และ animation transition
- * - debounce scroll event 50ms
+ * - แสดงปุ่มกลับไปด้านบนเมื่อ scroll > 300px
+ * - Smooth scroll, responsive, dark mode
+ * - Debounce scroll 50ms
+ * - Animation ด้วย framer-motion
  */
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -19,17 +21,14 @@ const BackToTop = () => {
     setIsVisible(window.scrollY > 300);
   }, []);
 
-  /** ติด listener scroll และ debounce */
+  /** ติด listener scroll + debounce */
   useEffect(() => {
     const onScroll = () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = window.setTimeout(handleScroll, 50);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       window.removeEventListener("scroll", onScroll);
@@ -41,26 +40,24 @@ const BackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  /** className dynamic สำหรับ animation และ visibility */
-  const buttonClasses = `
-    flex items-center justify-center
-    rounded-full p-3 text-white shadow-lg
-    transition-all duration-300 ease-in-out
-    ${isVisible ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-0 pointer-events-none"}
-    bg-primary hover:bg-primary/90 dark:bg-primary-dark
-    focus:outline-none focus:ring-2 focus:ring-primary/50
-  `;
-
   return (
     <div className="fixed bottom-6 right-6 z-[9998]">
-      <button
-        onClick={scrollToTop}
-        aria-label="กลับไปด้านบน"
-        title="กลับไปด้านบน"
-        className={buttonClasses}
-      >
-        <ArrowUp className="w-5 h-5" aria-hidden="true" />
-      </button>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.button
+            onClick={scrollToTop}
+            aria-label="กลับไปด้านบน"
+            title="กลับไปด้านบน"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="flex items-center justify-center rounded-full p-3 text-white shadow-lg bg-primary hover:bg-primary/90 dark:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+          >
+            <ArrowUp className="w-5 h-5" aria-hidden="true" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

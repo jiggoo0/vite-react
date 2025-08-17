@@ -2,7 +2,10 @@
 
 import { FC, memo, useState, ChangeEvent, FormEvent } from "react";
 import clsx from "clsx";
-import { driverLicenseOcr, mapDriverLicenseToForm } from "@/services/driverLicenseOcr";
+import {
+  driverLicenseOcr,
+  mapDriverLicenseToForm,
+} from "@/services/driverLicenseOcr";
 import IdCardPreview from "./IdCardPreview";
 
 interface IdCardFormProps {
@@ -45,7 +48,9 @@ const InputField: FC<InputFieldProps> = ({
 
   return (
     <div className="flex flex-col space-y-1">
-      <label htmlFor={name} className="font-medium">{label}</label>
+      <label htmlFor={name} className="font-medium">
+        {label}
+      </label>
       {isTextArea ? (
         <textarea
           id={name}
@@ -85,9 +90,11 @@ const IdCardFormWithOCR: FC<IdCardFormProps> = ({ className }) => {
   const [ocrError, setOcrError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -104,10 +111,17 @@ const IdCardFormWithOCR: FC<IdCardFormProps> = ({ className }) => {
     setOcrError(null);
 
     try {
-      const ocrData = await driverLicenseOcr(file, ["fullName", "idNumber", "birthDate", "address"]);
+      const ocrData = await driverLicenseOcr(file, [
+        "fullName",
+        "idNumber",
+        "birthDate",
+        "address",
+      ]);
       setFormData(mapDriverLicenseToForm(ocrData));
     } catch (err: unknown) {
-      setOcrError(err instanceof Error ? err.message : "OCR ล้มเหลว กรุณาลองอีกครั้ง");
+      setOcrError(
+        err instanceof Error ? err.message : "OCR ล้มเหลว กรุณาลองอีกครั้ง"
+      );
     } finally {
       setLoadingOCR(false);
     }
@@ -115,23 +129,72 @@ const IdCardFormWithOCR: FC<IdCardFormProps> = ({ className }) => {
 
   return (
     <div className={clsx("space-y-6", className)}>
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-md p-6 w-full space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl shadow-md p-6 w-full space-y-6"
+      >
         <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน (OCR)</h2>
 
         <div className="flex flex-col space-y-2">
           <label className="font-medium">อัปโหลดรูปบัตรประชาชน</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} disabled={loadingOCR} />
-          {loadingOCR && <p className="text-blue-600">กำลังอ่านข้อมูลจากบัตร...</p>}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={loadingOCR}
+          />
+          {loadingOCR && (
+            <p className="text-blue-600">กำลังอ่านข้อมูลจากบัตร...</p>
+          )}
           {ocrError && <p className="text-red-600">{ocrError}</p>}
-          {imagePreview && <img src={imagePreview} alt="Preview" className="mt-2 max-h-40 object-contain rounded-md border" />}
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="mt-2 max-h-40 object-contain rounded-md border"
+            />
+          )}
         </div>
 
-        <InputField label="ชื่อ-สกุล" name="fullName" value={formData.fullName} placeholder="กรอกชื่อ-นามสกุล" onChange={handleChange} disabled={loadingOCR} />
-        <InputField label="เลขบัตรประชาชน" name="idNumber" value={formData.idNumber} placeholder="กรอกเลขบัตรประชาชน" onChange={handleChange} disabled={loadingOCR} />
-        <InputField label="วันเกิด" name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} disabled={loadingOCR} />
-        <InputField label="ที่อยู่" name="address" type="textarea" value={formData.address} placeholder="กรอกที่อยู่" onChange={handleChange} disabled={loadingOCR} />
+        <InputField
+          label="ชื่อ-สกุล"
+          name="fullName"
+          value={formData.fullName}
+          placeholder="กรอกชื่อ-นามสกุล"
+          onChange={handleChange}
+          disabled={loadingOCR}
+        />
+        <InputField
+          label="เลขบัตรประชาชน"
+          name="idNumber"
+          value={formData.idNumber}
+          placeholder="กรอกเลขบัตรประชาชน"
+          onChange={handleChange}
+          disabled={loadingOCR}
+        />
+        <InputField
+          label="วันเกิด"
+          name="birthDate"
+          type="date"
+          value={formData.birthDate}
+          onChange={handleChange}
+          disabled={loadingOCR}
+        />
+        <InputField
+          label="ที่อยู่"
+          name="address"
+          type="textarea"
+          value={formData.address}
+          placeholder="กรอกที่อยู่"
+          onChange={handleChange}
+          disabled={loadingOCR}
+        />
 
-        <button type="submit" disabled={loadingOCR} className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed">
+        <button
+          type="submit"
+          disabled={loadingOCR}
+          className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           บันทึก
         </button>
       </form>

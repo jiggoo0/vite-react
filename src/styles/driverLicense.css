@@ -1,4 +1,8 @@
+/* ------------------------------
+   Root Variables (Light Mode)
+--------------------------------*/
 :root {
+  /* Colors */
   --color-primary: #2563eb;
   --color-primary-hover: #1e40af;
   --color-primary-disabled: #9ca3af;
@@ -12,16 +16,22 @@
   --color-text: #111827;
   --color-text-muted: #374151;
 
+  /* Typography */
   --font-family-base: "Kanit", sans-serif;
 
+  /* Border Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
 
+  /* Shadows */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* ------------------------------
+   Dark Mode Overrides
+--------------------------------*/
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary: #3b82f6;
@@ -42,6 +52,9 @@
   }
 }
 
+/* ------------------------------
+   Card Container
+--------------------------------*/
 .dl-card {
   max-width: 500px;
   margin-inline: auto;
@@ -51,9 +64,14 @@
   background-color: var(--color-bg);
   box-shadow: var(--shadow-md);
   font-family: var(--font-family-base);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
+/* ------------------------------
+   Form Styles
+--------------------------------*/
 .dl-form {
   display: flex;
   flex-direction: column;
@@ -74,7 +92,10 @@
   font-size: clamp(13px, 1.4vw, 14px);
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: border-color 0.25s ease, box-shadow 0.2s ease, background-color 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.2s ease,
+    background-color 0.25s ease;
 }
 
 .dl-form input:focus,
@@ -91,6 +112,9 @@
   cursor: not-allowed;
 }
 
+/* ------------------------------
+   Buttons
+--------------------------------*/
 .dl-form button {
   background-color: var(--color-primary);
   color: #fff;
@@ -100,7 +124,9 @@
   cursor: pointer;
   font-weight: 600;
   font-size: clamp(13px, 1.4vw, 14px);
-  transition: background-color 0.25s ease, transform 0.15s ease;
+  transition:
+    background-color 0.25s ease,
+    transform 0.15s ease;
 }
 
 .dl-form button:hover:not(:disabled) {
@@ -117,13 +143,18 @@
   cursor: not-allowed;
 }
 
+/* ------------------------------
+   Preview Section
+--------------------------------*/
 .dl-preview {
   margin-top: 1rem;
   padding: 0.75rem;
   border-radius: var(--radius-md);
   background-color: var(--color-bg-light);
   border: 1px solid var(--color-border-light);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .dl-preview h4 {
@@ -144,6 +175,9 @@
   aspect-ratio: 4 / 3;
 }
 
+/* ------------------------------
+   Responsive Adjustments
+--------------------------------*/
 @media (max-width: 640px) {
   .dl-card {
     padding: 0.75rem;

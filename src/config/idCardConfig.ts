@@ -20,8 +20,20 @@ export const idCardConfig: IdCardConfig = {
   cardHeight: 539,
   bgDefault: "/images/IDcard/bg.webp",
   fields: {
-    cardNumber: { top: 50, left: 600, fontSize: 18, fontWeight: "bold", label: "เลขประจำตัวประชาชน" },
-    fullName: { top: 150, left: 150, fontSize: 18, fontWeight: "bold", label: "ชื่อ-สกุล" },
+    cardNumber: {
+      top: 50,
+      left: 600,
+      fontSize: 18,
+      fontWeight: "bold",
+      label: "เลขประจำตัวประชาชน",
+    },
+    fullName: {
+      top: 150,
+      left: 150,
+      fontSize: 18,
+      fontWeight: "bold",
+      label: "ชื่อ-สกุล",
+    },
     birthDate: { top: 200, left: 150, fontSize: 16, label: "วันเกิด" },
     address: { top: 250, left: 150, fontSize: 16, label: "ที่อยู่" },
     initCard: { top: 400, left: 150, fontSize: 14, label: "วันออกบัตร" },

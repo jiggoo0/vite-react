@@ -1,57 +1,31 @@
-import { Variants, easeInOut } from "framer-motion";
+// src/animations/motionVariants.ts
+import { Variants } from "framer-motion";
 
-export interface MotionConfig {
-  duration?: number;
-  delay?: number;
-  distance?: number;
-}
+// ✅ สำหรับ Carousel (TestimonialSlider)
+export const carouselVariants: Variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+    scale: 0.8,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 300 : -300,
+    opacity: 0,
+    scale: 0.8,
+  }),
+};
 
-/**
- * 📦 Container Motion Variants
- * ห่อ container หลัก เพื่อให้ children animate แบบ stagger
- */
-export const containerVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+// ✅ เผื่อไว้ใช้ที่อื่น เช่น FadeIn
+export const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      staggerChildren: 0.1,
-      duration: 0.5,
-      ease: easeInOut,
-    },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
-
-/**
- * 🔼 Fade In Up Motion Variants (พร้อม config)
- * ใช้กับ element เดี่ยวหรือหลายตัว
- */
-export const fadeInUp = (
-  index: number = 0,
-  config: MotionConfig = {}
-): Variants => {
-  const { duration = 0.3, delay = 0.1, distance = 20 } = config;
-  return {
-    hidden: { opacity: 0, y: distance },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration,
-        ease: easeInOut,
-        delay: index * delay,
-      },
-    },
-  };
-};
-
-/**
- * 🎯 Generate Fade In Up Variants สำหรับหลาย element
- * @param count จำนวน element
- * @param config ปรับแต่ง animation
- */
-export const generateFadeInUpVariants = (
-  count: number,
-  config?: MotionConfig
-): Variants[] => Array.from({ length: count }, (_, i) => fadeInUp(i, config));

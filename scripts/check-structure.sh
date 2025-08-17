@@ -176,17 +176,10 @@ GovHub Corporate Website
 LINE: @462FQFC / @jpsystem.official
 Email: contact@jpsystem.dev
 Messenger: @jaopa.zerofour
-'
-  echo
-  echo '1. ส่วน Header / Hero'
-  echo '2. ส่วนเกี่ยวกับเรา (About Us)'
-  echo '3. จุดเด่นและความน่าเชื่อถือ'
-  echo '4. เหตุผลที่วางใจเรา'
-  echo '5. บริการของเรา'
-  echo '6. ตัวอย่างผลงาน (Portfolio / Case Study)'
-  echo '7. FAQ'
-  echo '8. ช่องทางติดต่อ'
-  echo '9. ข้อเสนอแนะเพิ่มเติมเพื่อหน้าเว็บสมบูรณ์'
+
+หลังจากนี้จะส่งโค้ดปัจจุบันให้ปรับแก้ไขตามเนื้อหาธุรกิจและโทนเจ้าป่า การเขียนโค้ดเน้นการเข้มงวด Thyscip & Elin  สูงมาก จดจำรายละเอียดโครงสร้าง อย่าหลุด Logic
+ข้อเสนอแนะเพิ่มเติมเพื่อหน้าเว็บสมบูรณ์Continue Update code  Professional &  perfect  + format code '
+
 } > "$OUTPUT_FILE"
 
 echo "✅ STRUCTURE.md generated at: $OUTPUT_FILE"

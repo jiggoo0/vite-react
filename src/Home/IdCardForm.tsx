@@ -88,7 +88,9 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
   const [ocrLoading, setOcrLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -135,7 +137,9 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
       <div className="flex flex-col space-y-2">
         <label className="font-medium">อัปโหลดรูปบัตรประชาชน</label>
         <input type="file" accept="image/*" onChange={handleFileChange} />
-        {ocrLoading && <p className="text-blue-500">กำลังอ่านข้อมูลจากภาพ...</p>}
+        {ocrLoading && (
+          <p className="text-blue-500">กำลังอ่านข้อมูลจากภาพ...</p>
+        )}
         {imagePreview && (
           <img
             src={imagePreview}

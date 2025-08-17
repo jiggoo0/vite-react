@@ -14,11 +14,12 @@ interface DisclaimerModalProps {
 }
 
 /**
- * ⚠️ DisclaimerModal
+ * ⚠️ DisclaimerModal (Professional Version)
  *
  * - แสดง modal แจ้งเตือน/คำชี้แจงทางกฎหมาย
+ * - Overlay gradient + blur + smooth animation
  * - จดจำสถานะการปิด modal ด้วย localStorage
- * - รองรับ dark mode และ transition animation
+ * - รองรับ dark mode, responsive และ accessibility
  */
 const DisclaimerModal = ({
   title = "⚠️ แจ้งเพื่อทราบ",
@@ -30,7 +31,6 @@ const DisclaimerModal = ({
 }: DisclaimerModalProps) => {
   const [open, setOpen] = useState(false);
 
-  // ตรวจสอบ localStorage ว่าเคยปิด modal หรือยัง
   useEffect(() => {
     if (!localStorage.getItem(storageKey)) {
       setOpen(true);
@@ -55,8 +55,12 @@ const DisclaimerModal = ({
           aria-label="คำชี้แจงทางกฎหมาย"
         >
           {/* Overlay */}
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-gradient-to-br from-black/50 to-black/40 backdrop-blur-sm"
             aria-hidden="true"
           />
 
@@ -72,19 +76,19 @@ const DisclaimerModal = ({
               {/* Close Button */}
               <button
                 onClick={handleClose}
-                className="absolute top-3 right-3 rounded-full p-1 text-base-content/70 hover:text-base-content focus:outline-none focus:ring-2 focus:ring-primary"
+                className="absolute top-3 right-3 rounded-full p-1 text-base-content/70 hover:text-base-content focus:outline-none focus:ring-2 focus:ring-primary transition"
                 aria-label="ปิด"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
 
               {/* Title */}
-              <Dialog.Title className="text-lg font-bold mb-2">
+              <Dialog.Title className="text-lg sm:text-xl font-bold mb-2">
                 {title}
               </Dialog.Title>
 
               {/* Description */}
-              <Dialog.Description className="text-sm leading-relaxed mb-4 whitespace-pre-line">
+              <Dialog.Description className="text-sm sm:text-base leading-relaxed mb-4 whitespace-pre-line">
                 {description}
               </Dialog.Description>
 

@@ -20,8 +20,12 @@ const config: Config = {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: [{ light: lightTheme }, { dark: darkTheme }, { team: teamThemeColors }],
-    darkTheme: "dark",
+    themes: [
+      { light: lightTheme },
+      { dark: darkTheme },
+      { team: teamThemeColors },
+    ],
+    darkTheme: "dark", // กำหนดค่า dark mode เริ่มต้น
   },
 };
 

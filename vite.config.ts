@@ -1,12 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+      "@home": path.resolve(__dirname, "src/Home"),
       "@assets": path.resolve(__dirname, "src/assets"),
       "@styles": path.resolve(__dirname, "src/styles"),
       "@data": path.resolve(__dirname, "src/data"),
@@ -16,9 +18,9 @@ export default defineConfig({
       "@hooks": path.resolve(__dirname, "src/hooks"),
       "@layout": path.resolve(__dirname, "src/Layout"),
       "@router": path.resolve(__dirname, "src/Router"),
-      "@home": path.resolve(__dirname, "src/Home"),
       "@api": path.resolve(__dirname, "src/api"),
       "@services": path.resolve(__dirname, "src/services"),
+      "@context": path.resolve(__dirname, "src/context"),
     },
   },
   define: {
@@ -40,7 +42,6 @@ export default defineConfig({
             if (id.includes("react-dom")) return "vendor_react-dom";
             if (id.includes("react-router-dom")) return "vendor_react-router";
             if (id.includes("lodash")) return "vendor_lodash";
-            // axios และ lib อื่น ๆ รวมกับ vendor_misc
             return "vendor_misc";
           }
         },
@@ -51,4 +52,14 @@ export default defineConfig({
     },
   },
   cacheDir: "node_modules/.vite",
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/tests/setup.ts",
+    css: true,
+    coverage: {
+      provider: "istanbul",
+      reporter: ["text", "json", "html"],
+    },
+  },
 });

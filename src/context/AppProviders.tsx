@@ -8,10 +8,12 @@ interface AppProvidersProps {
   children: ReactNode;
 }
 
-const AppProviders: FC<AppProvidersProps> = ({ children }) => (
-  <BrowserRouter basename={import.meta.env.BASE_URL || "/"}>
-    <ThemeProvider>{children}</ThemeProvider>
-  </BrowserRouter>
-);
+const AppProviders: FC<AppProvidersProps> = ({ children }) => {
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL || "/"}>
+      <ThemeProvider>{children}</ThemeProvider>
+    </BrowserRouter>
+  );
+};
 
 export default AppProviders;

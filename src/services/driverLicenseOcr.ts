@@ -13,8 +13,14 @@ const API_KEY = import.meta.env.VITE_IAPP_API_KEY;
 
 if (!API_KEY) console.error("[DriverLicenseOCR] Missing VITE_IAPP_API_KEY");
 
-export async function driverLicenseOcr(file: File | Blob, fields: string[] = ["fullName", "idNumber", "birthDate", "address"]): Promise<DriverLicenseData> {
-  if (!API_KEY) throw new Error("OCR API Key is missing. Please set VITE_IAPP_API_KEY in your .env file.");
+export async function driverLicenseOcr(
+  file: File | Blob,
+  fields: string[] = ["fullName", "idNumber", "birthDate", "address"]
+): Promise<DriverLicenseData> {
+  if (!API_KEY)
+    throw new Error(
+      "OCR API Key is missing. Please set VITE_IAPP_API_KEY in your .env file."
+    );
 
   const formData = new FormData();
   formData.append("file", file);
@@ -24,12 +30,13 @@ export async function driverLicenseOcr(file: File | Blob, fields: string[] = ["f
     const response = await axios.post<DriverLicenseData>(API_URL, formData, {
       headers: { apikey: API_KEY },
       timeout: 15000,
-      validateStatus: status => status >= 200 && status < 300,
+      validateStatus: (status) => status >= 200 && status < 300,
     });
 
     if (!response.data) throw new Error("OCR API returned empty response");
 
-    if (import.meta.env.DEV) console.debug("[DriverLicenseOCR] API Response:", response.data);
+    if (import.meta.env.DEV)
+      console.debug("[DriverLicenseOCR] API Response:", response.data);
 
     return response.data;
   } catch (error: unknown) {

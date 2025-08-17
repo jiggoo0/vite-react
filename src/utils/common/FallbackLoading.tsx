@@ -1,4 +1,3 @@
-// ✅ src/utils/common/FallbackLoading.tsx — Professional Overlay Loader
 "use client";
 
 import { FC } from "react";
@@ -9,30 +8,38 @@ interface FallbackLoadingProps {
   message?: string;
   /** ✨ Optional: เพิ่ม className สำหรับ custom styling */
   className?: string;
+  /** 🔹 ขนาด spinner */
+  size?: number;
 }
 
 /**
  * ⏳ FallbackLoading
  *
  * Overlay loader สำหรับ React Suspense หรือ async fetch
- * - ใช้ backdrop + blur + spinner animation
- * - รองรับ accessibility: aria-live="polite", role="status"
- * - สามารถปรับข้อความและเพิ่ม custom class ได้
+ * - backdrop + blur + spinner animation
+ * - รองรับ accessibility: aria-busy, role="status", aria-live
+ * - สามารถปรับข้อความและ custom class
  */
-const FallbackLoading: FC<FallbackLoadingProps> = ({ message, className }) => {
+const FallbackLoading: FC<FallbackLoadingProps> = ({
+  message,
+  className,
+  size = 48,
+}) => {
   return (
     <div
       className={clsx(
-        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm animate-fadeIn",
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm transition-opacity duration-300 animate-fadeIn",
         className
       )}
       role="status"
       aria-live="polite"
+      aria-busy="true"
     >
       <div className="flex flex-col items-center gap-4">
         {/* Spinner */}
         <svg
-          className="h-12 w-12 animate-spin text-primary"
+          className="animate-spin text-primary dark:text-primary-dark"
+          style={{ width: size, height: size }}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -54,7 +61,7 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({ message, className }) => {
         </svg>
 
         {/* Loading Text */}
-        <p className="text-sm text-base-content/70 select-none">
+        <p className="text-sm text-base-content/70 dark:text-base-content/60 select-none">
           {message || "กำลังโหลด..."}
         </p>
       </div>

@@ -1,19 +1,31 @@
+"use client";
+
+import { cn } from "@/utils/cn";
+import { motion } from "framer-motion";
+
 interface TrustBadgeProps {
   count: number;
   label?: string;
   className?: string;
 }
 
-const TrustBadge = ({
+const TrustBadge: React.FC<TrustBadgeProps> = ({
   count,
   label = "ลูกค้ามั่นใจในเรา",
-  className = "",
-}: TrustBadgeProps) => {
+  className,
+}) => {
   return (
-    <div className={`flex flex-col items-center ${className}`}>
-      <div
-        className="flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400"
+    <div className="flex flex-col items-center">
+      <motion.div
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className={cn(
+          "flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400",
+          className
+        )}
         role="status"
+        aria-roledescription="statistic"
         aria-label={`${count}+ ${label}`}
         tabIndex={0}
       >
@@ -23,7 +35,7 @@ const TrustBadge = ({
         <span className="text-sm md:text-base font-medium text-white">
           {label}
         </span>
-      </div>
+      </motion.div>
     </div>
   );
 };

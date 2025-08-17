@@ -4,7 +4,10 @@
 import { FC } from "react";
 import clsx from "clsx";
 import { useProtectedAuth } from "@hooks/useProtectedAuth";
-import { CertificateData, mockCertificateData } from "./SpecialBranchCertificate.mock";
+import {
+  CertificateData,
+  mockCertificateData,
+} from "./SpecialBranchCertificate.mock";
 
 const SpecialBranchCertificate: FC = () => {
   const { user } = useProtectedAuth();
@@ -74,9 +77,10 @@ const SpecialBranchCertificate: FC = () => {
 
         {/* หมายเหตุด้านล่าง */}
         <p className="mt-4 text-sm text-red-500 italic text-center">
-          หมายเหตุ: รายละเอียดเนื้อหาทั้งหมดเป็นการจัดวาง ยังไม่รีทัช  
-          ในส่วนนี้ หากเนื้อหาไม่ตรงให้ลูกค้าทักแชทแจ้งทันที  
-          กรณีที่ทางเราทำตามรายละเอียดที่ให้มา เมื่อรีทัชแล้วไม่สามารถแก้ไขได้ทุกกรณี
+          หมายเหตุ: รายละเอียดเนื้อหาทั้งหมดเป็นการจัดวาง ยังไม่รีทัช ในส่วนนี้
+          หากเนื้อหาไม่ตรงให้ลูกค้าทักแชทแจ้งทันที
+          กรณีที่ทางเราทำตามรายละเอียดที่ให้มา
+          เมื่อรีทัชแล้วไม่สามารถแก้ไขได้ทุกกรณี
         </p>
 
         {/* รูปประกอบตัวอย่าง */}

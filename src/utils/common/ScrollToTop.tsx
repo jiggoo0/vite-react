@@ -1,4 +1,4 @@
-// ✅ src/utils/common/ScrollToTop.tsx — รีเซ็ตตำแหน่ง Scroll เมื่อเปลี่ยนเส้นทาง (SPA Compatible)
+// ✅ src/utils/common/ScrollToTop.tsx
 "use client";
 
 import { useEffect } from "react";
@@ -12,16 +12,21 @@ interface ScrollToTopProps {
 /**
  * 🔝 ScrollToTop
  *
- * - ใช้ร่วมกับ React Router DOM เพื่อให้ Scroll กลับไปด้านบนทุกครั้งที่เปลี่ยน Route
- * - เหมาะสำหรับ SPA ที่ไม่มีการโหลดหน้าใหม่
- * - ใช้ในระดับ `<App />` หรือ wrapper ของ route ทั้งหมด
+ * - รีเซ็ต Scroll กลับไปด้านบนเมื่อ pathname เปลี่ยน
+ * - ถ้ามี hash (#) จะไม่ reset → ปล่อยให้ browser scroll ไป anchor เอง
+ * - ใช้ใน `<App />` หรือ layout wrapper
  */
 const ScrollToTop = ({ smooth = true }: ScrollToTopProps): null => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // ❌ ไม่ scroll ถ้ามี hash (anchor link)
+    if (hash) return;
+
     window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
-  }, [pathname, smooth]);
+  }, [pathname, hash, smooth]);
 
   return null;
 };

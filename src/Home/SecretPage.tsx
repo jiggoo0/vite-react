@@ -38,9 +38,7 @@ const MedicalCertificate = lazy(
 );
 const SpecialBranchCertificate = lazy(
   () =>
-    import(
-      "@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate"
-    )
+    import("@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate")
 );
 
 // ======================= Shared Components =======================

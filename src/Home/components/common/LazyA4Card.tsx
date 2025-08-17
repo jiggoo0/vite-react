@@ -23,7 +23,8 @@ interface LazyA4CardProps {
 
 /** Spinner Loader Component */
 const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
-  const sizeClass = size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
+  const sizeClass =
+    size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
 
   return (
     <div className="flex justify-center items-center py-8">
@@ -37,7 +38,11 @@ const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
 };
 
 /** A4 Card + Suspense Wrapper */
-const LazyA4Card: FC<LazyA4CardProps> = ({ children, loadingSize = "md", className }) => (
+const LazyA4Card: FC<LazyA4CardProps> = ({
+  children,
+  loadingSize = "md",
+  className,
+}) => (
   <Suspense fallback={<LoadingSpinner size={loadingSize} />}>
     <A4CardWrapper className={className}>{children}</A4CardWrapper>
   </Suspense>

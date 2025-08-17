@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------
+   Font Face Definitions
+--------------------------------*/
 @font-face {
   font-family: "THSarabunNew";
-  src: url("/fonts/THSarabunNew.woff2") format("woff2"),
-       url("/fonts/THSarabunNew.woff") format("woff");
+  src:
+    url("/fonts/THSarabunNew.woff2") format("woff2"),
+    url("/fonts/THSarabunNew.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -13,8 +17,9 @@
 
 @font-face {
   font-family: "THSarabunNew";
-  src: url("/fonts/THSarabunNew-Bold.woff2") format("woff2"),
-       url("/fonts/THSarabunNew-Bold.woff") format("woff");
+  src:
+    url("/fonts/THSarabunNew-Bold.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -22,8 +27,9 @@
 
 @font-face {
   font-family: "THSarabunNew";
-  src: url("/fonts/THSarabunNew-Italic.woff2") format("woff2"),
-       url("/fonts/THSarabunNew-Italic.woff") format("woff");
+  src:
+    url("/fonts/THSarabunNew-Italic.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-Italic.woff") format("woff");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -31,18 +37,23 @@
 
 @font-face {
   font-family: "THSarabunNew";
-  src: url("/fonts/THSarabunNew-BoldItalic.woff2") format("woff2"),
-       url("/fonts/THSarabunNew-BoldItalic.woff") format("woff");
+  src:
+    url("/fonts/THSarabunNew-BoldItalic.woff2") format("woff2"),
+    url("/fonts/THSarabunNew-BoldItalic.woff") format("woff");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 
+/* ------------------------------
+   Base Styles
+--------------------------------*/
 @layer base {
   html {
     scroll-behavior: smooth;
     font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
-    font-family: "THSarabunNew", "Sarabun", "Noto Sans Thai", "Roboto", sans-serif;
+    font-family:
+      "THSarabunNew", "Sarabun", "Noto Sans Thai", "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -69,6 +80,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -88,9 +100,13 @@
     background: transparent;
   }
 
+  /* Buttons & Links */
   button,
   a {
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      transform 0.3s ease;
     will-change: transform, color, background-color;
   }
 
@@ -106,6 +122,7 @@
     outline-offset: 2px;
   }
 
+  /* Reduce Motion */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -116,6 +133,7 @@
     }
   }
 
+  /* Keyframes */
   @keyframes slideBackground {
     0% {
       transform: translateX(0) scale(0.55);
@@ -134,6 +152,9 @@
   }
 }
 
+/* ------------------------------
+   Components
+--------------------------------*/
 @layer components {
   .btn-primary {
     @apply bg-primary text-white font-bold py-2 px-4 rounded shadow hover:bg-primary-focus transition;
@@ -157,6 +178,9 @@
   }
 }
 
+/* ------------------------------
+   Utilities
+--------------------------------*/
 @layer utilities {
   .text-shadow {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);

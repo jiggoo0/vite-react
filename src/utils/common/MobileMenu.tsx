@@ -1,23 +1,17 @@
-// ✅ src/utils/common/MobileMenu.tsx — Mobile Drawer Menu (Production Ready)
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
+import { cn } from "@/utils/cn";
 
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
 }
 
-/**
- * 📱 MobileMenu
- *
- * - เมนูแบบ Drawer สำหรับมือถือ
- * - รองรับการปิดด้วย Esc และคลิก backdrop
- * - ป้องกัน scroll เมื่อเปิด
- * - ใช้ animation fade-in / slide-in
- */
 const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
-  // ปิดเมนูเมื่อกด Esc และป้องกัน scroll เมื่อเปิด
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  // ป้องกัน scroll & ปิดเมนูด้วย Esc
   useEffect(() => {
     if (!open) return;
 
@@ -26,63 +20,64 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
     };
 
     document.addEventListener("keydown", handleEsc);
-    document.body.style.overflow = "hidden"; // ป้องกัน scroll background
+    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = ""; // คืนค่า scroll
+      document.body.style.overflow = "";
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  // Focus trap เบื้องต้น
+  useEffect(() => {
+    if (open && drawerRef.current) {
+      const firstFocusable = drawerRef.current.querySelector<HTMLElement>(
+        "a, button, input, [tabindex]:not([tabindex='-1'])"
+      );
+      firstFocusable?.focus();
+    }
+  }, [open]);
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div
+      className={cn(
+        "fixed inset-0 z-50 flex pointer-events-none",
+        open ? "pointer-events-auto" : ""
+      )}
+      aria-hidden={!open}
+    >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
-        aria-hidden="true"
       />
 
       {/* Drawer */}
-      <div
-        className="relative ml-auto h-full w-72 bg-base-100 px-6 py-8 shadow-2xl animate-slide-in-right"
-        role="dialog"
+      <aside
+        ref={drawerRef}
+        className={cn(
+          "relative ml-auto h-full w-72 bg-base-100 px-6 py-8 shadow-2xl transform transition-transform duration-300",
+          open ? "translate-x-0" : "translate-x-full"
+        )}
+        role="menu"
         aria-modal="true"
         aria-label="เมนูมือถือ"
       >
         <nav className="flex flex-col gap-5 text-lg font-medium">
-          <a
-            href="/"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
-            หน้าแรก
-          </a>
-          <a
-            href="/#portfolio"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
-            ผลงาน
-          </a>
-          <a
-            href="/#services"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
-            บริการ
-          </a>
-          <a
-            href="/#about"
-            onClick={onClose}
-            className="hover:text-primary transition-colors"
-          >
-            เกี่ยวกับเรา
-          </a>
+          {["หน้าแรก", "ผลงาน", "บริการ", "เกี่ยวกับเรา"].map((label, i) => (
+            <a
+              key={i}
+              href={`/#${label}`}
+              onClick={onClose}
+              className="hover:text-primary transition-colors"
+              role="menuitem"
+              tabIndex={0}
+            >
+              {label}
+            </a>
+          ))}
         </nav>
-      </div>
+      </aside>
     </div>
   );
 };
