@@ -1,6 +1,51 @@
-// src/data/theme.ts
+export type ThemeKey =
+  | "primary"
+  | "primary-focus"
+  | "primary-content"
+  | "secondary"
+  | "secondary-focus"
+  | "secondary-content"
+  | "accent"
+  | "accent-focus"
+  | "accent-content"
+  | "neutral"
+  | "neutral-focus"
+  | "neutral-content"
+  | "base-100"
+  | "base-200"
+  | "base-300"
+  | "base-content"
+  | "info"
+  | "success"
+  | "warning"
+  | "error";
 
-export type ThemeColors = Record<string, string>;
+export type ThemeColors = Record<ThemeKey, string>;
+
+const sharedPalette: Omit<
+  ThemeColors,
+  | "primary"
+  | "primary-focus"
+  | "primary-content"
+  | "secondary"
+  | "secondary-focus"
+  | "secondary-content"
+  | "base-100"
+  | "base-200"
+  | "base-300"
+  | "base-content"
+> = {
+  accent: "#F59E0B",
+  "accent-focus": "#D97706",
+  "accent-content": "#000000",
+  neutral: "#374151",
+  "neutral-focus": "#1F2937",
+  "neutral-content": "#FFFFFF",
+  info: "#3ABFF8",
+  success: "#36D399",
+  warning: "#FBBD23",
+  error: "#F87272",
+};
 
 export const lightTheme: ThemeColors = {
   primary: "#2563EB",
@@ -9,20 +54,11 @@ export const lightTheme: ThemeColors = {
   secondary: "#9333EA",
   "secondary-focus": "#7E22CE",
   "secondary-content": "#FFFFFF",
-  accent: "#F59E0B",
-  "accent-focus": "#D97706",
-  "accent-content": "#000000",
-  neutral: "#374151",
-  "neutral-focus": "#1F2937",
-  "neutral-content": "#FFFFFF",
   "base-100": "#FFFFFF",
   "base-200": "#F3F4F6",
   "base-300": "#E5E7EB",
   "base-content": "#1F2937",
-  info: "#3ABFF8",
-  success: "#36D399",
-  warning: "#FBBD23",
-  error: "#F87272",
+  ...sharedPalette,
 };
 
 export const darkTheme: ThemeColors = {
@@ -31,21 +67,12 @@ export const darkTheme: ThemeColors = {
   "primary-content": "#FFFFFF",
   secondary: "#A78BFA",
   "secondary-focus": "#9333EA",
-  "secondary-content": "#000000",
-  accent: "#FBBF24",
-  "accent-focus": "#F59E0B",
-  "accent-content": "#000000",
-  neutral: "#D1D5DB",
-  "neutral-focus": "#9CA3AF",
-  "neutral-content": "#1F2937",
+  "secondary-content": "#FFFFFF",
   "base-100": "#1F2937",
   "base-200": "#111827",
   "base-300": "#374151",
   "base-content": "#F3F4F6",
-  info: "#60A5FA",
-  success: "#4ADE80",
-  warning: "#FBBF24",
-  error: "#F87171",
+  ...sharedPalette,
 };
 
 export const teamThemeColors: ThemeColors = {
@@ -55,18 +82,9 @@ export const teamThemeColors: ThemeColors = {
   secondary: "#9333EA",
   "secondary-focus": "#7E22CE",
   "secondary-content": "#FFFFFF",
-  accent: "#F59E0B",
-  "accent-focus": "#D97706",
-  "accent-content": "#000000",
-  neutral: "#374151",
-  "neutral-focus": "#1F2937",
-  "neutral-content": "#FFFFFF",
   "base-100": "#FFFFFF",
   "base-200": "#F3F4F6",
   "base-300": "#E5E7EB",
   "base-content": "#1F2937",
-  info: "#3ABFF8",
-  success: "#36D399",
-  warning: "#FBBD23",
-  error: "#F87272",
+  ...sharedPalette,
 };

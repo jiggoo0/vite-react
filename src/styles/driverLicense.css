@@ -1,6 +1,6 @@
-/* ------------------------------
+/* ==================================
    Root Variables (Light Mode)
---------------------------------*/
+================================== */
 :root {
   /* Colors */
   --color-primary: #2563eb;
@@ -27,11 +27,16 @@
   /* Shadows */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.3s ease;
 }
 
-/* ------------------------------
+/* ==================================
    Dark Mode Overrides
---------------------------------*/
+================================== */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-primary: #3b82f6;
@@ -52,9 +57,9 @@
   }
 }
 
-/* ------------------------------
+/* ==================================
    Card Container
---------------------------------*/
+================================== */
 .dl-card {
   max-width: 500px;
   margin-inline: auto;
@@ -65,13 +70,14 @@
   box-shadow: var(--shadow-md);
   font-family: var(--font-family-base);
   transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease;
+    background-color var(--transition-slow),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
-/* ------------------------------
+/* ==================================
    Form Styles
---------------------------------*/
+================================== */
 .dl-form {
   display: flex;
   flex-direction: column;
@@ -93,9 +99,9 @@
   background-color: var(--color-bg);
   color: var(--color-text);
   transition:
-    border-color 0.25s ease,
-    box-shadow 0.2s ease,
-    background-color 0.25s ease;
+    border-color var(--transition-base),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-base);
 }
 
 .dl-form input:focus,
@@ -112,9 +118,9 @@
   cursor: not-allowed;
 }
 
-/* ------------------------------
+/* ==================================
    Buttons
---------------------------------*/
+================================== */
 .dl-form button {
   background-color: var(--color-primary);
   color: #fff;
@@ -125,8 +131,9 @@
   font-weight: 600;
   font-size: clamp(13px, 1.4vw, 14px);
   transition:
-    background-color 0.25s ease,
-    transform 0.15s ease;
+    background-color var(--transition-base),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 .dl-form button:hover:not(:disabled) {
@@ -143,9 +150,9 @@
   cursor: not-allowed;
 }
 
-/* ------------------------------
+/* ==================================
    Preview Section
---------------------------------*/
+================================== */
 .dl-preview {
   margin-top: 1rem;
   padding: 0.75rem;
@@ -153,8 +160,8 @@
   background-color: var(--color-bg-light);
   border: 1px solid var(--color-border-light);
   transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease;
+    background-color var(--transition-slow),
+    border-color var(--transition-base);
 }
 
 .dl-preview h4 {
@@ -175,9 +182,9 @@
   aspect-ratio: 4 / 3;
 }
 
-/* ------------------------------
+/* ==================================
    Responsive Adjustments
---------------------------------*/
+================================== */
 @media (max-width: 640px) {
   .dl-card {
     padding: 0.75rem;
@@ -186,4 +193,12 @@
   .dl-preview img {
     width: 100px;
   }
+}
+
+/* ==================================
+   Accessibility & Focus
+================================== */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }

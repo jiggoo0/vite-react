@@ -12,17 +12,24 @@ const Logo: FC = () => (
       "transition-colors duration-200"
     )}
   >
+    {/* Logo Image */}
     <img
       src="/logo.webp"
       alt="โลโก้ JP Visual & Docs"
       loading="lazy"
       decoding="async"
-      className="h-8 w-8 sm:h-10 sm:w-10 rounded-md object-contain dark:brightness-90"
+      className={clsx(
+        "h-8 w-8 sm:h-10 sm:w-10 rounded-md object-contain",
+        "dark:brightness-90"
+      )}
       aria-hidden="true"
     />
+
+    {/* Logo Text */}
     <span
       className={clsx(
-        "text-lg sm:text-xl font-bold select-none tracking-tight text-primary dark:text-primary-content"
+        "text-lg sm:text-xl font-bold select-none tracking-tight",
+        "text-primary dark:text-primary-content"
       )}
     >
       JP Visual & Docs

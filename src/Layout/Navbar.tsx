@@ -1,3 +1,5 @@
+"use client";
+
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
@@ -5,6 +7,12 @@ import clsx from "clsx";
 import ThemeToggle from "@layout/ui/ThemeToggle";
 import Logo from "@layout/ui/Logo";
 
+/**
+ * 🎯 Navbar Component
+ *
+ * - แสดง Logo + Navigation Links + Theme Toggle
+ * - รองรับ active state, responsive, และ accessibility
+ */
 const Navbar: FC = () => {
   const navLinks = [
     { to: "/", label: "หน้าแรก" },
@@ -14,14 +22,19 @@ const Navbar: FC = () => {
 
   return (
     <nav
-      className={clsx("navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8")}
+      className={clsx(
+        "navbar mx-auto max-w-7xl px-4 sm:px-6 lg:px-8",
+        "flex items-center justify-between h-16"
+      )}
       aria-label="เมนูหลัก"
     >
+      {/* Logo */}
       <div className="flex-1">
         <Logo />
       </div>
 
-      <div className="flex-none flex items-center gap-1 sm:gap-2">
+      {/* Navigation Links + Theme Toggle */}
+      <div className="flex-none flex items-center gap-2 sm:gap-4">
         {navLinks.map(({ to, label }) => (
           <NavLink
             key={to}
@@ -35,9 +48,12 @@ const Navbar: FC = () => {
                   : "hover:bg-base-200"
               )
             }
-          >
-            {label}
-          </NavLink>
+            aria-current={undefined} // default
+            // ใช้ hook render function ของ NavLink
+            children={({ isActive }) => (
+              <span aria-current={isActive ? "page" : undefined}>{label}</span>
+            )}
+          />
         ))}
 
         <ThemeToggle />
@@ -46,4 +62,5 @@ const Navbar: FC = () => {
   );
 };
 
+Navbar.displayName = "Navbar";
 export default Navbar;

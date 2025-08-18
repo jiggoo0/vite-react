@@ -1,112 +1,92 @@
+// src/Home/components/UserBoard/TrustBadges.tsx
 "use client";
 
-import { ShieldCheck, Clock, Users, Lock, Award } from "lucide-react";
+import { FC, ReactElement } from "react";
+import { ShieldCheckIcon, CheckBadgeIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import { motion, Variants } from "framer-motion";
 
-type BadgeItem = {
-  id: string;
-  icon: JSX.Element;
+// Badge type
+interface Badge {
+  id: number;
+  icon: ReactElement;
   title: string;
-  desc: string;
-};
+  description: string;
+}
 
-const badges: BadgeItem[] = [
+// Data for trust badges
+const badges: Badge[] = [
   {
-    id: "secure",
-    icon: <ShieldCheck className="w-10 h-10 text-primary" />,
-    title: "ข้อมูลปลอดภัยตามมาตรฐานสากล",
-    desc: "ระบบเข้ารหัสและป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต",
+    id: 1,
+    icon: <ShieldCheckIcon className="h-10 w-10 text-green-500" />,
+    title: "Verified Security",
+    description: "Our platform ensures top-level security for your data and transactions.",
   },
   {
-    id: "temporary-access",
-    icon: <Clock className="w-10 h-10 text-primary" />,
-    title: "การเข้าถึงชั่วคราว",
-    desc: "รหัสเข้าถึงมีเวลาจำกัดเพื่อความปลอดภัยสูงสุด",
+    id: 2,
+    icon: <CheckBadgeIcon className="h-10 w-10 text-blue-500" />,
+    title: "Certified Service",
+    description: "We are certified by industry standards for reliability and quality.",
   },
   {
-    id: "personal-login",
-    icon: <Lock className="w-10 h-10 text-primary" />,
-    title: "ล็อกอินด้วยรหัสเฉพาะบุคคล",
-    desc: "รองรับรหัสเฉพาะผู้ใช้ที่ตรวจสอบแล้วเท่านั้น",
-  },
-  {
-    id: "trusted",
-    icon: <Award className="w-10 h-10 text-primary" />,
-    title: "ความน่าเชื่อถือสูง",
-    desc: "ผ่านการทดสอบและรับรองโดยทีมพัฒนามืออาชีพ",
-  },
-  {
-    id: "multi-level",
-    icon: <Users className="w-10 h-10 text-primary" />,
-    title: "รองรับผู้ใช้หลายระดับ",
-    desc: "กำหนดสิทธิ์ตามระดับผู้ใช้อย่างชัดเจน",
+    id: 3,
+    icon: <SparklesIcon className="h-10 w-10 text-yellow-400" />,
+    title: "Premium Experience",
+    description: "We provide a premium, smooth, and trusted experience for all users.",
   },
 ];
 
-// Motion Variants
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (custom: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: custom * 0.1,
-      duration: 0.4,
-      ease: "easeOut" as const,
-    },
-  }),
+// Container animation for staggering children
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
 };
 
-interface BadgeCardProps {
-  icon: JSX.Element;
-  title: string;
-  desc: string;
-  index: number;
-}
+// Individual badge animation
+const badgeVariants: Variants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
-const BadgeCard: React.FC<BadgeCardProps> = ({ icon, title, desc, index }) => (
-  <motion.article
-    className="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary"
-    variants={cardVariants}
+const TrustBadges: FC = () => (
+  <motion.section
+    className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
+    variants={containerVariants}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true, amount: 0.2 }}
-    custom={index}
-    whileHover={{ y: -4, scale: 1.03 }}
-    whileTap={{ scale: 0.97 }}
-    aria-label={title}
+    viewport={{ once: true, amount: 0.3 }}
+    aria-label="Trust Badges"
   >
-    <div className="card-body flex flex-col items-center text-center p-6">
-      <div className="mb-4">{icon}</div>
-      <h3 className="card-title text-base md:text-lg font-semibold mb-2">
-        {title}
-      </h3>
-      <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
-        {desc}
-      </p>
-    </div>
-  </motion.article>
+    {badges.map(({ id, icon, title, description }) => (
+      <motion.article
+        key={id}
+        className="flex flex-col items-center gap-4 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 focus-within:ring-2 focus-within:ring-primary outline-none"
+        variants={badgeVariants}
+        whileHover={{ y: -5, scale: 1.04 }}
+        tabIndex={0}
+        role="group"
+        aria-labelledby={`badge-title-${id}`}
+      >
+        <motion.div
+          className="flex items-center justify-center rounded-full p-4 bg-gradient-to-tr from-primary/20 to-secondary/20 shadow-inner"
+          whileHover={{ scale: 1.2, rotate: 15 }}
+          aria-hidden="true"
+        >
+          {icon}
+        </motion.div>
+
+        <h3
+          id={`badge-title-${id}`}
+          className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white"
+        >
+          {title}
+        </h3>
+
+        <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
+          {description}
+        </p>
+      </motion.article>
+    ))}
+  </motion.section>
 );
-
-const TrustBadges: React.FC = () => {
-  return (
-    <section
-      className="py-12 bg-base-200"
-      aria-labelledby="trust-badges-heading"
-    >
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 id="trust-badges-heading" className="sr-only">
-          เหตุผลที่คุณวางใจเรา
-        </h2>
-
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {badges.map(({ id, ...badge }, idx) => (
-            <BadgeCard key={id} {...badge} index={idx} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 export default TrustBadges;

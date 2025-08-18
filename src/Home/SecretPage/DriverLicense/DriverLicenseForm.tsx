@@ -27,23 +27,32 @@ const DriverLicenseForm: FC = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {Object.entries(formData).map(([key, value]) => (
-          <div key={key}>
-            <label className="block font-medium mb-1">
-              {key
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (str) => str.toUpperCase())}
-            </label>
-            <input
-              type={key.includes("Date") ? "date" : "text"}
-              value={value}
-              onChange={(e) =>
-                handleChange(key as keyof DriverLicenseData, e.target.value)
-              }
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-        ))}
+        {Object.entries(formData).map(([key, value]) => {
+          const inputId = `dl-${key}`;
+          return (
+            <div key={key}>
+              <label
+                htmlFor={inputId}
+                className="block font-medium mb-1 capitalize"
+              >
+                {key.replace(/([A-Z])/g, " $1")}
+              </label>
+              <input
+                id={inputId}
+                type={
+                  ["dob", "issueDate", "expiryDate"].includes(key)
+                    ? "date"
+                    : "text"
+                }
+                value={value}
+                onChange={(e) =>
+                  handleChange(key as keyof DriverLicenseData, e.target.value)
+                }
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+          );
+        })}
       </div>
 
       <h3 className="text-lg font-semibold">Preview</h3>

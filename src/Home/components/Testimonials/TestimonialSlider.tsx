@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { FC, useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { testimonials } from "@data/testimonialsData";
 import { carouselVariants } from "@/animations/motionVariants";
@@ -10,7 +10,7 @@ const AUTO_PLAY_INTERVAL = 7000;
 
 const swipePower = (offset: number, velocity: number) => offset * velocity;
 
-const TestimonialSlider: React.FC = () => {
+const TestimonialSlider: FC = () => {
   const [[page, direction], setPage] = useState<[number, number]>([0, 0]);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -42,19 +42,16 @@ const TestimonialSlider: React.FC = () => {
   return (
     <div
       className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl bg-white dark:bg-gray-900 p-8 shadow-2xl"
-      onMouseEnter={() => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-      }}
+      onMouseEnter={() =>
+        intervalRef.current && clearInterval(intervalRef.current)
+      }
       onMouseLeave={resetInterval}
-      onFocus={() => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-      }}
+      onFocus={() => intervalRef.current && clearInterval(intervalRef.current)}
       onBlur={resetInterval}
       role="region"
       aria-roledescription="carousel"
       aria-label="Customer Testimonials"
     >
-      {/* Slides */}
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={`${id}-${page}`}

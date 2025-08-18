@@ -1,0 +1,15 @@
+/* src/styles/idCard.css */
+#id-card-preview {
+  font-family: "Arial", sans-serif;
+  position: relative;
+}
+
+#id-card-preview span {
+  position: absolute;
+  line-height: 1.2;
+}
+
+#id-card-preview img {
+  position: absolute;
+  border-radius: 6px;
+}

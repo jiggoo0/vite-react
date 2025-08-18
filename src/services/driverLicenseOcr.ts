@@ -1,56 +1,49 @@
-import axios from "axios";
+// src/services/driverLicenseOcr.ts
+import { z } from "zod";
 
-export interface DriverLicenseData {
-  fullName?: string;
-  idNumber?: string;
-  birthDate?: string;
-  address?: string;
-  photo?: string;
-}
+/**
+ * Schema สำหรับข้อมูลจากใบขับขี่
+ */
+export const driverLicenseSchema = z.object({
+  idNumber: z.string().min(9, "เลขบัตรไม่ถูกต้อง"),
+  firstName: z.string().min(1, "กรุณากรอกชื่อ"),
+  lastName: z.string().min(1, "กรุณากรอกนามสกุล"),
+  dob: z.string().optional(), // วันเกิด
+  issueDate: z.string().optional(), // วันที่ออกบัตร
+  expiryDate: z.string().optional(), // วันหมดอายุ
+});
 
-const API_URL = "https://api.iapp.co.th/thai-driver-license-ocr";
-const API_KEY = import.meta.env.VITE_IAPP_API_KEY;
+export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
 
-if (!API_KEY) console.error("[DriverLicenseOCR] Missing VITE_IAPP_API_KEY");
-
+/**
+ * ฟังก์ชัน OCR (mock ไว้ก่อน)
+ * @param file ไฟล์ภาพใบขับขี่
+ * @returns DriverLicenseData
+ */
 export async function driverLicenseOcr(
-  file: File | Blob,
-  fields: string[] = ["fullName", "idNumber", "birthDate", "address"]
+  _file: File
 ): Promise<DriverLicenseData> {
-  if (!API_KEY)
-    throw new Error(
-      "OCR API Key is missing. Please set VITE_IAPP_API_KEY in your .env file."
-    );
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("fields", fields.join(","));
-
-  try {
-    const response = await axios.post<DriverLicenseData>(API_URL, formData, {
-      headers: { apikey: API_KEY },
-      timeout: 15000,
-      validateStatus: (status) => status >= 200 && status < 300,
-    });
-
-    if (!response.data) throw new Error("OCR API returned empty response");
-
-    if (import.meta.env.DEV)
-      console.debug("[DriverLicenseOCR] API Response:", response.data);
-
-    return response.data;
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "OCR Failed";
-    console.error("[DriverLicenseOCR] Error:", message);
-    throw new Error(message);
-  }
+  // TODO: เรียก OCR API จริงเมื่อมี
+  return {
+    idNumber: "1234567890123",
+    firstName: "สมชาย",
+    lastName: "ใจดี",
+    dob: "1990-01-01",
+    issueDate: "2020-01-01",
+    expiryDate: "2030-01-01",
+  };
 }
 
+/**
+ * แปลงผล OCR → ค่า default ของฟอร์ม
+ */
 export function mapDriverLicenseToForm(data: DriverLicenseData) {
   return {
-    fullName: data.fullName || "",
-    idNumber: data.idNumber || "",
-    birthDate: data.birthDate || "",
-    address: data.address || "",
+    idNumber: data.idNumber,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    dob: data.dob ?? "",
+    issueDate: data.issueDate ?? "",
+    expiryDate: data.expiryDate ?? "",
   };
 }

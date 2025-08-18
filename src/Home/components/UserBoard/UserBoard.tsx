@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useMemo, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 
 export interface IUser {
   application_id: string;
@@ -127,68 +128,73 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   );
 
   const renderTable = () => (
-    <div
-      id="user-table"
-      className={`relative overflow-x-auto w-full max-w-full sm:max-w-6xl rounded-lg shadow-md bg-white transition-all duration-500 ${
-        isAuthorized ? "blur-0" : "blur-md pointer-events-none select-none"
-      }`}
-    >
-      {!isAuthorized && (
-        <div className="absolute inset-0 bg-white bg-opacity-60 flex justify-center items-center rounded-lg">
-          <p className="text-gray-500 font-semibold text-lg">
-            กรุณากรอกรหัสเพื่อดูข้อมูล
-          </p>
-        </div>
-      )}
-      <table className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm">
-        <thead>
-          <tr className="bg-gray-100">
-            {displayKeys.map((key) => {
-              const style: React.CSSProperties =
-                key === "full_name"
-                  ? { width: "20%" }
-                  : key === "address"
-                    ? { width: "25%" }
-                    : key === "status" || key === "province"
-                      ? { width: "10%" }
-                      : {};
-              return (
-                <th
-                  key={key}
-                  className="border border-gray-300 px-3 py-2 text-left whitespace-nowrap"
-                  style={style}
-                >
-                  {labelMap[key]?.label}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {pageData.map((user) => (
-            <tr
-              key={user.application_id}
-              className="odd:bg-white even:bg-gray-50 hover:bg-gray-200 transition-colors"
-            >
+    <div className="relative w-full max-w-full sm:max-w-6xl">
+      <motion.div
+        id="user-table"
+        className={`overflow-x-auto rounded-lg shadow-md bg-white transition-all duration-500 ${
+          isAuthorized ? "blur-0" : "blur-md pointer-events-none select-none"
+        }`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        {!isAuthorized && (
+          <div className="absolute inset-0 bg-white bg-opacity-60 flex justify-center items-center rounded-lg">
+            <p className="text-gray-500 font-semibold text-lg">
+              กรุณากรอกรหัสเพื่อดูข้อมูล
+            </p>
+          </div>
+        )}
+        <table className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm">
+          <thead>
+            <tr className="bg-gray-100">
               {displayKeys.map((key) => {
-                const compute = labelMap[key]?.compute;
-                const value = compute
-                  ? compute(user[key as keyof IUser], user)
-                  : (user[key as keyof IUser] ?? "");
+                const style: React.CSSProperties =
+                  key === "full_name"
+                    ? { width: "20%" }
+                    : key === "address"
+                      ? { width: "25%" }
+                      : key === "status" || key === "province"
+                        ? { width: "10%" }
+                        : {};
                 return (
-                  <td
+                  <th
                     key={key}
-                    className="border border-gray-300 px-3 py-2 truncate"
-                    title={String(value)}
+                    className="border border-gray-300 px-3 py-2 text-left whitespace-nowrap"
+                    style={style}
                   >
-                    {String(value)}
-                  </td>
+                    {labelMap[key]?.label}
+                  </th>
                 );
               })}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {pageData.map((user) => (
+              <tr
+                key={user.application_id}
+                className="odd:bg-white even:bg-gray-50 hover:bg-gray-200 transition-colors"
+              >
+                {displayKeys.map((key) => {
+                  const compute = labelMap[key]?.compute;
+                  const value = compute
+                    ? compute(user[key as keyof IUser], user)
+                    : (user[key as keyof IUser] ?? "");
+                  return (
+                    <td
+                      key={key}
+                      className="border border-gray-300 px-3 py-2 truncate"
+                      title={String(value)}
+                    >
+                      {String(value)}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </motion.div>
 
       {totalPages > 1 && (
         <nav

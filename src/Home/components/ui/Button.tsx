@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
@@ -37,9 +39,9 @@ const Button: FC<ButtonProps> = ({
     secondary:
       "bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-200",
     ghost:
-      "bg-transparent text-base-content hover:bg-base-100 disabled:text-gray-400",
+      "bg-transparent text-gray-900 hover:bg-gray-100 disabled:text-gray-400",
     outline:
-      "bg-transparent border border-gray-300 text-base-content hover:bg-base-100 disabled:border-gray-200",
+      "bg-transparent border border-gray-300 text-gray-900 hover:bg-gray-100 disabled:border-gray-200",
   };
 
   return (
@@ -47,15 +49,21 @@ const Button: FC<ButtonProps> = ({
       type={type}
       disabled={disabled || loading}
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
         sizeClasses[size],
         variantClasses[variant],
         fullWidth && "w-full",
         className
       )}
+      aria-busy={loading ? true : undefined}
       {...props}
     >
-      {loading && <Loader2 className="w-4 h-4 animate-spin text-current" />}
+      {loading && (
+        <Loader2
+          className="w-4 h-4 animate-spin text-current"
+          aria-hidden="true"
+        />
+      )}
       <span className={clsx(loading && "opacity-70")}>{children}</span>
     </button>
   );

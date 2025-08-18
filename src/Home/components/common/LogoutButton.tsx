@@ -7,6 +7,12 @@ import { LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import Button from "@/Home/components/ui/Button";
 
+/**
+ * LogoutButton
+ * - รองรับ loading state
+ * - ปรับ accessibility (aria-busy, aria-label)
+ * - ใช้ Button component แบบ reusable
+ */
 const LogoutButton = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -19,6 +25,7 @@ const LogoutButton = () => {
       navigate("/login", { replace: true });
     } catch (error) {
       console.error("Logout failed:", error);
+    } finally {
       setLoading(false);
     }
   };

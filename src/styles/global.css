@@ -1,196 +1,175 @@
+/* ===============================
+   Tailwind Directives
+================================= */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ------------------------------
-   Font Face Definitions
---------------------------------*/
-@font-face {
-  font-family: "THSarabunNew";
-  src:
-    url("/fonts/THSarabunNew.woff2") format("woff2"),
-    url("/fonts/THSarabunNew.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+/* ===============================
+   Root Variables (Light Mode)
+================================= */
+:root {
+  /* Brand Colors */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1e40af;
+  --color-primary-disabled: #9ca3af;
+
+  --color-secondary: #9333ea;
+  --color-secondary-hover: #7e22ce;
+  --color-accent: #f59e0b;
+  --color-accent-focus: #d97706;
+  --color-neutral: #374151;
+  --color-neutral-focus: #1f2937;
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-warning: #facc15;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Base UI Colors */
+  --color-bg: #ffffff;
+  --color-bg-light: #f9fafb;
+  --color-border: #d1d5db;
+  --color-border-light: #e5e7eb;
+
+  /* Typography */
+  --color-text: #111827;
+  --color-text-muted: #374151;
+  --font-family-base: "Kanit", sans-serif;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.3s ease;
 }
 
-@font-face {
-  font-family: "THSarabunNew";
-  src:
-    url("/fonts/THSarabunNew-Bold.woff2") format("woff2"),
-    url("/fonts/THSarabunNew-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+/* ===============================
+   Dark Mode Variables
+================================= */
+.dark {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-disabled: #6b7280;
+
+  --color-secondary: #a855f7;
+  --color-secondary-hover: #9333ea;
+  --color-accent: #fbbf24;
+  --color-accent-focus: #d97706;
+  --color-neutral: #1f2937;
+  --color-neutral-focus: #374151;
+
+  --color-success: #34d399;
+  --color-warning: #fde047;
+  --color-error: #f87171;
+  --color-info: #60a5fa;
+
+  --color-bg: #111827;
+  --color-bg-light: #1f2937;
+  --color-border: #4b5563;
+  --color-border-light: #374151;
+
+  --color-text: #f3f4f6;
+  --color-text-muted: #9ca3af;
+
+  --shadow-sm: 0 2px 4px rgba(255, 255, 255, 0.05);
+  --shadow-md: 0 4px 12px rgba(255, 255, 255, 0.06);
 }
 
-@font-face {
-  font-family: "THSarabunNew";
-  src:
-    url("/fonts/THSarabunNew-Italic.woff2") format("woff2"),
-    url("/fonts/THSarabunNew-Italic.woff") format("woff");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+/* ===============================
+   Global Reset & Base Typography
+================================= */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@font-face {
-  font-family: "THSarabunNew";
-  src:
-    url("/fonts/THSarabunNew-BoldItalic.woff2") format("woff2"),
-    url("/fonts/THSarabunNew-BoldItalic.woff") format("woff");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
+html {
+  scroll-behavior: smooth;
 }
 
-/* ------------------------------
-   Base Styles
---------------------------------*/
-@layer base {
-  html {
-    scroll-behavior: smooth;
-    font-size: clamp(16px, 1.125vw + 0.5rem, 18px);
-    font-family:
-      "THSarabunNew", "Sarabun", "Noto Sans Thai", "Roboto", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
-
-  body {
-    @apply bg-base-100 text-base-content;
-    line-height: 1.7;
-    letter-spacing: 0.5px;
-    min-height: 100dvh;
-  }
-
-  ::selection {
-    background-color: theme("colors.primary");
-    color: #fff;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: theme("colors.primary") transparent;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: theme("colors.primary");
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: theme("colors.primary-focus");
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  /* Buttons & Links */
-  button,
-  a {
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease,
-      transform 0.3s ease;
-    will-change: transform, color, background-color;
-  }
-
-  button:hover,
-  a:hover {
-    transform: scale(1.05);
-    outline: none;
-  }
-
-  button:focus,
-  a:focus {
-    outline: 2px solid theme("colors.primary");
-    outline-offset: 2px;
-  }
-
-  /* Reduce Motion */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      transition: none !important;
-      animation-duration: 0s !important;
-      animation-iteration-count: 1 !important;
-    }
-  }
-
-  /* Keyframes */
-  @keyframes slideBackground {
-    0% {
-      transform: translateX(0) scale(0.55);
-    }
-    50% {
-      transform: translateX(5%) scale(0.575);
-    }
-    100% {
-      transform: translateX(0) scale(0.55);
-    }
-  }
-
-  .animate-slide {
-    animation: slideBackground 20s ease-in-out infinite;
-    will-change: transform;
-  }
+* {
+  box-sizing: border-box;
 }
 
-/* ------------------------------
-   Components
---------------------------------*/
-@layer components {
-  .btn-primary {
-    @apply bg-primary text-white font-bold py-2 px-4 rounded shadow hover:bg-primary-focus transition;
-  }
-
-  .card {
-    @apply bg-base-200 p-4 rounded-lg shadow-md transition hover:shadow-lg;
-  }
-
-  .badge {
-    @apply inline-block bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full;
-  }
-
-  .hero-section {
-    @apply relative w-full min-h-[60vh] flex flex-col justify-center items-start text-white overflow-hidden;
-  }
-
-  .a4-card-wrapper {
-    @apply max-w-[210mm] min-h-[297mm] w-[210mm] h-[297mm] mx-auto my-4 p-4 bg-white shadow-lg rounded;
-    break-inside: avoid;
-  }
+/* ===============================
+   Links
+================================= */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-/* ------------------------------
-   Utilities
---------------------------------*/
-@layer utilities {
-  .text-shadow {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  }
+a:hover,
+a:focus {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+  outline: none;
+}
 
-  .transition-fast {
-    transition: all 0.15s ease-in-out !important;
-  }
+/* ===============================
+   Headings
+================================= */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+  color: inherit;
+}
 
-  .scroll-smooth {
-    scroll-behavior: smooth;
-  }
+/* ===============================
+   Forms & Buttons
+================================= */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+button:hover,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+/* ===============================
+   Accessibility
+================================= */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }

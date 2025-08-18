@@ -19,13 +19,14 @@ const TrustBadge: React.FC<TrustBadgeProps> = ({
       <motion.div
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className={cn(
           "flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400",
           className
         )}
         role="status"
         aria-roledescription="statistic"
+        aria-live="polite"
         aria-label={`${count}+ ${label}`}
         tabIndex={0}
       >

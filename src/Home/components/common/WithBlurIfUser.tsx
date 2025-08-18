@@ -3,19 +3,29 @@
 import { FC, ReactNode, memo } from "react";
 
 interface WithBlurProps {
+  /** ถ้า true จะเบลอ content (ผู้ใช้ทั่วไป) */
   isNormalUser: boolean;
+  /** เนื้อหาที่จะแสดงหรือเบลอ */
   children: ReactNode;
+  /** บทบาทผู้ใช้ เช่น "manager" */
   role?: string;
+  /** ข้อความ overlay ถ้า content ถูกเบลอ */
   blurText?: string;
 }
 
+/**
+ * WithBlurIfUser Component
+ *
+ * - เบลอเนื้อหาเฉพาะผู้ใช้ทั่วไป
+ * - แสดง overlay message
+ * - ใช้งานร่วมกับ manager / admin ได้
+ */
 const WithBlurIfUser: FC<WithBlurProps> = memo(
   ({ isNormalUser, children, role, blurText }) => {
-    // ถ้าไม่ใช่ normal user หรือเป็น manager ให้ไม่เบลอ
+    // ไม่เบลอถ้าไม่ใช่ normal user หรือ role เป็น manager
     if (!isNormalUser || role === "manager") return <>{children}</>;
 
-    // ข้อความ overlay ถ้าไม่กำหนดจะใช้ค่า default
-    const overlayText = blurText || "เฉพาะ manager";
+    const overlayText = blurText ?? "เฉพาะ manager";
 
     return (
       <div className="relative">

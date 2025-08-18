@@ -23,14 +23,19 @@ const defaultMetrics: Metric[] = [
 ];
 
 // Motion variants
-const fadeInUpVariant = (delay: number): Variants => ({
-  hidden: { opacity: 0, y: 8 },
+const containerVariants: Variants = {
+  hidden: {},
   visible: {
-    opacity: 1,
-    y: 0,
-    transition: { delay, duration: 0.4, ease: "easeOut" },
+    transition: {
+      staggerChildren: 0.05,
+    },
   },
-});
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
 
 const TrustMetricsBar: FC<TrustMetricsBarProps> = ({ className, metrics }) => {
   const data = metrics && metrics.length > 0 ? metrics : defaultMetrics;
@@ -41,15 +46,21 @@ const TrustMetricsBar: FC<TrustMetricsBarProps> = ({ className, metrics }) => {
       aria-label="ตัวชี้วัดความเชื่อมั่น"
     >
       <div className="container mx-auto px-4">
-        <dl className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {data.map((m, idx) => (
+        <motion.dl
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          {data.map((m) => (
             <motion.div
               key={m.key}
-              variants={fadeInUpVariant(idx * 0.05)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              className="stat bg-base-200 rounded-lg p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              tabIndex={0}
+              className="stat bg-base-200 rounded-lg p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary"
               role="group"
               aria-label={`${m.label}: ${m.value}`}
             >
@@ -61,7 +72,7 @@ const TrustMetricsBar: FC<TrustMetricsBarProps> = ({ className, metrics }) => {
               </dd>
             </motion.div>
           ))}
-        </dl>
+        </motion.dl>
       </div>
     </section>
   );

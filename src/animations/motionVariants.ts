@@ -1,7 +1,10 @@
 // src/animations/motionVariants.ts
 import { Variants } from "framer-motion";
 
-// ✅ สำหรับ Carousel (TestimonialSlider)
+/**
+ * Motion Variants สำหรับ Carousel (TestimonialSlider)
+ * @param direction - จำนวนบวก/ลบ กำหนดทิศทาง slide
+ */
 export const carouselVariants: Variants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 300 : -300,
@@ -20,7 +23,10 @@ export const carouselVariants: Variants = {
   }),
 };
 
-// ✅ เผื่อไว้ใช้ที่อื่น เช่น FadeIn
+/**
+ * Motion Variants สำหรับ FadeIn + Slide Up
+ * สามารถใช้กับ component อื่น เช่น Sections, Cards, Hero
+ */
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: {
@@ -29,3 +35,15 @@ export const fadeInUp: Variants = {
     transition: { duration: 0.6, ease: "easeOut" },
   },
 };
+
+/**
+ * Motion Variants สำหรับ FadeIn แบบ delay กำหนดได้
+ */
+export const fadeInUpWithDelay = (delay: number = 0): Variants => ({
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut", delay },
+  },
+});

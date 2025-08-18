@@ -1,45 +1,31 @@
-"use client";
+// src/Home/components/Forms/IdCardPreview.tsx
+import { FC } from "react";
 
-import { FC, memo } from "react";
-import { idCardConfig } from "@/config/idCardConfig";
+// ใช้ type เดียวกันสำหรับทุกไฟล์
+export interface IdCardData {
+  name: string;
+  surname: string;
+  idNumber: string;
+  dob: string;
+  issueDate: string;
+  expiryDate: string;
+}
 
 interface IdCardPreviewProps {
-  data: Record<string, string | undefined>;
+  data: IdCardData;
   className?: string;
 }
 
 const IdCardPreview: FC<IdCardPreviewProps> = ({ data, className }) => {
   return (
-    <div
-      className={`relative bg-gray-100 ${className}`}
-      style={{ width: idCardConfig.cardWidth, height: idCardConfig.cardHeight }}
-    >
-      <img
-        src={idCardConfig.bgDefault}
-        alt="ID Card Background"
-        className="absolute w-full h-full object-cover rounded-lg"
-      />
-      {Object.entries(idCardConfig.fields).map(([key, field]) => {
-        const value = data[key];
-        if (!value) return null;
-        return (
-          <span
-            key={key}
-            className="absolute whitespace-nowrap"
-            style={{
-              top: field.top,
-              left: field.left,
-              fontSize: field.fontSize,
-              fontWeight: field.fontWeight ?? "normal",
-            }}
-          >
-            {value}
-          </span>
-        );
-      })}
+    <div className={`max-w-sm p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md ${className}`}>
+      <h2 className="text-xl font-bold mb-2">{data.name} {data.surname}</h2>
+      <p>ID: {data.idNumber}</p>
+      <p>Date of Birth: {data.dob}</p>
+      <p>Issue Date: {data.issueDate}</p>
+      <p>Expiry Date: {data.expiryDate}</p>
     </div>
   );
 };
 
-IdCardPreview.displayName = "IdCardPreview";
-export default memo(IdCardPreview);
+export default IdCardPreview;

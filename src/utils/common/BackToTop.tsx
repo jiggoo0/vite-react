@@ -5,7 +5,7 @@ import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /**
- * ⬆️ BackToTop (Professional)
+ * ⬆️ BackToTop
  *
  * - แสดงปุ่มกลับไปด้านบนเมื่อ scroll > 300px
  * - Smooth scroll, responsive, dark mode
@@ -29,6 +29,10 @@ const BackToTop = () => {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    // ตรวจสอบสถานะตอน mount
+    handleScroll();
+
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       window.removeEventListener("scroll", onScroll);
@@ -41,7 +45,7 @@ const BackToTop = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9998]">
+    <div className="fixed bottom-6 right-6 z-[9999]">
       <AnimatePresence>
         {isVisible && (
           <motion.button
@@ -52,7 +56,14 @@ const BackToTop = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="flex items-center justify-center rounded-full p-3 text-white shadow-lg bg-primary hover:bg-primary/90 dark:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+            className="
+              flex items-center justify-center
+              rounded-full p-3
+              bg-primary text-white shadow-lg
+              hover:bg-primary/90 dark:bg-primary-dark
+              focus:outline-none focus:ring-2 focus:ring-primary/50
+              transition-all
+            "
           >
             <ArrowUp className="w-5 h-5" aria-hidden="true" />
           </motion.button>

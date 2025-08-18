@@ -16,14 +16,27 @@ export const ThemeProvider = ({
   children,
   defaultTheme = "light",
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<ThemeMode>(defaultTheme);
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    // 🔹 โหลด theme จาก localStorage ถ้ามี
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("app-theme") as ThemeMode) || defaultTheme;
+    }
+    return defaultTheme;
+  });
 
   /** 📌 Sync theme กับ DOM และ localStorage */
   useEffect(() => {
+    const root = document.documentElement;
     const oppositeTheme = theme === "light" ? "dark" : "light";
-    document.documentElement.classList.remove(oppositeTheme);
-    document.documentElement.classList.add(theme);
-    localStorage.setItem("app-theme", theme);
+
+    root.classList.remove(oppositeTheme);
+    root.classList.add(theme);
+
+    try {
+      localStorage.setItem("app-theme", theme);
+    } catch (err) {
+      console.warn("⚠️ Failed to save theme to localStorage:", err);
+    }
   }, [theme]);
 
   return (

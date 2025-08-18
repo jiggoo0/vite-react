@@ -8,7 +8,10 @@ interface A4CardWrapperProps {
   className?: string;
 }
 
-/** Wrapper ใหม่ที่รองรับ className */
+/**
+ * Wrapper สำหรับ A4 Card
+ * รองรับการเพิ่ม className
+ */
 const A4CardWrapper: FC<A4CardWrapperProps> = ({ children, className }) => (
   <OriginalA4CardWrapper>
     <div className={className}>{children}</div>
@@ -21,7 +24,9 @@ interface LazyA4CardProps {
   className?: string;
 }
 
-/** Spinner Loader Component */
+/**
+ * Loader Spinner Component
+ */
 const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
   const sizeClass =
     size === "lg" ? "loading-lg" : size === "md" ? "loading-md" : "loading-sm";
@@ -37,7 +42,11 @@ const LoadingSpinner: FC<{ size?: "lg" | "md" | "sm" }> = ({ size = "md" }) => {
   );
 };
 
-/** A4 Card + Suspense Wrapper */
+/**
+ * Lazy A4 Card Component
+ * - รองรับ Suspense fallback loader
+ * - สามารถส่ง className ผ่าน wrapper ได้
+ */
 const LazyA4Card: FC<LazyA4CardProps> = ({
   children,
   loadingSize = "md",

@@ -1,70 +1,76 @@
 "use client";
 
-import { FC } from "react"; // ตัด React ที่ไม่ได้ใช้
-import { driverLicenseConfig } from "./types/driverLicenseConfig";
+import { FC, memo } from "react";
 import {
   DriverLicenseData,
   DriverLicenseFieldKeys,
 } from "./types/driverLicense";
+import { driverLicenseConfig } from "./driverLicenseConfig";
 import "@/styles/driverLicense.css";
 
 interface DriverLicensePreviewProps {
   data: DriverLicenseData;
 }
 
-const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => (
-  <div
-    id="driver-license-preview"
-    className="border rounded-lg shadow relative overflow-hidden"
-    style={{
-      width: driverLicenseConfig.cardWidth,
-      height: driverLicenseConfig.cardHeight,
-      backgroundImage: `url(${driverLicenseConfig.bgDefault})`,
-      backgroundSize: "cover",
-    }}
-  >
-    {(Object.keys(driverLicenseConfig.fields) as DriverLicenseFieldKeys[]).map(
-      (key) => {
-        const cfg = driverLicenseConfig.fields[key];
-        const value = data[key];
+/**
+ * DriverLicensePreview
+ * แสดงใบขับขี่จำลองโดยใช้ driverLicenseConfig สำหรับตำแหน่งและสไตล์ field
+ */
+const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
+  return (
+    <div
+      id="driver-license-preview"
+      className="relative overflow-hidden rounded-xl border border-gray-300 shadow-lg bg-white"
+      style={{
+        width: driverLicenseConfig.cardWidth,
+        height: driverLicenseConfig.cardHeight,
+        backgroundImage: `url(${driverLicenseConfig.bgDefault})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Render photo */}
+      {data.photo && driverLicenseConfig.fields.photo && (
+        <img
+          src={data.photo}
+          alt="Driver"
+          className="absolute rounded-md object-cover"
+          style={{
+            top: driverLicenseConfig.fields.photo.top,
+            left: driverLicenseConfig.fields.photo.left,
+            width: driverLicenseConfig.fields.photo.width,
+            height: driverLicenseConfig.fields.photo.height,
+          }}
+        />
+      )}
 
-        if (key === "photo" && value) {
-          return (
-            <img
-              key={key}
-              src={value}
-              alt="Photo"
-              className="absolute"
-              style={{
-                top: cfg.top,
-                left: cfg.left,
-                width: cfg.width,
-                height: cfg.height,
-                objectFit: "cover",
-              }}
-            />
-          );
-        }
-
+      {/* Render text fields dynamically */}
+      {(
+        Object.keys(driverLicenseConfig.fields) as DriverLicenseFieldKeys[]
+      ).map((key) => {
+        if (key === "photo") return null;
+        const config = driverLicenseConfig.fields[key];
+        const value = (data[key] as string) || "";
         return (
           <span
             key={key}
-            className="absolute whitespace-pre-line"
+            className="absolute text-gray-800 font-sans"
             style={{
-              top: cfg.top,
-              left: cfg.left,
-              fontSize: cfg.fontSize,
-              fontWeight: cfg.fontWeight ?? "normal",
-              color: cfg.color ?? "#000",
+              top: config.top,
+              left: config.left,
+              fontSize: config.fontSize,
+              fontWeight: config.fontWeight || "400",
+              color: config.color || "#000",
             }}
           >
-            {value ?? ""}
+            {value}
           </span>
         );
-      }
-    )}
-  </div>
-);
+      })}
+    </div>
+  );
+};
 
 DriverLicensePreview.displayName = "DriverLicensePreview";
-export default DriverLicensePreview;
+
+export default memo(DriverLicensePreview);
