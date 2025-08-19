@@ -1,2 +1,2 @@
 // src/ThemeProvider/types.ts
-export type ThemeMode = "light" | "dark" | "team";
+export type ThemeMode = "light" | "dark" | "system";

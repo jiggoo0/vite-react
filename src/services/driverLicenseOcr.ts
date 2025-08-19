@@ -5,12 +5,21 @@ import { z } from "zod";
  * Schema สำหรับข้อมูลจากใบขับขี่
  */
 export const driverLicenseSchema = z.object({
-  idNumber: z.string().min(9, "เลขบัตรไม่ถูกต้อง"),
+  idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
   firstName: z.string().min(1, "กรุณากรอกชื่อ"),
   lastName: z.string().min(1, "กรุณากรอกนามสกุล"),
-  dob: z.string().optional(), // วันเกิด
-  issueDate: z.string().optional(), // วันที่ออกบัตร
-  expiryDate: z.string().optional(), // วันหมดอายุ
+  dob: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "วันเกิดไม่ถูกต้อง")
+    .optional(),
+  issueDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "วันที่ออกบัตรไม่ถูกต้อง")
+    .optional(),
+  expiryDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "วันหมดอายุไม่ถูกต้อง")
+    .optional(),
 });
 
 export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
@@ -37,7 +46,9 @@ export async function driverLicenseOcr(
 /**
  * แปลงผล OCR → ค่า default ของฟอร์ม
  */
-export function mapDriverLicenseToForm(data: DriverLicenseData) {
+export function mapDriverLicenseToForm(
+  data: DriverLicenseData
+): Record<string, string> {
   return {
     idNumber: data.idNumber,
     firstName: data.firstName,

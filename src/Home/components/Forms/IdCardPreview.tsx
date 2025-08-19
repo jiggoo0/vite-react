@@ -18,8 +18,12 @@ interface IdCardPreviewProps {
 
 const IdCardPreview: FC<IdCardPreviewProps> = ({ data, className }) => {
   return (
-    <div className={`max-w-sm p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md ${className}`}>
-      <h2 className="text-xl font-bold mb-2">{data.name} {data.surname}</h2>
+    <div
+      className={`max-w-sm p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md ${className}`}
+    >
+      <h2 className="text-xl font-bold mb-2">
+        {data.name} {data.surname}
+      </h2>
       <p>ID: {data.idNumber}</p>
       <p>Date of Birth: {data.dob}</p>
       <p>Issue Date: {data.issueDate}</p>

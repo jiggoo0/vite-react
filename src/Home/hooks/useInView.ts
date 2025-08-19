@@ -11,17 +11,18 @@ export const useInView = <T extends Element>(
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
+    const currentElement = ref.current;
+    if (!currentElement) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
       { threshold: options?.threshold ?? 0.1 }
     );
 
-    observer.observe(ref.current);
+    observer.observe(currentElement);
 
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (currentElement) observer.unobserve(currentElement);
     };
   }, [options?.threshold]);
 

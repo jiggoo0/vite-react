@@ -10,6 +10,6 @@ export interface ThemeContextType {
 
 /** 🌐 ThemeContext with default values */
 export const ThemeContext = createContext<ThemeContextType>({
-  theme: "light",
-  setTheme: () => {}, // default noop function
+  theme: "light", // 🔹 ค่าเริ่มต้น ต้อง match กับ ThemeMode
+  setTheme: () => {}, // noop
 });

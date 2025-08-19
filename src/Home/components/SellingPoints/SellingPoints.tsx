@@ -2,7 +2,11 @@
 "use client";
 
 import { FC, ReactElement } from "react";
-import { CheckCircleIcon, ShieldCheckIcon, BoltIcon } from "@heroicons/react/24/solid";
+import {
+  CheckCircleIcon,
+  ShieldCheckIcon,
+  BoltIcon,
+} from "@heroicons/react/24/solid";
 import { motion, Variants } from "framer-motion";
 
 // Point type
@@ -44,7 +48,12 @@ const containerVariants: Variants = {
 // Individual item animation
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
 const SellingPoints: FC = () => (

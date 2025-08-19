@@ -1,3 +1,4 @@
+// src/ThemeProvider/colors.ts
 export type ThemeKey =
   | "primary"
   | "primary-focus"
@@ -87,4 +88,14 @@ export const teamThemeColors: ThemeColors = {
   "base-300": "#E5E7EB",
   "base-content": "#1F2937",
   ...sharedPalette,
+};
+
+/** 🔹 Utility helper */
+export const getThemeColor = (theme: ThemeColors, key: ThemeKey) => theme[key];
+
+/** 🔹 Export themes as a map for easier dynamic access */
+export const themes = {
+  light: lightTheme,
+  dark: darkTheme,
+  team: teamThemeColors,
 };

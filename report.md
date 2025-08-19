@@ -1,6 +1,6 @@
 # Project Report
 
-_Generated: 2025-08-19 05:06:35_
+_Generated: 2025-08-19 14:58:23_
 
 ## 📖 Project Overview
 
@@ -119,6 +119,7 @@ Website | Dashboard | Landing Page | Mobile App | Graphic
 
 ```
 src
+├── App.tsx
 ├── Home
 │   ├── CustomerAssessmentForm.tsx
 │   ├── Home.tsx
@@ -266,9 +267,7 @@ src
 │   ├── images
 │   │   └── hero-bg.webp
 │   ├── logo.webp
-│   ├── logo___.svg
 │   ├── portfolio
-│   │   └── og-image.png
 │   └── react.svg
 ├── config
 ├── context
@@ -278,7 +277,6 @@ src
 │   ├── UserBoard.ts
 │   ├── UserTempCodes.ts
 │   ├── portfolioItems.ts
-│   ├── portfolioSchema.ts
 │   ├── services.ts
 │   ├── testimonialsData.ts
 │   ├── theme.ts
@@ -286,8 +284,7 @@ src
 ├── hooks
 │   ├── useAuth.ts
 │   ├── useProtectedAuth.ts
-│   ├── useTempCodeAuth.ts
-│   └── useTheme.ts
+│   └── useTempCodeAuth.ts
 ├── index.css
 ├── main.tsx
 ├── services
@@ -298,37 +295,33 @@ src
 │   ├── idCard.css
 │   ├── print.css
 │   └── theme.css
-├── tests
-│   ├── App.test.tsx
-│   └── setup.ts
 ├── types
 │   ├── IUser.ts
 │   └── custom.d.ts
-├── utils
-│   ├── cn.ts
-│   ├── common
-│   │   ├── 403.tsx
-│   │   ├── BackToTop.tsx
-│   │   ├── ChatWidget.tsx
-│   │   ├── DisclaimerModal.tsx
-│   │   ├── ErrorBoundary.tsx
-│   │   ├── FallbackLoader.tsx
-│   │   ├── FallbackLoading.tsx
-│   │   ├── MobileMenu.tsx
-│   │   ├── ScrollProgress.tsx
-│   │   ├── ScrollToTop.tsx
-│   │   ├── SectionContainer.tsx
-│   │   ├── SectionWrapper.tsx
-│   │   └── SocialIcons.tsx
-│   ├── exportCard.ts
-│   └── index.ts
-└── vite-env.d.ts
+└── utils
+    ├── cn.ts
+    ├── common
+    │   ├── 403.tsx
+    │   ├── BackToTop.tsx
+    │   ├── ChatWidget.tsx
+    │   ├── DisclaimerModal.tsx
+    │   ├── ErrorBoundary.tsx
+    │   ├── FallbackLoader.tsx
+    │   ├── FallbackLoading.tsx
+    │   ├── MobileMenu.tsx
+    │   ├── ScrollProgress.tsx
+    │   ├── ScrollToTop.tsx
+    │   ├── SectionContainer.tsx
+    │   ├── SectionWrapper.tsx
+    │   └── SocialIcons.tsx
+    ├── exportCard.ts
+    └── index.ts
 
 ```
 
 ## 📦 package.json
 
-````json
+```json
 {
   "name": "vite-react",
   "private": true,
@@ -426,105 +419,72 @@ src
     "typescript": "5.9.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": ["prettier --write", "eslint --fix"]
   }
-}```
+}
+```
 
 ## 🗑️ Unused Files
-````
 
-src/assets/logo\_\_\_.svg
-src/assets/portfolio/og-image.png
-src/data/portfolioSchema.ts
-src/tests/App.test.tsx
-src/tests/setup.ts
+```
 src/types/custom.d.ts
-src/vite-env.d.ts
-
 ```
 
 ## 🌍 Env
+
 ```
-
 No .env file
-
 ```
 
 ## 🔧 Git
+
 ```
+ M README.md
+ D STRUCTURE.md
+ M pnpm-lock.yaml
+ M report.md
+ M scripts/alias.ts
+ M scripts/check-structure.sh
+ M src/Home/hooks/useInView.ts
+ M src/ThemeProvider/ThemeContext.ts
+ M src/ThemeProvider/types.ts
+ D src/assets/logo___.svg
+ D src/assets/portfolio/og-image.png
+ D src/data/portfolioSchema.ts
+ M src/data/theme.ts
+ D src/hooks/useTheme.ts
+ M src/main.tsx
+ M src/services/driverLicenseOcr.ts
+ D src/tests/App.test.tsx
+ D src/tests/setup.ts
+ D src/vite-env.d.ts
+ M tsconfig.json
+ D vite-react/.gitignore
+ D vitest.config.ts
+?? src/App.tsx
+?? structure.md
 
-M package.json
-M pnpm-lock.yaml
-M scripts/check-structure.sh
-M scripts/clean.sh
-M src/Home/Home.tsx
-M src/Home/SecretPage/DriverLicense/DriverLicensePreview.tsx
-M src/Home/SecretPage/DriverLicense/mockDriverLicenseData.ts
-D src/Home/SecretPage/DriverLicense/types/driverLicenseConfig.ts
-M src/Home/components/Forms/FormWrapper.tsx
-M src/Home/components/Forms/IdCardFormWithOCR.tsx
-M src/Home/components/Forms/IdCardPreview.tsx
-M src/Home/components/Forms/index.ts
-M src/Home/components/SellingPoints/SellingPoints.tsx
-M src/Home/components/SellingPoints/SpeedGuaranteeBanner.tsx
-M src/Home/components/Testimonials/TestimonialSlider.tsx
-M src/Home/components/Testimonials/TrustBadge.tsx
-M src/Home/components/UserBoard/TrustBadges.tsx
-M src/Home/components/UserBoard/TrustMetricsBar.tsx
-M src/Home/components/UserBoard/UserBoard.tsx
-M src/Home/components/common/LazyA4Card.tsx
-M src/Home/components/common/LogoutButton.tsx
-M src/Home/components/common/ThemeToggle.tsx
-M src/Home/components/common/WithBlurIfUser.tsx
-M src/Home/components/ui/Button.tsx
-M src/Layout/Layout.tsx
-M src/Layout/Navbar.tsx
-M src/Layout/partials/Footer/Footer.tsx
-M src/Layout/partials/Header/Header.tsx
-M src/Layout/ui/Logo.tsx
-M src/Layout/ui/ThemeToggle.tsx
-M src/Router/AppRouter.tsx
-M src/ThemeProvider/ThemeProvider.tsx
-M src/animations/motionVariants.ts
-D src/config/idCardConfig.ts
-M src/data/theme.ts
-M src/main.tsx
-M src/services/driverLicenseOcr.ts
-M src/styles/driverLicense.css
-M src/styles/global.css
-M src/utils/common/BackToTop.tsx
-M src/utils/exportCard.ts
-M tailwind.config.ts
-M tsconfig.json
-?? report.md
-?? scripts/alias.ts
-?? scripts/export-structure.sh
-?? src/Home/SecretPage/DriverLicense/driverLicenseConfig.ts
-?? src/Home/components/common/PageSection.tsx
-?? src/Home/hooks/
-?? src/styles/idCard.css
-?? src/styles/print.css
-?? src/styles/theme.css
-
+17281ab Update code to production-ready version
+4d0790b Update code to production-ready version
 9ed5673 pnpm-lock.yaml && updateviteraect
 0bf02b8 pnpm-lock.yaml && updateviteraect
 b4ccb21 pnpm-lock.yaml && updateviteraect
-e47d731 pnpm-lock.yaml
-e8a3061 pnpm-lock.yaml
-
 ```
 
 ## 📊 Summary
+
 - Project overview inserted ✅
 - Structure, package.json, unused files, env, git logs ✅
 - Ready for audit & documentation
 
 ## 🗒️ Notes
-- ❗ โปรดตรวจสอบข้อมูลที่ REDACTED ก่อนเผยแพร่จริง
-- 📌 ปรับใช้เนื้อหาเพื่อ presentation หรือ pitch deck ได้ทันที
-  รายละเอียดเนื้อหาหน้าเว็บไซต์ปัจจุบัน โค้ดทั้งหมดทำงานภายใต้แนวทาง Dev to Dev แบบเข้มงวด ตรวจสอบโครงสร้างโปรเจกต์ให้เป็นระบบ หลีกเลี่ยงการแตกไฟล์นอกคำสั่งหรือ generate ที่กำหนดรูปแบบโค้ดโดยเน้นการเขียนที่เข้มงวดเรื่อง Thyscript && Elins  อ้างอิงโครงสร้างปัจจุบันไม่คำสั่ง นี่คือรายละเอียดเว็บไซต์ของเรา กำหนดให้ AI CHAT GPT เป็นนักออกแบบเว็บไซต์ และเขียน Code ระดับ Professional ตอบสนองดีทั้งบนมือถือและเดสทอปหลังจากนี้จะส่งโค้ดปัจจุบันที่เว็บไซต์ใช้งานอยู่ในรูปแบบที่โค้ดไม่ตรงกันกับที่เรากำหนดปรับปรุงแก้ไขให้ดีขึ้นตามทิศทางที่กำหนดย้ำว่าโค้ดคือโค้ดปัจจุบันที่ใช้อยู่ปรับปรุงเพิ่มเติมแนะนำได้อย่าแตกไฟล์ในสิ่งที่ไม่จำเป็นในสิ่งที่จำเป็นสูงมากแนะนำเพิ่มเติมสามารถแตกไฟล์ได้การทำงานเข้มงวดกับ logic ที่แจ้งไปรายละเอียดธุรกิจที่แจ้งไปเป้าหมายรูปแบบการเขียนเป้าหมายในสิ่งที่ต้องการที่แจ้งไปทั้งหมดเข้มงวดมากการทำงานเป็นรูปแบบการทำงานร่วมกันไม่เน้นการสอนห้ามสอนเด็ดขาดเพราะการสอนเรื่องพวกนี้เป็นพื้นฐานต้องการทำงานร่วมกันปรับแก้ไขตามเนื้อหาธุรกิจและโทนเจ้าป่า การเขียนโค้ดเน้นการเข้มงวด Thyscip & Elin  สูงมาก จดจำรายละเอียดโครงสร้าง อย่าหลุด Logic
-ข้อเสนอแนะเพิ่มเติมเพื่อหน้าเว็บสมบูรณ์ Continue Update code  Professional &  perfect  + format codeในส่วนของการสร้างเครื่องมือไม่ว่าจะเป็นการจำลองอะไรในรูปแบบและก็ช่างเน้นความสมจริงของชิ้นงานที่ออกมาเหมือนจริงตามแบบและได้มาตรฐานถ้าเป็น component ที่สร้างขึ้นมาเพื่อแสดงผลหน้าเว็บไซต์เน้นรูปแบบ professional มืออาชทุกไฟล์ในโครงสร้างคือไฟล์ที่ใช้งานปัจจุบันปัญหาทุกไฟล์ import ถูกต้องใช้งานร่วมกันแต่ติดเรื่องการตั้งค่าที่วางไฟล์ไม่ตรงจุดประสงค์หลังจากนี้ไฟล์ที่ส่งให้ให้ AI ตั้งค่าโลจิกตั้งค่าตัวแปรต่างๆให้ถูกต้องตามวัตถุระสงค์"์นี้
-```
+
+- ❗ เป้าหมายคือการทำงานร่วมกันแบบ dev-to-Dev ห้ามทำงานในรูปแบบการสอนเน้นกระชับตามจุดประสงค์เมื่อเกิดปัญหาเน้นแก้ไขปัญหาไวที่สุด งดประมวลผลในรูปแบบวนรูป งดกำหนดตัวอย่างต้องการใช้งานจริงเท่านั้น
+- 📌 เอกสารนี้สามารถใช้เป็น base สำหรับการนำเสนอ, pitch deck, และ audit ภายใน
+- 🔍 เนื้อหาครอบคลุมทั้งโครงสร้างโปรเจกต์, รายละเอียดธุรกิจ, และ workflow ของทีม
+- 🛠 โค้ดทั้งหมดทำงานภายใต้แนวทาง Dev-to-Dev เข้มงวด โดยเน้น professional + perfect formatting
+- 📂 ห้ามแตกไฟล์โดยไม่จำเป็น และต้องอ้างอิงโครงสร้างที่กำหนดเท่านั้น
+- 🤝 เป้าหมายคือการทำงานร่วมกัน ปรับปรุงโค้ดและ logic ตามโครงสร้างธุรกิจ
+- 🎯 การเขียนโค้ดต้องคงความเข้มงวดระดับสูง Thyscript & Elin เขียนโค้ด ให้ Professional & perfect formatt Code พร้อมใช้งานทุกครั้งที่ส่งกลับ
+- ⚡ หากมีการส่งโค้ดเพิ่มเติมให้ AI ปรับปรุง ให้ตั้งค่าตัวแปรและ logic ให้ตรงวัตถุประสงค์โครงสร้
+- 📌 หลังจากนี้ปัญหาที่เกิดขึ้นไฟล์ต่างๆในโครงสร้างยังถูกตั้งค่าไม่แม่นยำและยังไม่สามารถใช้จริงได้ 100% ตรวจสอบอย่างละเอียดลดความซ้ำซ้อนตามวัตถุประสงค์ของสิ่งที่ทำาง

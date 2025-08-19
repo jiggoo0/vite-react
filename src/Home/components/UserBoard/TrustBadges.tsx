@@ -2,7 +2,11 @@
 "use client";
 
 import { FC, ReactElement } from "react";
-import { ShieldCheckIcon, CheckBadgeIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import {
+  ShieldCheckIcon,
+  CheckBadgeIcon,
+  SparklesIcon,
+} from "@heroicons/react/24/solid";
 import { motion, Variants } from "framer-motion";
 
 // Badge type
@@ -19,19 +23,22 @@ const badges: Badge[] = [
     id: 1,
     icon: <ShieldCheckIcon className="h-10 w-10 text-green-500" />,
     title: "Verified Security",
-    description: "Our platform ensures top-level security for your data and transactions.",
+    description:
+      "Our platform ensures top-level security for your data and transactions.",
   },
   {
     id: 2,
     icon: <CheckBadgeIcon className="h-10 w-10 text-blue-500" />,
     title: "Certified Service",
-    description: "We are certified by industry standards for reliability and quality.",
+    description:
+      "We are certified by industry standards for reliability and quality.",
   },
   {
     id: 3,
     icon: <SparklesIcon className="h-10 w-10 text-yellow-400" />,
     title: "Premium Experience",
-    description: "We provide a premium, smooth, and trusted experience for all users.",
+    description:
+      "We provide a premium, smooth, and trusted experience for all users.",
   },
 ];
 
@@ -44,7 +51,12 @@ const containerVariants: Variants = {
 // Individual badge animation
 const badgeVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
 const TrustBadges: FC = () => (
