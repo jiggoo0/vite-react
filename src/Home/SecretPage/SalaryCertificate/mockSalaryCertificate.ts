@@ -1,4 +1,5 @@
 // src/Home/SecretPage/mockSalaryCertificate.ts
+
 export interface SalaryCertificateData {
   companyName: string;
   companyNameEn: string;

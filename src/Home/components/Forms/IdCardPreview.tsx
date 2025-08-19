@@ -1,7 +1,6 @@
 // src/Home/components/Forms/IdCardPreview.tsx
 import { FC } from "react";
 
-// ใช้ type เดียวกันสำหรับทุกไฟล์
 export interface IdCardData {
   name: string;
   surname: string;
@@ -25,9 +24,9 @@ const IdCardPreview: FC<IdCardPreviewProps> = ({ data, className }) => {
         {data.name} {data.surname}
       </h2>
       <p>ID: {data.idNumber}</p>
-      <p>Date of Birth: {data.dob}</p>
-      <p>Issue Date: {data.issueDate}</p>
-      <p>Expiry Date: {data.expiryDate}</p>
+      <p>วันเกิด: {data.dob}</p>
+      <p>วันที่ออกบัตร: {data.issueDate}</p>
+      <p>วันหมดอายุ: {data.expiryDate}</p>
     </div>
   );
 };

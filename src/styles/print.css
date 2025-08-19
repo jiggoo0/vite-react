@@ -1,107 +1,108 @@
 /* ==================================
-   Global Print Styles (A4 Optimized)
+   Print Styles
+   ------------------------------
+   ใช้สำหรับการพิมพ์เอกสารหรือ PDF
 ================================== */
+
 @media print {
-  /* ------------------------------
-     Base Reset
-  ------------------------------ */
-  body {
+  /* Reset general layout */
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body,
+  html {
+    width: 100%;
+    height: auto;
     margin: 0;
     padding: 0;
-    background: #ffffff !important;
-    color: #000000 !important;
     font-size: 12pt;
-    line-height: 1.5;
-    -webkit-print-color-adjust: exact;
+    line-height: 1.4;
+    color: #000;
+    background: #fff;
+    font-family: "Kanit", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
-  /* Wrapper Base */
-  .card-wrapper {
-    box-shadow: none !important;
-    border: 1px solid #ccc !important;
-    background: #ffffff !important;
-    border-radius: 0 !important;
-    padding: 16px !important;
-  }
-
-  /* A4 Standardized Card */
-  .a4-card-wrapper {
-    width: 210mm !important;
-    min-height: 297mm !important;
-    max-width: 210mm !important;
-    margin: 0 auto !important;
-    page-break-after: always;
-    overflow: hidden;
-  }
-
-  /* ------------------------------
-     Typography
-  ------------------------------ */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: #000000 !important;
-    margin-top: 0;
-    page-break-after: avoid;
-    page-break-inside: avoid;
-  }
-
-  a {
-    color: #000000 !important;
-    text-decoration: underline !important;
-  }
-
-  p,
-  span,
-  li {
-    page-break-inside: avoid;
-  }
-
-  /* ------------------------------
-     Hide Non-Printable Elements
-  ------------------------------ */
+  /* Hide elements not needed in print */
   .no-print,
-  .btn,
-  .action-bar,
   nav,
-  footer {
+  header,
+  footer,
+  .btn,
+  .hidden-print {
     display: none !important;
   }
 
-  /* ------------------------------
-     Images
-  ------------------------------ */
+  /* Ensure tables are fully visible */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: avoid;
+  }
+
+  th,
+  td {
+    border: 1px solid #000;
+    padding: 4px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  /* Avoid breaking inside important blocks */
+  .page-break {
+    page-break-after: always;
+  }
+
+  /* Links: show URLs */
+  a:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+  }
+
+  /* Images */
   img {
     max-width: 100% !important;
     height: auto !important;
     page-break-inside: avoid;
   }
 
-  /* ------------------------------
-     Tables
-  ------------------------------ */
-  table {
+  /* Prevent breaking inside forms */
+  form,
+  fieldset {
     page-break-inside: avoid;
-    border-collapse: collapse;
-    width: 100%;
   }
 
-  tr,
-  td,
-  th {
+  /* Headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #000 !important;
+    page-break-after: avoid;
     page-break-inside: avoid;
-    border: 1px solid #000 !important;
-    padding: 4px;
   }
 
-  /* ------------------------------
-     Page Setup
-  ------------------------------ */
-  @page {
-    size: A4;
-    margin: 15mm;
+  /* Code blocks / preformatted */
+  pre,
+  code {
+    font-family: monospace;
+    font-size: 10pt;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* General spacing */
+  p,
+  ul,
+  ol,
+  blockquote {
+    page-break-inside: avoid;
+    orphans: 3;
+    widows: 3;
   }
 }

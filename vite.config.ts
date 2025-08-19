@@ -1,26 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
-      "@home": path.resolve(__dirname, "src/Home"),
-      "@assets": path.resolve(__dirname, "src/assets"),
-      "@styles": path.resolve(__dirname, "src/styles"),
-      "@data": path.resolve(__dirname, "src/data"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@common": path.resolve(__dirname, "src/utils/common"),
-      "@utils": path.resolve(__dirname, "src/utils"),
-      "@hooks": path.resolve(__dirname, "src/hooks"),
-      "@layout": path.resolve(__dirname, "src/Layout"),
-      "@router": path.resolve(__dirname, "src/Router"),
-      "@api": path.resolve(__dirname, "src/api"),
-      "@services": path.resolve(__dirname, "src/services"),
-      "@context": path.resolve(__dirname, "src/context"),
     },
   },
   define: {
@@ -33,15 +20,25 @@ export default defineConfig({
     sourcemap: true,
     minify: "esbuild",
     outDir: "dist",
-    chunkSizeWarningLimit: 1000,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
-        manualChunks(id) {
+        manualChunks(id: string) {
           if (id.includes("node_modules")) {
             if (id.includes("react")) return "vendor_react";
             if (id.includes("react-dom")) return "vendor_react-dom";
             if (id.includes("react-router-dom")) return "vendor_react-router";
-            if (id.includes("lodash")) return "vendor_lodash";
+            if (id.includes("framer-motion")) return "vendor_framer";
+            if (
+              id.includes("dayjs") ||
+              id.includes("axios") ||
+              id.includes("sweetalert2")
+            )
+              return "vendor_utils";
+            if (id.includes("tailwindcss") || id.includes("clsx"))
+              return "vendor_ui";
+            if (id.includes("uuid")) return "vendor_uuid";
             return "vendor_misc";
           }
         },

@@ -2,14 +2,14 @@
 import { createContext, Dispatch, SetStateAction } from "react";
 import { ThemeMode } from "./types";
 
-/** 🖌️ Type for the ThemeContext */
+/** 🖌️ Type สำหรับ ThemeContext */
 export interface ThemeContextType {
   theme: ThemeMode;
   setTheme: Dispatch<SetStateAction<ThemeMode>>;
 }
 
-/** 🌐 ThemeContext with default values */
+/** 🌐 ThemeContext พร้อมค่า default */
 export const ThemeContext = createContext<ThemeContextType>({
-  theme: "light", // 🔹 ค่าเริ่มต้น ต้อง match กับ ThemeMode
+  theme: "light", // 🔹 ค่าเริ่มต้น ต้องตรงกับ ThemeMode
   setTheme: () => {}, // noop
 });

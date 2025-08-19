@@ -4,27 +4,32 @@ interface UseInViewOptions {
   threshold?: number;
 }
 
-export const useInView = <T extends Element>(
-  options?: UseInViewOptions
-): [RefObject<T | null>, boolean] => {
+/**
+ * Hook สำหรับตรวจสอบ element ว่าอยู่ใน viewport หรือไม่
+ * @param threshold ค่า threshold ของ IntersectionObserver
+ * @returns [ref, isInView]
+ */
+export const useInView = <T extends Element>({
+  threshold = 0.1,
+}: UseInViewOptions = {}): [RefObject<T | null>, boolean] => {
   const ref = useRef<T | null>(null);
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
-    const currentElement = ref.current;
-    if (!currentElement) return;
+    const element = ref.current;
+    if (!element) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: options?.threshold ?? 0.1 }
+      { threshold }
     );
 
-    observer.observe(currentElement);
+    observer.observe(element);
 
     return () => {
-      if (currentElement) observer.unobserve(currentElement);
+      observer.unobserve(element);
     };
-  }, [options?.threshold]);
+  }, [threshold]);
 
   return [ref, isInView];
 };

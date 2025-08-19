@@ -1,51 +1,17 @@
-// src/Home/components/SellingPoints/SellingPoints.tsx
 "use client";
 
-import { FC, ReactElement } from "react";
-import {
-  CheckCircleIcon,
-  ShieldCheckIcon,
-  BoltIcon,
-} from "@heroicons/react/24/solid";
+import { FC } from "react";
 import { motion, Variants } from "framer-motion";
+import { sellingPointsData } from "./points";
 
-// Point type
-interface Point {
-  id: number;
-  icon: ReactElement;
-  title: string;
-  description: string;
-}
-
-// Data
-const points: Point[] = [
-  {
-    id: 1,
-    icon: <ShieldCheckIcon className="h-10 w-10 text-green-500" />,
-    title: "",
-    description: " ",
-  },
-  {
-    id: 2,
-    icon: <BoltIcon className="h-10 w-10 text-yellow-400" />,
-    title: " 24 ",
-    description: " 24  ",
-  },
-  {
-    id: 3,
-    icon: <CheckCircleIcon className="h-10 w-10 text-blue-500" />,
-    title: "",
-    description: "",
-  },
-];
-
-// Container animation for staggering children
+// =======================
+// Framer Motion Variants
+// =======================
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
 };
 
-// Individual item animation
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
   visible: {
@@ -56,6 +22,9 @@ const itemVariants: Variants = {
   },
 };
 
+// =======================
+// Component
+// =======================
 const SellingPoints: FC = () => (
   <motion.section
     className="max-w-7xl mx-auto px-4 py-20 grid grid-cols-1 md:grid-cols-3 gap-10 text-center"
@@ -65,7 +34,7 @@ const SellingPoints: FC = () => (
     viewport={{ once: true, amount: 0.3 }}
     aria-label="Selling Points"
   >
-    {points.map(({ id, icon, title, description }) => (
+    {sellingPointsData.map(({ id, icon: Icon, title, description }) => (
       <motion.article
         key={id}
         className="flex flex-col items-center gap-5 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 focus-within:ring-2 focus-within:ring-primary outline-none"
@@ -80,7 +49,7 @@ const SellingPoints: FC = () => (
           whileHover={{ scale: 1.2, rotate: 10 }}
           aria-hidden="true"
         >
-          {icon}
+          <Icon className="h-10 w-10 text-current" />
         </motion.div>
 
         <h3

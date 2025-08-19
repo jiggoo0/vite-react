@@ -47,7 +47,7 @@ const TextField: React.FC<TextFieldProps> = ({
           border: `${borderWidth} solid ${borderColor}`,
           whiteSpace: "nowrap",
           userSelect: "none",
-          pointerEvents: "auto", // ให้ drag ผ่าน FieldDraggable แต่ยังสามารถ select text ได้
+          pointerEvents: "auto",
           textAlign,
           display: "inline-block",
         }}

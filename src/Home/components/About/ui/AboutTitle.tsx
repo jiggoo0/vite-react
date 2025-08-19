@@ -14,12 +14,7 @@ const AboutTitle = () => {
       <motion.h2
         id="about-title"
         aria-label="หัวข้อ JP Visual & Docs"
-        className="
-          font-extrabold 
-          tracking-tight 
-          text-4xl sm:text-5xl lg:text-6xl 
-          text-base-content
-        "
+        className="font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-base-content"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}

@@ -57,7 +57,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "190px",
       fontSize: "16px",
       fontWeight: "600",
-      color: "#b91c1c", // แดงเล็กน้อยเพื่อเน้นวันหมดอายุ
+      color: "#b91c1c",
     },
     address: {
       top: "215px",
@@ -70,14 +70,14 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       left: "190px",
       fontSize: "16px",
       fontWeight: "600",
-      color: "#064e3b", // เขียว
+      color: "#064e3b",
     },
     bloodType: {
       top: "320px",
       left: "190px",
       fontSize: "16px",
       fontWeight: "600",
-      color: "#1e3a8a", // น้ำเงินเข้ม
+      color: "#1e3a8a",
     },
   },
 };

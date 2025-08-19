@@ -48,14 +48,14 @@ const Navbar: FC = () => {
                   : "hover:bg-base-200"
               )
             }
-            aria-current={undefined} // default
-            // ใช้ hook render function ของ NavLink
-            children={({ isActive }) => (
+          >
+            {({ isActive }) => (
               <span aria-current={isActive ? "page" : undefined}>{label}</span>
             )}
-          />
+          </NavLink>
         ))}
 
+        {/* Theme Toggle */}
         <ThemeToggle />
       </div>
     </nav>
@@ -63,4 +63,5 @@ const Navbar: FC = () => {
 };
 
 Navbar.displayName = "Navbar";
+
 export default Navbar;

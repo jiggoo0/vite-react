@@ -1,9 +1,10 @@
 # Project Structure
 
-_Generated at: 2025-08-19 14:18:20_
+_Generated at: 2025-08-19 18:13:54_
 
 ```
 src
+├── App.tsx
 ├── Home
 │   ├── CustomerAssessmentForm.tsx
 │   ├── Home.tsx
@@ -40,8 +41,6 @@ src
 │   │   │   ├── SpecialBranchCertificate.mock.ts
 │   │   │   └── SpecialBranchCertificate.tsx
 │   │   └── common
-│   │       ├── CardWrapper.tsx
-│   │       └── LoadingSpinner.tsx
 │   ├── SecretPage.tsx
 │   ├── components
 │   │   ├── About
@@ -112,7 +111,9 @@ src
 │   │   │   ├── TrustMetricsBar.tsx
 │   │   │   └── UserBoard.tsx
 │   │   ├── common
+│   │   │   ├── CardWrapper.tsx
 │   │   │   ├── LazyA4Card.tsx
+│   │   │   ├── LoadingSpinner.tsx
 │   │   │   ├── LogoutButton.tsx
 │   │   │   ├── PageSection.tsx
 │   │   │   ├── ThemeToggle.tsx
@@ -141,6 +142,7 @@ src
 ├── ThemeProvider
 │   ├── ThemeContext.ts
 │   ├── ThemeProvider.tsx
+│   ├── colors.ts
 │   ├── types.ts
 │   └── useTheme.ts
 ├── animations
@@ -178,10 +180,10 @@ src
 │   ├── global.css
 │   ├── idCard.css
 │   ├── print.css
-│   └── theme.css
+│   ├── theme.css
+│   └── variables.css
 ├── types
-│   ├── IUser.ts
-│   └── custom.d.ts
+│   └── IUser.ts
 └── utils
     ├── cn.ts
     ├── common

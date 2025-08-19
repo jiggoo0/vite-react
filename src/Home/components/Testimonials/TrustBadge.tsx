@@ -1,15 +1,16 @@
 "use client";
 
-import { cn } from "@/utils/cn";
+import { FC } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/utils/cn";
 
 interface TrustBadgeProps {
-  count: number;
-  label?: string;
-  className?: string;
+  count: number; // จำนวนลูกค้าหรือสถิติ
+  label?: string; // คำอธิบายใต้จำนวน
+  className?: string; // คลาสเสริมเพิ่มเติม
 }
 
-const TrustBadge: React.FC<TrustBadgeProps> = ({
+const TrustBadge: FC<TrustBadgeProps> = ({
   count,
   label = "ลูกค้ามั่นใจในเรา",
   className,
@@ -30,9 +31,12 @@ const TrustBadge: React.FC<TrustBadgeProps> = ({
         aria-label={`${count}+ ${label}`}
         tabIndex={0}
       >
+        {/* จำนวน */}
         <span className="text-2xl md:text-3xl font-extrabold text-white">
           {count}+
         </span>
+
+        {/* คำอธิบาย */}
         <span className="text-sm md:text-base font-medium text-white">
           {label}
         </span>

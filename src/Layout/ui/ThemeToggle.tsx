@@ -7,37 +7,42 @@ import Button from "@/Home/components/ui/Button";
 const THEME_KEY = "theme";
 
 /**
- * 🎨 ThemeToggle Component
- *
- * - สลับ Light / Dark mode
- * - Sync theme ระหว่าง tab/browser
- * - รองรับ prefers-color-scheme
- * - Accessibility: aria-label, aria-pressed
+ * ThemeToggle
+ * ------------
+ * ปุ่มสลับโหมด Light / Dark
+ * - จัดการ class `dark` บน root element
+ * - จัดการ attribute `data-theme` สำหรับ CSS variables
+ * - Sync กับ localStorage และ prefers-color-scheme
  */
 const ThemeToggle = () => {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  /** Apply theme to document & localStorage */
-  const applyTheme = useCallback((darkMode: boolean) => {
-    setIsDark(darkMode);
-    const root = document.documentElement;
+  /** Apply theme */
+  const applyTheme = useCallback((dark: boolean) => {
+    setIsDark(dark);
 
-    root.classList.toggle("dark", darkMode);
-    root.setAttribute("data-theme", darkMode ? "dark" : "light");
-    localStorage.setItem(THEME_KEY, darkMode ? "dark" : "light");
+    const root = document.documentElement;
+    root.classList.toggle("dark", dark);
+    root.setAttribute("data-theme", dark ? "dark" : "light");
+
+    try {
+      localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
+    } catch (err) {
+      console.warn("⚠️ Failed to save theme:", err);
+    }
   }, []);
 
   /** Initialize theme on mount */
   useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
 
-    const savedTheme = localStorage.getItem(THEME_KEY);
+    const saved = localStorage.getItem(THEME_KEY);
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
 
-    applyTheme(savedTheme ? savedTheme === "dark" : prefersDark);
+    applyTheme(saved ? saved === "dark" : prefersDark);
   }, [applyTheme]);
 
   /** Sync theme across tabs */
@@ -47,23 +52,26 @@ const ThemeToggle = () => {
         applyTheme(e.newValue === "dark");
       }
     };
+
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, [applyTheme]);
 
+  /** Toggle theme manually */
   const toggleTheme = () => applyTheme(!isDark);
 
-  if (!mounted) return null;
+  // Prevent hydration mismatch in SSR
+  if (!isMounted) return null;
 
   return (
     <Button
       onClick={toggleTheme}
       variant="ghost"
+      type="button"
       className="rounded-full p-2"
       aria-label={`สลับเป็นโหมด ${isDark ? "สว่าง" : "มืด"}`}
       aria-pressed={isDark}
       title={isDark ? "โหมดสว่าง" : "โหมดมืด"}
-      type="button"
     >
       {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </Button>

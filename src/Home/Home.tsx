@@ -1,9 +1,8 @@
 "use client";
 
-import React, { FC, Suspense, lazy } from "react";
+import { FC, Suspense, lazy, ReactElement } from "react";
 import PageSection from "./components/common/PageSection";
 
-// Components
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
 import SellingPoints from "./components/SellingPoints/SellingPoints";
@@ -17,9 +16,11 @@ import SpeedGuaranteeBanner from "./components/SellingPoints/SpeedGuaranteeBanne
 import CaseStudyRedacted from "./components/Portfolio/CaseStudyRedacted";
 import ComplianceFAQ from "./components/Services/ComplianceFAQ";
 import TestimonialSlider from "./components/Testimonials/TestimonialSlider";
-import { UserBoard as UserBoardDataReadonly } from "@/data/UserBoard";
 
-// Lazy-loaded components
+import { UserBoard as UserBoardDataReadonly } from "@/data/UserBoard";
+import { caseStudies } from "@/data/caseStudies";
+
+// Lazy-loaded components (ไม่ครอบด้วย Suspense)
 const PortfolioGallery = lazy(
   () => import("./components/Portfolio/PortfolioGallery")
 );
@@ -27,6 +28,16 @@ const SupportFAQ = lazy(() => import("./components/Portfolio/SupportFAQ"));
 
 const Home: FC = () => {
   const userBoardData: IUser[] = [...UserBoardDataReadonly];
+
+  const renderSuspense = (Component: ReactElement, message: string) => (
+    <Suspense
+      fallback={
+        <div className="text-center py-16 animate-pulse">{message}</div>
+      }
+    >
+      {Component}
+    </Suspense>
+  );
 
   return (
     <main className="flex flex-col scroll-smooth bg-base-200 text-base-content min-h-screen">
@@ -69,35 +80,7 @@ const Home: FC = () => {
       </PageSection>
 
       <PageSection id="case-studies" title="Case Studies" bgClass="bg-base-100">
-        <CaseStudyRedacted
-          className="bg-base-100"
-          items={[
-            {
-              id: "cs-1",
-              title: "รีแบรนด์เอกสารองค์กร",
-              summary: "จัดชุดเอกสารภาพลักษณ์ใหม่",
-              imageSrc: "/assets/portfolio/portfolio1.webp",
-              tags: ["Branding", "Docs"],
-              redactedFields: ["client", "brand"],
-            },
-            {
-              id: "cs-2",
-              title: "จัดทำสื่อเร่งด่วน 24 ชม.",
-              summary: "ออกแบบชุดสื่อพร้อมส่ง",
-              imageSrc: "/assets/portfolio/portfolio2.webp",
-              tags: ["Rush", "Design"],
-              redactedFields: ["client"],
-            },
-            {
-              id: "cs-3",
-              title: "ชุดไฟล์ยื่นงานเฉพาะทาง",
-              summary: "จัดสเปกไฟล์ให้ผ่านข้อกำหนด",
-              imageSrc: "/assets/portfolio/portfolio3.webp",
-              tags: ["Compliance", "Delivery"],
-              redactedFields: ["brand"],
-            },
-          ]}
-        />
+        <CaseStudyRedacted className="bg-base-100" items={caseStudies} />
       </PageSection>
 
       <PageSection id="user-board" title="User Board" bgClass="bg-base-200">
@@ -108,20 +91,13 @@ const Home: FC = () => {
         <TestimonialSlider />
       </PageSection>
 
+      {/* Lazy-loaded Portfolio Gallery */}
       <PageSection
         id="portfolio"
         title="Portfolio Gallery"
         bgClass="bg-base-100"
       >
-        <Suspense
-          fallback={
-            <div className="text-center py-16 animate-pulse">
-              Loading portfolio...
-            </div>
-          }
-        >
-          <PortfolioGallery />
-        </Suspense>
+        {renderSuspense(<PortfolioGallery />, "Loading portfolio...")}
       </PageSection>
 
       <PageSection
@@ -132,16 +108,9 @@ const Home: FC = () => {
         <ComplianceFAQ />
       </PageSection>
 
+      {/* Lazy-loaded Support FAQ */}
       <PageSection id="faq" title="FAQ" bgClass="bg-base-200">
-        <Suspense
-          fallback={
-            <div className="text-center py-16 animate-pulse">
-              Loading FAQ...
-            </div>
-          }
-        >
-          <SupportFAQ />
-        </Suspense>
+        {renderSuspense(<SupportFAQ />, "Loading FAQ...")}
       </PageSection>
     </main>
   );

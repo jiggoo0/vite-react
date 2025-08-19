@@ -1,101 +1,121 @@
-// src/ThemeProvider/colors.ts
-export type ThemeKey =
-  | "primary"
-  | "primary-focus"
-  | "primary-content"
-  | "secondary"
-  | "secondary-focus"
-  | "secondary-content"
-  | "accent"
-  | "accent-focus"
-  | "accent-content"
-  | "neutral"
-  | "neutral-focus"
-  | "neutral-content"
-  | "base-100"
-  | "base-200"
-  | "base-300"
-  | "base-content"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
+// src/data/theme.ts
+/**
+ * Theme Configuration
+ * -------------------
+ * Define colors, fonts, and other design tokens
+ * for Light, Dark, and Business themes.
+ */
 
-export type ThemeColors = Record<ThemeKey, string>;
-
-const sharedPalette: Omit<
-  ThemeColors,
-  | "primary"
-  | "primary-focus"
-  | "primary-content"
-  | "secondary"
-  | "secondary-focus"
-  | "secondary-content"
-  | "base-100"
-  | "base-200"
-  | "base-300"
-  | "base-content"
-> = {
-  accent: "#F59E0B",
-  "accent-focus": "#D97706",
-  "accent-content": "#000000",
-  neutral: "#374151",
-  "neutral-focus": "#1F2937",
-  "neutral-content": "#FFFFFF",
-  info: "#3ABFF8",
-  success: "#36D399",
-  warning: "#FBBD23",
-  error: "#F87272",
+export type ThemeColors = {
+  primary: string;
+  "primary-hover": string;
+  "primary-disabled": string;
+  secondary: string;
+  accent: string;
+  neutral: string;
+  success: string;
+  warning: string;
+  error: string;
+  info: string;
+  "bg-light": string;
+  "bg-dark": string;
+  "primary-dark"?: string;
+  "green-light"?: string;
+  "gold-light"?: string;
+  [key: string]: string | undefined;
 };
 
-export const lightTheme: ThemeColors = {
-  primary: "#2563EB",
-  "primary-focus": "#1D4ED8",
-  "primary-content": "#FFFFFF",
-  secondary: "#9333EA",
-  "secondary-focus": "#7E22CE",
-  "secondary-content": "#FFFFFF",
-  "base-100": "#FFFFFF",
-  "base-200": "#F3F4F6",
-  "base-300": "#E5E7EB",
-  "base-content": "#1F2937",
-  ...sharedPalette,
+export type Theme = {
+  name: string;
+  colors: ThemeColors;
+  fontFamily?: string[];
+  borderRadius?: { sm: string; md: string; lg: string };
+  boxShadow?: { sm: string; md: string };
+  transitionDuration?: { fast: string; base: string; slow: string };
 };
 
-export const darkTheme: ThemeColors = {
-  primary: "#3B82F6",
-  "primary-focus": "#2563EB",
-  "primary-content": "#FFFFFF",
-  secondary: "#A78BFA",
-  "secondary-focus": "#9333EA",
-  "secondary-content": "#FFFFFF",
-  "base-100": "#1F2937",
-  "base-200": "#111827",
-  "base-300": "#374151",
-  "base-content": "#F3F4F6",
-  ...sharedPalette,
+// ---------- Light Theme ----------
+export const lightTheme: Theme = {
+  name: "light",
+  colors: {
+    primary: "#2563EB",
+    "primary-hover": "#1E40AF",
+    "primary-disabled": "#9CA3AF",
+    secondary: "#9333EA",
+    accent: "#F59E0B",
+    neutral: "#374151",
+    success: "#10B981",
+    warning: "#FACC15",
+    error: "#EF4444",
+    info: "#3B82F6",
+    "bg-light": "#F9FAFB",
+    "bg-dark": "#1F2937",
+  },
+  fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+  borderRadius: { sm: "4px", md: "8px", lg: "12px" },
+  boxShadow: {
+    sm: "0 2px 4px rgba(0,0,0,0.05)",
+    md: "0 4px 12px rgba(0,0,0,0.08)",
+  },
+  transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
 };
 
-export const teamThemeColors: ThemeColors = {
-  primary: "#1D4ED8",
-  "primary-focus": "#1E40AF",
-  "primary-content": "#FFFFFF",
-  secondary: "#9333EA",
-  "secondary-focus": "#7E22CE",
-  "secondary-content": "#FFFFFF",
-  "base-100": "#FFFFFF",
-  "base-200": "#F3F4F6",
-  "base-300": "#E5E7EB",
-  "base-content": "#1F2937",
-  ...sharedPalette,
+// ---------- Dark Theme ----------
+export const darkTheme: Theme = {
+  name: "dark",
+  colors: {
+    primary: "#3B82F6",
+    "primary-hover": "#2563EB",
+    "primary-disabled": "#6B7280",
+    secondary: "#A855F7",
+    accent: "#FBBF24",
+    neutral: "#1F2937",
+    success: "#34D399",
+    warning: "#FDE047",
+    error: "#F87171",
+    info: "#60A5FA",
+    "bg-light": "#111827",
+    "bg-dark": "#1F2937",
+  },
+  fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+  borderRadius: { sm: "4px", md: "8px", lg: "12px" },
+  boxShadow: {
+    sm: "0 2px 4px rgba(255,255,255,0.05)",
+    md: "0 4px 12px rgba(255,255,255,0.06)",
+  },
+  transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
 };
 
-/** 🔹 Utility helper */
-export const getThemeColor = (theme: ThemeColors, key: ThemeKey) => theme[key];
+// ---------- Business Theme ----------
+export const businessTheme: Theme = {
+  name: "business",
+  colors: {
+    primary: "#1E3A8A",
+    "primary-hover": "#2563EB",
+    "primary-disabled": "#9CA3AF",
+    "primary-content": "#FFFFFF",
+    secondary: "#2563EB",
+    accent: "#FBBF24",
+    neutral: "#374151",
+    success: "#10B981",
+    warning: "#FACC15",
+    error: "#EF4444",
+    info: "#3B82F6",
+    "bg-light": "#F3F4F6",
+    "bg-dark": "#D1D5DB",
+  },
+  fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+  borderRadius: { sm: "4px", md: "8px", lg: "12px" },
+  boxShadow: {
+    sm: "0 2px 4px rgba(0,0,0,0.05)",
+    md: "0 4px 12px rgba(0,0,0,0.08)",
+  },
+  transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
+};
 
-/** 🔹 Export themes as a map for easier dynamic access */
-export const themes = {
+// ---------- Export All Themes ----------
+export const themes: Record<string, Theme> = {
   light: lightTheme,
   dark: darkTheme,
-  team: teamThemeColors,
+  business: businessTheme,
 };

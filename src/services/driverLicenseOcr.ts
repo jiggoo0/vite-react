@@ -2,7 +2,10 @@
 import { z } from "zod";
 
 /**
- * Schema สำหรับข้อมูลจากใบขับขี่
+ * 🔹 Schema สำหรับข้อมูลใบขับขี่
+ * - idNumber: ตัวเลข 13 หลัก
+ * - firstName / lastName: ต้องมีค่า
+ * - dob / issueDate / expiryDate: yyyy-mm-dd หรือว่าง
  */
 export const driverLicenseSchema = z.object({
   idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
@@ -11,28 +14,31 @@ export const driverLicenseSchema = z.object({
   dob: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "วันเกิดไม่ถูกต้อง")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
   issueDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "วันที่ออกบัตรไม่ถูกต้อง")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
   expiryDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "วันหมดอายุไม่ถูกต้อง")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
 });
 
 export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
 
 /**
- * ฟังก์ชัน OCR (mock ไว้ก่อน)
- * @param file ไฟล์ภาพใบขับขี่
- * @returns DriverLicenseData
+ * 🔹 Mock OCR function
+ * - แทนที่ด้วย OCR API จริงได้
+ * @param _file ไฟล์ภาพใบขับขี่
+ * @returns Promise<DriverLicenseData>
  */
 export async function driverLicenseOcr(
   _file: File
 ): Promise<DriverLicenseData> {
-  // TODO: เรียก OCR API จริงเมื่อมี
   return {
     idNumber: "1234567890123",
     firstName: "สมชาย",
@@ -44,11 +50,10 @@ export async function driverLicenseOcr(
 }
 
 /**
- * แปลงผล OCR → ค่า default ของฟอร์ม
+ * 🔹 Mapping OCR result → Form default values
+ * - ใช้สำหรับ React Hook Form / Formik
  */
-export function mapDriverLicenseToForm(
-  data: DriverLicenseData
-): Record<string, string> {
+export function mapDriverLicenseToForm(data: DriverLicenseData) {
   return {
     idNumber: data.idNumber,
     firstName: data.firstName,

@@ -17,9 +17,9 @@ interface LayoutProps {
 /**
  * 🎨 Layout Component
  *
- * - แสดง Navbar / Footer / Main content
- * - รองรับ floating components (Chat, BackToTop, Disclaimer)
- * - รองรับ focus management และ accessibility
+ * - ครอบคลุมโครงสร้างหลัก: Navbar / Footer / Main content
+ * - รองรับ floating components: ChatWidget, BackToTop, DisclaimerModal
+ * - รองรับ accessibility: role, tabIndex, aria-live
  */
 const Layout: FC<LayoutProps> = ({ children }) => {
   const floatingComponents = [ChatWidget, BackToTop, DisclaimerModal];

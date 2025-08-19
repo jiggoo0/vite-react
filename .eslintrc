@@ -1,48 +1,72 @@
-{
-  "parser": "@typescript-eslint/parser",
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ],
-  "plugins": ["@typescript-eslint", "react"],
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
+// eslint.config.ts
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
+import reactRefreshPlugin from "eslint-plugin-react-refresh";
+import prettierPlugin from "eslint-plugin-prettier";
+import globals from "globals";
+
+export default [
+  // Target files & language
+  {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    ignores: ["*.md", "*.json", "*.css", "dist", "build", "node_modules"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+      },
+      globals: globals.browser,
+    },
   },
-  "rules": {
-    "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ],
-    "@typescript-eslint/no-unused-expressions": [
-      "error",
-      {
-        "allowShortCircuit": true,
-        "allowTernary": true
-      }
-    ]
+
+  // Plugins
+  {
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+      react: reactPlugin,
+      "react-hooks": reactHooksPlugin,
+      "react-refresh": reactRefreshPlugin,
+      prettier: prettierPlugin,
+    },
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
+
+  // Rules
+  {
+    rules: {
+      // TypeScript
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        { allowShortCircuit: true, allowTernary: true },
+      ],
+
+      // React
+      "react/react-in-jsx-scope": "off",
+
+      // React Hooks
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": [
+        "warn",
+        { additionalHooks: "(useMyCustomHook|useAnotherCustomHook)" },
+      ],
+
+      // React Refresh
+      "react-refresh/only-export-components": [
+        "warn",
+        { allowConstantExport: true },
+      ],
+
+      // Prettier
+      "prettier/prettier": "error",
+    },
+    settings: { react: { version: "detect" } },
   },
-  "ignorePatterns": [
-    "*.md",
-    "*.json",
-    "*.css",
-    "dist",
-    "build",
-    "node_modules"
-  ]
-}
+];

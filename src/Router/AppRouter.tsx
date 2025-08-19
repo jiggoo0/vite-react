@@ -10,9 +10,7 @@ import ErrorBoundary from "@/utils/common/ErrorBoundary";
 import GuardRoutes from "@/Router/GuardRoutes";
 import RoleGuard from "@/Router/RoleGuard";
 
-// ===============================
-// Lazy-loaded Pages
-// ===============================
+// ---------- Lazy-loaded Pages ----------
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
@@ -22,9 +20,7 @@ const CustomerAssessmentForm = lazy(
 const IdCardFormPage = lazy(() => import("@/Home/IdCardForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
-// ===============================
-// Suspense Wrapper
-// ===============================
+// ---------- Suspense Wrapper for Routes ----------
 interface RouteSuspenseProps {
   children: ReactNode;
   message?: string;
@@ -38,29 +34,24 @@ const RouteSuspense: FC<RouteSuspenseProps> = ({ children, message }) => (
   </Suspense>
 );
 
-// ===============================
-// Lazy Page Helper
-// ===============================
-function lazyPage<P extends Record<string, unknown> = Record<string, unknown>>(
+// ---------- Utility: Lazy Page Loader ----------
+const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
   Page: ComponentType<P>,
   props?: P,
   message?: string
-) {
-  return (
-    <RouteSuspense message={message}>
-      <Page {...(props ?? ({} as P))} />
-    </RouteSuspense>
-  );
-}
+) => (
+  <RouteSuspense message={message}>
+    <Page {...(props ?? ({} as P))} />
+  </RouteSuspense>
+);
 
-// ===============================
-// App Router
-// ===============================
+// ---------- App Router ----------
 const AppRouter: FC = () => (
   <>
     <ScrollToTop />
+
     <Routes>
-      {/* Public Routes */}
+      {/* ---------- Public Routes ---------- */}
       <Route element={<Layout />}>
         <Route
           index
@@ -74,7 +65,7 @@ const AppRouter: FC = () => (
         <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
       </Route>
 
-      {/* Protected Routes */}
+      {/* ---------- Authenticated Routes ---------- */}
       <Route
         element={
           <GuardRoutes>
@@ -86,7 +77,7 @@ const AppRouter: FC = () => (
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
-      {/* Admin-only Routes */}
+      {/* ---------- Admin Routes ---------- */}
       <Route
         path="admin"
         element={
@@ -107,7 +98,7 @@ const AppRouter: FC = () => (
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
-      {/* Fallback 404 */}
+      {/* ---------- Fallback Route ---------- */}
       <Route
         path="*"
         element={lazyPage(Forbidden, {}, "กำลังโหลดหน้า 403...")}

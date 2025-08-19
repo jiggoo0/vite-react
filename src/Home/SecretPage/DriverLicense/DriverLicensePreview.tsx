@@ -29,7 +29,7 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
         backgroundPosition: "center",
       }}
     >
-      {/* Render photo */}
+      {/* Photo */}
       {data.photo && driverLicenseConfig.fields.photo && (
         <img
           src={data.photo}
@@ -44,7 +44,7 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
         />
       )}
 
-      {/* Render text fields dynamically */}
+      {/* Text Fields */}
       {(
         Object.keys(driverLicenseConfig.fields) as DriverLicenseFieldKeys[]
       ).map((key) => {
@@ -54,7 +54,7 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
         return (
           <span
             key={key}
-            className="absolute text-gray-800 font-sans"
+            className="absolute font-sans"
             style={{
               top: config.top,
               left: config.left,

@@ -9,6 +9,12 @@ interface FieldDraggableProps {
   children: React.ReactNode;
 }
 
+/**
+ * FieldDraggable
+ * - ทำให้ child component สามารถลากภายใน container ได้
+ * - รองรับ mouse + touch
+ * - scale ของ parent container ถูกคำนวณ
+ */
 const FieldDraggable: React.FC<FieldDraggableProps> = ({
   top,
   left,
@@ -20,11 +26,10 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const scaleRef = useRef(1);
 
-  // Start dragging
+  // เริ่มลาก
   const startDrag = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
     setIsDragging(true);
     containerRef.current = fieldRef.current?.parentElement ?? null;
 
@@ -35,10 +40,10 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
     }
   };
 
-  // Stop dragging
+  // หยุดลาก
   const stopDrag = useCallback(() => setIsDragging(false), []);
 
-  // Handle drag movement
+  // คำนวณตำแหน่งใหม่เมื่อมีการลาก
   const onDragMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
       if (!isDragging || !fieldRef.current || !containerRef.current) return;
@@ -79,7 +84,7 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
     [isDragging, onPositionChange]
   );
 
-  // Attach global event listeners
+  // Attach / detach event listeners
   useEffect(() => {
     window.addEventListener("mousemove", onDragMove, { passive: false });
     window.addEventListener("touchmove", onDragMove, { passive: false });

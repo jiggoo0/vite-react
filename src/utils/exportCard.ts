@@ -2,12 +2,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 /**
- * 🔹 renderElementToCanvas
  * แปลง HTML element เป็น canvas
- * - รองรับ scale, retina, และ CORS
- * @param elementId - id ของ element ที่ต้องการแปลง
- * @param scale - ค่าขยาย (default 2) เพื่อความคมชัด
- * @returns HTMLCanvasElement หรือ null
  */
 const renderElementToCanvas = async (
   elementId: string,
@@ -25,7 +20,7 @@ const renderElementToCanvas = async (
       scale: scaleFactor,
       useCORS: true,
       logging: false,
-      backgroundColor: null, // รองรับ transparent background
+      backgroundColor: null,
     });
   } catch (error: unknown) {
     console.error("[exportCard] Failed to render element:", error);
@@ -35,10 +30,7 @@ const renderElementToCanvas = async (
 };
 
 /**
- * 🔹 exportCardAsPNG
- * ดาวน์โหลด element เป็นไฟล์ PNG
- * @param elementId - id ของ element
- * @param fileName - ชื่อไฟล์ PNG
+ * ดาวน์โหลด element เป็น PNG
  */
 export const exportCardAsPNG = async (
   elementId: string,
@@ -47,25 +39,14 @@ export const exportCardAsPNG = async (
   const canvas = await renderElementToCanvas(elementId);
   if (!canvas) return;
 
-  try {
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = fileName;
-    link.click();
-  } catch (error) {
-    console.error("[exportCard] PNG download failed:", error);
-    alert("เกิดข้อผิดพลาดในการดาวน์โหลด PNG");
-  }
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/png");
+  link.download = fileName;
+  link.click();
 };
 
 /**
- * 🔹 exportCardAsPDF
- * ดาวน์โหลด element เป็นไฟล์ PDF
- * - useA4 = true: ขนาด A4
- * - useA4 = false: ขนาดตาม element
- * @param elementId - id ของ element
- * @param fileName - ชื่อไฟล์ PDF
- * @param useA4 - เลือก export เป็น A4 หรือขนาด element
+ * ดาวน์โหลด element เป็น PDF
  */
 export const exportCardAsPDF = async (
   elementId: string,
@@ -78,12 +59,10 @@ export const exportCardAsPDF = async (
   const imgData = canvas.toDataURL("image/png");
 
   if (useA4) {
-    // Export ขนาด A4
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // คำนวณสัดส่วนเพื่อให้พอดีกับหน้า A4
     const ratio = Math.min(
       pageWidth / canvas.width,
       pageHeight / canvas.height
@@ -97,12 +76,12 @@ export const exportCardAsPDF = async (
     pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
     pdf.save(fileName);
   } else {
-    // Export ขนาดตาม element
     const pdf = new jsPDF({
       orientation: canvas.width > canvas.height ? "landscape" : "portrait",
       unit: "px",
       format: [canvas.width, canvas.height],
     });
+
     pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
     pdf.save(fileName);
   }

@@ -7,7 +7,28 @@ interface MedicalCertificateProps {
   data: MedicalCertificateData;
 }
 
-export const MedicalCertificate: FC<MedicalCertificateProps> = ({ data }) => {
+const MedicalCertificate: FC<MedicalCertificateProps> = ({ data }) => {
+  const {
+    referenceNo,
+    hospital,
+    ministryOffice,
+    date,
+    doctorName,
+    doctorLicenseNo,
+    patientTitle,
+    patientName,
+    address,
+    citizenId,
+    examinedDate,
+    diagnosis,
+    doctorSummary,
+    restFromDate,
+    restToDate,
+    otherNote,
+    doctorSigner,
+    patientSigner,
+  } = data;
+
   return (
     <div
       className="w-full h-full p-6 rounded-xl shadow-md bg-white relative overflow-hidden"
@@ -17,61 +38,54 @@ export const MedicalCertificate: FC<MedicalCertificateProps> = ({ data }) => {
 
       <div className="space-y-2 text-gray-700">
         <p>
-          <strong>เลขที่อ้างอิง:</strong> {data.referenceNo}
+          <strong>เลขที่อ้างอิง:</strong> {referenceNo}
         </p>
         <p>
-          <strong>โรงพยาบาล:</strong> {data.hospital}
+          <strong>โรงพยาบาล:</strong> {hospital}
         </p>
         <p>
-          <strong>สำนักงานกระทรวง:</strong> {data.ministryOffice}
+          <strong>สำนักงานกระทรวง:</strong> {ministryOffice}
         </p>
         <p>
-          <strong>วันที่ออก:</strong> {data.date}
-        </p>
-
-        <p>
-          <strong>ชื่อแพทย์:</strong> {data.doctorName}
+          <strong>วันที่ออก:</strong> {date}
         </p>
         <p>
-          <strong>หมายเลขใบอนุญาต:</strong> {data.doctorLicenseNo}
-        </p>
-
-        <p>
-          <strong>ชื่อผู้ป่วย:</strong> {data.patientTitle} {data.patientName}
+          <strong>ชื่อแพทย์:</strong> {doctorName}
         </p>
         <p>
-          <strong>ที่อยู่:</strong> {data.address}
+          <strong>หมายเลขใบอนุญาต:</strong> {doctorLicenseNo}
         </p>
         <p>
-          <strong>หมายเลขบัตรประชาชน:</strong> {data.citizenId}
+          <strong>ชื่อผู้ป่วย:</strong> {patientTitle} {patientName}
         </p>
         <p>
-          <strong>วันที่ตรวจ:</strong> {data.examinedDate}
-        </p>
-
-        <p>
-          <strong>การวินิจฉัย:</strong> {data.diagnosis}
+          <strong>ที่อยู่:</strong> {address}
         </p>
         <p>
-          <strong>สรุปความเห็นแพทย์:</strong> {data.doctorSummary}
+          <strong>หมายเลขบัตรประชาชน:</strong> {citizenId}
         </p>
-
         <p>
-          <strong>หยุดพัก:</strong> ตั้งแต่ {data.restFromDate} ถึง{" "}
-          {data.restToDate}
+          <strong>วันที่ตรวจ:</strong> {examinedDate}
         </p>
-
-        {data.otherNote && (
+        <p>
+          <strong>การวินิจฉัย:</strong> {diagnosis}
+        </p>
+        <p>
+          <strong>สรุปความเห็นแพทย์:</strong> {doctorSummary}
+        </p>
+        <p>
+          <strong>หยุดพัก:</strong> ตั้งแต่ {restFromDate} ถึง {restToDate}
+        </p>
+        {otherNote && (
           <p>
-            <strong>อื่นๆ:</strong> {data.otherNote}
+            <strong>อื่นๆ:</strong> {otherNote}
           </p>
         )}
-
         <p>
-          <strong>แพทย์ลงชื่อ:</strong> {data.doctorSigner}
+          <strong>แพทย์ลงชื่อ:</strong> {doctorSigner}
         </p>
         <p>
-          <strong>ผู้ป่วยลงชื่อ:</strong> {data.patientSigner}
+          <strong>ผู้ป่วยลงชื่อ:</strong> {patientSigner}
         </p>
       </div>
     </div>

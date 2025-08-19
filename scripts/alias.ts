@@ -1,25 +1,15 @@
-// scripts/alias.ts
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { loadConfigFromFile } from "vite";
 import { glob } from "glob";
 
-// -----------------------------------------------------------------------------
-// File path constants
-// -----------------------------------------------------------------------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
 type AliasEntry = [string, string];
 type ColorType = "reset" | "red" | "green" | "yellow";
 
-// -----------------------------------------------------------------------------
-// Utility: Console log with color
-// -----------------------------------------------------------------------------
 const color = (text: string, type: ColorType = "reset") => {
   const codes: Record<ColorType, string> = {
     reset: "\x1b[0m",
@@ -30,32 +20,34 @@ const color = (text: string, type: ColorType = "reset") => {
   return `${codes[type]}${text}${codes.reset}`;
 };
 
-// -----------------------------------------------------------------------------
-// Load alias from vite.config.ts
-// -----------------------------------------------------------------------------
+const escapeRegex = (str: string) =>
+  str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+
+const normalizePath = (p: string) => p.replace(/\\/g, "/").replace(/\/+$/, ""); // ตัด slash ท้าย + ให้ใช้ forward-slash
+
 const getAlias = async (): Promise<Record<string, string>> => {
-  const config = await loadConfigFromFile(
+  const result = await loadConfigFromFile(
     { command: "serve", mode: "development" },
     path.resolve("vite.config.ts")
   );
-  return config?.config?.resolve?.alias || {};
+  const alias = result?.config?.resolve?.alias || {};
+  // normalize ทุก path alias
+  return Object.fromEntries(
+    Object.entries(alias).map(([k, v]) => [k, normalizePath(String(v))])
+  );
 };
 
-// -----------------------------------------------------------------------------
-// Check imports and warn if alias not used
-// -----------------------------------------------------------------------------
 const checkAlias = async (files: string[], aliasEntries: AliasEntry[]) => {
   let hasError = false;
 
   for (const file of files) {
     const content = fs.readFileSync(file, "utf-8");
-    const lines = content.split("\n");
 
-    lines.forEach((line, i) => {
+    content.split("\n").forEach((line, i) => {
       const match = line.match(/from\s+['"]([^'"]+)['"]/);
       if (!match) return;
 
-      const importPath = match[1];
+      const importPath = normalizePath(match[1]);
 
       for (const [aliasKey, aliasPath] of aliasEntries) {
         if (importPath.startsWith(aliasPath)) {
@@ -77,9 +69,6 @@ const checkAlias = async (files: string[], aliasEntries: AliasEntry[]) => {
   console.log(color("✅ import ทุกไฟล์ใช้ alias ถูกต้องแล้ว", "green"));
 };
 
-// -----------------------------------------------------------------------------
-// Fix imports automatically by replacing with alias
-// -----------------------------------------------------------------------------
 const fixAlias = async (files: string[], aliasEntries: AliasEntry[]) => {
   let fixedCount = 0;
 
@@ -88,17 +77,20 @@ const fixAlias = async (files: string[], aliasEntries: AliasEntry[]) => {
     let changed = false;
 
     for (const [aliasKey, aliasPath] of aliasEntries) {
-      const regex = new RegExp(`from ['"](${aliasPath}.*?)['"]`, "g");
+      const regex = new RegExp(
+        `from (['"])${escapeRegex(aliasPath)}(\\/[^'"]*)?\\1`,
+        "g"
+      );
 
       if (regex.test(content)) {
-        content = content.replace(regex, (_, matchPath) => {
-          const newPath = `${aliasKey}${matchPath.slice(aliasPath.length)}`;
+        content = content.replace(regex, (_, quote, subPath = "") => {
+          const newPath = `${aliasKey}${subPath}`;
           console.log(
             color("🔧 fixed:", "yellow"),
             `${path.relative(__dirname, file)} →`,
             color(newPath, "green")
           );
-          return `from '${newPath}'`;
+          return `from ${quote}${newPath}${quote}`;
         });
         changed = true;
       }
@@ -117,12 +109,9 @@ const fixAlias = async (files: string[], aliasEntries: AliasEntry[]) => {
   );
 };
 
-// -----------------------------------------------------------------------------
-// Main script entry
-// -----------------------------------------------------------------------------
 const main = async () => {
   try {
-    const mode = process.argv[2]; // "--check" หรือ "--fix"
+    const mode = process.argv[2]; // "--check" | "--fix"
     if (!["--check", "--fix"].includes(mode)) {
       console.log(
         color("⚠️  ใช้งานไม่ถูกต้อง\n", "yellow") +
@@ -135,7 +124,6 @@ const main = async () => {
 
     const alias = await getAlias();
     const aliasEntries: AliasEntry[] = Object.entries(alias);
-
     if (!aliasEntries.length) {
       console.log(color("⚠️  ไม่พบ alias ใน vite.config.ts", "yellow"));
       return;
@@ -156,5 +144,4 @@ const main = async () => {
   }
 };
 
-// Run the script
 main();

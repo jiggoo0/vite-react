@@ -2,6 +2,7 @@
 
 import { motion, Variants, easeOut } from "framer-motion";
 
+// ======================= Variants =======================
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
@@ -11,16 +12,14 @@ const fadeInUp: Variants = {
   }),
 };
 
+// ======================= Component =======================
 const AboutDescription = () => {
   const texts = [
     {
       type: "blockquote",
       content: "“ยกระดับธุรกิจเฉพาะทางให้มีมาตรฐานระดับมืออาชีพ”",
     },
-    {
-      type: "label",
-      content: "JP - VISUAL & DOCS",
-    },
+    { type: "label", content: "JP - VISUAL & DOCS" },
     {
       type: "p",
       content:
@@ -31,10 +30,7 @@ const AboutDescription = () => {
       content:
         "แม้ธุรกิจจะอยู่นอกระบบกฎหมายทั่วไป แต่เราทำให้มันดูดีได้ในแบบที่หาไม่ได้จาก Google หรือ YouTube การันตีด้วยประสบการณ์ในวงการมากกว่า 8 ปี",
     },
-    {
-      type: "small",
-      content: "ผมไม่ใช่คนเก่ง แต่ทีมงานผมเก่งแน่นอน",
-    },
+    { type: "small", content: "ผมไม่ใช่คนเก่ง แต่ทีมงานผมเก่งแน่นอน" },
   ];
 
   return (
@@ -55,7 +51,7 @@ const AboutDescription = () => {
         >
           {item.type === "blockquote" && (
             <blockquote
-              id="about-description-title"
+              id={i === 0 ? "about-description-title" : undefined}
               className="text-lg md:text-xl font-medium leading-relaxed text-base-content/80"
             >
               {item.content}

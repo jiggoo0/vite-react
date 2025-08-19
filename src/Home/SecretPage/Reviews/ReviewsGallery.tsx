@@ -1,8 +1,10 @@
 // src/Home/SecretPage/Reviews/ReviewsGallery.tsx
-import React from "react";
-import ReviewCard from "./ui/ReviewCard";
+"use client";
 
-const reviews = [
+import { FC, memo } from "react";
+import ReviewCard, { ReviewCardProps } from "./ui/ReviewCard";
+
+const reviews: ReviewCardProps[] = [
   {
     id: 1,
     name: "คุณสมชาย",
@@ -23,14 +25,12 @@ const reviews = [
   },
 ];
 
-const ReviewsGallery: React.FC = () => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-8">
-      {reviews.map((review) => (
-        <ReviewCard key={review.id} {...review} />
-      ))}
-    </div>
-  );
-};
+const ReviewsGallery: FC = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-8">
+    {reviews.map((review) => (
+      <ReviewCard key={review.id} {...review} />
+    ))}
+  </div>
+);
 
-export default ReviewsGallery;
+export default memo(ReviewsGallery);

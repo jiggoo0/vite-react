@@ -3,9 +3,12 @@
 import { FC, ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-
-type ButtonVariant = "primary" | "secondary" | "ghost" | "outline";
-type ButtonSize = "sm" | "md" | "lg";
+import {
+  ButtonVariant,
+  ButtonSize,
+  buttonSizeClasses,
+  buttonVariantClasses,
+} from "./button.styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -15,8 +18,18 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type?: "button" | "submit" | "reset";
   fullWidth?: boolean;
   loading?: boolean;
+  iconLeft?: ReactNode;
+  iconRight?: ReactNode;
 }
 
+/**
+ * 🔹 Button Component
+ *
+ * - รองรับ variant และ size
+ * - รองรับ loading state และ icons
+ * - รองรับ fullWidth
+ * - ออกแบบให้ accessible (focus, aria-busy, aria-label)
+ */
 const Button: FC<ButtonProps> = ({
   children,
   variant = "primary",
@@ -26,45 +39,42 @@ const Button: FC<ButtonProps> = ({
   fullWidth = false,
   loading = false,
   disabled,
+  iconLeft,
+  iconRight,
   ...props
 }) => {
-  const sizeClasses: Record<ButtonSize, string> = {
-    sm: "px-3 py-1.5 text-sm",
-    md: "px-4 py-2 text-base",
-    lg: "px-5 py-3 text-lg",
-  };
-
-  const variantClasses: Record<ButtonVariant, string> = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400",
-    secondary:
-      "bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-200",
-    ghost:
-      "bg-transparent text-gray-900 hover:bg-gray-100 disabled:text-gray-400",
-    outline:
-      "bg-transparent border border-gray-300 text-gray-900 hover:bg-gray-100 disabled:border-gray-200",
-  };
+  const loaderSize = size === "sm" ? 16 : size === "lg" ? 24 : 20;
 
   return (
     <button
       type={type}
       disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      aria-label={loading ? "Loading..." : props["aria-label"]}
+      data-testid="button"
       className={clsx(
         "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
-        sizeClasses[size],
-        variantClasses[variant],
+        buttonSizeClasses[size],
+        buttonVariantClasses[variant],
         fullWidth && "w-full",
         className
       )}
-      aria-busy={loading ? true : undefined}
       {...props}
     >
       {loading && (
         <Loader2
-          className="w-4 h-4 animate-spin text-current"
+          className="animate-spin text-current"
+          width={loaderSize}
+          height={loaderSize}
           aria-hidden="true"
         />
       )}
+
+      {iconLeft && <span className="mr-1">{iconLeft}</span>}
+
       <span className={clsx(loading && "opacity-70")}>{children}</span>
+
+      {iconRight && <span className="ml-1">{iconRight}</span>}
     </button>
   );
 };

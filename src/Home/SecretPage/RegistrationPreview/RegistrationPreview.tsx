@@ -1,4 +1,5 @@
-// src/Home/SecretPage/RegistrationPreview/RegistrationPreview.tsx
+"use client";
+
 import { FC, useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -40,7 +41,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
     if (!ref.current) return;
 
     const canvas = await html2canvas(ref.current, {
-      scale: 2, // เพิ่มความละเอียด
+      scale: 2,
       useCORS: true,
       backgroundColor: "#fff",
     });
@@ -48,7 +49,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
-      format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96], // แปลง px เป็น pt
+      format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96],
     });
 
     pdf.addImage(
@@ -71,8 +72,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           fontFamily: '"THSarabunNew", sans-serif',
           lineHeight: 1.8,
           fontSize: "18pt",
-          backgroundColor: "#fff",
-          minHeight: 1200, // ปรับขนาดหน้า A4
+          minHeight: 1200,
         }}
       >
         {/* Top-left */}
@@ -87,7 +87,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
         </div>
 
         {/* Top-right */}
-        <div className="absolute right-12 top-8 text-right text-[14pt] leading-snug">
+        <div className="absolute right-12 top-8 text-right text-[14pt]">
           <p>แบบ พค. 0403</p>
         </div>
 

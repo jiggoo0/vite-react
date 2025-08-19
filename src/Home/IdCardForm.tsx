@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo, useState, ChangeEvent, FormEvent } from "react";
+import { FC, memo, useState, useEffect, ChangeEvent, FormEvent } from "react";
 import clsx from "clsx";
 
 // =======================
@@ -40,7 +40,7 @@ const InputField: FC<InputFieldProps> = ({
   onChange,
 }) => {
   const isTextArea = type === "textarea";
-  const sharedClass =
+  const commonClass =
     "border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400";
 
   return (
@@ -56,7 +56,7 @@ const InputField: FC<InputFieldProps> = ({
           onChange={onChange}
           placeholder={placeholder}
           required={required}
-          className={sharedClass}
+          className={commonClass}
         />
       ) : (
         <input
@@ -67,7 +67,7 @@ const InputField: FC<InputFieldProps> = ({
           onChange={onChange}
           placeholder={placeholder}
           required={required}
-          className={sharedClass}
+          className={commonClass}
         />
       )}
     </div>
@@ -88,6 +88,7 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
   const [ocrLoading, setOcrLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // Handle input change
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -102,10 +103,11 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setImagePreview(URL.createObjectURL(file));
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
     setOcrLoading(true);
 
-    // Simulate OCR (replace with actual OCR API)
+    // Simulate OCR (replace with real OCR API)
     setTimeout(() => {
       setFormData({
         fullName: "สมชาย ใจดี",
@@ -116,6 +118,13 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
       setOcrLoading(false);
     }, 1500);
   };
+
+  // Cleanup object URL
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -149,6 +158,7 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
         )}
       </div>
 
+      {/* Input Fields */}
       <InputField
         label="ชื่อ-สกุล"
         name="fullName"
@@ -156,7 +166,6 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
         placeholder="กรอกชื่อ-นามสกุล"
         onChange={handleChange}
       />
-
       <InputField
         label="เลขบัตรประชาชน"
         name="idNumber"
@@ -164,7 +173,6 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
         placeholder="กรอกเลขบัตรประชาชน"
         onChange={handleChange}
       />
-
       <InputField
         label="วันเกิด"
         name="birthDate"
@@ -172,7 +180,6 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
         value={formData.birthDate}
         onChange={handleChange}
       />
-
       <InputField
         label="ที่อยู่"
         name="address"
@@ -182,11 +189,17 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
         onChange={handleChange}
       />
 
+      {/* Submit */}
       <button
         type="submit"
-        className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
+        disabled={ocrLoading}
+        className={clsx(
+          "w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors",
+          "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1",
+          ocrLoading && "opacity-50 cursor-not-allowed"
+        )}
       >
-        บันทึก
+        {ocrLoading ? "กำลังประมวลผล..." : "บันทึก"}
       </button>
     </form>
   );

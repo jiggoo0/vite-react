@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RootApp } from "./App";
-
-import "@/styles/global.css";
-import "@/index.css";
-import "@/styles/print.css";
+import { RootApp } from "./App/RootApp"; // Root application component
+import "./styles/global.css"; // Tailwind + DaisyUI global styles
+import "./styles/driverLicense.css"; // Component-specific styles
+import "./styles/variables.css"; // CSS variables for colors, shadows, etc.
+import "./styles/theme.css"; // Optional theme overrides
 
 /**
  * 🔹 Ensure root element exists
@@ -27,7 +27,7 @@ root.render(
   </React.StrictMode>
 );
 
-// Dev Info Logger
+// 🔹 Dev Info Logger
 if (import.meta.env.DEV) {
   console.groupCollapsed("📦 App Info");
   console.info("🚀 Version:", import.meta.env.VITE_APP_VERSION ?? "dev");
@@ -37,7 +37,7 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
-// Service Worker Registration
+// 🔹 Service Worker Registration (Production Only)
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`)
@@ -49,5 +49,5 @@ if ("serviceWorker" in navigator && import.meta.env.PROD) {
     );
 }
 
-// สำหรับ Fast Refresh
+// 🔹 For Fast Refresh / HMR
 export {};

@@ -2,6 +2,11 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 
+/**
+ * 🎨 Logo Component
+ * - แสดงโลโก้ JP Visual & Docs พร้อมลิงก์ไปหน้าแรก
+ * - รองรับ accessibility, dark mode และ responsive sizing
+ */
 const Logo: FC = () => (
   <Link
     to="/"

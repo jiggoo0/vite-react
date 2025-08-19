@@ -1,7 +1,7 @@
 // src/ThemeProvider/ThemeProvider.tsx
 "use client";
 
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import { ThemeContext } from "./ThemeContext";
 import { ThemeMode } from "./types";
 
@@ -12,32 +12,40 @@ interface ThemeProviderProps {
 }
 
 /** 🎨 ThemeProvider Component */
-export const ThemeProvider = ({
+const ThemeProvider = ({
   children,
   defaultTheme = "light",
 }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<ThemeMode>(() => {
-    // 🔹 โหลด theme จาก localStorage ถ้ามี
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("app-theme") as ThemeMode) || defaultTheme;
-    }
-    return defaultTheme;
-  });
-
-  /** 📌 Sync theme กับ DOM และ localStorage */
-  useEffect(() => {
-    const root = document.documentElement;
-    const oppositeTheme = theme === "light" ? "dark" : "light";
-
-    root.classList.remove(oppositeTheme);
-    root.classList.add(theme);
+    if (typeof window === "undefined") return defaultTheme;
 
     try {
-      localStorage.setItem("app-theme", theme);
+      const stored = localStorage.getItem("app-theme") as ThemeMode | null;
+      return stored || defaultTheme;
+    } catch {
+      return defaultTheme;
+    }
+  });
+
+  /** 📌 ฟังก์ชัน apply theme ไปยัง DOM และ localStorage */
+  const applyTheme = useCallback((newTheme: ThemeMode) => {
+    const root = document.documentElement;
+    const oppositeTheme: ThemeMode = newTheme === "light" ? "dark" : "light";
+
+    root.classList.remove(oppositeTheme);
+    root.classList.add(newTheme);
+
+    try {
+      localStorage.setItem("app-theme", newTheme);
     } catch (err) {
       console.warn("⚠️ Failed to save theme to localStorage:", err);
     }
-  }, [theme]);
+  }, []);
+
+  /** 📌 Sync theme ทุกครั้งที่เปลี่ยน state */
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme, applyTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

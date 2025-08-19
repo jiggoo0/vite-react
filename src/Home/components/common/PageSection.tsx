@@ -3,24 +3,33 @@
 import { FC, ReactNode } from "react";
 
 export interface PageSectionProps {
+  /** Unique ID ของ section */
   id: string;
-  title: string;
+  /** เนื้อหาภายใน section */
   children: ReactNode;
-  bgClass?: string; // เพิ่ม bgClass
+  /** CSS class สำหรับ background */
+  bgClass?: string;
+  /** CSS class เพิ่มเติมสำหรับ container */
+  className?: string;
+  /** ชื่อ section สำหรับ accessibility / screen readers */
+  title?: string;
 }
 
 const PageSection: FC<PageSectionProps> = ({
   id,
-  title,
   children,
   bgClass = "bg-base-100",
-}) => {
-  return (
-    <section id={id} className={`${bgClass} py-16 px-4 md:px-8`}>
-      <h2 className="text-2xl font-bold mb-8">{title}</h2>
-      {children}
-    </section>
-  );
-};
+  className = "",
+  title,
+}) => (
+  <section
+    id={id}
+    className={`${bgClass} py-16 px-4 md:px-8 ${className}`}
+    role="region"
+  >
+    {title && <h2 className="sr-only">{title}</h2>}
+    {children}
+  </section>
+);
 
 export default PageSection;

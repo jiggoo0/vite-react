@@ -1,14 +1,14 @@
 "use client";
 
-import { FC } from "react";
+import { FC, memo } from "react";
 import { SalaryCertificateData } from "./mockSalaryCertificate";
 
 interface SalaryCertificateProps {
   data: SalaryCertificateData;
 }
 
-const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
-  const {
+const SalaryCertificate: FC<SalaryCertificateProps> = ({
+  data: {
     companyName = "",
     companyNameEn = "",
     certificateNumber = "",
@@ -24,8 +24,8 @@ const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
     phone = "",
     addressLine1 = "",
     addressLine2 = "",
-  } = data;
-
+  },
+}) => {
   return (
     <div
       className="
@@ -100,4 +100,5 @@ const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
 };
 
 SalaryCertificate.displayName = "SalaryCertificate";
-export default SalaryCertificate;
+
+export default memo(SalaryCertificate);

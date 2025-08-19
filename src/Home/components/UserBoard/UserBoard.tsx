@@ -145,6 +145,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
             </p>
           </div>
         )}
+
         <table className="min-w-[700px] w-full table-auto border border-gray-300 border-collapse text-sm">
           <thead>
             <tr className="bg-gray-100">
@@ -169,6 +170,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
               })}
             </tr>
           </thead>
+
           <tbody>
             {pageData.map((user) => (
               <tr
@@ -177,16 +179,24 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
               >
                 {displayKeys.map((key) => {
                   const compute = labelMap[key]?.compute;
-                  const value = compute
+                  const rawValue = compute
                     ? compute(user[key as keyof IUser], user)
-                    : (user[key as keyof IUser] ?? "");
+                    : user[key as keyof IUser];
+
+                  const value =
+                    rawValue === null || rawValue === undefined
+                      ? ""
+                      : typeof rawValue === "object"
+                        ? JSON.stringify(rawValue)
+                        : String(rawValue);
+
                   return (
                     <td
                       key={key}
                       className="border border-gray-300 px-3 py-2 truncate"
-                      title={String(value)}
+                      title={value}
                     >
-                      {String(value)}
+                      {value}
                     </td>
                   );
                 })}

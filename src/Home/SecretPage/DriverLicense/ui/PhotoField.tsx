@@ -16,6 +16,11 @@ interface PhotoFieldProps {
   onPositionChange: (top: string, left: string) => void;
 }
 
+/**
+ * PhotoField
+ * แสดงรูปภาพพร้อม draggable
+ * pointerEvents ถูกตั้งเป็น "none" เพื่อไม่ให้ลากรูปแทนฟิลด์
+ */
 const PhotoField: React.FC<PhotoFieldProps> = ({
   src,
   top,

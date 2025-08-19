@@ -26,9 +26,11 @@ const DriverLicenseForm: FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Form Inputs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Object.entries(formData).map(([key, value]) => {
           const inputId = `dl-${key}`;
+          const isDateField = ["dob", "issueDate", "expiryDate"].includes(key);
           return (
             <div key={key}>
               <label
@@ -39,22 +41,19 @@ const DriverLicenseForm: FC = () => {
               </label>
               <input
                 id={inputId}
-                type={
-                  ["dob", "issueDate", "expiryDate"].includes(key)
-                    ? "date"
-                    : "text"
-                }
+                type={isDateField ? "date" : "text"}
                 value={value}
                 onChange={(e) =>
                   handleChange(key as keyof DriverLicenseData, e.target.value)
                 }
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
           );
         })}
       </div>
 
+      {/* Preview */}
       <h3 className="text-lg font-semibold">Preview</h3>
       <DriverLicensePreview data={formData} />
     </div>
@@ -62,4 +61,5 @@ const DriverLicenseForm: FC = () => {
 };
 
 DriverLicenseForm.displayName = "DriverLicenseForm";
+
 export default DriverLicenseForm;

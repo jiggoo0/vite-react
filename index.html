@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
 
     <title>JP Visual & Docs</title>
     <meta
@@ -15,7 +18,7 @@
     <meta name="language" content="th" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="JP Visual & Docs" />
     <meta
@@ -31,7 +34,7 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="th_TH" />
 
-    <!-- Twitter Card -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="JP Visual & Docs" />
     <meta
@@ -49,7 +52,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Preload Fonts -->
+    <!-- Fonts -->
     <link
       rel="preload"
       href="/fonts/YourFont.woff2"
@@ -57,10 +60,31 @@
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
+    />
 
-    <!-- Performance / Fonts -->
+    <!-- Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Structured Data (SEO) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "JP Visual & Docs",
+        "url": "https://404notfontjp.vercel.app/",
+        "description": "เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร",
+        "publisher": {
+          "@type": "Organization",
+          "name": "JP Visual & Docs Team",
+          "logo": "https://404notfontjp.vercel.app/logo.png"
+        }
+      }
+    </script>
   </head>
 
   <body
@@ -72,10 +96,10 @@
       </div>
     </noscript>
 
-    <!-- Root Element สำหรับ React -->
+    <!-- Root Element -->
     <div id="root"></div>
 
-    <!-- Entry Point ของ React -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Entry Point -->
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

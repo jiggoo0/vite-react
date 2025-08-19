@@ -75,14 +75,14 @@
 }
 
 /* ==================================
-   Optional Business/Team Theme
+   Business Theme Variables
 ================================== */
-[data-theme="team"] {
-  --color-primary: #1d4ed8;
-  --color-primary-hover: #1e40af;
+[data-theme="business"] {
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #2563eb;
   --color-primary-disabled: #9ca3af;
-  --color-secondary: #9333ea;
-  --color-accent: #f59e0b;
+  --color-secondary: #2563eb;
+  --color-accent: #fbbf24;
   --color-neutral: #374151;
 
   --color-success: #10b981;
@@ -92,8 +92,8 @@
 
   --color-border: #d1d5db;
   --color-border-light: #e5e7eb;
-  --color-bg: #ffffff;
-  --color-bg-light: #f9fafb;
+  --color-bg: #f3f4f6;
+  --color-bg-light: #e5e7eb;
 
   --color-text: #111827;
   --color-text-muted: #374151;
@@ -103,66 +103,42 @@
 }
 
 /* ==================================
-   Utility Classes
+   Utilities
 ================================== */
 .text-center {
   text-align: center;
 }
-.text-right {
-  text-align: right;
-}
 .text-left {
   text-align: left;
+}
+.text-right {
+  text-align: right;
 }
 .hidden {
   display: none !important;
 }
 
 /* ==================================
-   Global Typography & Body
-================================== */
-body {
-  font-family: var(--font-family-base);
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
-}
-
-/* ==================================
-   Anchor Styling
-================================== */
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
-}
-
-/* ==================================
-   Buttons (Global)
+   Global Buttons
 ================================== */
 button {
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-md, 8px);
   transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
+    background-color var(--transition-base, 0.25s ease),
+    color var(--transition-base, 0.25s ease);
+  cursor: pointer;
 }
 
 button.primary {
-  background-color: var(--color-primary);
-  color: #fff;
+  background-color: var(--color-primary, #2563eb);
+  color: #ffffff;
 }
 
 button.primary:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover, #1e40af);
 }
 
 button.primary:disabled {
-  background-color: var(--color-primary-disabled);
+  background-color: var(--color-primary-disabled, #9ca3af);
   cursor: not-allowed;
 }
