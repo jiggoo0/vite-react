@@ -21,7 +21,7 @@ interface FallbackLoaderProps {
  * - ปรับข้อความ, ขนาด spinner และ styling ภายนอกได้
  */
 const FallbackLoader: FC<FallbackLoaderProps> = ({
-  message,
+  message = "กำลังโหลดข้อมูล...",
   className,
   size = "md",
 }) => {
@@ -70,7 +70,7 @@ const FallbackLoader: FC<FallbackLoaderProps> = ({
 
         {/* Loading Text */}
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 select-none">
-          {message || "กำลังโหลดข้อมูล..."}
+          {message}
         </p>
       </div>
     </div>

@@ -70,11 +70,11 @@ const Button: FC<ButtonProps> = ({
         />
       )}
 
-      {iconLeft && <span className="mr-1">{iconLeft}</span>}
+      {iconLeft && !loading && <span className="mr-1">{iconLeft}</span>}
 
       <span className={clsx(loading && "opacity-70")}>{children}</span>
 
-      {iconRight && <span className="ml-1">{iconRight}</span>}
+      {iconRight && !loading && <span className="ml-1">{iconRight}</span>}
     </button>
   );
 };

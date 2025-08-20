@@ -61,7 +61,7 @@ const Footer: FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`ติดต่อผ่าน ${label}`}
-              className="group inline-flex items-center gap-2 transition-all duration-300 hover:text-primary"
+              className="group inline-flex items-center gap-2 transition-transform duration-300 hover:text-primary"
             >
               <Icon
                 className="text-xl text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
@@ -79,8 +79,7 @@ const Footer: FC = () => {
 
         {/* Copyright */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none leading-relaxed">
-          &copy; {year} <span className="font-semibold">JP Visual & Docs</span>{" "}
-          — Powered by{" "}
+          &copy; {year} <span className="font-semibold">JP Visual & Docs</span> — Powered by{" "}
           <a
             href="https://applicationlab.dev"
             target="_blank"

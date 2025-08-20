@@ -19,17 +19,17 @@ html {
 }
 
 body {
-  font-family: "Kanit", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-family-base, "Kanit", system-ui, sans-serif);
   background-color: var(--color-bg, #ffffff);
   color: var(--color-text, #111827);
   line-height: 1.5;
-  transition: background-color var(--transition-base, 0.25s ease),
+  transition: 
+    background-color var(--transition-base, 0.25s ease),
     color var(--transition-base, 0.25s ease);
 }
 
 /* ==================================
-   Headings & Typography
+   Typography
 ================================== */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
@@ -45,13 +45,13 @@ p {
    Links
 ================================== */
 a {
-  color: var(--color-primary, #2563eb);
+  color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast, 0.15s ease);
+  transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-primary-hover, #1e40af);
+  color: var(--color-primary-hover);
 }
 
 /* ==================================
@@ -86,12 +86,20 @@ input, button, select, textarea {
 
 button {
   border-radius: var(--radius-md, 8px);
-  transition: background-color var(--transition-base, 0.25s ease),
-              color var(--transition-base, 0.25s ease);
+  transition: 
+    background-color var(--transition-base),
+    color var(--transition-base);
   cursor: pointer;
+  background-color: var(--color-primary);
+  color: var(--color-primary-content, #fff);
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
 }
 
 button:disabled {
+  background-color: var(--color-primary-disabled);
   cursor: not-allowed;
 }
 
@@ -99,9 +107,9 @@ button:disabled {
    Utility Classes
 ================================== */
 .text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.hidden { display: none !important; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+.hidden      { display: none !important; }
 
 /* ==================================
    Containers
@@ -123,30 +131,41 @@ button:disabled {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-light, #f9fafb);
+  background: var(--color-bg-light);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary, #2563eb);
+  background-color: var(--color-primary);
   border-radius: 4px;
 }
 
 /* ==================================
    Dark Mode Support
 ================================== */
+[data-theme="dark"],
+.dark {
+  --color-bg: #1f2937;
+  --color-bg-light: #111827;
+  --color-text: #f3f4f6;
+  --color-text-muted: #9ca3af;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-disabled: #6b7280;
+}
+
 .dark body {
-  background-color: var(--color-bg-dark, #1f2937);
-  color: var(--color-text-dark, #f3f4f6);
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .dark a {
-  color: var(--color-primary-dark, #3b82f6);
+  color: var(--color-primary);
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: var(--color-bg-dark, #1f2937);
+  background: var(--color-bg-light);
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary-dark, #3b82f6);
+  background-color: var(--color-primary);
 }

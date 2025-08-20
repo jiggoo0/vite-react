@@ -11,11 +11,17 @@ import { motion } from "framer-motion";
  */
 const SecretHeader: FC = () => (
   <header
+    id="secret-header"
     className="mb-12 px-4 sm:px-6 lg:px-8"
-    aria-label="คำเตือนและคำแนะนำสำหรับพื้นที่ลับ"
+    role="region"
+    aria-labelledby="secret-title"
+    tabIndex={-1}
   >
     {/* Title */}
-    <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-primary mb-6">
+    <h1
+      id="secret-title"
+      className="text-3xl sm:text-4xl font-extrabold text-center text-primary mb-6"
+    >
       Secret Private Zone
     </h1>
 
@@ -38,11 +44,9 @@ const SecretHeader: FC = () => (
 
       {/* Alert Text */}
       <p className="leading-relaxed text-sm sm:text-base">
-        ⚠️ <strong>โปรดทราบ!</strong>{" "}
-        พื้นที่นี้ออกแบบมาเพื่อความปลอดภัยของทั้งผู้จ้างงานและผู้รับงาน กรุณาใช้{" "}
-        <strong>username/password</strong> เฉพาะเครื่องประจำเท่านั้น
-        และห้ามแชร์กับผู้อื่น หากตรวจพบการใช้งานจากอุปกรณ์อื่น
-        ระบบจะยุติการใช้งานทันที
+        ⚠️ <strong>โปรดทราบ!</strong> พื้นที่นี้ออกแบบมาเพื่อความปลอดภัยของทั้งผู้จ้างงานและผู้รับงาน
+        กรุณาใช้ <strong>username/password</strong> เฉพาะเครื่องประจำเท่านั้น
+        และห้ามแชร์กับผู้อื่น หากตรวจพบการใช้งานจากอุปกรณ์อื่น ระบบจะยุติการใช้งานทันที
         ถือเป็นข้อตกลงที่ทุกคนต้องปฏิบัติตามอย่างเคร่งครัด
       </p>
     </motion.div>

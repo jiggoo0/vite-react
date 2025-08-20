@@ -5,7 +5,7 @@ import { ReactNode, useState, useEffect, useCallback } from "react";
 import { ThemeContext } from "./ThemeContext";
 import { ThemeMode } from "./types";
 
-/** 🧩 Props สำหรับ ThemeProvider */
+/** 🧩 Props ของ ThemeProvider */
 interface ThemeProviderProps {
   children: ReactNode;
   defaultTheme?: ThemeMode;
@@ -21,18 +21,18 @@ const ThemeProvider = ({
 
     try {
       const stored = localStorage.getItem("app-theme") as ThemeMode | null;
-      return stored || defaultTheme;
+      return stored ?? defaultTheme;
     } catch {
       return defaultTheme;
     }
   });
 
-  /** 📌 ฟังก์ชัน apply theme ไปยัง DOM และ localStorage */
+  /** 📌 ฟังก์ชันเปลี่ยน theme + sync ไปยัง DOM + localStorage */
   const applyTheme = useCallback((newTheme: ThemeMode) => {
     const root = document.documentElement;
-    const oppositeTheme: ThemeMode = newTheme === "light" ? "dark" : "light";
 
-    root.classList.remove(oppositeTheme);
+    // ลบทุก theme class ก่อน แล้วค่อย add ใหม่
+    root.classList.remove("light", "dark", "team");
     root.classList.add(newTheme);
 
     try {
@@ -42,7 +42,7 @@ const ThemeProvider = ({
     }
   }, []);
 
-  /** 📌 Sync theme ทุกครั้งที่เปลี่ยน state */
+  /** 📌 Sync เมื่อ theme state เปลี่ยน */
   useEffect(() => {
     applyTheme(theme);
   }, [theme, applyTheme]);

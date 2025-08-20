@@ -1,21 +1,24 @@
 /* ==================================
    Driver License Component Styles
+   - โทนธุรกิจ (ไม่แฟนซี)
+   - ใช้สี neutral + accent เฉพาะจุด
 ================================== */
 
 .driver-license-card {
-  @apply w-[350px] p-4 rounded-lg bg-white shadow-md text-gray-800 font-sans transition-colors transition-shadow;
+  @apply w-[350px] p-4 rounded-xl bg-white shadow-md 
+         text-gray-800 font-sans transition-colors transition-shadow;
 }
 
 .driver-license-card .header {
-  @apply flex justify-between items-center mb-3;
+  @apply flex justify-between items-center mb-4;
 }
 
 .driver-license-card .header h2 {
-  @apply text-lg font-semibold m-0;
+  @apply text-lg font-semibold text-gray-900 m-0;
 }
 
 .driver-license-card .header img {
-  @apply w-12 h-12 rounded-sm;
+  @apply w-12 h-12 rounded-md object-cover border border-gray-200;
 }
 
 .driver-license-card .personal-info {
@@ -23,11 +26,11 @@
 }
 
 .driver-license-card .personal-info p {
-  @apply my-1 text-sm text-gray-500;
+  @apply my-1 text-sm text-gray-600;
 }
 
 .driver-license-card .license-info {
-  @apply flex flex-col gap-1;
+  @apply flex flex-col gap-1 text-gray-700;
 }
 
 .driver-license-card .license-info span {
@@ -38,8 +41,9 @@
   @apply mt-3 text-xs text-gray-400;
 }
 
+/* Hover: ใช้โทน Business (ไม่แฟนซี) */
 .driver-license-card:hover {
-  @apply bg-blue-600 text-white shadow-lg transition-all duration-200;
+  @apply bg-gray-50 shadow-lg shadow-blue-100 transition-all duration-200;
 }
 
 /* Responsive */

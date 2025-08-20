@@ -5,9 +5,12 @@ import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 
 interface TrustBadgeProps {
-  count: number; // จำนวนลูกค้าหรือสถิติ
-  label?: string; // คำอธิบายใต้จำนวน
-  className?: string; // คลาสเสริมเพิ่มเติม
+  /** จำนวนลูกค้าหรือสถิติ */
+  count: number;
+  /** คำอธิบายใต้จำนวน */
+  label?: string;
+  /** คลาสเสริมเพิ่มเติม */
+  className?: string;
 }
 
 const TrustBadge: FC<TrustBadgeProps> = ({
@@ -22,13 +25,14 @@ const TrustBadge: FC<TrustBadgeProps> = ({
         whileTap={{ scale: 0.95 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className={cn(
-          "flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400",
+          "flex flex-col md:flex-row items-center gap-2 md:gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400",
           className
         )}
         role="status"
         aria-roledescription="statistic"
         aria-live="polite"
         aria-label={`${count}+ ${label}`}
+        title={`${count}+ ${label}`}
         tabIndex={0}
       >
         {/* จำนวน */}
@@ -37,7 +41,7 @@ const TrustBadge: FC<TrustBadgeProps> = ({
         </span>
 
         {/* คำอธิบาย */}
-        <span className="text-sm md:text-base font-medium text-white">
+        <span className="text-sm md:text-base font-medium text-white text-center md:text-left">
           {label}
         </span>
       </motion.div>

@@ -31,8 +31,8 @@ const Header: FC = () => {
         {/* Logo */}
         <Logo />
 
-        {/* Navigation */}
-        <nav aria-label="การนำทางผู้ใช้" className="flex items-center gap-3">
+        {/* User navigation */}
+        <nav aria-label="User navigation" className="flex items-center gap-3">
           {/* Theme toggle button */}
           <ThemeToggle />
 
@@ -42,7 +42,7 @@ const Header: FC = () => {
           ) : (
             <Link
               to="/login"
-              aria-label="เข้าสู่ระบบ"
+              aria-label="Login"
               className={clsx(
                 "btn btn-primary btn-sm transition-all duration-200",
                 "hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
@@ -58,4 +58,5 @@ const Header: FC = () => {
 };
 
 Header.displayName = "Header";
+
 export default Header;

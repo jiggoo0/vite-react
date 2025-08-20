@@ -1,18 +1,23 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { ThemeType } from "../ThemeProvider/colors"; // ✅ corrected path
 
 /**
- * แปลง HTML element เป็น canvas
+ * Render an HTML element to a canvas
  */
 const renderElementToCanvas = async (
   elementId: string,
-  scale = 2
+  scale = 2,
+  theme: ThemeType = "business"
 ): Promise<HTMLCanvasElement | null> => {
   const element = document.getElementById(elementId);
   if (!element) {
-    alert(`ไม่พบ element ที่มี id = ${elementId}`);
+    console.error(`[exportCard] Element not found: id=${elementId}`);
     return null;
   }
+
+  const previousTheme = document.documentElement.getAttribute("data-theme");
+  document.documentElement.setAttribute("data-theme", theme);
 
   try {
     const scaleFactor = scale * (window.devicePixelRatio || 1);
@@ -20,23 +25,25 @@ const renderElementToCanvas = async (
       scale: scaleFactor,
       useCORS: true,
       logging: false,
-      backgroundColor: null,
+      backgroundColor: "#ffffff",
     });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("[exportCard] Failed to render element:", error);
-    alert("ไม่สามารถสร้างภาพจาก element นี้ได้");
     return null;
+  } finally {
+    document.documentElement.setAttribute("data-theme", previousTheme || "light");
   }
 };
 
 /**
- * ดาวน์โหลด element เป็น PNG
+ * Export element as PNG
  */
 export const exportCardAsPNG = async (
   elementId: string,
-  fileName = "idcard.png"
+  fileName = "idcard.png",
+  theme: ThemeType = "business"
 ): Promise<void> => {
-  const canvas = await renderElementToCanvas(elementId);
+  const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
 
   const link = document.createElement("a");
@@ -46,43 +53,43 @@ export const exportCardAsPNG = async (
 };
 
 /**
- * ดาวน์โหลด element เป็น PDF
+ * Export element as PDF
  */
 export const exportCardAsPDF = async (
   elementId: string,
   fileName = "idcard.pdf",
-  useA4 = false
+  useA4 = false,
+  theme: ThemeType = "business"
 ): Promise<void> => {
-  const canvas = await renderElementToCanvas(elementId);
+  const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
 
   const imgData = canvas.toDataURL("image/png");
 
-  if (useA4) {
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+  try {
+    let pdf: jsPDF;
 
-    const ratio = Math.min(
-      pageWidth / canvas.width,
-      pageHeight / canvas.height
-    );
-    const imgWidth = canvas.width * ratio;
-    const imgHeight = canvas.height * ratio;
+    if (useA4) {
+      pdf = new jsPDF("p", "mm", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+      const imgWidth = canvas.width * ratio;
+      const imgHeight = canvas.height * ratio;
+      const xOffset = (pageWidth - imgWidth) / 2;
+      const yOffset = (pageHeight - imgHeight) / 2;
+      pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
+    } else {
+      pdf = new jsPDF({
+        orientation: canvas.width > canvas.height ? "landscape" : "portrait",
+        unit: "px",
+        format: [canvas.width, canvas.height],
+      });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    }
 
-    const xOffset = (pageWidth - imgWidth) / 2;
-    const yOffset = (pageHeight - imgHeight) / 2;
-
-    pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
     pdf.save(fileName);
-  } else {
-    const pdf = new jsPDF({
-      orientation: canvas.width > canvas.height ? "landscape" : "portrait",
-      unit: "px",
-      format: [canvas.width, canvas.height],
-    });
-
-    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-    pdf.save(fileName);
+  } catch (error) {
+    console.error("[exportCard] PDF export failed:", error);
   }
 };

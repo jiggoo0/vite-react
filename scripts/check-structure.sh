@@ -37,7 +37,7 @@ fi
 # สร้าง report
 echo "# ✅ JP Visual & Docs – Structure Check Report" > "$REPORT"
 echo "" >> "$REPORT"
-echo "> ตรวจสอบโครงสร้างโปรเจกต์ React 19 + Vite 7 + Tailwind + daisyUI" >> "$REPORT"
+echo "> โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular" >> "$REPORT"
 echo "" >> "$REPORT"
 echo "---" >> "$REPORT"
 echo "" >> "$REPORT"
@@ -243,14 +243,29 @@ echo "" >> "$REPORT"
 echo "## 📝 Note" >> "$REPORT"
 echo "
 ## 🛠️ Roadmap
-❗ เป้าหมายคือการทำงานร่วมกันแบบ dev-to-Dev ห้ามทำงานในรูปแบบการสอน เน้นแก้ไขปัญหาไวที่สุด งดประมวลผลในรูปแบบวนรูป งดกำหนดตัวอย่างต้องการใช้งานจริงเท่านั้นครอบคลุมโครงสร้างโปรเจกต์, รายละโค้ดทั้งหมดทำงานภายใต้แนวทาง Dev-to-Dev เข้มงวด้ TypeScript + ESLint + Prettier
 - 📂 ห้ามแตกไฟล์โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
 - 🤝 ปรับปรุงโค้ดและ logic ตามโครงสร้างธุรกิจ
 -  การเขียนโค้ดต้องคงความเข้มงวดระดับสูง พร้อม Professional & perfect 
-ในส่วนเครื่องมือการสร้างแบบจำลองเน้นการตั้งค่าที่ส่งจริงตามแบบมาตรฐานที่สุดส่วน component ที่เอามาแสดงผลหน้าเว็บไซต์เน้นสร้างในรูปแบบแนวทาง professionalห้ามเขียนในรูปแบบโค้งมนเหมือนแฟนซีการ์ตูนเด็ดขาดเข้มงวดตรงจุดนี้มากที่สุดเมื่อส่งรายละเอียดต่างๆโค้ดทุกโค้ดที่ใช้อยู่คือเว็บไซต์ใช้ปัจจุบันหน้าที่ของ AI คือแก้ไขโค้ดที่ใช้ปัจจุบันให้ตรงกับเป้าหมายแนวทางของคำสั่งหรือธุรกิจการทำงานย้ำว่าห้ามประมวลผลวนให้เกิดการสับสนให้เกิดทางเลือกทุกอย่างทุกเลือกไว้หมดแล้วการเขียนโค้ดมันมีแนวทางของมันในรูปแบบของมันรีบศักยภาพระบบของ AI ให้มากที่สุดในการเขียนรายละเอียดเนื้อหาทุกส่วนส่งให้ครอบคลุมทุกอย่างจดจำมเติมได้" >> "$REPORT"
-echo "- " >> "$REPORT"
-echo "- " >> "$REPORT"
-echo "- " >> "$REPORT"
+ในส่วนเครื่องมือการสร้างแบบจำลองเน้นการตั้งค่าที่ส่งจริงตามแบบมาตรฐานที่สุดส่วน component ที่เอามาแสดงผลหน้าเว็บไซต์เน้นสร้างในรูปแบบแนวทาง professional ้
+" >> "$REPORT"
+echo "⚠️Generate a production-ready Vite + React + TypeScript project using TailwindCSS (Twind). Enforce strict TypeScript rules and ESLint configuration. The design must be minimal, flat, and professional — no curved shapes, gradients, or cartoon-like colors. Use only neutral tones (gray, black, white, navy). All code must follow strict linting and type safety. Include a basic layout with header, sidebar, and content area. No animations, no rounded corners, no playful UI. This is for a serious enterprise-grade dashboard.⚠️" >> "$REPORT"
+echo "| ความโปร่งใส | มีหน้าเงื่อนไข, รีวิว, Markdown content |
+| ความเร็ว | SSR, CDN, Lighthouse 90+ |
+| UI | Flat, neutral, ไม่มีลูกเล่น |
+| โค้ด | TypeScript strict, ESLint, Markdown report✅ สรุปแนวทางดีไซน์เชิงเทคนิค
+
+| ด้าน | แนวทาง |
+|------|--------|
+| โครงสร้าง | ใช้ semantic HTML, hierarchy ชัดเจน |
+| สีและฟอนต์ | เรียบ, มืออาชีพ, contrast สูง |
+| Layout | Grid-based, ไม่มีลูกเล่นเกินจำเป็น |
+| Accessibility | รองรับ screen reader, WCAG AA |
+| Performance | SSR/SSG, lazy load, Tailwind JIT |
+| Interaction | ปุ่มตอบสนองไว, error สุภาพ |
+" >> "$REPORT"
+echo "I will now send the current production code used by the website. Your task is to review, correct, and return the code according to the previously defined structure and constraints. This is a Dev-to-Dev workflow — do not explain, teach, or suggest alternatives. Just fix the code and return it in a clean, production-ready format. Enforce strict TypeScript, ESLint rules, and apply the design constraints: flat, neutral, no fancy styles or curved elements. Return only the corrected code, ready to use.
+#
+I will now send production code for review and correction based on the previously defined constraints. Fix the code and return it in a clean, production-ready format. Do not explain or teach anything. However, if you identify any improvements that would clearly enhance the code — such as component extraction, structure cleanup, or stability improvements — notify immediately and include those improvements in the returned code." >> "$REPORT"
 
 echo "" >> "$REPORT"
 echo "---" >> "$REPORT"

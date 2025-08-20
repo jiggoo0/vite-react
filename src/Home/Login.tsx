@@ -5,6 +5,12 @@ import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 import { users } from "@/data/users";
 
+interface AuthUser {
+  username: string;
+  hash: string;
+  role: "admin" | "user" | "manager";
+}
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -20,7 +26,11 @@ const Login: React.FC = () => {
     const trimmedUsername = username.trim();
 
     try {
-      const user = users[trimmedUsername];
+      const userData = users[trimmedUsername];
+      const user: AuthUser | undefined = userData
+        ? { ...userData, username: trimmedUsername }
+        : undefined;
+
       if (!user) {
         setError("ไม่พบผู้ใช้นี้ในระบบ");
         return;
@@ -35,7 +45,7 @@ const Login: React.FC = () => {
       // เก็บข้อมูลผู้ใช้ใน localStorage
       localStorage.setItem(
         "user",
-        JSON.stringify({ username: trimmedUsername, role: user.role })
+        JSON.stringify({ username: user.username, role: user.role })
       );
 
       // นำทางไปหน้า secret หลัง login สำเร็จ

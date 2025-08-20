@@ -7,12 +7,12 @@
 ================================== */
 :root {
   /* Brand Colors */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1e40af;
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #2563eb;
   --color-primary-disabled: #9ca3af;
-  --color-secondary: #9333ea;
-  --color-accent: #f59e0b;
-  --color-neutral: #374151;
+  --color-secondary: #374151;
+  --color-accent: #fbbf24;
+  --color-neutral: #6b7280;
 
   /* Status Colors */
   --color-success: #10b981;
@@ -23,8 +23,8 @@
   /* Base UI */
   --color-border: #d1d5db;
   --color-border-light: #e5e7eb;
-  --color-bg: #ffffff;
-  --color-bg-light: #f9fafb;
+  --color-bg: #f9fafb;
+  --color-bg-light: #ffffff;
 
   /* Typography */
   --color-text: #111827;
@@ -32,35 +32,35 @@
   --font-family-base: "Kanit", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
 
   /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.08);
 
   /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.25s ease;
-  --transition-slow: 0.3s ease;
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 300ms ease;
 }
 
 /* ==================================
    Dark Mode Variables
 ================================== */
 [data-theme="dark"] {
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-primary-disabled: #6b7280;
-  --color-secondary: #a855f7;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1e40af;
+  --color-primary-disabled: #9ca3af;
+  --color-secondary: #a1a1aa;
   --color-accent: #fbbf24;
   --color-neutral: #1f2937;
 
-  --color-success: #34d399;
-  --color-warning: #fde047;
-  --color-error: #f87171;
-  --color-info: #60a5fa;
+  --color-success: #10b981;
+  --color-warning: #facc15;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
 
   --color-border: #4b5563;
   --color-border-light: #374151;
@@ -70,20 +70,21 @@
   --color-text: #f3f4f6;
   --color-text-muted: #9ca3af;
 
-  --shadow-sm: 0 2px 4px rgba(255,255,255,0.05);
-  --shadow-md: 0 4px 12px rgba(255,255,255,0.06);
+  --shadow-sm: 0 1px 3px rgba(255,255,255,0.05);
+  --shadow-md: 0 4px 6px rgba(255,255,255,0.06);
 }
 
 /* ==================================
-   Business / Team Theme (Optional)
+   Business / Team Theme
 ================================== */
-[data-theme="team"] {
-  --color-primary: #1d4ed8;
-  --color-primary-hover: #1e40af;
+[data-theme="business"] {
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #2563eb;
   --color-primary-disabled: #9ca3af;
-  --color-secondary: #9333ea;
-  --color-accent: #f59e0b;
-  --color-neutral: #374151;
+  --color-primary-content: #ffffff;
+  --color-secondary: #374151;
+  --color-accent: #fbbf24;
+  --color-neutral: #6b7280;
 
   --color-success: #10b981;
   --color-warning: #facc15;
@@ -92,8 +93,8 @@
 
   --color-border: #d1d5db;
   --color-border-light: #e5e7eb;
-  --color-bg: #ffffff;
-  --color-bg-light: #f9fafb;
+  --color-bg: #f3f4f6;
+  --color-bg-light: #ffffff;
 
   --color-text: #111827;
   --color-text-muted: #374151;
@@ -108,6 +109,7 @@ body {
   color: var(--color-text);
   transition: background-color var(--transition-base),
               color var(--transition-base);
+  margin: 0;
 }
 
 /* ==================================

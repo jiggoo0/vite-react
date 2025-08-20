@@ -49,7 +49,7 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
       </p>
 
       {/* Divider */}
-      <div className="mt-4 h-1 w-20 bg-primary rounded-full opacity-70"></div>
+      <div className="mt-4 h-1 w-20 bg-primary dark:bg-primary-light rounded-full opacity-70"></div>
     </section>
   );
 };

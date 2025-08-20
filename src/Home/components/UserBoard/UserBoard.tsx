@@ -3,6 +3,9 @@
 import { FC, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 
+// =======================
+// Types
+// =======================
 export interface IUser {
   application_id: string;
   citizen_id: string;
@@ -16,6 +19,9 @@ export interface IUser {
   created_at: string;
 }
 
+// =======================
+// Constants
+// =======================
 const DEADLINE_DAYS = 65;
 const CORRECT_CODE = "9780";
 
@@ -25,6 +31,9 @@ const getDeadline = (createdAt: string) => {
   return d.toLocaleDateString("th-TH");
 };
 
+// =======================
+// Table Label Mapping
+// =======================
 type DisplayKey = keyof IUser | "deadline";
 
 const labelMap: Record<
@@ -50,11 +59,17 @@ const labelMap: Record<
   },
 };
 
+// =======================
+// Props
+// =======================
 interface UserBoardProps {
   data: IUser[];
   pageSize?: number;
 }
 
+// =======================
+// Main Component
+// =======================
 const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [page, setPage] = useState(1);
   const [codeInput, setCodeInput] = useState("");
@@ -62,26 +77,27 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const displayKeys = useMemo(() => Object.keys(labelMap) as DisplayKey[], []);
-  const totalPages = useMemo(
-    () => Math.ceil(data.length / pageSize),
-    [data.length, pageSize]
-  );
+  const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
   const pageData = useMemo(
     () => data.slice((page - 1) * pageSize, page * pageSize),
     [data, page, pageSize]
   );
 
+  // =======================
+  // Pagination
+  // =======================
   const gotoPage = useCallback(
     (num: number) => {
       if (num < 1 || num > totalPages) return;
       setPage(num);
-      document
-        .getElementById("user-table")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("user-table")?.scrollIntoView({ behavior: "smooth", block: "start" });
     },
     [totalPages]
   );
 
+  // =======================
+  // Authorization Form
+  // =======================
   const handleCodeSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -127,6 +143,9 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
     </form>
   );
 
+  // =======================
+  // Table Rendering
+  // =======================
   const renderTable = () => (
     <div className="relative w-full max-w-full sm:max-w-6xl">
       <motion.div
@@ -207,10 +226,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
       </motion.div>
 
       {totalPages > 1 && (
-        <nav
-          className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4"
-          role="navigation"
-        >
+        <nav className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4" role="navigation">
           <button
             onClick={() => gotoPage(page - 1)}
             disabled={page === 1}

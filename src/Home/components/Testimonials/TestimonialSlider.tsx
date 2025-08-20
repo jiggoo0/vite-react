@@ -51,9 +51,7 @@ const TestimonialSlider: FC = () => {
   return (
     <div
       className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl bg-white dark:bg-gray-900 p-8 shadow-2xl"
-      onMouseEnter={() =>
-        intervalRef.current && clearInterval(intervalRef.current)
-      }
+      onMouseEnter={() => intervalRef.current && clearInterval(intervalRef.current)}
       onMouseLeave={resetInterval}
       onFocus={() => intervalRef.current && clearInterval(intervalRef.current)}
       onBlur={resetInterval}
@@ -89,10 +87,12 @@ const TestimonialSlider: FC = () => {
           aria-live="polite"
           aria-atomic="true"
         >
+          {/* Testimonial Content */}
           <p className="text-gray-900 dark:text-gray-100 text-xl leading-relaxed mb-8 font-serif">
             “{content}”
           </p>
 
+          {/* Author Info */}
           <div className="flex items-center space-x-5">
             <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg select-none">
               {name.charAt(0)}

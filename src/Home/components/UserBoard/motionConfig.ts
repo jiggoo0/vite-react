@@ -1,0 +1,28 @@
+// src/Home/components/UserBoard/motionConfig.ts
+import { Variants } from "framer-motion";
+
+/**
+ * 📦 fadeUpContainer
+ *
+ * - Container animation สำหรับ parent
+ * - ใช้ Stagger Children ให้ item ใน container เคลื่อนไหวทีละตัว
+ */
+export const fadeUpContainer: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+/**
+ * 🎯 fadeUpItem
+ *
+ * - Animation สำหรับแต่ละ item
+ * - Fade in + slide up effect
+ */
+export const fadeUpItem: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};

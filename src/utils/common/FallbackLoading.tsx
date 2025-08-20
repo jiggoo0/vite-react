@@ -8,7 +8,7 @@ interface FallbackLoadingProps {
   message?: string;
   /** ✨ Optional: เพิ่ม className สำหรับ custom styling */
   className?: string;
-  /** 🔹 ขนาด spinner */
+  /** 🔹 ขนาด spinner (px) */
   size?: number;
 }
 
@@ -21,7 +21,7 @@ interface FallbackLoadingProps {
  * - สามารถปรับข้อความและ custom class
  */
 const FallbackLoading: FC<FallbackLoadingProps> = ({
-  message,
+  message = "กำลังโหลด...",
   className,
   size = 48,
 }) => {
@@ -62,7 +62,7 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({
 
         {/* Loading Text */}
         <p className="text-sm text-base-content/70 dark:text-base-content/60 select-none">
-          {message || "กำลังโหลด..."}
+          {message}
         </p>
       </div>
     </div>

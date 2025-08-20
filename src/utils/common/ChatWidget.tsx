@@ -10,7 +10,7 @@ interface ChatWidgetProps {
 }
 
 /**
- * 📬 ChatWidget (Professional Version)
+ * 📬 ChatWidget
  *
  * - Floating button สำหรับติดต่อผ่านโซเชียล
  * - เปิด/ปิดด้วย click หรือ Escape key
@@ -24,13 +24,10 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
 
   const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  /** ปิด widget อัตโนมัติ */
+  // ปิด widget อัตโนมัติหลังเวลา autoCloseMs
   useEffect(() => {
     if (isOpen) {
-      autoCloseTimer.current = window.setTimeout(
-        () => setIsOpen(false),
-        autoCloseMs
-      );
+      autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
     }
     return () => {
       if (autoCloseTimer.current) {
@@ -40,7 +37,7 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
     };
   }, [isOpen, autoCloseMs]);
 
-  /** ปิดด้วย Escape key */
+  // ปิดด้วย Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
@@ -49,7 +46,7 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  /** Focus widget */
+  // Focus widget เมื่อเปิด
   useEffect(() => {
     if (isOpen && widgetRef.current) {
       widgetRef.current.focus();

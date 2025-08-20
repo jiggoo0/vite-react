@@ -15,11 +15,12 @@ interface LayoutProps {
 }
 
 /**
- * 🎨 Layout Component
- *
+ * Layout Component
+ * ----------------
  * - ครอบคลุมโครงสร้างหลัก: Navbar / Footer / Main content
  * - รองรับ floating components: ChatWidget, BackToTop, DisclaimerModal
- * - รองรับ accessibility: role, tabIndex, aria-live
+ * - Flat, professional UI
+ * - Accessibility compliant
  */
 const Layout: FC<LayoutProps> = ({ children }) => {
   const floatingComponents = [ChatWidget, BackToTop, DisclaimerModal];
@@ -27,7 +28,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col bg-base-100 text-base-content transition-colors duration-300">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-base-100 shadow-sm transition-shadow duration-300">
+      <header
+        className="sticky top-0 z-50 bg-base-100 shadow-sm transition-shadow duration-300"
+        role="banner"
+      >
         <Navbar />
       </header>
 
@@ -61,5 +65,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     </div>
   );
 };
+
+Layout.displayName = "Layout";
 
 export default Layout;

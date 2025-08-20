@@ -6,7 +6,7 @@ interface ErrorBoundaryProps {
   children: ReactNode;
   /** 💬 ข้อความ fallback เมื่อเกิด error */
   fallbackMessage?: string;
-  /** 🎨 กำหนด fallback component เองได้ */
+  /** 🎨 สามารถกำหนด fallback component เองได้ */
   fallbackComponent?: ReactNode;
   /** 🔹 Callback เมื่อเกิด error */
   onError?: (error: Error, info: ErrorInfo) => void;
@@ -17,7 +17,10 @@ interface ErrorBoundaryState {
   error?: Error;
 }
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   state: ErrorBoundaryState = { hasError: false };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
@@ -33,7 +36,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     const { hasError, error } = this.state;
-    const { fallbackMessage, fallbackComponent } = this.props;
+    const { fallbackMessage, fallbackComponent, children } = this.props;
 
     if (hasError) {
       return (
@@ -69,7 +72,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       );
     }
 
-    return this.props.children;
+    return children;
   }
 }
 

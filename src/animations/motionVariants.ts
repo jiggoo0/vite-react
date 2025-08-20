@@ -1,8 +1,16 @@
 // src/animations/motionVariants.ts
-import type { Variants } from "framer-motion";
+import type { Variants, Transition } from "framer-motion";
 
 /**
- * Motion Variants สำหรับ Carousel (TestimonialSlider)
+ * Default transition settings สำหรับ motion
+ */
+const defaultTransition: Transition = {
+  duration: 0.6,
+  ease: "easeOut",
+};
+
+/**
+ * Motion Variants สำหรับ Carousel (เช่น TestimonialSlider)
  * @param direction - จำนวนบวก/ลบ กำหนดทิศทาง slide
  */
 export const carouselVariants: Variants = {
@@ -29,11 +37,7 @@ export const carouselVariants: Variants = {
  */
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
+  visible: { opacity: 1, y: 0, transition: defaultTransition },
 };
 
 /**
@@ -42,9 +46,5 @@ export const fadeInUp: Variants = {
  */
 export const fadeInUpWithDelay = (delay = 0): Variants => ({
   hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut", delay },
-  },
+  visible: { opacity: 1, y: 0, transition: { ...defaultTransition, delay } },
 });

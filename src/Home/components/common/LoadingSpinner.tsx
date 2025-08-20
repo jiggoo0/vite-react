@@ -4,9 +4,15 @@ import { FC, memo } from "react";
 import clsx from "clsx";
 
 interface LoadingSpinnerProps {
+  /** ขนาดของ spinner */
   size?: "sm" | "md" | "lg";
 }
 
+/**
+ * LoadingSpinner
+ * - spinner แบบวงกลมหมุน
+ * - รองรับ 3 ขนาด: sm, md, lg
+ */
 const LoadingSpinner: FC<LoadingSpinnerProps> = memo(({ size = "md" }) => {
   const sizeClass = clsx({
     "w-6 h-6": size === "sm",

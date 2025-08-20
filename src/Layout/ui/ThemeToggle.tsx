@@ -9,10 +9,9 @@ const THEME_KEY = "theme";
 /**
  * ThemeToggle
  * ------------
- * ปุ่มสลับโหมด Light / Dark
- * - จัดการ class `dark` บน root element
- * - จัดการ attribute `data-theme` สำหรับ CSS variables
- * - Sync กับ localStorage และ prefers-color-scheme
+ * - Toggle Light / Dark mode
+ * - Syncs with localStorage & prefers-color-scheme
+ * - Updates `dark` class and `data-theme` attribute
  */
 const ThemeToggle = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -33,16 +32,14 @@ const ThemeToggle = () => {
     }
   }, []);
 
-  /** Initialize theme on mount */
+  /** Initialize theme */
   useEffect(() => {
     setIsMounted(true);
 
-    const saved = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    applyTheme(saved ? saved === "dark" : prefersDark);
+    applyTheme(savedTheme ? savedTheme === "dark" : prefersDark);
   }, [applyTheme]);
 
   /** Sync theme across tabs */
@@ -60,7 +57,7 @@ const ThemeToggle = () => {
   /** Toggle theme manually */
   const toggleTheme = () => applyTheme(!isDark);
 
-  // Prevent hydration mismatch in SSR
+  // Prevent SSR hydration mismatch
   if (!isMounted) return null;
 
   return (
@@ -68,14 +65,16 @@ const ThemeToggle = () => {
       onClick={toggleTheme}
       variant="ghost"
       type="button"
-      className="rounded-full p-2"
-      aria-label={`สลับเป็นโหมด ${isDark ? "สว่าง" : "มืด"}`}
+      className="p-2"
+      aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       aria-pressed={isDark}
-      title={isDark ? "โหมดสว่าง" : "โหมดมืด"}
+      title={isDark ? "Light Mode" : "Dark Mode"}
     >
       {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </Button>
   );
 };
+
+ThemeToggle.displayName = "ThemeToggle";
 
 export default ThemeToggle;

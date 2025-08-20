@@ -1,11 +1,5 @@
-/* ==================================
-   Print Styles
-   ------------------------------
-   ใช้สำหรับการพิมพ์เอกสารหรือ PDF
-================================== */
-
 @media print {
-  /* Reset general layout */
+  /* Reset ทุกอย่างให้เรียบง่าย */
   * {
     background: transparent !important;
     color: #000 !important;
@@ -13,10 +7,8 @@
     text-shadow: none !important;
   }
 
-  html,
-  body {
+  html, body {
     width: 100%;
-    height: auto;
     margin: 0;
     padding: 0;
     font-size: 12pt;
@@ -26,25 +18,18 @@
     color: #000;
   }
 
-  /* Hide elements not needed in print */
-  .no-print,
-  nav,
-  header,
-  footer,
-  .btn,
-  .hidden-print {
+  /* ซ่อน element ที่ไม่จำเป็น */
+  .no-print, nav, header, footer, .btn, .hidden-print {
     display: none !important;
   }
 
-  /* Tables */
+  /* ตารางอ่านง่าย */
   table {
     border-collapse: collapse;
     width: 100%;
     page-break-inside: avoid;
   }
-
-  th,
-  td {
+  th, td {
     border: 1px solid #000;
     padding: 4px 8px;
     text-align: left;
@@ -56,51 +41,41 @@
     page-break-after: always;
   }
 
-  /* Links: show URLs */
+  /* Links แสดง URL */
   a:after {
     content: " (" attr(href) ")";
     font-size: 10pt;
   }
 
-  /* Images */
-  img {
+  /* รูปและสื่อ */
+  img, video, canvas, svg {
     max-width: 100% !important;
     height: auto !important;
     page-break-inside: avoid;
   }
 
-  /* Forms */
-  form,
-  fieldset {
+  /* ฟอร์มไม่แตกหน้า */
+  form, fieldset {
     page-break-inside: avoid;
   }
 
-  /* Headings */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  /* Headings ชัดเจน */
+  h1, h2, h3, h4, h5, h6 {
     color: #000 !important;
     page-break-after: avoid;
     page-break-inside: avoid;
   }
 
-  /* Code / Preformatted */
-  pre,
-  code {
+  /* Code / Preformatted text */
+  pre, code {
     font-family: monospace;
     font-size: 10pt;
     white-space: pre-wrap;
     word-wrap: break-word;
   }
 
-  /* General spacing */
-  p,
-  ul,
-  ol,
-  blockquote {
+  /* General spacing สำหรับ paragraph, lists, blockquote */
+  p, ul, ol, blockquote {
     page-break-inside: avoid;
     orphans: 3;
     widows: 3;

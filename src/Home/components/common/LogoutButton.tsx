@@ -7,6 +7,12 @@ import { LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import Button from "@/Home/components/ui/Button";
 
+/**
+ * LogoutButton
+ * - ปุ่มออกจากระบบ
+ * - รองรับ loading state
+ * - ใช้ aria attributes เพื่อ accessibility
+ */
 const LogoutButton: FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -34,7 +40,9 @@ const LogoutButton: FC = () => {
       aria-busy={loading}
       aria-label="ออกจากระบบ"
     >
+      {/* ไอคอน Logout */}
       <LogOut className="w-4 h-4" aria-hidden="true" />
+      {/* ข้อความ */}
       <span className={loading ? "opacity-70" : ""}>ออกจากระบบ</span>
     </Button>
   );

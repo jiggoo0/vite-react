@@ -13,10 +13,11 @@ const ScrollProgress = () => {
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
 
+  /** คำนวณ progress ของ scroll */
   const updateProgress = useCallback(() => {
     if (!ticking.current) {
       window.requestAnimationFrame(() => {
-        const scrollTop = window.scrollY;
+        const scrollTop = window.scrollY || window.pageYOffset;
         const docHeight =
           document.documentElement.scrollHeight - window.innerHeight;
         const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
@@ -28,11 +29,12 @@ const ScrollProgress = () => {
   }, []);
 
   useEffect(() => {
-    // ตั้งค่าเริ่มต้น
+    // เรียกครั้งแรกตอน mount
     updateProgress();
 
+    // listen scroll + resize
     window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress); // รองรับ resize
+    window.addEventListener("resize", updateProgress);
 
     return () => {
       window.removeEventListener("scroll", updateProgress);

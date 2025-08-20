@@ -1,13 +1,14 @@
 import { useRef, useState, useEffect, RefObject } from "react";
 
 interface UseInViewOptions {
+  /** IntersectionObserver threshold (default: 0.1) */
   threshold?: number;
 }
 
 /**
- * Hook สำหรับตรวจสอบ element ว่าอยู่ใน viewport หรือไม่
- * @param threshold ค่า threshold ของ IntersectionObserver
- * @returns [ref, isInView]
+ * useInView hook: Detects if an element is within the viewport
+ * @param options Object { threshold }
+ * @returns [ref, isInView] - ref to attach to element, boolean flag
  */
 export const useInView = <T extends Element>({
   threshold = 0.1,
@@ -21,14 +22,12 @@ export const useInView = <T extends Element>({
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold }
+      { threshold, root: null }
     );
 
     observer.observe(element);
 
-    return () => {
-      observer.unobserve(element);
-    };
+    return () => observer.disconnect();
   }, [threshold]);
 
   return [ref, isInView];

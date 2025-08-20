@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo, useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { FC, memo, useState, useEffect, ChangeEvent, FormEvent, DragEvent } from "react";
 import clsx from "clsx";
 
 // =======================
@@ -45,9 +45,7 @@ const InputField: FC<InputFieldProps> = ({
 
   return (
     <div className="flex flex-col space-y-1">
-      <label htmlFor={name} className="font-medium">
-        {label}
-      </label>
+      <label htmlFor={name} className="font-medium">{label}</label>
       {isTextArea ? (
         <textarea
           id={name}
@@ -75,6 +73,11 @@ const InputField: FC<InputFieldProps> = ({
 };
 
 // =======================
+// Helper: Validate ID number
+// =======================
+const validateIdNumber = (id: string) => /^\d{13}$/.test(id);
+
+// =======================
 // Main Component
 // =======================
 const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
@@ -87,11 +90,10 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
 
   const [ocrLoading, setOcrLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Handle input change
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -99,15 +101,20 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
   // =======================
   // OCR Simulation / Upload
   // =======================
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileChange = async (file: File) => {
     if (!file) return;
+    const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+    if (!validTypes.includes(file.type)) {
+      setError("รองรับเฉพาะไฟล์ PNG, JPG, JPEG");
+      return;
+    }
 
+    setError(null);
     const previewUrl = URL.createObjectURL(file);
     setImagePreview(previewUrl);
     setOcrLoading(true);
 
-    // Simulate OCR (replace with real OCR API)
+    // Simulate OCR
     setTimeout(() => {
       setFormData({
         fullName: "สมชาย ใจดี",
@@ -119,6 +126,21 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
     }, 1500);
   };
 
+  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileChange(file);
+  };
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileChange(file);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
   // Cleanup object URL
   useEffect(() => {
     return () => {
@@ -126,68 +148,56 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
     };
   }, [imagePreview]);
 
+  // =======================
+  // Form Submit
+  // =======================
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    if (!validateIdNumber(formData.idNumber)) {
+      setError("เลขบัตรประชาชนต้องมี 13 หลัก");
+      return;
+    }
+
     console.log("ID Card Form Submitted:", formData);
+    alert("บันทึกข้อมูลเรียบร้อย!");
     // TODO: implement actual submit logic
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={clsx(
-        "bg-white rounded-xl shadow-md p-6 w-full space-y-6",
-        className
-      )}
+      className={clsx("bg-white rounded-xl shadow-md p-6 w-full space-y-6", className)}
     >
       <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน (OCR)</h2>
 
       {/* Upload ID Card */}
-      <div className="flex flex-col space-y-2">
-        <label className="font-medium">อัปโหลดรูปบัตรประชาชน</label>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-        {ocrLoading && (
-          <p className="text-blue-500">กำลังอ่านข้อมูลจากภาพ...</p>
-        )}
-        {imagePreview && (
-          <img
-            src={imagePreview}
-            alt="Preview"
-            className="mt-2 max-h-40 object-contain rounded-md border"
-          />
-        )}
+      <div
+        className="flex flex-col space-y-2 border-dashed border-2 border-gray-300 rounded-md p-4 text-center cursor-pointer"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
+        <label className="font-medium">คลิกหรือวางรูปบัตรประชาชนที่นี่</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileInputChange}
+          className="hidden"
+          id="idCardUpload"
+        />
+        <p className="text-sm text-gray-500">รองรับ PNG, JPG, JPEG</p>
+        {ocrLoading && <p className="text-blue-500" role="status" aria-live="polite">กำลังอ่านข้อมูลจากภาพ...</p>}
+        {imagePreview && <img src={imagePreview} alt="Preview" className="mt-2 max-h-40 object-contain rounded-md border" />}
       </div>
 
       {/* Input Fields */}
-      <InputField
-        label="ชื่อ-สกุล"
-        name="fullName"
-        value={formData.fullName}
-        placeholder="กรอกชื่อ-นามสกุล"
-        onChange={handleChange}
-      />
-      <InputField
-        label="เลขบัตรประชาชน"
-        name="idNumber"
-        value={formData.idNumber}
-        placeholder="กรอกเลขบัตรประชาชน"
-        onChange={handleChange}
-      />
-      <InputField
-        label="วันเกิด"
-        name="birthDate"
-        type="date"
-        value={formData.birthDate}
-        onChange={handleChange}
-      />
-      <InputField
-        label="ที่อยู่"
-        name="address"
-        type="textarea"
-        value={formData.address}
-        placeholder="กรอกที่อยู่"
-        onChange={handleChange}
-      />
+      <InputField label="ชื่อ-สกุล" name="fullName" value={formData.fullName} placeholder="กรอกชื่อ-นามสกุล" onChange={handleChange} />
+      <InputField label="เลขบัตรประชาชน" name="idNumber" value={formData.idNumber} placeholder="กรอกเลขบัตรประชาชน" onChange={handleChange} />
+      <InputField label="วันเกิด" name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} />
+      <InputField label="ที่อยู่" name="address" type="textarea" value={formData.address} placeholder="กรอกที่อยู่" onChange={handleChange} />
+
+      {error && <p className="text-red-600" role="alert">{error}</p>}
 
       {/* Submit */}
       <button

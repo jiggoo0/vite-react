@@ -16,12 +16,12 @@ const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<number | null>(null);
 
-  /** ตรวจสอบ scroll position */
+  // ตรวจสอบ scroll position
   const handleScroll = useCallback(() => {
     setIsVisible(window.scrollY > 300);
   }, []);
 
-  /** ติด listener scroll + debounce */
+  // ติด listener scroll + debounce
   useEffect(() => {
     const onScroll = () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -39,7 +39,7 @@ const BackToTop = () => {
     };
   }, [handleScroll]);
 
-  /** scroll กลับไปด้านบน */
+  // scroll กลับไปด้านบน
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

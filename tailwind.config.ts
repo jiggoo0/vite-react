@@ -17,12 +17,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#1E3A8A",          // Professional blue
+        primary: "#1E3A8A",
         "primary-hover": "#2563EB",
         "primary-disabled": "#9CA3AF",
-        secondary: "#374151",        // Dark gray for text / labels
-        accent: "#FBBF24",           // CTA / highlights
-        neutral: "#6B7280",          // Neutral backgrounds / borders
+        secondary: "#374151",
+        accent: "#FBBF24",
+        neutral: "#6B7280",
         success: "#10B981",
         warning: "#FACC15",
         error: "#EF4444",
@@ -34,15 +34,15 @@ const config: Config = {
         sans: ["Kanit", ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
-        sm: "4px",
-        md: "8px",
-        lg: "12px",
+        sm: "0.25rem",
+        md: "0.5rem",
+        lg: "0.75rem",
         full: "9999px",
       },
       boxShadow: {
-        sm: "0 2px 4px rgba(0,0,0,0.05)",
-        md: "0 4px 12px rgba(0,0,0,0.08)",
-        lg: "0 8px 24px rgba(0,0,0,0.12)",
+        sm: "0 1px 3px rgba(0,0,0,0.05)",
+        md: "0 4px 6px rgba(0,0,0,0.08)",
+        lg: "0 8px 12px rgba(0,0,0,0.12)",
       },
       transitionDuration: {
         fast: "150ms",
@@ -93,12 +93,12 @@ const config: Config = {
     styled: true,
     base: true,
     utils: true,
-    logs: true,
+    logs: false, // Disable logs in production
   },
 
   corePlugins: {
     container: true,
-    float: true,
+    float: false, // Not used for flat professional layout
     objectFit: true,
   },
 };

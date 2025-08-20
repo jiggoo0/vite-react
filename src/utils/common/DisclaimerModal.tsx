@@ -14,7 +14,7 @@ interface DisclaimerModalProps {
 }
 
 /**
- * ⚠️ DisclaimerModal (Professional Version)
+ * ⚠️ DisclaimerModal
  *
  * - แสดง modal แจ้งเตือน/คำชี้แจงทางกฎหมาย
  * - Overlay gradient + blur + smooth animation

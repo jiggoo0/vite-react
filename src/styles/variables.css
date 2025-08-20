@@ -11,6 +11,7 @@
   --color-primary-hover: #1e40af;
   --color-primary-disabled: #9ca3af;
   --color-secondary: #9333ea;
+  --color-secondary-hover: #7c2ae8;
   --color-accent: #f59e0b;
   --color-neutral: #374151;
 
@@ -44,6 +45,9 @@
   --transition-fast: 0.15s ease;
   --transition-base: 0.25s ease;
   --transition-slow: 0.3s ease;
+
+  /* ----- Global transition for theme switch ----- */
+  transition: color var(--transition-base), background-color var(--transition-base);
 }
 
 /* ==================================
@@ -54,6 +58,7 @@
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #6b7280;
   --color-secondary: #a855f7;
+  --color-secondary-hover: #9333ea;
   --color-accent: #fbbf24;
   --color-neutral: #1f2937;
 
@@ -81,7 +86,10 @@
   --color-primary: #1e3a8a;
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #9ca3af;
+  --color-primary-content: #ffffff;
+
   --color-secondary: #2563eb;
+  --color-secondary-hover: #1e40af;
   --color-accent: #fbbf24;
   --color-neutral: #374151;
 
@@ -103,42 +111,65 @@
 }
 
 /* ==================================
-   Utilities
+   Global Styles
 ================================== */
-.text-center {
-  text-align: center;
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: inherit; /* ใช้ transition จาก :root */
 }
-.text-left {
-  text-align: left;
+
+/* Anchors / Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
-.text-right {
-  text-align: right;
-}
-.hidden {
-  display: none !important;
+a:hover {
+  color: var(--color-primary-hover);
 }
 
 /* ==================================
-   Global Buttons
+   Buttons
 ================================== */
 button {
-  border-radius: var(--radius-md, 8px);
-  transition:
-    background-color var(--transition-base, 0.25s ease),
-    color var(--transition-base, 0.25s ease);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-base), color var(--transition-base);
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
 }
 
 button.primary {
-  background-color: var(--color-primary, #2563eb);
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-primary-content, #fff);
 }
-
 button.primary:hover {
-  background-color: var(--color-primary-hover, #1e40af);
+  background-color: var(--color-primary-hover);
 }
-
 button.primary:disabled {
-  background-color: var(--color-primary-disabled, #9ca3af);
+  background-color: var(--color-primary-disabled);
   cursor: not-allowed;
 }
+
+/* Secondary / Accent Button (ตัวอย่าง) */
+button.secondary {
+  background-color: var(--color-secondary);
+  color: #fff;
+}
+button.secondary:hover {
+  background-color: var(--color-secondary-hover, var(--color-secondary));
+}
+
+/* ==================================
+   Utility Classes
+================================== */
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+.hidden      { display: none !important; }
+.flex        { display: flex; }
+.justify-center { justify-content: center; }
+.mt-2 { margin-top: 0.5rem; }
+.mb-2 { margin-bottom: 0.5rem; }

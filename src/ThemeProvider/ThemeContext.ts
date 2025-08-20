@@ -1,6 +1,6 @@
 // src/ThemeProvider/ThemeContext.ts
-import { createContext, Dispatch, SetStateAction } from "react";
-import { ThemeMode } from "./types";
+import { createContext, type Dispatch, type SetStateAction } from "react";
+import type { ThemeMode } from "./types";
 
 /** 🖌️ Type สำหรับ ThemeContext */
 export interface ThemeContextType {
@@ -8,8 +8,11 @@ export interface ThemeContextType {
   setTheme: Dispatch<SetStateAction<ThemeMode>>;
 }
 
-/** 🌐 ThemeContext พร้อมค่า default */
-export const ThemeContext = createContext<ThemeContextType>({
-  theme: "light", // 🔹 ค่าเริ่มต้น ต้องตรงกับ ThemeMode
-  setTheme: () => {}, // noop
-});
+/**
+ * 🌐 ThemeContext
+ * ⚠️ Default value เป็น placeholder เท่านั้น
+ * ต้องถูก override โดย <ThemeProvider>
+ */
+export const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined
+);

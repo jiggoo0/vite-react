@@ -1,4 +1,5 @@
 // src/data/theme.ts
+
 export type ThemeColors = {
   primary: string;
   "primary-hover": string;
@@ -43,8 +44,8 @@ export const lightTheme: Theme = {
     "bg-dark": "#1F2937",
   },
   fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-  borderRadius: { sm: "4px", md: "8px", lg: "12px" },
-  boxShadow: { sm: "0 2px 4px rgba(0,0,0,0.05)", md: "0 4px 12px rgba(0,0,0,0.08)" },
+  borderRadius: { sm: "0.25rem", md: "0.5rem", lg: "0.75rem" },
+  boxShadow: { sm: "0 1px 3px rgba(0,0,0,0.05)", md: "0 4px 6px rgba(0,0,0,0.08)" },
   transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
 };
 
@@ -66,8 +67,8 @@ export const darkTheme: Theme = {
     "bg-dark": "#1F2937",
   },
   fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-  borderRadius: { sm: "4px", md: "8px", lg: "12px" },
-  boxShadow: { sm: "0 2px 4px rgba(255,255,255,0.05)", md: "0 4px 12px rgba(255,255,255,0.06)" },
+  borderRadius: { sm: "0.25rem", md: "0.5rem", lg: "0.75rem" },
+  boxShadow: { sm: "0 1px 3px rgba(255,255,255,0.05)", md: "0 4px 6px rgba(255,255,255,0.06)" },
   transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
 };
 
@@ -90,8 +91,8 @@ export const businessTheme: Theme = {
     "bg-dark": "#D1D5DB",
   },
   fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-  borderRadius: { sm: "4px", md: "8px", lg: "12px" },
-  boxShadow: { sm: "0 2px 4px rgba(0,0,0,0.05)", md: "0 4px 12px rgba(0,0,0,0.08)" },
+  borderRadius: { sm: "0.25rem", md: "0.5rem", lg: "0.75rem" },
+  boxShadow: { sm: "0 1px 3px rgba(0,0,0,0.05)", md: "0 4px 6px rgba(0,0,0,0.08)" },
   transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
 };
 

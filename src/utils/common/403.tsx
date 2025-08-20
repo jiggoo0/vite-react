@@ -1,4 +1,6 @@
 // ✅ src/utils/common/403.tsx — Forbidden (403) Page
+"use client";
+
 import { FC } from "react";
 import { Link } from "react-router-dom";
 

@@ -8,10 +8,17 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
+/**
+ * 📱 MobileMenu
+ *
+ * - Drawer เมนูมือถือ
+ * - รองรับ backdrop click, Esc key, focus trap เบื้องต้น
+ * - ใช้ TailwindCSS + Transition
+ */
 const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  // ป้องกัน scroll & ปิดเมนูด้วย Esc
+  // ป้องกัน scroll และปิดเมนูด้วย Esc
   useEffect(() => {
     if (!open) return;
 
@@ -38,11 +45,13 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
     }
   }, [open]);
 
+  const menuItems = ["หน้าแรก", "ผลงาน", "บริการ", "เกี่ยวกับเรา"];
+
   return (
     <div
       className={cn(
         "fixed inset-0 z-50 flex pointer-events-none",
-        open ? "pointer-events-auto" : ""
+        open && "pointer-events-auto"
       )}
       aria-hidden={!open}
     >
@@ -64,9 +73,9 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
         aria-label="เมนูมือถือ"
       >
         <nav className="flex flex-col gap-5 text-lg font-medium">
-          {["หน้าแรก", "ผลงาน", "บริการ", "เกี่ยวกับเรา"].map((label, i) => (
+          {menuItems.map((label, idx) => (
             <a
-              key={i}
+              key={idx}
               href={`/#${label}`}
               onClick={onClose}
               className="hover:text-primary transition-colors"

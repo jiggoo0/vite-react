@@ -47,9 +47,12 @@ export const getLazyCards = (
   const shouldBlur = effectiveRole !== "admin";
   const isAdminOrManager = effectiveRole === "admin" || effectiveRole === "manager";
 
-  return [
+  const cards: LazyCard[] = [
     { component: <SecretHeader />, delay: 0 },
-    { component: <SecretDescription user={{ ...user, role: effectiveRole }} />, delay: 50 },
+    {
+      component: <SecretDescription user={{ ...user, role: effectiveRole }} />,
+      delay: 50,
+    },
     { component: <DocumentDownload />, delay: 100 },
     { component: <DriverLicenseFormPage />, delay: 150, isBlurred: shouldBlur },
     {
@@ -82,16 +85,28 @@ export const getLazyCards = (
       delay: 600,
       isBlurred: shouldBlur,
     },
-    ...(isAdminOrManager
-      ? [
-          {
-            component: <SpecialBranchCertificate />,
-            delay: 650,
-            fallback: <div>Loading Special Branch...</div>,
-          },
-        ]
-      : []),
-    { component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />, delay: 700 },
-    { component: <SecretActions role={effectiveRole} />, delay: 750 },
   ];
+
+  if (isAdminOrManager) {
+    cards.push({
+      component: <SpecialBranchCertificate />,
+      delay: 650,
+      fallback: <div>Loading Special Branch...</div>,
+    });
+  }
+
+  cards.push(
+    {
+      component: (
+        <BlurContact
+          imageUrl="/images/admin-contact.jpg"
+          contactText="ติดต่อฝ่ายสนับสนุน"
+        />
+      ),
+      delay: 700,
+    },
+    { component: <SecretActions role={effectiveRole} />, delay: 750 }
+  );
+
+  return cards;
 };
