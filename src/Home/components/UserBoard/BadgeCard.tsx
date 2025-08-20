@@ -1,49 +1,47 @@
-// src/Home/components/UserBoard/BadgeCard.tsx
 "use client";
 
-import { FC } from "react";
-import { motion } from "framer-motion";
-import { IBadge } from "./types";
-import { fadeUpItem } from "./motionConfig";
+import { FC, ReactNode } from "react";
+import clsx from "clsx";
 
-interface BadgeCardProps {
-  badge: IBadge;
+export interface BadgeCardProps {
+  icon: ReactNode;
+  title: string;
+  description?: string;
+  className?: string;
 }
 
 /**
- * 🏅 BadgeCard
- *
- * - แสดง badge ของผู้ใช้ในรูปแบบการ์ด
- * - รองรับ hover animation, focus, dark mode
- * - Responsive typography
+ * BadgeCard
+ * -------------------------
+ * แสดง Badge / ไอคอนพร้อมชื่อและคำอธิบาย
+ * - Responsive
+ * - Professional UI
+ * - Accessible
  */
-const BadgeCard: FC<BadgeCardProps> = ({ badge }) => (
-  <motion.article
-    variants={fadeUpItem}
-    whileHover={{ y: -5, scale: 1.04 }}
-    className="flex flex-col items-center gap-4 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow focus:outline-none focus:ring-2 focus:ring-primary"
-    role="group"
-    aria-labelledby={`badge-title-${badge.id}`}
-    tabIndex={0}
-  >
-    {/* Icon */}
-    <div className="flex items-center justify-center rounded-full p-4 bg-gradient-to-tr from-primary/20 to-secondary/20 shadow-inner">
-      {badge.icon}
-    </div>
-
-    {/* Title */}
-    <h3
-      id={`badge-title-${badge.id}`}
-      className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white"
+const BadgeCard: FC<BadgeCardProps> = ({ icon, title, description, className }) => {
+  return (
+    <div
+      role="group"
+      aria-label={title}
+      className={clsx(
+        "flex flex-col items-center p-4 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200 w-40 text-center",
+        className
+      )}
     >
-      {badge.title}
-    </h3>
+      {/* Icon */}
+      <div className="mb-2">{icon}</div>
 
-    {/* Description */}
-    <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base text-center">
-      {badge.description}
-    </p>
-  </motion.article>
-);
+      {/* Title */}
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+
+      {/* Description */}
+      {description && (
+        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
+      )}
+    </div>
+  );
+};
+
+BadgeCard.displayName = "BadgeCard";
 
 export default BadgeCard;

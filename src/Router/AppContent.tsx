@@ -10,12 +10,14 @@ import FallbackLoader from "@/utils/common/FallbackLoader";
  * - ErrorBoundary สำหรับจับ error ของทั้ง App
  * - Suspense Loader สำหรับ lazy loaded components
  */
-const AppContent: FC = () => (
-  <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในระบบ กรุณารีเฟรชหน้าใหม่">
-    <Suspense fallback={<FallbackLoader message="กำลังโหลดแอป..." />}>
-      <AppRouter />
-    </Suspense>
-  </ErrorBoundary>
-);
+const AppContent: FC = () => {
+  return (
+    <ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในระบบ กรุณารีเฟรชหน้าใหม่">
+      <Suspense fallback={<FallbackLoader message="กำลังโหลดแอป..." />}>
+        <AppRouter />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
 
 export default AppContent;

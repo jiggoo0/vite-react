@@ -27,4 +27,6 @@ const FilterButton: FC<FilterButtonProps> = ({ label, isActive, onClick }) => {
   );
 };
 
+FilterButton.displayName = "FilterButton";
+
 export default FilterButton;

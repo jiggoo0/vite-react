@@ -1,5 +1,7 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
+> เวลาตรวจสอบ: 2025-08-21 02:35:31 | สาขา: main
+
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
 ---
@@ -7,11 +9,11 @@
 ## 📊 Summary
 | หมวดหมู่                 | สถานะ |
 |--------------------------|--------|
-| .env Exists              | ✅ |
-| VITE_API_URL Defined     | ✅ |
+| .env Exists | ✅ |
+| VITE_API_URL Defined | ✅ |
 | Alias Import | ✅ |
 | ESLint Check | ✅ |
-| TypeScript Check | ✅ |
+| TypeScript Check | ❌ |
 | Dev Server               | ✅ |
 
 ## 📦 ตรวจสอบ package.json
@@ -231,7 +233,7 @@ src
 │   │   │   ├── SupportFAQ.tsx
 │   │   │   ├── index.ts
 │   │   │   └── ui
-│   │   │       ├── Button.tsx
+│   │   │       ├── FilterButton.tsx
 │   │   │       ├── PortfolioCTA.tsx
 │   │   │       └── PortfolioFilter.tsx
 │   │   ├── SecretSection
@@ -266,6 +268,7 @@ src
 │   │   │   ├── MetricCard.tsx
 │   │   │   ├── TrustBadge.tsx
 │   │   │   ├── TrustDashboard.tsx
+│   │   │   ├── TrustDashboardDemo.tsx
 │   │   │   ├── UserBoard.tsx
 │   │   │   ├── motionConfig.ts
 │   │   │   └── types.ts
@@ -275,6 +278,8 @@ src
 │   │   │   ├── LoadingSpinner.tsx
 │   │   │   ├── LogoutButton.tsx
 │   │   │   ├── PageSection.tsx
+│   │   │   ├── StickyTableHeader.tsx
+│   │   │   ├── TabPanel.tsx
 │   │   │   ├── ThemeToggle.tsx
 │   │   │   └── WithBlurIfUser.tsx
 │   │   └── ui
@@ -297,6 +302,7 @@ src
 │   │       └── index.ts
 │   └── ui
 │       ├── Logo.tsx
+│       ├── PageHeader.tsx
 │       └── ThemeToggle.tsx
 ├── Router
 │   ├── AppContent.tsx
@@ -376,35 +382,68 @@ src
     ├── exportCard.ts
     └── index.ts
 
-58 directories, 161 files
+58 directories, 165 files
 ```
 
-## 📝 Note
-
 ## 🛠️ Roadmap
-- 📂 ห้ามแตกไฟล์โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
-- 🤝 ปรับปรุงโค้ดและ logic ตามโครงสร้างธุรกิจ
--  การเขียนโค้ดต้องคงความเข้มงวดระดับสูง พร้อม Professional & perfect 
-ในส่วนเครื่องมือการสร้างแบบจำลองเน้นการตั้งค่าที่ส่งจริงตามแบบมาตรฐานที่สุดส่วน component ที่เอามาแสดงผลหน้าเว็บไซต์เน้นสร้างในรูปแบบแนวทาง professional ้
+เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:
+- ห้ามแตกไฟล์ component โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
+- ปรับปรุง logic ให้สอดคล้องกับโครงสร้างธุรกิจ
+- ใช้รูปแบบ professional เท่านั้น: flat UI, ไม่มี animation, ไม่มีสีสดหรือลูกเล่น
+- ตั้งค่าทุกเครื่องมือให้พร้อมใช้งานจริง: ESLint, Prettier, TypeScript strict, alias import
+- Component ที่ใช้ต้องพร้อมสำหรับ export PDF/Canvas และรองรับ react-hook-form + Zod
+- ทุกครั้งที่แก้ไขโค้ดให้ส่งโค้ดที่แก้แล้วแบบ production-ready เท่านั้น
 
 ⚠️Generate a production-ready Vite + React + TypeScript project using TailwindCSS (Twind). Enforce strict TypeScript rules and ESLint configuration. The design must be minimal, flat, and professional — no curved shapes, gradients, or cartoon-like colors. Use only neutral tones (gray, black, white, navy). All code must follow strict linting and type safety. Include a basic layout with header, sidebar, and content area. No animations, no rounded corners, no playful UI. This is for a serious enterprise-grade dashboard.⚠️
 | ความโปร่งใส | มีหน้าเงื่อนไข, รีวิว, Markdown content |
 | ความเร็ว | SSR, CDN, Lighthouse 90+ |
 | UI | Flat, neutral, ไม่มีลูกเล่น |
-| โค้ด | TypeScript strict, ESLint, Markdown report✅ สรุปแนวทางดีไซน์เชิงเทคนิค
+| โค้ด | Type
 
-| ด้าน | แนวทาง |
-|------|--------|
-| โครงสร้าง | ใช้ semantic HTML, hierarchy ชัดเจน |
-| สีและฟอนต์ | เรียบ, มืออาชีพ, contrast สูง |
-| Layout | Grid-based, ไม่มีลูกเล่นเกินจำเป็น |
-| Accessibility | รองรับ screen reader, WCAG AA |
-| Performance | SSR/SSG, lazy load, Tailwind JIT |
-| Interaction | ปุ่มตอบสนองไว, error สุภาพ |
+# แนวทางที่กำลังสร้างขยาย
+1️⃣ Layout & Navigation
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+SidebarNav	ไม่มี → สามารถสร้างใหม่ Layout/SidebarNav.tsx
+Breadcrumbs	ไม่มี → Layout/partials/Breadcrumbs.tsx
+PageHeader	ไม่มี → Layout/ui/PageHeader.tsx
+TabPanel	ไม่มี → components/common/TabPanel.tsx
+StickyTableHeader	ไม่มี → components/common/StickyTableHeader.tsx
+2️⃣ Data Display & Cards
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+MetricCard	คล้ายกับ Home/components/UserBoard/MetricCard.tsx → ปรับปรุงให้ reuse ได้
+ProgressCard	ไม่มี → สร้างใหม่ components/common/ProgressCard.tsx
+ListItemCard	ไม่มี → components/common/ListItemCard.tsx
+EmptyState	ไม่มี → components/common/EmptyState.tsx
+3️⃣ Forms & Inputs
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+FormSection	ไม่มี → components/Forms/FormSection.tsx
+InputErrorWrapper	ไม่มี → components/Forms/InputErrorWrapper.tsx
+SelectDropdown	มี components/Forms/ui/SelectField.tsx + SelectFieldUI.tsx → ปรับปรุง
+DatePicker	ไม่มี → components/Forms/ui/DatePicker.tsx
+4️⃣ Notifications & Feedback
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+Toast	ไม่มี → components/common/Toast.tsx
+Modal	ไม่มี → components/common/Modal.tsx
+LoadingOverlay	มี components/common/LoadingSpinner.tsx → ปรับปรุง
+InlineAlert	ไม่มี → components/common/InlineAlert.tsx
+5️⃣ Tables & Lists
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+DataTable	ไม่มี → components/common/DataTable.tsx
+ExpandableRow	ไม่มี → components/common/ExpandableRow.tsx
+VirtualList	ไม่มี → components/common/VirtualList.tsx
+6️⃣ Utility & Common
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+ScrollToTopButton	มี utils/common/ScrollToTop.tsx → ปรับปรุง
+CopyToClipboardButton	ไม่มี → components/common/CopyToClipboardButton.tsx
+Avatar	ไม่มี → components/common/Avatar.tsx
+Badge	มี Home/components/UserBoard/BadgeCard.tsx → ปรับปรุง
+7️⃣ Extra Enterprise
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+AuditTrail	ไม่มี → components/common/AuditTrail.tsx
+AccessControlWrapper	ไม่มี → components/common/AccessControlWrapper.tsx
+PDFExportButton	มี logic ใน utils/exportCard.ts → สร้าง wrapper component components/common/PDFExportButton.tsx
+ThemeSwitcher	มี Layout/ui/ThemeToggle.tsx + ThemeProvider/useTheme.ts → ปรับปรุง
+✅ สรุปจำนวนไฟล์
+มีอยู่แล้วสามารถปรับปรุงได้: 8–10 ไฟล์
+ต้องสร้างใหม่: ประมาณ 18–20 ไฟล์
 
-I will now send the current production code used by the website. Your task is to review, correct, and return the code according to the previously defined structure and constraints. This is a Dev-to-Dev workflow — do not explain, teach, or suggest alternatives. Just fix the code and return it in a clean, production-ready format. Enforce strict TypeScript, ESLint rules, and apply the design constraints: flat, neutral, no fancy styles or curved elements. Return only the corrected code, ready to use.
-#
-I will now send production code for review and correction based on the previously defined constraints. Fix the code and return it in a clean, production-ready format. Do not explain or teach anything. However, if you identify any improvements that would clearly enhance the code — such as component extraction, structure cleanup, or stability improvements — notify immediately and include those improvements in the returned code.
-
----
-✅ 

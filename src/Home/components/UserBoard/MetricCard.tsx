@@ -1,37 +1,46 @@
-// src/Home/components/UserBoard/MetricCard.tsx
 "use client";
 
-import { FC } from "react";
-import { motion } from "framer-motion";
-import { fadeUpItem } from "./motionConfig";
-import { IMetric } from "./types";
+import { FC, ReactNode } from "react";
+import clsx from "clsx";
 
-interface MetricCardProps {
-  metric: IMetric;
+export interface MetricCardProps {
+  label: string;
+  value: string | number;
+  icon?: ReactNode;
+  className?: string;
 }
 
 /**
- * 📊 MetricCard
- *
- * - แสดงค่าตัวชี้วัด (Metric) ของผู้ใช้
- * - รองรับ hover animation, responsive typography, dark mode
- * - Accessibility: role="group" + aria-label
+ * MetricCard
+ * -------------------------
+ * แสดง Metric card สำหรับ Trust Dashboard
+ * - Responsive
+ * - Professional UI
+ * - Accessible
+ * - รองรับ Icon แบบ optional
  */
-const MetricCard: FC<MetricCardProps> = ({ metric }) => (
-  <motion.div
-    variants={fadeUpItem}
-    whileHover={{ scale: 1.03 }}
-    className="stat bg-base-200 dark:bg-zinc-800 rounded-lg p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary"
-    role="group"
-    aria-label={`${metric.label}: ${metric.value}`}
-    tabIndex={0}
-  >
-    {/* Label */}
-    <dt className="stat-title text-sm md:text-base opacity-80">{metric.label}</dt>
+const MetricCard: FC<MetricCardProps> = ({ label, value, icon, className }) => {
+  return (
+    <div
+      role="group"
+      aria-label={label}
+      className={clsx(
+        "flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-shadow duration-200 min-w-[160px]",
+        className
+      )}
+    >
+      {/* Icon */}
+      {icon && <div className="text-primary dark:text-primary-light">{icon}</div>}
 
-    {/* Value */}
-    <dd className="stat-value mt-2 text-lg md:text-2xl font-semibold">{metric.value}</dd>
-  </motion.div>
-);
+      {/* Label + Value */}
+      <div className="flex flex-col">
+        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</span>
+        <span className="text-xl font-semibold text-gray-900 dark:text-white">{value}</span>
+      </div>
+    </div>
+  );
+};
+
+MetricCard.displayName = "MetricCard";
 
 export default MetricCard;

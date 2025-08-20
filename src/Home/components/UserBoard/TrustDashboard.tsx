@@ -1,103 +1,96 @@
-// src/Home/components/UserBoard/TrustDashboard.tsx
 "use client";
 
 import { FC } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/utils/cn";
-
-import { IMetric, IBadge, IStat } from "./types";
-import { fadeUpContainer } from "./motionConfig";
-
-import TrustBadge from "./TrustBadge";
 import MetricCard from "./MetricCard";
-import BadgeCard from "./BadgeCard";
+import TrustBadge from "./TrustBadge";
+
+export type Metric = {
+  key: string;
+  label: string;
+  value: string;
+};
+
+export type Stat = {
+  key: string;
+  label: string;
+  count: number;
+};
+
+export type Badge = {
+  id: number;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
 
 interface TrustDashboardProps {
-  /** 📊 Metrics ข้อมูลสรุป */
-  metrics?: IMetric[];
-  /** 🛡️ Badges แสดงความน่าเชื่อถือ */
-  badges?: IBadge[];
-  /** 🔹 Stats จำนวนสถิติ */
-  stats?: IStat[];
-  /** ✨ className เพิ่มเติม */
-  className?: string;
+  metrics: Metric[];
+  stats: Stat[];
+  badges: Badge[];
 }
 
-/** Default Data */
-const defaultMetrics: IMetric[] = [
-  { key: "exp", label: "ประสบการณ์", value: "8+ ปี" },
-  { key: "satisfaction", label: "ความพึงพอใจ", value: "98–99%" },
-  { key: "sla", label: "ส่งทันนัด", value: "99%+" },
-  { key: "privacy", label: "ความลับ", value: "กฎข้อแรก" },
-];
-
-const defaultBadges: IBadge[] = [
-  { id: 1, icon: <></>, title: "Verified Security", description: "ข้อมูลปลอดภัยและเชื่อถือได้" },
-  { id: 2, icon: <></>, title: "Certified Service", description: "ได้รับการรับรองมาตรฐานคุณภาพ" },
-  { id: 3, icon: <></>, title: "Premium Experience", description: "ประสบการณ์ใช้งานราบรื่นและมั่นใจ" },
-];
-
-const defaultStats: IStat[] = [
-  { key: "customers", label: "ลูกค้ามั่นใจในเรา", count: 1200 },
-  { key: "projects", label: "โปรเจกต์สำเร็จ", count: 350 },
-  { key: "partners", label: "พันธมิตร", count: 25 },
-];
-
-const TrustDashboard: FC<TrustDashboardProps> = ({
-  metrics,
-  badges,
-  stats,
-  className,
-}) => {
-  const metricsData = metrics?.length ? metrics : defaultMetrics;
-  const badgesData = badges?.length ? badges : defaultBadges;
-  const statsData = stats?.length ? stats : defaultStats;
-
+/**
+ * TrustDashboard
+ * -------------------------
+ * แสดงข้อมูลความน่าเชื่อถือของบริษัท:
+ * - Metrics: ข้อมูล KPI ของทีม
+ * - Stats: ข้อมูลตัวเลขสำคัญ
+ * - Badges: แสดงความน่าเชื่อถือและมาตรฐาน
+ * - Responsive, professional, accessible
+ */
+const TrustDashboard: FC<TrustDashboardProps> = ({ metrics, stats, badges }) => {
   return (
     <section
-      className={cn("space-y-12 py-10 px-4", className)}
-      aria-label="Trust Dashboard"
+      aria-labelledby="trust-dashboard-title"
+      className="bg-white dark:bg-gray-900 rounded-2xl shadow-md p-6 md:p-8 space-y-10"
     >
-      {/* Stats */}
-      <motion.div
-        className="flex flex-wrap gap-4 justify-center"
-        variants={fadeUpContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+      {/* Section Title */}
+      <h2
+        id="trust-dashboard-title"
+        className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white text-center mb-6"
       >
-        {statsData.map((s) => (
-          <TrustBadge key={s.key} count={s.count} label={s.label} />
-        ))}
-      </motion.div>
+        🛡️ Trust & Performance Dashboard
+      </h2>
 
       {/* Metrics */}
-      <motion.dl
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-        variants={fadeUpContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        {metricsData.map((m) => (
-          <MetricCard key={m.key} metric={m} />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+        {metrics.map((metric) => (
+          <MetricCard key={metric.key} label={metric.label} value={metric.value} />
         ))}
-      </motion.dl>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+        {stats.map((stat) => (
+          <div
+            key={stat.key}
+            className="bg-primary/10 dark:bg-primary/20 p-4 rounded-lg text-center"
+          >
+            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
+              {stat.label}
+            </p>
+            <p className="text-2xl sm:text-3xl font-bold text-primary dark:text-primary-light mt-1">
+              {stat.count}
+            </p>
+          </div>
+        ))}
+      </div>
 
       {/* Badges */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
-        variants={fadeUpContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        {badgesData.map((b) => (
-          <BadgeCard key={b.id} badge={b} />
+      <div className="flex flex-wrap justify-center gap-6 mt-6">
+        {badges.map((badge) => (
+          <TrustBadge
+            key={badge.id}
+            icon={badge.icon}
+            title={badge.title}
+            description={badge.description}
+          />
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 };
+
+TrustDashboard.displayName = "TrustDashboard";
 
 export default TrustDashboard;

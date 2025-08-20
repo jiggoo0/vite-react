@@ -8,7 +8,9 @@ import { z } from "zod";
  * - dob / issueDate / expiryDate: yyyy-mm-dd หรือว่าง
  */
 export const driverLicenseSchema = z.object({
-  idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
+  idNumber: z
+    .string()
+    .regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
   firstName: z.string().min(1, "กรุณากรอกชื่อ"),
   lastName: z.string().min(1, "กรุณากรอกนามสกุล"),
   dob: z
@@ -39,6 +41,7 @@ export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
 export async function driverLicenseOcr(
   _file: File
 ): Promise<DriverLicenseData> {
+  // TODO: เปลี่ยนเป็นเรียก OCR API จริง
   return {
     idNumber: "1234567890123",
     firstName: "สมชาย",
@@ -52,6 +55,7 @@ export async function driverLicenseOcr(
 /**
  * 🔹 Mapping OCR result → Form default values
  * - ใช้สำหรับ React Hook Form / Formik
+ * @param data DriverLicenseData
  */
 export function mapDriverLicenseToForm(data: DriverLicenseData) {
   return {

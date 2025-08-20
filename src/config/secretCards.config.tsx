@@ -15,6 +15,7 @@ import mockSalaryCertificate from "@__mocks__/mockSalaryCertificate";
 import mockMedicalCertificate from "@__mocks__/mockMedicalCertificate";
 import { kbankMockData } from "@__mocks__/kbankIOSNotification";
 
+// Lazy-loaded components
 const RegistrationPreview = lazy(
   () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
 );
@@ -40,6 +41,13 @@ export type LazyCard = {
   fallback?: ReactNode;
 };
 
+/**
+ * getLazyCards
+ * --------------------
+ * - คืนค่า array ของ LazyCard ตาม user role
+ * - รองรับ blur สำหรับ user ที่ไม่ใช่ admin
+ * - รองรับ fallback สำหรับ lazy-loaded components
+ */
 export const getLazyCards = (
   user: { username: string; role: string },
   effectiveRole: EffectiveRole
@@ -87,6 +95,7 @@ export const getLazyCards = (
     },
   ];
 
+  // สำหรับ admin / manager
   if (isAdminOrManager) {
     cards.push({
       component: <SpecialBranchCertificate />,
@@ -95,6 +104,7 @@ export const getLazyCards = (
     });
   }
 
+  // Footer / Actions
   cards.push(
     {
       component: (

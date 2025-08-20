@@ -14,11 +14,11 @@ type SecretActionsProps = {
  * - จัดการงานของฉัน
  * - เข้าสู่แผง Admin (เฉพาะ admin/manager)
  * - ออกจากระบบ
+ * - Responsive, Accessible, Professional UI
  */
 const SecretActions: FC<SecretActionsProps> = ({ role }) => {
   const navigate = useNavigate();
 
-  // ฟังก์ชัน logout
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/login", { replace: true });
@@ -66,5 +66,7 @@ const SecretActions: FC<SecretActionsProps> = ({ role }) => {
     </div>
   );
 };
+
+SecretActions.displayName = "SecretActions";
 
 export default SecretActions;

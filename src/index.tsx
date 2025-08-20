@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import RootApp from "./App/RootApp"; 
+import RootApp from "./App/RootApp";
 
 // 🔹 Global Styles
-import "./styles/global.css";       // Tailwind + DaisyUI
+import "./styles/global.css";        // Tailwind + DaisyUI
 import "./styles/driverLicense.css"; // Component-specific
-import "./styles/variables.css";    // CSS variables
-import "./styles/theme.css";        // Theme overrides
+import "./styles/variables.css";     // CSS variables
+import "./styles/theme.css";         // Theme overrides
 
 /**
- * Ensure root element exists
+ * Ensure root element exists in DOM
  */
 const ensureRootElement = (): HTMLElement => {
   let root = document.getElementById("root");
@@ -21,7 +21,7 @@ const ensureRootElement = (): HTMLElement => {
   return root;
 };
 
-// 🔹 React Root Initialization
+// 🔹 Initialize React Root
 const root = ReactDOM.createRoot(ensureRootElement());
 
 root.render(
@@ -40,7 +40,7 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
-// 🔹 Service Worker (Production Only)
+// 🔹 Service Worker Registration (Production Only)
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`)
@@ -52,5 +52,5 @@ if ("serviceWorker" in navigator && import.meta.env.PROD) {
     });
 }
 
-// 🔹 Export empty (HMR compatibility)
+// 🔹 Export empty for HMR compatibility
 export {};

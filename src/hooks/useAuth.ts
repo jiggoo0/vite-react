@@ -1,16 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
+/** User type */
 export type User = {
   username: string;
   role: "admin" | "user";
 };
 
+/**
+ * parseUserFromStorage
+ * -------------------------
+ * อ่านข้อมูลผู้ใช้จาก localStorage และตรวจสอบความถูกต้อง
+ */
 export const parseUserFromStorage = (): User | null => {
   const raw = localStorage.getItem("user");
   if (!raw) return null;
 
   try {
     const parsed = JSON.parse(raw);
+
     if (
       parsed &&
       typeof parsed === "object" &&
@@ -30,9 +37,15 @@ export const parseUserFromStorage = (): User | null => {
   return null;
 };
 
+/**
+ * useAuth
+ * -------------------------
+ * Hook สำหรับจัดการ authentication ของผู้ใช้
+ */
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
 
+  // โหลด user จาก storage ตอน mount
   useEffect(() => {
     const storedUser = parseUserFromStorage();
     setUser(storedUser);
@@ -40,15 +53,19 @@ export const useAuth = () => {
 
   const isAuthenticated = Boolean(user);
 
-  // ✅ เพิ่ม logout function
-  const logout = async () => {
+  /**
+   * logout
+   * -------------------------
+   * ล้างข้อมูลผู้ใช้จาก storage และ state
+   */
+  const logout = useCallback(() => {
     try {
-      localStorage.removeItem("user"); // ล้าง user จาก storage
-      setUser(null); // อัพเดต state
+      localStorage.removeItem("user");
+      setUser(null);
     } catch (err) {
       console.error("Logout failed:", err);
     }
-  };
+  }, []);
 
   return { user, isAuthenticated, logout };
 };

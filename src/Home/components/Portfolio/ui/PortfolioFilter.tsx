@@ -14,6 +14,7 @@ const PortfolioFilter: FC<PortfolioFilterProps> = ({
   activeCategory,
   onChange,
 }) => {
+  // Memoized click handler
   const handleClick = useCallback(
     (category: string) => () => onChange(category),
     [onChange]
@@ -48,5 +49,7 @@ const PortfolioFilter: FC<PortfolioFilterProps> = ({
     </div>
   );
 };
+
+PortfolioFilter.displayName = "PortfolioFilter";
 
 export default PortfolioFilter;

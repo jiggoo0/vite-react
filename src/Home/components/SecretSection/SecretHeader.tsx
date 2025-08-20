@@ -7,7 +7,9 @@ import { motion } from "framer-motion";
 /**
  * SecretHeader
  * -------------------------
- * แสดงหัวข้อและคำเตือนสำหรับพื้นที่ลับ
+ * - แสดงหัวข้อและคำเตือนสำหรับพื้นที่ลับ
+ * - ใช้ Framer Motion สำหรับ animation เล็ก ๆ ของกล่องแจ้งเตือน
+ * - Accessible: aria-labelledby, role, aria-live
  */
 const SecretHeader: FC = () => (
   <header

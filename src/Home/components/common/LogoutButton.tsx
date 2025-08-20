@@ -9,7 +9,8 @@ import Button from "@/Home/components/ui/Button";
 
 /**
  * LogoutButton
- * - ปุ่มออกจากระบบ
+ * -------------------------
+ * ปุ่มออกจากระบบ
  * - รองรับ loading state
  * - ใช้ aria attributes เพื่อ accessibility
  */
@@ -23,8 +24,8 @@ const LogoutButton: FC = () => {
     try {
       if (logout) await logout();
       navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Logout failed:", error);
+    } catch (err) {
+      console.error("Logout failed:", err);
     } finally {
       setLoading(false);
     }
@@ -47,5 +48,7 @@ const LogoutButton: FC = () => {
     </Button>
   );
 };
+
+LogoutButton.displayName = "LogoutButton";
 
 export default LogoutButton;

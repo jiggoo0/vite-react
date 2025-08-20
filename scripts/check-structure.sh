@@ -12,30 +12,35 @@ if [ -t 1 ]; then
   YELLOW="\033[0;33m"
   RESET="\033[0m"
 else
-  GREEN=""
-  RED=""
-  YELLOW=""
-  RESET=""
+  GREEN=""; RED=""; YELLOW=""; RESET=""
 fi
 
 log() { echo "$1" >> "$REPORT"; }
 term_log() { echo -e "$1"; }
 
-# ตรวจ OS
+# ตรวจคำสั่งที่จำเป็น
+for cmd in pnpm jq tree curl; do
+  if ! command -v "$cmd" &>/dev/null; then
+    term_log "${RED}✖ คำสั่ง '$cmd' ไม่พร้อมใช้งาน${RESET}"
+    exit 1
+  fi
+done
+
+# ตรวจ OS และ Termux
 OS_TYPE="$(uname -s)"
 IS_WINDOWS=false
-
-# ถ้าเป็น Windows (MINGW, CYGWIN, MSYS)
 [[ "$OS_TYPE" =~ ^MINGW|^CYGWIN|^MSYS ]] && IS_WINDOWS=true
-
-# ตรวจ Termux (optional)
 IS_TERMUX=false
-if [ -n "${TERMUX_VERSION-}" ]; then
-  IS_TERMUX=true
-fi
+[ -n "${TERMUX_VERSION-}" ] && IS_TERMUX=true
+
+# Metadata
+NOW=$(date +"%Y-%m-%d %H:%M:%S")
+BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "N/A")
 
 # สร้าง report
 echo "# ✅ JP Visual & Docs – Structure Check Report" > "$REPORT"
+echo "" >> "$REPORT"
+echo "> เวลาตรวจสอบ: $NOW | สาขา: $BRANCH" >> "$REPORT"
 echo "" >> "$REPORT"
 echo "> โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular" >> "$REPORT"
 echo "" >> "$REPORT"
@@ -45,7 +50,6 @@ echo "## 📊 Summary" >> "$REPORT"
 echo "| หมวดหมู่                 | สถานะ |" >> "$REPORT"
 echo "|--------------------------|--------|" >> "$REPORT"
 
-# ฟังก์ชันเช็ค
 check_cmd() {
   local cmd="$1"
   local name="$2"
@@ -57,33 +61,14 @@ check_cmd() {
     term_log "${RED}✖ $name${RESET}"
   fi
 }
-# ตรวจว่า .env มีอยู่
-if [ -f .env ]; then
-  log "| .env Exists              | ✅ |"
-  term_log "${GREEN}✔ .env Exists${RESET}"
-else
-  log "| .env Exists              | ❌ |"
-  term_log "${RED}✖ .env Exists${RESET}"
-fi
 
-# ตรวจว่าตัวแปร VITE_API_URL ถูกกำหนด
-if [ -f .env ] && grep -q '^VITE_API_URL=' .env 2>/dev/null; then
-  log "| VITE_API_URL Defined     | ✅ |"
-  term_log "${GREEN}✔ VITE_API_URL Defined${RESET}"
-else
-  log "| VITE_API_URL Defined     | ❌ |"
-  term_log "${RED}✖ VITE_API_URL Defined${RESET}"
-fi
-
-# -------------------
-# Checks parallel-safe
-# -------------------
+check_cmd "[ -f .env ]" ".env Exists"
+check_cmd "grep -q '^VITE_API_URL=' .env" "VITE_API_URL Defined"
 
 run_check() {
   local name="$1"
   local cmd="$2"
   TMPFILE=$(mktemp)
-  
   if eval "$cmd"; then
     echo "| $name | ✅ |" > "$TMPFILE"
     term_log "${GREEN}✔ $name${RESET}"
@@ -91,25 +76,15 @@ run_check() {
     echo "| $name | ❌ |" > "$TMPFILE"
     term_log "${RED}✖ $name${RESET}"
   fi
-
   cat "$TMPFILE" >> "$REPORT"
   rm -f "$TMPFILE"
 }
 
-# TypeScript Check
-(
-  run_check "TypeScript Check" "pnpm tsc --noEmit"
-) &
-
-# ESLint Check
-(
-  run_check "ESLint Check" "pnpm lint"
-) &
-
-# Alias Import Check
+(run_check "TypeScript Check" "pnpm tsc --noEmit") &
+(run_check "ESLint Check" "pnpm lint") &
 (
   TMPFILE=$(mktemp)
-  if grep -qr "@/" src 2>/dev/null; then
+  if grep -qr "@/" src; then
     echo "| Alias Import | ✅ |" > "$TMPFILE"
     term_log "${GREEN}✔ Alias Import${RESET}"
   else
@@ -119,8 +94,6 @@ run_check() {
   cat "$TMPFILE" >> "$REPORT"
   rm -f "$TMPFILE"
 ) &
-
-# Unused Files Check
 (
   TMPFILE=$(mktemp)
   UNUSED=$(find src -type f -name "*.tsx" | while read -r f; do
@@ -137,7 +110,6 @@ run_check() {
   cat "$TMPFILE" >> "$REPORT"
   rm -f "$TMPFILE"
 ) &
-
 wait
 
 # Dev Server
@@ -163,23 +135,21 @@ else
   kill "$VITE_PID" 2>/dev/null || true
 fi
 
-# package.json + dependencies
+# ตรวจ dependencies
 echo "" >> "$REPORT"
 echo "## 📦 ตรวจสอบ package.json" >> "$REPORT"
-if jq . package.json > /dev/null 2>&1; then
+jq . package.json > /dev/null && {
   echo '```json' >> "$REPORT"
   jq . package.json >> "$REPORT"
   echo '```' >> "$REPORT"
-else
-  echo "> ❌ ไม่สามารถ parse package.json ได้" >> "$REPORT"
-fi
+} || echo "> ❌ ไม่สามารถ parse package.json ได้" >> "$REPORT"
 
 REQUIRED_PKGS=("react" "react-dom" "vite" "tailwindcss" "daisyui" "typescript" "eslint" "prettier")
 echo "" >> "$REPORT"
 echo "| Dependency ที่จำเป็น     | สถานะ |" >> "$REPORT"
 echo "|--------------------------|--------|" >> "$REPORT"
 for pkg in "${REQUIRED_PKGS[@]}"; do
-  if jq -e ".dependencies[\"$pkg\"] // .devDependencies[\"$pkg\"]" package.json > /dev/null 2>&1; then
+  if jq -e ".dependencies[\"$pkg\"] // .devDependencies[\"$pkg\"]" package.json > /dev/null; then
     log "| $pkg                     | ✅ |"
     term_log "${GREEN}✔ $pkg found${RESET}"
   else
@@ -188,87 +158,82 @@ for pkg in "${REQUIRED_PKGS[@]}"; do
   fi
 done
 
-# -------------------------------
-# ตรวจว่า React ถูกติดตั้ง
-# -------------------------------
-if pnpm list react > /dev/null 2>&1; then
-  STATUS_REACT="✅"
-  term_log "${GREEN}✔ React Installed${RESET}"
-else
-  STATUS_REACT="❌"
-  term_log "${RED}✖ React Installed${RESET}"
-fi
-
-# ตรวจเวอร์ชัน React
-REACT_VER=$(jq -r '.dependencies.react // empty' package.json 2>/dev/null)
-if [ -z "$REACT_VER" ]; then
-  REACT_VER="-"
-  term_log "${RED}✖ React Version not found${RESET}"
-else
-  term_log "${GREEN}✔ React Version: $REACT_VER${RESET}"
-fi
-
-# เขียน React ลง Markdown
-log "| React                     | $STATUS_REACT | $REACT_VER |"
-
-# -------------------------------
-# ตรวจเวอร์ชัน TypeScript
-# -------------------------------
-TS_VER=$(jq -r '.devDependencies.typescript // empty' package.json 2>/dev/null)
-if [ -n "$TS_VER" ]; then
-  STATUS_TS="✅"
-  term_log "${GREEN}✔ TypeScript Version: $TS_VER${RESET}"
-else
-  STATUS_TS="❌"
-  TS_VER="-"
-  term_log "${RED}✖ TypeScript Version not found${RESET}"
-fi
-
-# เขียน TypeScript ลง Markdown
-log "| TypeScript                | $STATUS_TS | $TS_VER |"
+REACT_VER=$(jq -r '.dependencies.react // empty' package.json)
+TS_VER=$(jq -r '.devDependencies.typescript // empty' package.json)
+log "| React                     | $(pnpm list react &>/dev/null && echo ✅ || echo ❌) | ${REACT_VER:-"-"} |"
+log "| TypeScript                | ${TS_VER:+✅} | ${TS_VER:-"-"} |"
 
 # Tree
 echo "" >> "$REPORT"
 echo "## 📁 โครงสร้าง src (ลึกสุด 10 ระดับ)" >> "$REPORT"
 echo '```' >> "$REPORT"
-if [ -d "src" ]; then
-    tree -L 10 src >> "$REPORT" 2>/dev/null
-else
-    echo "> ❌ ไม่พบโฟลเดอร์ src" >> "$REPORT"
-fi
+[ -d "src" ] && tree -L 10 src >> "$REPORT" || echo "> ❌ ไม่พบโฟลเดอร์ src" >> "$REPORT"
 echo '```' >> "$REPORT"
 
-# Note
+# Note & Roadmap
 echo "" >> "$REPORT"
-echo "## 📝 Note" >> "$REPORT"
-echo "
-## 🛠️ Roadmap
-- 📂 ห้ามแตกไฟล์โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
-- 🤝 ปรับปรุงโค้ดและ logic ตามโครงสร้างธุรกิจ
--  การเขียนโค้ดต้องคงความเข้มงวดระดับสูง พร้อม Professional & perfect 
-ในส่วนเครื่องมือการสร้างแบบจำลองเน้นการตั้งค่าที่ส่งจริงตามแบบมาตรฐานที่สุดส่วน component ที่เอามาแสดงผลหน้าเว็บไซต์เน้นสร้างในรูปแบบแนวทาง professional ้
-" >> "$REPORT"
-echo "⚠️Generate a production-ready Vite + React + TypeScript project using TailwindCSS (Twind). Enforce strict TypeScript rules and ESLint configuration. The design must be minimal, flat, and professional — no curved shapes, gradients, or cartoon-like colors. Use only neutral tones (gray, black, white, navy). All code must follow strict linting and type safety. Include a basic layout with header, sidebar, and content area. No animations, no rounded corners, no playful UI. This is for a serious enterprise-grade dashboard.⚠️" >> "$REPORT"
-echo "| ความโปร่งใส | มีหน้าเงื่อนไข, รีวิว, Markdown content |
+echo "## 🛠️ Roadmap" >> "$REPORT"
+cat <<'EOF' >> "$REPORT"
+เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:
+- ห้ามแตกไฟล์ component โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
+- ปรับปรุง logic ให้สอดคล้องกับโครงสร้างธุรกิจ
+- ใช้รูปแบบ professional เท่านั้น: flat UI, ไม่มี animation, ไม่มีสีสดหรือลูกเล่น
+- ตั้งค่าทุกเครื่องมือให้พร้อมใช้งานจริง: ESLint, Prettier, TypeScript strict, alias import
+- Component ที่ใช้ต้องพร้อมสำหรับ export PDF/Canvas และรองรับ react-hook-form + Zod
+- ทุกครั้งที่แก้ไขโค้ดให้ส่งโค้ดที่แก้แล้วแบบ production-ready เท่านั้น
+
+⚠️Generate a production-ready Vite + React + TypeScript project using TailwindCSS (Twind). Enforce strict TypeScript rules and ESLint configuration. The design must be minimal, flat, and professional — no curved shapes, gradients, or cartoon-like colors. Use only neutral tones (gray, black, white, navy). All code must follow strict linting and type safety. Include a basic layout with header, sidebar, and content area. No animations, no rounded corners, no playful UI. This is for a serious enterprise-grade dashboard.⚠️
+| ความโปร่งใส | มีหน้าเงื่อนไข, รีวิว, Markdown content |
 | ความเร็ว | SSR, CDN, Lighthouse 90+ |
 | UI | Flat, neutral, ไม่มีลูกเล่น |
-| โค้ด | TypeScript strict, ESLint, Markdown report✅ สรุปแนวทางดีไซน์เชิงเทคนิค
+| โค้ด | Type
 
-| ด้าน | แนวทาง |
-|------|--------|
-| โครงสร้าง | ใช้ semantic HTML, hierarchy ชัดเจน |
-| สีและฟอนต์ | เรียบ, มืออาชีพ, contrast สูง |
-| Layout | Grid-based, ไม่มีลูกเล่นเกินจำเป็น |
-| Accessibility | รองรับ screen reader, WCAG AA |
-| Performance | SSR/SSG, lazy load, Tailwind JIT |
-| Interaction | ปุ่มตอบสนองไว, error สุภาพ |
-" >> "$REPORT"
-echo "I will now send the current production code used by the website. Your task is to review, correct, and return the code according to the previously defined structure and constraints. This is a Dev-to-Dev workflow — do not explain, teach, or suggest alternatives. Just fix the code and return it in a clean, production-ready format. Enforce strict TypeScript, ESLint rules, and apply the design constraints: flat, neutral, no fancy styles or curved elements. Return only the corrected code, ready to use.
-#
-I will now send production code for review and correction based on the previously defined constraints. Fix the code and return it in a clean, production-ready format. Do not explain or teach anything. However, if you identify any improvements that would clearly enhance the code — such as component extraction, structure cleanup, or stability improvements — notify immediately and include those improvements in the returned code." >> "$REPORT"
+# แนวทางที่กำลังสร้างขยาย
+1️⃣ Layout & Navigation
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+SidebarNav	ไม่มี → สามารถสร้างใหม่ Layout/SidebarNav.tsx
+Breadcrumbs	ไม่มี → Layout/partials/Breadcrumbs.tsx
+PageHeader	ไม่มี → Layout/ui/PageHeader.tsx
+TabPanel	ไม่มี → components/common/TabPanel.tsx
+StickyTableHeader	ไม่มี → components/common/StickyTableHeader.tsx
+2️⃣ Data Display & Cards
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+MetricCard	คล้ายกับ Home/components/UserBoard/MetricCard.tsx → ปรับปรุงให้ reuse ได้
+ProgressCard	ไม่มี → สร้างใหม่ components/common/ProgressCard.tsx
+ListItemCard	ไม่มี → components/common/ListItemCard.tsx
+EmptyState	ไม่มี → components/common/EmptyState.tsx
+3️⃣ Forms & Inputs
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+FormSection	ไม่มี → components/Forms/FormSection.tsx
+InputErrorWrapper	ไม่มี → components/Forms/InputErrorWrapper.tsx
+SelectDropdown	มี components/Forms/ui/SelectField.tsx + SelectFieldUI.tsx → ปรับปรุง
+DatePicker	ไม่มี → components/Forms/ui/DatePicker.tsx
+4️⃣ Notifications & Feedback
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+Toast	ไม่มี → components/common/Toast.tsx
+Modal	ไม่มี → components/common/Modal.tsx
+LoadingOverlay	มี components/common/LoadingSpinner.tsx → ปรับปรุง
+InlineAlert	ไม่มี → components/common/InlineAlert.tsx
+5️⃣ Tables & Lists
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+DataTable	ไม่มี → components/common/DataTable.tsx
+ExpandableRow	ไม่มี → components/common/ExpandableRow.tsx
+VirtualList	ไม่มี → components/common/VirtualList.tsx
+6️⃣ Utility & Common
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+ScrollToTopButton	มี utils/common/ScrollToTop.tsx → ปรับปรุง
+CopyToClipboardButton	ไม่มี → components/common/CopyToClipboardButton.tsx
+Avatar	ไม่มี → components/common/Avatar.tsx
+Badge	มี Home/components/UserBoard/BadgeCard.tsx → ปรับปรุง
+7️⃣ Extra Enterprise
+ไอเดีย	มีไฟล์ในโปรเจกต์แล้ว / ตำแหน่ง
+AuditTrail	ไม่มี → components/common/AuditTrail.tsx
+AccessControlWrapper	ไม่มี → components/common/AccessControlWrapper.tsx
+PDFExportButton	มี logic ใน utils/exportCard.ts → สร้าง wrapper component components/common/PDFExportButton.tsx
+ThemeSwitcher	มี Layout/ui/ThemeToggle.tsx + ThemeProvider/useTheme.ts → ปรับปรุง
+✅ สรุปจำนวนไฟล์
+มีอยู่แล้วสามารถปรับปรุงได้: 8–10 ไฟล์
+ต้องสร้างใหม่: ประมาณ 18–20 ไฟล์
 
-echo "" >> "$REPORT"
-echo "---" >> "$REPORT"
-echo "✅ " >> "$REPORT"
-
+EOF
 term_log "${GREEN}✅ รายงานสรุปถูกสร้างใน $REPORT${RESET}"

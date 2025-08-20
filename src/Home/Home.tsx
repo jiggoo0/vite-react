@@ -17,8 +17,7 @@ import ComplianceFAQ from "./components/Services/ComplianceFAQ";
 import { UserBoard as UserBoardDataReadonly } from "@/data/UserBoard";
 import { caseStudies } from "@/data/caseStudies";
 
-import TrustDashboard from "./components/UserBoard/TrustDashboard";
-import { ShieldCheckIcon, CheckBadgeIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import TrustDashboardDemo from "./components/UserBoard/TrustDashboardDemo";
 
 // Lazy-loaded components
 const PortfolioGallery = lazy(() => import("./components/Portfolio/PortfolioGallery"));
@@ -27,7 +26,7 @@ const SupportFAQ = lazy(() => import("./components/Portfolio/SupportFAQ"));
 const Home: FC = () => {
   const userBoardData: IUser[] = [...UserBoardDataReadonly];
 
-  // Wrapper สำหรับ Suspense
+  /** Suspense wrapper */
   const renderSuspense = (Component: ReactNode, message: string) => (
     <Suspense fallback={<div className="text-center py-16 animate-pulse">{message}</div>}>
       {Component}
@@ -59,24 +58,7 @@ const Home: FC = () => {
         </div>
 
         <div className="mt-12">
-          <TrustDashboard
-            metrics={[
-              { key: "exp", label: "ประสบการณ์ทีม", value: "10 ปี" },
-              { key: "satisfaction", label: "ความพึงพอใจ", value: "99%" },
-              { key: "sla", label: "ส่งทันเวลา", value: "100%" },
-              { key: "privacy", label: "ความลับ", value: "กฎข้อแรก" },
-            ]}
-            stats={[
-              { key: "customers", label: "ลูกค้ามั่นใจในเรา", count: 1200 },
-              { key: "projects", label: "โปรเจกต์สำเร็จ", count: 350 },
-              { key: "partners", label: "พันธมิตร", count: 25 },
-            ]}
-            badges={[
-              { id: 1, icon: <ShieldCheckIcon className="h-10 w-10 text-green-500" />, title: "Security", description: "ข้อมูลปลอดภัยและเชื่อถือได้" },
-              { id: 2, icon: <CheckBadgeIcon className="h-10 w-10 text-blue-500" />, title: "Certified Service", description: "ได้รับการรับรองมาตรฐานคุณภาพ" },
-              { id: 3, icon: <SparklesIcon className="h-10 w-10 text-yellow-400" />, title: "Premium Experience", description: "ประสบการณ์ใช้งานราบรื่นและมั่นใจ" },
-            ]}
-          />
+          <TrustDashboardDemo />
         </div>
       </PageSection>
 
@@ -116,5 +98,7 @@ const Home: FC = () => {
     </main>
   );
 };
+
+Home.displayName = "Home";
 
 export default Home;

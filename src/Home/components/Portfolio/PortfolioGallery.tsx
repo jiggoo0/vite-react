@@ -5,6 +5,7 @@ import { portfolioItems } from "@/data/portfolioItems";
 import { cn } from "@/utils/cn";
 import PortfolioFilter from "./ui/PortfolioFilter";
 import PortfolioCTA from "./ui/PortfolioCTA";
+export { default as FilterButton } from "./ui/FilterButton";
 
 const PortfolioGallery: React.FC = () => {
   // สร้างรายการ categories แบบ unique

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { tryUserTempLogin } from "@/data/UserTempCodes";
 
 interface TempCodeAuthResult {
@@ -7,26 +7,39 @@ interface TempCodeAuthResult {
   login: (userId: string, code: string) => Promise<boolean>;
 }
 
+/**
+ * useTempCodeAuth
+ * -------------------------
+ * Custom hook สำหรับตรวจสอบการล็อกอินด้วยรหัสชั่วคราว
+ */
 export function useTempCodeAuth(): TempCodeAuthResult {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (userId: string, code: string): Promise<boolean> => {
-    if (!userId.trim() || !code) {
+  /**
+   * login
+   * -------------------------
+   * ตรวจสอบรหัสชั่วคราวและอัปเดตสถานะ isLoggedIn และ error
+   */
+  const login = useCallback(async (userId: string, code: string): Promise<boolean> => {
+    const trimmedUserId = userId.trim();
+
+    if (!trimmedUserId || !code) {
       setError("กรุณากรอกชื่อผู้ใช้และรหัสชั่วคราว");
       setIsLoggedIn(false);
       return false;
     }
 
     try {
-      const success = await tryUserTempLogin(userId.trim(), code);
+      const success = await tryUserTempLogin(trimmedUserId, code);
+
       if (success) {
         setIsLoggedIn(true);
         setError(null);
         return true;
       } else {
         setIsLoggedIn(false);
-        setError("รหัสชั่วคราวไม่ถูกต้อง หรือ หมดอายุแล้ว หรือใช้ไปแล้ว");
+        setError("รหัสชั่วคราวไม่ถูกต้อง หรือหมดอายุแล้ว หรือใช้ไปแล้ว");
         return false;
       }
     } catch (err) {
@@ -35,11 +48,7 @@ export function useTempCodeAuth(): TempCodeAuthResult {
       setError("เกิดข้อผิดพลาดในการตรวจสอบรหัส");
       return false;
     }
-  };
+  }, []);
 
-  return {
-    isLoggedIn,
-    error,
-    login,
-  };
+  return { isLoggedIn, error, login };
 }

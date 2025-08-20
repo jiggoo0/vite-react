@@ -12,9 +12,14 @@ import { useAuth } from "@hooks/useAuth";
 /**
  * 🎯 Header Component
  *
- * - Sticky header with Logo + User navigation
- * - Theme toggle + Login/Logout button
- * - Accessible and responsive
+ * Features:
+ * - Sticky header with shadow
+ * - Logo
+ * - Theme toggle button
+ * - Login / Logout button
+ * - "ประเมินลูกค้า" menu
+ * - Accessible and responsive design
+ * - Clean and flat UI
  */
 const Header: FC = () => {
   const { isAuthenticated } = useAuth();
@@ -27,16 +32,27 @@ const Header: FC = () => {
         "bg-base-100 shadow-sm transition-colors duration-300"
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl flex items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
         <Logo />
 
-        {/* User navigation */}
+        {/* User Navigation */}
         <nav aria-label="User navigation" className="flex items-center gap-3">
-          {/* Theme toggle button */}
+          {/* Theme Toggle */}
           <ThemeToggle />
 
-          {/* Login / Logout */}
+          {/* ประเมินลูกค้า */}
+          <Link
+            to="/form"
+            className={clsx(
+              "btn btn-outline btn-sm transition-all duration-200",
+              "hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            )}
+          >
+            ประเมินลูกค้า
+          </Link>
+
+          {/* Authentication Button */}
           {isAuthenticated ? (
             <LogoutButton />
           ) : (

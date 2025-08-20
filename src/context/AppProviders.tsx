@@ -13,11 +13,12 @@ interface AppProvidersProps {
  * -------------------------
  * Wrapper component สำหรับจัดการ global providers ของแอป
  * รวม:
- * - React Router (BrowserRouter)
- * - ThemeProvider (จัดการธีม Light / Dark / Business)
+ * 1. React Router (BrowserRouter) - จัดการ routing ของแอป
+ * 2. ThemeProvider - จัดการธีม Light / Dark / Business
  */
 const AppProviders: FC<AppProvidersProps> = ({ children }) => {
-  const basePath = import.meta.env.BASE_URL || "/";
+  // ใช้ BASE_URL จาก environment variable หรือ fallback เป็น root "/"
+  const basePath = import.meta.env.BASE_URL ?? "/";
 
   return (
     <BrowserRouter basename={basePath}>

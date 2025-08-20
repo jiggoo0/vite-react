@@ -15,6 +15,9 @@ interface SecretDescriptionProps {
  * SecretDescription
  * -------------------------
  * แสดงข้อความต้อนรับผู้ใช้และบทบาทในระบบ
+ * - Responsive
+ * - Accessible
+ * - Professional UI
  */
 const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
   return (
@@ -53,5 +56,7 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
     </section>
   );
 };
+
+SecretDescription.displayName = "SecretDescription";
 
 export default SecretDescription;
