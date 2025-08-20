@@ -3,7 +3,6 @@ logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
@@ -53,14 +52,20 @@ Desktop.ini
 # Lockfiles
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
 .pnpm-debug.log
 
-# Others (optional)
+# SSL / Keys
 *.pem
 *.crt
 *.key
 *.cert
+
+# Archives
 *.zip
 *.tar.gz
 *.tgz
 *.7z
+
+# Tailwind / PostCSS / Vite cache (optional)
+node_modules/.vite/

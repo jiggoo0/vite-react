@@ -3,12 +3,11 @@
 import { FC, memo } from "react";
 import clsx from "clsx";
 import { useProtectedAuth } from "@hooks/useProtectedAuth";
-import {
-  CertificateData,
-  mockCertificateData,
-} from "./SpecialBranchCertificate.mock";
+import mockCertificateData, {
+  SpecialBranchCertificateData,
+} from "@/__mocks__/specialBranchCertificate";
 
-// ======================= Info Row =======================
+// Reusable row component
 interface InfoRowProps {
   label: string;
   value: string;
@@ -20,10 +19,8 @@ const InfoRow: FC<InfoRowProps> = memo(({ label, value }) => (
     <span>{value}</span>
   </p>
 ));
-
 InfoRow.displayName = "InfoRow";
 
-// ======================= Component =======================
 const SpecialBranchCertificate: FC = () => {
   const { user } = useProtectedAuth();
 
@@ -40,7 +37,7 @@ const SpecialBranchCertificate: FC = () => {
     );
   }
 
-  const data: CertificateData = mockCertificateData;
+  const data: SpecialBranchCertificateData = mockCertificateData;
 
   return (
     <div
@@ -61,7 +58,6 @@ const SpecialBranchCertificate: FC = () => {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center space-y-4">
-        {/* Logo */}
         <img
           src="/assets/images/krut.webp"
           alt="Royal Thai Police Emblem"
@@ -72,7 +68,6 @@ const SpecialBranchCertificate: FC = () => {
           Special Branch Certificate
         </h2>
 
-        {/* Info Table */}
         <div className="w-full max-w-md space-y-2 text-base leading-relaxed">
           <InfoRow label="Authority" value={data.authority} />
           <InfoRow label="Location" value={data.location} />
@@ -96,7 +91,6 @@ const SpecialBranchCertificate: FC = () => {
           เมื่อรีทัชแล้วไม่สามารถแก้ไขได้ทุกกรณี
         </p>
 
-        {/* Example Image */}
         <img
           src="/images/test.jpg"
           alt="ตัวอย่างประกอบ"
@@ -106,5 +100,7 @@ const SpecialBranchCertificate: FC = () => {
     </div>
   );
 };
+
+SpecialBranchCertificate.displayName = "SpecialBranchCertificate";
 
 export default memo(SpecialBranchCertificate);

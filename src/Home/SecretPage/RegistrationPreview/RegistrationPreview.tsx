@@ -60,6 +60,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
       (canvas.width * 72) / 96,
       (canvas.height * 72) / 96
     );
+
     pdf.save("registration-preview.pdf");
   };
 
@@ -75,18 +76,15 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           minHeight: 1200,
         }}
       >
-        {/* Top-left */}
+        {/* Header Info */}
         <div className="absolute left-12 top-8 text-[14pt] leading-snug">
-          <p className="mb-2">
-            ทะเบียนเลขที่ {withFallback(registrationNumber)}
-          </p>
+          <p className="mb-2">ทะเบียนเลขที่ {withFallback(registrationNumber)}</p>
           <p>
             คำขอที่{" "}
             <span className="inline-block h-[1.7em] min-w-[160px] border-b border-gray-300" />
           </p>
         </div>
 
-        {/* Top-right */}
         <div className="absolute right-12 top-8 text-right text-[14pt]">
           <p>แบบ พค. 0403</p>
         </div>
@@ -102,7 +100,7 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           />
         </div>
 
-        {/* Header */}
+        {/* Title */}
         <div className="mb-6 text-center">
           <p className="text-[22pt] font-bold leading-none">
             กรมพัฒนาธุรกิจการค้า <br /> สำนักงานกลางทะเบียนพาณิชย์
@@ -127,16 +125,13 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
 
           <p className="mt-6 font-semibold">ที่ตั้งสถานประกอบการ</p>
           <p className="mx-auto max-w-[720px] indent-12 text-left leading-relaxed">
-            เลขที่ {withFallback(address.houseNumber)} หมู่ที่{" "}
-            {withFallback(address.villageNo)} ตรอก/ซอย{" "}
-            {withFallback(address.alley)} ตำบล/แขวง{" "}
-            {withFallback(address.subDistrict)} อำเภอ/เขต{" "}
-            {withFallback(address.district)} จังหวัด{" "}
-            {withFallback(address.province)}
+            เลขที่ {withFallback(address.houseNumber)} หมู่ที่ {withFallback(address.villageNo)}{" "}
+            ตรอก/ซอย {withFallback(address.alley)} ตำบล/แขวง {withFallback(address.subDistrict)}{" "}
+            อำเภอ/เขต {withFallback(address.district)} จังหวัด {withFallback(address.province)}
           </p>
         </div>
 
-        {/* Registrar Info */}
+        {/* Registrar */}
         <div className="mx-auto mt-32 max-w-[720px] space-y-6 pr-10 text-right text-lg">
           <p>ออกให้ ณ วันที่ {withFallback(issuedDate)}</p>
           <p>ตำแหน่ง {withFallback(registrarPosition)}</p>

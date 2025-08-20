@@ -1,5 +1,5 @@
 // src/animations/motionVariants.ts
-import { Variants } from "framer-motion";
+import type { Variants } from "framer-motion";
 
 /**
  * Motion Variants สำหรับ Carousel (TestimonialSlider)
@@ -25,7 +25,7 @@ export const carouselVariants: Variants = {
 
 /**
  * Motion Variants สำหรับ FadeIn + Slide Up
- * สามารถใช้กับ component อื่น เช่น Sections, Cards, Hero
+ * ใช้ได้กับ Sections, Cards, Hero ฯลฯ
  */
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -37,9 +37,10 @@ export const fadeInUp: Variants = {
 };
 
 /**
- * Motion Variants สำหรับ FadeIn แบบ delay กำหนดได้
+ * Motion Variants สำหรับ FadeIn + Slide Up แบบกำหนด delay
+ * @param delay - เวลา delay ก่อนเริ่ม animation (วินาที)
  */
-export const fadeInUpWithDelay = (delay: number = 0): Variants => ({
+export const fadeInUpWithDelay = (delay = 0): Variants => ({
   hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,

@@ -3,6 +3,11 @@
 import { FC, useState } from "react";
 import { motion } from "framer-motion";
 
+/**
+ * DocumentDownload
+ * -------------------------
+ * Form สำหรับตรวจสอบรหัสเอกสารและแสดงผลดาวน์โหลด
+ */
 const DocumentDownload: FC = () => {
   const [docCode, setDocCode] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -22,14 +27,11 @@ const DocumentDownload: FC = () => {
     setLoading(true);
     try {
       // 🔹 ตัวอย่างเรียก API หรือเช็ครหัสจริงกับ ADMIN
-      await new Promise<void>((res) => setTimeout(res, 800)); // simulate delay
+      await new Promise<void>((res) => setTimeout(res, 800));
 
       const isValid = docCode === "ADMIN123"; // ตัวอย่างเช็ครหัส
-      if (isValid) {
-        setSuccess(true);
-      } else {
-        setError("รหัสเอกสารถูกต้องไม่ถูกต้อง กรุณาลองใหม่");
-      }
+      if (isValid) setSuccess(true);
+      else setError("รหัสเอกสารถูกต้องไม่ถูกต้อง กรุณาลองใหม่");
     } catch {
       setError("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");
     } finally {

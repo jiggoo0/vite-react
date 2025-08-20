@@ -1,6 +1,6 @@
-// ======================= SpecialBranchCertificate.mock.ts =======================
+// src/__mocks__/specialBranchCertificate.ts
 
-export interface CertificateData {
+export interface SpecialBranchCertificateData {
   authority: string;
   location: string;
   date: string;
@@ -15,7 +15,7 @@ export interface CertificateData {
   fileNo: string;
 }
 
-export const mockCertificateData: CertificateData = {
+export const mockSpecialBranchCertificate: SpecialBranchCertificateData = {
   authority: "SPECIAL BRANCH, ROYAL THAI POLICE",
   location: "BANGKOK, THAILAND",
   date: "AUGUST 8, 2025",
@@ -30,3 +30,5 @@ export const mockCertificateData: CertificateData = {
   docNo: "2025/081/477",
   fileNo: "393",
 };
+
+export default mockSpecialBranchCertificate;

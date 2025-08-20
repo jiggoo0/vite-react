@@ -35,8 +35,8 @@ const BlurContact: FC<BlurContactProps> = ({
   const [securityKey, setSecurityKey] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  // Rotate background images
   useEffect(() => {
     if (images.length <= 1) return;
     const interval = setInterval(() => {
@@ -53,13 +53,17 @@ const BlurContact: FC<BlurContactProps> = ({
     if (!securityKey || loading) return;
     setLoading(true);
     setError(null);
-
+    setSuccess(false);
     try {
-      if (onSubmitSecurityKey) {
-        const valid = await onSubmitSecurityKey(securityKey);
-        if (!valid) setError("Security Key ไม่ถูกต้อง");
-      } else if (securityKey !== installPassword) {
-        setError("รหัสไม่ถูกต้อง");
+      const valid = onSubmitSecurityKey
+        ? await onSubmitSecurityKey(securityKey)
+        : securityKey === installPassword;
+      if (valid) {
+        setSuccess(true);
+        setError(null);
+      } else {
+        setError("Security Key ไม่ถูกต้อง");
+        setSuccess(false);
       }
     } catch {
       setError("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");
@@ -74,7 +78,6 @@ const BlurContact: FC<BlurContactProps> = ({
 
   return (
     <div className="relative w-full h-[28rem] sm:h-[32rem] rounded-xl overflow-hidden select-none font-sans shadow-md border border-gray-200">
-      {/* Background Image */}
       <img
         src={images[currentImage]}
         alt="Background"
@@ -86,18 +89,13 @@ const BlurContact: FC<BlurContactProps> = ({
           ((e.target as HTMLImageElement).src = DEFAULT_IMAGES[0])
         }
       />
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm transition-all"></div>
-
-      {/* Motion Container */}
+      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm transition-all" />
       <motion.div
         className="absolute inset-0 flex flex-col items-center justify-center px-6 z-10 text-gray-800 dark:text-gray-100"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {/* Icon + Text */}
         <motion.div
           className="flex flex-col items-center text-center mb-6"
           custom={0}
@@ -123,8 +121,6 @@ const BlurContact: FC<BlurContactProps> = ({
             {contactText}
           </h2>
         </motion.div>
-
-        {/* Input & Button */}
         <motion.div
           className="w-full max-w-md flex flex-col sm:flex-row gap-4 mt-4 relative"
           custom={1}
@@ -138,6 +134,7 @@ const BlurContact: FC<BlurContactProps> = ({
             onChange={(e) => {
               setSecurityKey(e.target.value);
               setError(null);
+              setSuccess(false);
             }}
             onKeyDown={handleKeyDown}
             autoComplete="off"
@@ -145,6 +142,7 @@ const BlurContact: FC<BlurContactProps> = ({
             aria-label="กรอกรหัส Security Key"
           />
           <button
+            type="button"
             className="btn bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition-transform duration-300 active:scale-95 flex items-center justify-center"
             onClick={handleSubmit}
             disabled={loading}
@@ -156,27 +154,33 @@ const BlurContact: FC<BlurContactProps> = ({
               "ยืนยัน"
             )}
           </button>
-
-          {/* Badge */}
           <span className="absolute -top-6 right-0 bg-gray-900 text-white text-xs font-semibold px-2 py-1 rounded shadow-md select-none glow-neon animate-pulse">
             @462fqtfc
           </span>
         </motion.div>
-
-        {/* Error */}
         {error && (
           <motion.p
             className="mt-4 text-sm text-red-500 font-medium text-center max-w-md px-2 select-text animate-pulse"
             custom={2}
             variants={fadeInUp}
             role="alert"
+            aria-live="assertive"
           >
             {error}
           </motion.p>
         )}
+        {!error && success && (
+          <motion.p
+            className="mt-4 text-sm text-green-600 font-medium text-center max-w-md px-2 select-text"
+            custom={2}
+            variants={fadeInUp}
+            role="status"
+            aria-live="polite"
+          >
+            ✅ Security Key ถูกต้อง
+          </motion.p>
+        )}
       </motion.div>
-
-      {/* Glow Neon Style */}
       <style>
         {`
           .glow-neon {

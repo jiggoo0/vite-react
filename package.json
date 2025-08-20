@@ -30,9 +30,15 @@
     "crypto-browserify": "3.12.1",
     "dayjs": "1.11.13",
     "framer-motion": "^12.23.12",
+    "he": "1.2.0",
+    "highlight.js": "11.11.1",
     "html2canvas": "1.4.1",
     "jspdf": "3.0.1",
     "lucide-react": "^0.540.0",
+    "markdown-it-anchor": "9.2.0",
+    "markdown-it-task-checkbox": "1.0.6",
+    "markdown-it-toc-done-right": "4.2.0",
+    "pdfkit": "0.17.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
@@ -79,6 +85,7 @@
     "install": "0.13.0",
     "jsdom": "26.1.0",
     "lint-staged": "^16.1.5",
+    "markdown-it": "14.1.0",
     "pnpm": "10.14.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
@@ -107,6 +114,10 @@
       "packages": [
         "packages/*"
       ]
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "puppeteer"
+    ]
   }
 }

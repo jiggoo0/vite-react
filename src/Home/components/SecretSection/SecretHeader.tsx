@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 /**
  * SecretHeader
+ * -------------------------
  * แสดงหัวข้อและคำเตือนสำหรับพื้นที่ลับ
  */
 const SecretHeader: FC = () => (
@@ -18,12 +19,14 @@ const SecretHeader: FC = () => (
       Secret Private Zone
     </h1>
 
-    {/* Animated Alert / Warning Box */}
+    {/* Animated Alert Box */}
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 text-yellow-900 px-6 py-5 rounded-xl shadow-md flex items-start gap-4 sm:px-8 sm:py-6"
+      className="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400
+                 text-yellow-900 px-6 py-5 rounded-xl shadow-md flex items-start gap-4
+                 sm:px-8 sm:py-6"
       role="alert"
       aria-live="polite"
     >
@@ -33,7 +36,7 @@ const SecretHeader: FC = () => (
         aria-hidden="true"
       />
 
-      {/* Text */}
+      {/* Alert Text */}
       <p className="leading-relaxed text-sm sm:text-base">
         ⚠️ <strong>โปรดทราบ!</strong>{" "}
         พื้นที่นี้ออกแบบมาเพื่อความปลอดภัยของทั้งผู้จ้างงานและผู้รับงาน กรุณาใช้{" "}

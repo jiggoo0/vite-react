@@ -9,29 +9,26 @@ import daisyui from "daisyui";
 const config: Config = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+
   darkMode: "class",
 
   theme: {
     extend: {
       colors: {
-        primary: "#2563EB",
-        "primary-hover": "#1E40AF",
+        primary: "#1E3A8A",          // Professional blue
+        "primary-hover": "#2563EB",
         "primary-disabled": "#9CA3AF",
-        secondary: "#9333EA",
-        accent: "#F59E0B",
-        neutral: "#374151",
+        secondary: "#374151",        // Dark gray for text / labels
+        accent: "#FBBF24",           // CTA / highlights
+        neutral: "#6B7280",          // Neutral backgrounds / borders
         success: "#10B981",
         warning: "#FACC15",
         error: "#EF4444",
         info: "#3B82F6",
         "bg-light": "#F9FAFB",
         "bg-dark": "#1F2937",
-        "primary-dark": "#1E3A8A",
-        "green-light": "#6EE7B7",
-        "gold-light": "#FCD34D",
       },
       fontFamily: {
         sans: ["Kanit", ...defaultTheme.fontFamily.sans],
@@ -79,10 +76,10 @@ const config: Config = {
           "primary-hover": "#2563EB",
           "primary-disabled": "#9CA3AF",
           "primary-content": "#ffffff",
-          secondary: "#2563EB",
+          secondary: "#374151",
           accent: "#FBBF24",
-          neutral: "#374151",
-          "base-100": "#F3F4F6",
+          neutral: "#6B7280",
+          "base-100": "#F9FAFB",
           "base-200": "#E5E7EB",
           "base-300": "#D1D5DB",
           info: "#3B82F6",

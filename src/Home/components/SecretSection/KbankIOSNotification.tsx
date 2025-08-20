@@ -1,14 +1,17 @@
+// src/Home/components/SecretSection/KbankIOSNotification.tsx
+"use client";
+
 import { FC, useEffect, useState } from "react";
 import {
   KbankIOSNotification as NotificationType,
   kbankMockData,
-} from "./KbankIOSNotification.mock";
+} from "@__mocks__/KbankIOSNotification.mock";
 import KbankNotificationCard from "./KbankNotificationCard";
 
-const LOAD_DELAY_MS = 700; // จำลองการโหลดข้อมูล
+const LOAD_DELAY_MS = 700;
 
 // ==============================
-// Skeleton Loader
+// Skeleton Loader Component
 // ==============================
 const SkeletonLoader: FC = () => (
   <section
@@ -17,9 +20,9 @@ const SkeletonLoader: FC = () => (
     role="status"
     aria-live="polite"
   >
-    {[...Array(3)].map((_, index) => (
+    {[...Array(3)].map((_, idx) => (
       <div
-        key={index}
+        key={idx}
         className="bg-white border border-gray-200 rounded-3xl p-4 shadow space-y-2"
       >
         <div className="flex items-center gap-3">
@@ -41,7 +44,7 @@ const SkeletonLoader: FC = () => (
 );
 
 // ==============================
-// Empty State
+// Empty State Component
 // ==============================
 const EmptyState: FC = () => (
   <section
@@ -54,13 +57,12 @@ const EmptyState: FC = () => (
 );
 
 // ==============================
-// KBank iOS Notification Component
+// Main Component
 // ==============================
 const KbankIOSNotification: FC = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // โหลด mock data พร้อม delay เพื่อจำลอง fetch จริง
   useEffect(() => {
     const timer = setTimeout(() => {
       setNotifications(kbankMockData);
@@ -70,13 +72,9 @@ const KbankIOSNotification: FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Loader
   if (loading) return <SkeletonLoader />;
-
-  // Empty state
   if (notifications.length === 0) return <EmptyState />;
 
-  // แสดงรายการแจ้งเตือน
   return (
     <section
       className="space-y-4 max-w-md mx-auto"

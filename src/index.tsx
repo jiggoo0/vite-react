@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RootApp } from "./App/RootApp"; // Root application component
+import RootApp from "./App/RootApp"; // Root application component
 import "./styles/global.css"; // Tailwind + DaisyUI global styles
 import "./styles/driverLicense.css"; // Component-specific styles
 import "./styles/variables.css"; // CSS variables for colors, shadows, etc.
@@ -49,5 +49,5 @@ if ("serviceWorker" in navigator && import.meta.env.PROD) {
     );
 }
 
-// 🔹 For Fast Refresh / HMR
+// 🔹 HMR / Fast Refresh compatibility
 export {};

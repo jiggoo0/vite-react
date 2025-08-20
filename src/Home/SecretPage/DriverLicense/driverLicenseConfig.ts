@@ -42,16 +42,8 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       fontWeight: "500",
       color: "#222",
     },
-    dob: {
-      top: "120px",
-      left: "190px",
-      fontSize: "16px",
-    },
-    issueDate: {
-      top: "150px",
-      left: "190px",
-      fontSize: "16px",
-    },
+    dob: { top: "120px", left: "190px", fontSize: "16px", fontWeight: "400" },
+    issueDate: { top: "150px", left: "190px", fontSize: "16px", fontWeight: "400" },
     expiryDate: {
       top: "180px",
       left: "190px",
@@ -63,6 +55,7 @@ export const driverLicenseConfig: DriverLicenseConfig = {
       top: "215px",
       left: "190px",
       fontSize: "15px",
+      fontWeight: "400",
       width: "370px",
     },
     licenseType: {

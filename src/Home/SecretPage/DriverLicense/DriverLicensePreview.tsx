@@ -14,43 +14,46 @@ interface DriverLicensePreviewProps {
 
 /**
  * DriverLicensePreview
- * แสดงใบขับขี่จำลองโดยใช้ driverLicenseConfig สำหรับตำแหน่งและสไตล์ field
+ * แสดงใบขับขี่จำลองโดยใช้ driverLicenseConfig
+ * สำหรับตำแหน่งและสไตล์ของแต่ละ field
  */
 const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
+  const { cardWidth, cardHeight, bgDefault, fields } = driverLicenseConfig;
+
   return (
     <div
       id="driver-license-preview"
       className="relative overflow-hidden rounded-xl border border-gray-300 shadow-lg bg-white"
       style={{
-        width: driverLicenseConfig.cardWidth,
-        height: driverLicenseConfig.cardHeight,
-        backgroundImage: `url(${driverLicenseConfig.bgDefault})`,
+        width: cardWidth,
+        height: cardHeight,
+        backgroundImage: `url(${bgDefault})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
       {/* Photo */}
-      {data.photo && driverLicenseConfig.fields.photo && (
+      {data.photo && fields.photo && (
         <img
           src={data.photo}
           alt="Driver"
           className="absolute rounded-md object-cover"
           style={{
-            top: driverLicenseConfig.fields.photo.top,
-            left: driverLicenseConfig.fields.photo.left,
-            width: driverLicenseConfig.fields.photo.width,
-            height: driverLicenseConfig.fields.photo.height,
+            top: fields.photo.top,
+            left: fields.photo.left,
+            width: fields.photo.width,
+            height: fields.photo.height,
           }}
         />
       )}
 
       {/* Text Fields */}
-      {(
-        Object.keys(driverLicenseConfig.fields) as DriverLicenseFieldKeys[]
-      ).map((key) => {
-        if (key === "photo") return null;
-        const config = driverLicenseConfig.fields[key];
+      {(Object.keys(fields) as DriverLicenseFieldKeys[]).map((key) => {
+        if (key === "photo") return null; // Photo แสดงแล้ว
+
+        const config = fields[key];
         const value = (data[key] as string) || "";
+
         return (
           <span
             key={key}
@@ -61,6 +64,8 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
               fontSize: config.fontSize,
               fontWeight: config.fontWeight || "400",
               color: config.color || "#000",
+              width: config.width,
+              height: config.height,
             }}
           >
             {value}

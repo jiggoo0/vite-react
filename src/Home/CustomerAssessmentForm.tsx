@@ -11,9 +11,6 @@ import {
   SubmitButton,
 } from "@/Home/components/Forms";
 
-// =======================
-// Types
-// =======================
 export type CreditProfileData = {
   fullName: string;
   email: string;
@@ -26,9 +23,6 @@ export type CreditProfileData = {
   notes?: string;
 };
 
-// =======================
-// Component
-// =======================
 const CreditProfileForm: React.FC = () => {
   const {
     register,
@@ -84,11 +78,12 @@ const CreditProfileForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <FieldGroup columns={2}>
+        {/* ข้อมูลพื้นฐาน */}
         <InputField
           label="ชื่อ-สกุล"
           placeholder="กรอกชื่อ-นามสกุล"
           required
-          error={errors.fullName?.message || null}
+          error={errors.fullName?.message || undefined}
           {...register("fullName", { required: "กรุณากรอกชื่อ-สกุล" })}
         />
 
@@ -97,7 +92,7 @@ const CreditProfileForm: React.FC = () => {
           type="email"
           placeholder="example@email.com"
           required
-          error={errors.email?.message || null}
+          error={errors.email?.message || undefined}
           {...register("email", {
             required: "กรุณากรอกอีเมล",
             pattern: { value: /^\S+@\S+$/i, message: "รูปแบบอีเมลไม่ถูกต้อง" },
@@ -109,7 +104,7 @@ const CreditProfileForm: React.FC = () => {
           type="tel"
           placeholder="เช่น 0812345678"
           required
-          error={errors.phone?.message || null}
+          error={errors.phone?.message || undefined}
           {...register("phone", { required: "กรุณากรอกเบอร์โทรศัพท์" })}
         />
 
@@ -117,7 +112,7 @@ const CreditProfileForm: React.FC = () => {
           label="อาชีพ"
           placeholder="กรอกอาชีพปัจจุบัน"
           required
-          error={errors.occupation?.message || null}
+          error={errors.occupation?.message || undefined}
           {...register("occupation", { required: "กรุณากรอกอาชีพ" })}
         />
 
@@ -126,7 +121,7 @@ const CreditProfileForm: React.FC = () => {
           type="number"
           placeholder="0"
           required
-          error={errors.monthlyIncome?.message || null}
+          error={errors.monthlyIncome?.message || undefined}
           {...register("monthlyIncome", {
             required: "กรุณากรอกรายได้ต่อเดือน",
             min: { value: 0, message: "ต้องมากกว่า 0" },
@@ -138,7 +133,7 @@ const CreditProfileForm: React.FC = () => {
           type="number"
           placeholder="0"
           required
-          error={errors.existingDebt?.message || null}
+          error={errors.existingDebt?.message || undefined}
           {...register("existingDebt", {
             required: "กรุณากรอกหนี้สินปัจจุบัน",
             min: { value: 0, message: "ต้องมากกว่า 0" },
@@ -154,12 +149,14 @@ const CreditProfileForm: React.FC = () => {
           className={`bg-gray-100 font-semibold ${ratioColor}`}
         />
 
+        {/* Select Fields */}
         <Controller
           control={control}
           name="paymentHistory"
           rules={{ required: "กรุณาเลือกประวัติการชำระ" }}
           render={({ field }) => (
             <SelectFieldUI
+              {...field}
               label="ประวัติการชำระ"
               required
               options={[
@@ -168,8 +165,7 @@ const CreditProfileForm: React.FC = () => {
                 { label: "ปานกลาง", value: "average" },
                 { label: "ไม่ดี", value: "poor" },
               ]}
-              error={errors.paymentHistory?.message || null}
-              {...field}
+              error={errors.paymentHistory?.message || undefined}
             />
           )}
         />
@@ -180,6 +176,7 @@ const CreditProfileForm: React.FC = () => {
           rules={{ required: "กรุณาเลือกคะแนนเครดิต" }}
           render={({ field }) => (
             <SelectFieldUI
+              {...field}
               label="คะแนนเครดิตปัจจุบัน"
               required
               options={[
@@ -188,8 +185,7 @@ const CreditProfileForm: React.FC = () => {
                 { label: "C (พอใช้)", value: "C" },
                 { label: "D (ต้องปรับปรุง)", value: "D" },
               ]}
-              error={errors.creditRating?.message || null}
-              {...field}
+              error={errors.creditRating?.message || undefined}
             />
           )}
         />

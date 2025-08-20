@@ -3,9 +3,12 @@
 import { FC, useMemo } from "react";
 import QRCode from "react-qr-code";
 
-// ─── ฟังก์ชันช่วย format ──────────────────────
-const formatCurrency = (value?: string | number) => {
+// ==============================
+// Helpers
+// ==============================
+const formatCurrency = (value?: string | number): string | null => {
   if (value === undefined || isNaN(Number(value))) return null;
+
   return Number(value).toLocaleString("th-TH", {
     style: "currency",
     currency: "THB",
@@ -13,7 +16,7 @@ const formatCurrency = (value?: string | number) => {
   });
 };
 
-const formatTime = (iso: string) => {
+const formatTime = (iso: string): string => {
   try {
     return new Intl.DateTimeFormat("th-TH", {
       day: "numeric",
@@ -28,8 +31,14 @@ const formatTime = (iso: string) => {
   }
 };
 
-// ─── Component แสดงจำนวนเงิน ──────────────────────
-const Amount: FC<{ amount?: string }> = ({ amount }) => {
+// ==============================
+// Amount Component
+// ==============================
+interface AmountProps {
+  amount?: string;
+}
+
+const Amount: FC<AmountProps> = ({ amount }) => {
   const formatted = useMemo(() => formatCurrency(amount), [amount]);
   if (!formatted) return null;
 
@@ -47,7 +56,9 @@ const Amount: FC<{ amount?: string }> = ({ amount }) => {
   );
 };
 
-// ─── Component แสดงข้อมูลเพิ่มเติม + QR Code ──────────────────────
+// ==============================
+// Additional Info + QR Code Component
+// ==============================
 interface AdditionalInfoProps {
   balanceAfter?: string;
   channel?: string;
@@ -63,17 +74,11 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   time,
   qrCodeUrl,
 }) => {
-  const formattedBalance = useMemo(
-    () => formatCurrency(balanceAfter),
-    [balanceAfter]
-  );
+  const formattedBalance = useMemo(() => formatCurrency(balanceAfter), [balanceAfter]);
   const formattedTime = useMemo(() => formatTime(time), [time]);
 
   return (
-    <div
-      className="mt-4 text-sm text-gray-600 select-text"
-      aria-label="ข้อมูลเพิ่มเติม"
-    >
+    <div className="mt-4 text-sm text-gray-600 select-text" aria-label="ข้อมูลเพิ่มเติม">
       <div className="grid grid-cols-[1fr_auto] gap-x-6 gap-y-2 items-start">
         <div className="space-y-1">
           <div>
@@ -118,24 +123,27 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   );
 };
 
-// ─── Props สำหรับ KbankNotificationCard ──────────────────────
-interface KbankNotificationCardProps {
-  data: {
-    id: string;
-    type?: string;
-    title?: string;
-    subtitle?: string;
-    message?: string;
-    amount?: string;
-    balanceAfter?: string;
-    channel?: string;
-    transactionId: string;
-    time: string;
-    qrCodeUrl?: string;
-  };
+// ==============================
+// KBank Notification Card
+// ==============================
+export interface KbankNotificationData {
+  id: string;
+  type?: "incoming" | "outgoing" | "failed";
+  title?: string;
+  subtitle?: string;
+  message?: string;
+  amount?: string;
+  balanceAfter?: string;
+  channel?: string;
+  transactionId: string;
+  time: string;
+  qrCodeUrl?: string;
 }
 
-// ─── KBank Notification Card ──────────────────────
+interface KbankNotificationCardProps {
+  data: KbankNotificationData;
+}
+
 const KbankNotificationCard: FC<KbankNotificationCardProps> = ({ data }) => {
   return (
     <section
@@ -194,6 +202,8 @@ const KbankNotificationCard: FC<KbankNotificationCardProps> = ({ data }) => {
   );
 };
 
-// ─── Export ──────────────────────
+// ==============================
+// Export
+// ==============================
 export default KbankNotificationCard;
 export { Amount, AdditionalInfo };

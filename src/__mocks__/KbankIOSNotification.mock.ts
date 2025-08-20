@@ -1,77 +1,55 @@
+// src/__mocks__/kbankIOSNotification.ts
+"use client";
+
 // ==============================
 // Types & Interfaces
 // ==============================
-
 export interface KbankIOSNotification {
-  /** รหัสแจ้งเตือน */
   id: string;
-  /** หัวข้อแจ้งเตือน */
   title: string;
-  /** ข้อความรอง เช่น ชื่อผู้ส่ง หรือ ประเภทบัตร */
   subtitle?: string;
-  /** เนื้อความหลักของแจ้งเตือน */
   message: string;
-  /** จำนวนเงินที่เกี่ยวข้อง (ถ้ามี) เป็น string */
   amount?: string;
-  /** ประเภทของแจ้งเตือน */
   category: "success" | "warning" | "info" | "error";
-  /** เวลาที่เกิดแจ้งเตือน (ISO 8601) */
   time: string;
-  /** รหัสธุรกรรม */
   transactionId: string;
-  /** ยอดเงินคงเหลือหลังธุรกรรม (ถ้ามี) */
   balanceAfter?: string;
-  /** ช่องทางที่เกิดธุรกรรม (ถ้ามี) */
   channel?: string;
-  /** ประเภทธุรกรรม */
   type: "incoming" | "outgoing" | "failed";
-  /** QR Code PromptPay (ถ้ามี) */
   qrCodeUrl?: string;
 }
 
 // ==============================
 // PromptPay QR Generator
 // ==============================
-
-/**
- * สร้าง PromptPay QR Payload string ตามสเปค EMV® QR Code
- * @param payee เบอร์โทรศัพท์ (0XXXXXXXXX) หรือ หมายเลขบัญชีพร้อมเพย์
- * @param amount จำนวนเงิน (string เช่น "15000.00")
- * @returns string Payload พร้อม CRC16 checksum สำหรับ QR code
- */
 export function generatePromptPayQR(payee: string, amount: string): string {
   const isPhone = /^0\d{9}$/.test(payee);
   const payeeValue = isPhone ? `0066${payee.slice(1)}` : payee;
 
-  // Field ID สำหรับเบอร์โทรหรือบัญชี
   const idField = isPhone
-    ? `0113${payeeValue}` // เบอร์โทร (ID 01, length 13)
-    : `0213${payeeValue}`; // บัญชี (ID 02, length 13)
+    ? `0113${payeeValue}` // เบอร์โทร (ID 01)
+    : `0213${payeeValue}`; // บัญชี (ID 02)
 
-  // สร้าง Payload เบื้องต้น
   const payload =
     "000201" + // Payload Format Indicator
-    "010211" + // Point of Initiation Method (static QR)
-    "2937" + // Merchant Account Info Length 37 bytes
-    "0016A000000677010111" + // Globally Unique Identifier สำหรับ PromptPay
+    "010211" + // Point of Initiation Method
+    "2937" + // Merchant Account Info Length 37
+    "0016A000000677010111" + // Globally Unique Identifier
     idField +
-    "5303764" + // สกุลเงิน THB (764)
-    `54${amount.length}${amount}` + // จำนวนเงิน พร้อมความยาว
+    "5303764" + // Currency: THB
+    `54${amount.length}${amount}` + // Transaction Amount
     "6304"; // CRC placeholder
 
-  // เติม CRC16
   return payload + computeCRC16(payload);
 }
 
-/**
- * คำนวณ CRC16-CCITT (0xFFFF) สำหรับตรวจสอบ Payload QR code
- */
 function computeCRC16(payload: string): string {
   let crc = 0xffff;
   for (let i = 0; i < payload.length; i++) {
     crc ^= payload.charCodeAt(i) << 8;
     for (let j = 0; j < 8; j++) {
-      crc = (crc & 0x8000) !== 0 ? (crc << 1) ^ 0x1021 : crc << 1;
+      crc =
+        (crc & 0x8000) !== 0 ? (crc << 1) ^ 0x1021 : crc << 1;
       crc &= 0xffff;
     }
   }
@@ -81,7 +59,6 @@ function computeCRC16(payload: string): string {
 // ==============================
 // Mock Notification Data
 // ==============================
-
 export const kbankMockData: KbankIOSNotification[] = [
   {
     id: "noti-001",
@@ -92,7 +69,7 @@ export const kbankMockData: KbankIOSNotification[] = [
     category: "success",
     time: "2025-08-06T13:45:00+07:00",
     transactionId: "TRX20250806134501",
-    balanceAfter: "28,520.75",
+    balanceAfter: "28520.75",
     channel: "Mobile Banking",
     type: "incoming",
     qrCodeUrl: generatePromptPayQR("0831234567", "15000.00"),
@@ -106,7 +83,7 @@ export const kbankMockData: KbankIOSNotification[] = [
     category: "warning",
     time: "2025-08-06T10:32:00+07:00",
     transactionId: "TRX20250806103202",
-    balanceAfter: "13,880.75",
+    balanceAfter: "13880.75",
     channel: "Credit Card POS",
     type: "outgoing",
   },
@@ -114,12 +91,13 @@ export const kbankMockData: KbankIOSNotification[] = [
     id: "noti-003",
     title: "ชำระค่าบริการสำเร็จ",
     subtitle: "TrueMove H",
-    message: "คุณได้ชำระค่าบริการ 899.00 บาท สำหรับหมายเลข 099-xxx-xxxx",
+    message:
+      "คุณได้ชำระค่าบริการ 899.00 บาท สำหรับหมายเลข 099-xxx-xxxx",
     amount: "-899.00",
     category: "info",
     time: "2025-08-05T20:10:00+07:00",
     transactionId: "TRX20250805201003",
-    balanceAfter: "12,981.75",
+    balanceAfter: "12981.75",
     channel: "Bill Payment",
     type: "outgoing",
   },

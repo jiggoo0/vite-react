@@ -1,10 +1,12 @@
+"use client";
+
 import { FC, PropsWithChildren, ElementType } from "react";
 import { cn } from "@/utils/cn";
 
 interface SectionWrapperProps extends PropsWithChildren<object> {
-  /** 🎨 เพิ่มเติม className สำหรับปรับแต่ง container */
+  /** 🎨 เพิ่ม className สำหรับปรับแต่ง container */
   className?: string;
-  /** 🏷️ semantic element เช่น section, main, header, footer */
+  /** 🏷️ เลือก semantic element เช่น section, main, header, footer */
   as?: ElementType;
   /** 🔗 รองรับ anchor link (#id) */
   id?: string;

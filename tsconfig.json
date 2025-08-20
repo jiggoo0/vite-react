@@ -33,7 +33,8 @@
       "@layout/*": ["Layout/*"],
       "@router/*": ["Router/*"],
       "@api/*": ["api/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@__mocks__/*": ["__mocks__/*"]
     },
     "types": ["vite/client"]
   },

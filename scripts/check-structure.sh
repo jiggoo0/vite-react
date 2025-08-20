@@ -1,196 +1,259 @@
 #!/usr/bin/env bash
-# check-structure.sh
-# 📦 Generate Markdown project report (structure, deps, unused files, env, git)
-
 set -euo pipefail
 
-OUT="report.md"
-IGNORE="node_modules|dist|.git|.vite|coverage"
-SKIP_FILES=("main.tsx" "App.tsx" "index.tsx" "index.ts")
+REPORT="structure-check.md"
+DIST_DIR="dist"
+DEV_PORT=5173
 
-command_exists() { command -v "$1" >/dev/null 2>&1; }
+# สี terminal
+if [ -t 1 ]; then
+  GREEN="\033[0;32m"
+  RED="\033[0;31m"
+  YELLOW="\033[0;33m"
+  RESET="\033[0m"
+else
+  GREEN=""
+  RED=""
+  YELLOW=""
+  RESET=""
+fi
 
-usage() {
-  echo "Usage: $0 [--output=file]"
-  exit 0
+log() { echo "$1" >> "$REPORT"; }
+term_log() { echo -e "$1"; }
+
+# ตรวจ OS
+OS_TYPE="$(uname -s)"
+IS_WINDOWS=false
+
+# ถ้าเป็น Windows (MINGW, CYGWIN, MSYS)
+[[ "$OS_TYPE" =~ ^MINGW|^CYGWIN|^MSYS ]] && IS_WINDOWS=true
+
+# ตรวจ Termux (optional)
+IS_TERMUX=false
+if [ -n "${TERMUX_VERSION-}" ]; then
+  IS_TERMUX=true
+fi
+
+# สร้าง report
+echo "# ✅ JP Visual & Docs – Structure Check Report" > "$REPORT"
+echo "" >> "$REPORT"
+echo "> ตรวจสอบโครงสร้างโปรเจกต์ React 19 + Vite 7 + Tailwind + daisyUI" >> "$REPORT"
+echo "" >> "$REPORT"
+echo "---" >> "$REPORT"
+echo "" >> "$REPORT"
+echo "## 📊 Summary" >> "$REPORT"
+echo "| หมวดหมู่                 | สถานะ |" >> "$REPORT"
+echo "|--------------------------|--------|" >> "$REPORT"
+
+# ฟังก์ชันเช็ค
+check_cmd() {
+  local cmd="$1"
+  local name="$2"
+  if eval "$cmd"; then
+    log "| $name | ✅ |"
+    term_log "${GREEN}✔ $name${RESET}"
+  else
+    log "| $name | ❌ |"
+    term_log "${RED}✖ $name${RESET}"
+  fi
+}
+# ตรวจว่า .env มีอยู่
+if [ -f .env ]; then
+  log "| .env Exists              | ✅ |"
+  term_log "${GREEN}✔ .env Exists${RESET}"
+else
+  log "| .env Exists              | ❌ |"
+  term_log "${RED}✖ .env Exists${RESET}"
+fi
+
+# ตรวจว่าตัวแปร VITE_API_URL ถูกกำหนด
+if [ -f .env ] && grep -q '^VITE_API_URL=' .env 2>/dev/null; then
+  log "| VITE_API_URL Defined     | ✅ |"
+  term_log "${GREEN}✔ VITE_API_URL Defined${RESET}"
+else
+  log "| VITE_API_URL Defined     | ❌ |"
+  term_log "${RED}✖ VITE_API_URL Defined${RESET}"
+fi
+
+# -------------------
+# Checks parallel-safe
+# -------------------
+
+run_check() {
+  local name="$1"
+  local cmd="$2"
+  TMPFILE=$(mktemp)
+  
+  if eval "$cmd"; then
+    echo "| $name | ✅ |" > "$TMPFILE"
+    term_log "${GREEN}✔ $name${RESET}"
+  else
+    echo "| $name | ❌ |" > "$TMPFILE"
+    term_log "${RED}✖ $name${RESET}"
+  fi
+
+  cat "$TMPFILE" >> "$REPORT"
+  rm -f "$TMPFILE"
 }
 
-for arg in "$@"; do
-  case $arg in
-    --output=*) OUT="${arg#*=}" ;;
-    -h|--help) usage ;;
-    *) echo "❌ Unknown option: $arg" ; exit 1 ;;
-  esac
+# TypeScript Check
+(
+  run_check "TypeScript Check" "pnpm tsc --noEmit"
+) &
+
+# ESLint Check
+(
+  run_check "ESLint Check" "pnpm lint"
+) &
+
+# Alias Import Check
+(
+  TMPFILE=$(mktemp)
+  if grep -qr "@/" src 2>/dev/null; then
+    echo "| Alias Import | ✅ |" > "$TMPFILE"
+    term_log "${GREEN}✔ Alias Import${RESET}"
+  else
+    echo "| Alias Import | ⚠️ |" > "$TMPFILE"
+    term_log "${YELLOW}⚠ Alias Import${RESET}"
+  fi
+  cat "$TMPFILE" >> "$REPORT"
+  rm -f "$TMPFILE"
+) &
+
+# Unused Files Check
+(
+  TMPFILE=$(mktemp)
+  UNUSED=$(find src -type f -name "*.tsx" | while read -r f; do
+    BASENAME=$(basename "$f" .tsx)
+    ! grep -qr "$BASENAME" src && echo "$f"
+  done)
+  if [ -z "$UNUSED" ]; then
+    echo "| Unused Files | ✅ |" > "$TMPFILE"
+    term_log "${GREEN}✔ Unused Files${RESET}"
+  else
+    echo "| Unused Files | ⚠️ |" > "$TMPFILE"
+    term_log "${YELLOW}⚠ Unused Files${RESET}"
+  fi
+  cat "$TMPFILE" >> "$REPORT"
+  rm -f "$TMPFILE"
+) &
+
+wait
+
+# Dev Server
+if [ "$IS_WINDOWS" = true ] || [ "${TERMUX:-false}" = true ]; then
+  log "| Dev Server               | ⚠️ skipped (headless/Termux) |"
+  term_log "${YELLOW}⚠ Dev Server skipped (headless/Termux)${RESET}"
+else
+  pnpm dev > /dev/null 2>&1 &
+  VITE_PID=$!
+  for i in {1..10}; do
+    if curl -s "http://localhost:$DEV_PORT" > /dev/null; then
+      log "| Dev Server               | ✅ |"
+      term_log "${GREEN}✔ Dev Server${RESET}"
+      break
+    else
+      sleep 1
+    fi
+  done
+  if ! curl -s "http://localhost:$DEV_PORT" > /dev/null; then
+    log "| Dev Server               | ❌ |"
+    term_log "${RED}✖ Dev Server${RESET}"
+  fi
+  kill "$VITE_PID" 2>/dev/null || true
+fi
+
+# package.json + dependencies
+echo "" >> "$REPORT"
+echo "## 📦 ตรวจสอบ package.json" >> "$REPORT"
+if jq . package.json > /dev/null 2>&1; then
+  echo '```json' >> "$REPORT"
+  jq . package.json >> "$REPORT"
+  echo '```' >> "$REPORT"
+else
+  echo "> ❌ ไม่สามารถ parse package.json ได้" >> "$REPORT"
+fi
+
+REQUIRED_PKGS=("react" "react-dom" "vite" "tailwindcss" "daisyui" "typescript" "eslint" "prettier")
+echo "" >> "$REPORT"
+echo "| Dependency ที่จำเป็น     | สถานะ |" >> "$REPORT"
+echo "|--------------------------|--------|" >> "$REPORT"
+for pkg in "${REQUIRED_PKGS[@]}"; do
+  if jq -e ".dependencies[\"$pkg\"] // .devDependencies[\"$pkg\"]" package.json > /dev/null 2>&1; then
+    log "| $pkg                     | ✅ |"
+    term_log "${GREEN}✔ $pkg found${RESET}"
+  else
+    log "| $pkg                     | ⚠️ |"
+    term_log "${YELLOW}⚠ $pkg missing${RESET}"
+  fi
 done
 
-{
-  echo "# Project Report"
-  echo "_Generated: $(date '+%F %T')_"
-  echo
+# -------------------------------
+# ตรวจว่า React ถูกติดตั้ง
+# -------------------------------
+if pnpm list react > /dev/null 2>&1; then
+  STATUS_REACT="✅"
+  term_log "${GREEN}✔ React Installed${RESET}"
+else
+  STATUS_REACT="❌"
+  term_log "${RED}✖ React Installed${RESET}"
+fi
 
-  echo "## 📖 Project Overview"
-  cat <<'EOF'
-# JP Visual & Docs
+# ตรวจเวอร์ชัน React
+REACT_VER=$(jq -r '.dependencies.react // empty' package.json 2>/dev/null)
+if [ -z "$REACT_VER" ]; then
+  REACT_VER="-"
+  term_log "${RED}✖ React Version not found${RESET}"
+else
+  term_log "${GREEN}✔ React Version: $REACT_VER${RESET}"
+fi
 
-**พร้อมลุยแบบมืออาชีพ**  
-เนียนทุกงาน โปรทุกขั้นตอน  
-JP Visual & Docs ทีมเบื้องหลังที่ช่วยให้คุณดูโปรได้ไวที่สุด  
+# เขียน React ลง Markdown
+log "| React                     | $STATUS_REACT | $REACT_VER |"
 
-✅ ความลับปลอดภัย  
-⚡ งานไวใน 24 ชม.  
-🚀 พร้อมลุยทุกเคส  
+# -------------------------------
+# ตรวจเวอร์ชัน TypeScript
+# -------------------------------
+TS_VER=$(jq -r '.devDependencies.typescript // empty' package.json 2>/dev/null)
+if [ -n "$TS_VER" ]; then
+  STATUS_TS="✅"
+  term_log "${GREEN}✔ TypeScript Version: $TS_VER${RESET}"
+else
+  STATUS_TS="❌"
+  TS_VER="-"
+  term_log "${RED}✖ TypeScript Version not found${RESET}"
+fi
 
-**ประสบการณ์ 8+ ปี | ความพึงพอใจ 98–99% | ส่งทันนัด 99%+**
-EOF
-  echo
+# เขียน TypeScript ลง Markdown
+log "| TypeScript                | $STATUS_TS | $TS_VER |"
 
-  echo "## 📂 Project Structure"
-  echo '```'
-  if command_exists tree; then
-    tree -a -I "$IGNORE" src | sed '$d'
-  else
-    find src -type d -or -type f | grep -Ev "$IGNORE"
-  fi
-  echo '```'
-  echo
+# Tree
+echo "" >> "$REPORT"
+echo "## 📁 โครงสร้าง src (ลึกสุด 10 ระดับ)" >> "$REPORT"
+echo '```' >> "$REPORT"
+if [ -d "src" ]; then
+    tree -L 10 src >> "$REPORT" 2>/dev/null
+else
+    echo "> ❌ ไม่พบโฟลเดอร์ src" >> "$REPORT"
+fi
+echo '```' >> "$REPORT"
 
-  if [ -f package.json ]; then
-    echo "## 📦 package.json"
-    echo '```json'
-    cat package.json
-    echo '```'
-    echo
-    echo "### 🔍 Dependencies Insight"
-    echo '```'
-    jq -r '.dependencies,.devDependencies' package.json 2>/dev/null | grep -v null || echo "No deps"
-    echo '```'
-    echo
-  fi
+# Note
+echo "" >> "$REPORT"
+echo "## 📝 Note" >> "$REPORT"
+echo "
+## 🛠️ Roadmap
+❗ เป้าหมายคือการทำงานร่วมกันแบบ dev-to-Dev ห้ามทำงานในรูปแบบการสอน เน้นแก้ไขปัญหาไวที่สุด งดประมวลผลในรูปแบบวนรูป งดกำหนดตัวอย่างต้องการใช้งานจริงเท่านั้นครอบคลุมโครงสร้างโปรเจกต์, รายละโค้ดทั้งหมดทำงานภายใต้แนวทาง Dev-to-Dev เข้มงวด้ TypeScript + ESLint + Prettier
+- 📂 ห้ามแตกไฟล์โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
+- 🤝 ปรับปรุงโค้ดและ logic ตามโครงสร้างธุรกิจ
+-  การเขียนโค้ดต้องคงความเข้มงวดระดับสูง พร้อม Professional & perfect 
+ในส่วนเครื่องมือการสร้างแบบจำลองเน้นการตั้งค่าที่ส่งจริงตามแบบมาตรฐานที่สุดส่วน component ที่เอามาแสดงผลหน้าเว็บไซต์เน้นสร้างในรูปแบบแนวทาง professionalห้ามเขียนในรูปแบบโค้งมนเหมือนแฟนซีการ์ตูนเด็ดขาดเข้มงวดตรงจุดนี้มากที่สุดเมื่อส่งรายละเอียดต่างๆโค้ดทุกโค้ดที่ใช้อยู่คือเว็บไซต์ใช้ปัจจุบันหน้าที่ของ AI คือแก้ไขโค้ดที่ใช้ปัจจุบันให้ตรงกับเป้าหมายแนวทางของคำสั่งหรือธุรกิจการทำงานย้ำว่าห้ามประมวลผลวนให้เกิดการสับสนให้เกิดทางเลือกทุกอย่างทุกเลือกไว้หมดแล้วการเขียนโค้ดมันมีแนวทางของมันในรูปแบบของมันรีบศักยภาพระบบของ AI ให้มากที่สุดในการเขียนรายละเอียดเนื้อหาทุกส่วนส่งให้ครอบคลุมทุกอย่างจดจำมเติมได้" >> "$REPORT"
+echo "- " >> "$REPORT"
+echo "- " >> "$REPORT"
+echo "- " >> "$REPORT"
 
-  echo "## 🗑️ Unused Files"
-  echo '```'
-  find src -type f | while read -r file; do
-    base=$(basename "$file")
-    skip=false
-    for s in "${SKIP_FILES[@]}"; do
-      [[ "$base" == "$s" ]] && skip=true
-    done
-    $skip && continue
-    name=$(basename "${file%.*}")
-    grep -rsl --exclude-dir={${IGNORE//|/,}} "$name" src >/dev/null || echo "$file"
-  done
-  echo '```'
-  echo
+echo "" >> "$REPORT"
+echo "---" >> "$REPORT"
+echo "✅ " >> "$REPORT"
 
-  echo "## 🌍 Env"
-  echo '```'
-  [ -f .env ] && cat .env || echo "No .env file"
-  echo '```'
-  echo
-
-  if command_exists git; then
-    echo "## 🔧 Git"
-    echo '```'
-    git status -s || true
-    echo
-    git log --oneline -n 5 || true
-    echo '```'
-    echo
-  fi
-
-  echo "## 📊 Summary"
-  echo "- Overview ✅"
-  echo "- Structure ✅"
-  echo "- Dependencies ✅"
-  echo "- Unused file check ✅"
-  echo "- Env + Git ✅"
-  echo
-
-  echo "## 🗒️ Notes"
-  cat <<'EOF'
-📄 JP Visual & Docs Dev-to-Dev Build Log
-Environment: Termux / Vite 7.1.2 / React 19.1.1 / DaisyUI 3.9.4
-Command: pnpm build && pnpm check
-
-⚡ Build Summary
-- Vendor React ≈ 577 KB → พิจารณา dynamic import
-- Vendor Misc ≈ 859 KB → แยก chunk ลดโหลดแรกเข้า
-- Lint + TS + Alias ✅ ไม่มี error
-🧱 โครงสร้างเว็บไซต์ธุรกิจที่ดี
-
-เน้นความน่าเชื่อถือ + ความชัดเจน
-- ใช้ข้อความที่ตรงประเด็น เช่น “บริการของเรา”, “รีวิวจากลูกค้า”
-- ใส่ TrustBadge.tsx, ReviewsGallery.tsx เพื่อสร้างความมั่นใจ
-- ใช้ภาพจริงของทีมงานในหน้า “เกี่ยวกับเรา” เพื่อเพิ่มความเป็นมืออาชีพ
-2. 🖼️ ภาพประกอบคุณภาพสูง
-- ใช้ภาพจาก public/assets/portfolio และ services ใน Hero, Portfolio, Service Cards
-- ภาพควรสื่อถึงความเป็นมืออาชีพ ไม่ cartoonish
-3. 🧩 โค้ดที่ขยายง่าย ดูแลง่าย
-- ใช้ component-based design + reusable layout เช่น PageSection, CardWrapper
-- แยก UI logic กับ business logic ด้วย hooks, services, context
-🧭 Layout ที่แนะนำ
-| Section                | Component ที่ใช้ |
-|------------------------|------------------|
-| Hero Section           | HeroBackground, HeroStats, CTA Button |
-| Services               | ServiceCard, FeatureList, ComplianceFAQ |
-| Portfolio              | PortfolioGallery, PortfolioFilter, CaseStudyRedacted |
-| Testimonials / Reviews | TestimonialSlider, ReviewCard |
-| Contact / Footer       | BlurContact, Footer.tsx, SocialIcons.tsx |
-- ใช้ motionVariants.ts เพื่อเพิ่ม animation
-- รองรับ dark/light mode ด้วย ThemeToggle.tsx
-🎨 โทนสีที่เหมาะกับธุรกิจ
-| โทนสี        | ความรู้สึก         | ตัวอย่าง HEX |
-|--------------|--------------------|---------------|
-| น้ำเงินกรม   | น่าเชื่อถือ มืออาชีพ | #1E3A8A, #2563EB |
-| ขาว/เทาอ่อน | สะอาด อ่านง่าย     | #F9FAFB, #E5E7EB |
-| เขียวอ่อน   | สดชื่น เป็นมิตร     | #10B981, #6EE7B7 |
-| ทองอ่อน      | ความสำเร็จ มั่นใจ    | #FBBF24, #FCD34D |
-กำหนดใน tailwind.config.ts เพื่อ
-ให้theme consistency--
-✨ UX ที่ดีจากฟีเจอร์ที่คุณมี.
-- ChatWidget.tsx → ช่องทางสื่อสารแบบ real-time
-- ScrollProgress.tsx, ScrollToTop.tsx → นำทางง่าย
-- ErrorBoundary.tsx, FallbackLoader.tsx → เสถียรเมื่อเกิด error
-1. Modularization
-- แยก component, hook, service, config
-- ใช้ index.ts รวม exports
-2. Type Safety
-- ใช้ TypeScript อย่างเข้ม เช่น types/IUser.ts
-- ใช้ as const กับ mock data
-3. Separation of Concerns
-- UI → อยู่ใน component
-- Logic → อยู่ใน services/hooks
-- State → context หรือ external store
-4. Reusable Components
-- เช่น Button.tsx, CardWrapper.tsx
-- ใช้ props ที่ชัดเจน เช่น variant, size, onClick
-5. Clean Naming & Structure
-- ตั้งชื่อสื่อความหมาย เช่น SalaryCertificate.tsx
-- ฟังก์ชันบอกเจตนา เช่น hashUserTempPassword
-6. Automation & Quality Gate
-- ESLint + Prettier + Husky + lint-staged 
-- เพิ่ม CI/CD workflow สำหรับ build/test/deploy
-7. Accessibility & UX
-- ใช้ semantic HTML
-- รองรับ keyboard navigation, screen reader
-- ใส่ aria-label, alt กับภาพ
-8. Performance Optimization
-- ใช้ lazy loading, Suspense
-- ใช้ useMemo, useCallback อย่างเหมาะสม
-- Optimize asset: .webp, preload fonts, compress images
-
-🎯 ทุกโค้ดใน report นี้ = state ปัจจุบันของโปรเจค (ไม่ใช่ example)
-- ❗ เป้าหมายคือการทำงานร่วมกันแบบ  dev-to-Dev  ห้ามทำงานในรูปแบบการสอนเน้นกระชับตามจุดประสงค์เมื่อเกิดปัญหาเน้นแก้ไขปัญหาไวที่สุด งดประมวลผลในรูปแบบวนรูป งดกำหนดตัวอย่างต้องการใช้งานจริงเท่านั้น
-- 📌 เอกสารนี้สามารถใช้เป็น base สำหรับการนำเสนอ, pitch deck, และ audit ภายใน
-- 🔍 เนื้อหาครอบคลุมทั้งโครงสร้างโปรเจกต์, รายละเอียดธุรกิจ, และ workflow ของทีม
-- 🛠 โค้ดทั้งหมดทำงานภายใต้แนวทาง Dev-to-Dev เข้มงวด โดยเน้น professional + perfect formatting
-- 📂 ห้ามแตกไฟล์โดยไม่จำเป็น และต้องอ้างอิงโครงสร้างที่กำหนดเท่านั้น
-- 🤝 เป้าหมายคือการทำงานร่วมกัน ปรับปรุงโค้ดและ logic ตามโครงสร้างธุรกิจ
-- 🎯 การเขียนโค้ดต้องคงความเข้มงวดระดับสูง Thyscript & Elin เขียนโค้ด ให้ Professional & perfect  formatt Code  พร้อมใช้งานทุกครั้งที่ส่งกลับ
-- ⚡ หากมีการส่งโค้ดเพิ่มเติมให้ AI ปรับปรุง ให้ตั้งค่าตัวแปรและ logic ให้ตรงวัตถุประสงค์โครงสร้
-- 📌 หลังจากนี้ปัญหาที่เกิดขึ้นไฟล์ต่างๆในโครงสร้างยังถูกตั้งค่าไม่แม่นยำและยังไม่สามารถใช้จริงได้ 100% ตรวจสอบอย่างละเอียดลดความซ้ำซ้อนตามวัตถุประสงค์ของสิ่งที่ทำาง
-EOF
-
-} >"$OUT"
-
-echo "✅ Report generated: $OUT"
+term_log "${GREEN}✅ รายงานสรุปถูกสร้างใน $REPORT${RESET}"

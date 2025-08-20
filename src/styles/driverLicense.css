@@ -2,86 +2,53 @@
    Driver License Component Styles
 ================================== */
 
-/* Container */
 .driver-license-card {
-  width: 350px;
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  background-color: var(--color-bg-light);
-  box-shadow: var(--shadow-md);
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
+  @apply w-[350px] p-4 rounded-lg bg-white shadow-md text-gray-800 font-sans transition-colors transition-shadow;
 }
 
-/* Header Section */
 .driver-license-card .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  @apply flex justify-between items-center mb-3;
 }
 
 .driver-license-card .header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0;
+  @apply text-lg font-semibold m-0;
 }
 
 .driver-license-card .header img {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
+  @apply w-12 h-12 rounded-sm;
 }
 
-/* Personal Info Section */
 .driver-license-card .personal-info {
-  margin-bottom: 12px;
+  @apply mb-3;
 }
 
 .driver-license-card .personal-info p {
-  margin: 4px 0;
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
+  @apply my-1 text-sm text-gray-500;
 }
 
-/* License Info Section */
 .driver-license-card .license-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  @apply flex flex-col gap-1;
 }
 
 .driver-license-card .license-info span {
-  font-weight: 500;
-  font-size: 0.875rem;
+  @apply font-medium text-sm;
 }
 
-/* Footer / Additional Notes */
 .driver-license-card .footer {
-  margin-top: 12px;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
+  @apply mt-3 text-xs text-gray-400;
 }
 
-/* Hover Effects */
 .driver-license-card:hover {
-  background-color: var(--color-primary);
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  transition: all var(--transition-fast);
+  @apply bg-blue-600 text-white shadow-lg transition-all duration-200;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .driver-license-card {
-    width: 100%;
-    padding: 12px;
+    @apply w-full p-3;
   }
 
   .driver-license-card .header h2 {
-    font-size: 1rem;
+    @apply text-base;
   }
 }
