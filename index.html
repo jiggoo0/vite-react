@@ -1,105 +1,32 @@
-<!doctype html>
-<html lang="th">
+<!DOCTYPE html>
+<html lang="th" data-theme="business">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+    <title>Business App</title>
 
-    <title>JP Visual & Docs</title>
-    <meta
-      name="description"
-      content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร"
-    />
-    <meta name="author" content="JP Visual & Docs Team" />
-    <meta name="theme-color" content="#2563EB" />
-    <meta name="language" content="th" />
-    <meta name="robots" content="index, follow" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="JP Visual & Docs" />
-    <meta
-      property="og:description"
-      content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร"
-    />
-    <meta property="og:url" content="https://404notfontjp.vercel.app/" />
-    <meta
-      property="og:image"
-      content="https://404notfontjp.vercel.app/og-image.png"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="th_TH" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JP Visual & Docs" />
-    <meta
-      name="twitter:description"
-      content="เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร"
-    />
-    <meta
-      name="twitter:image"
-      content="https://404notfontjp.vercel.app/twitter-image.png"
-    />
-    <meta name="twitter:creator" content="@jpsystem.official" />
-
-    <!-- Icons -->
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- SEO / Social -->
+    <meta name="description" content="Business App - ระบบจัดการเอกสารและทะเบียนพาณิชย์" />
+    <meta name="theme-color" content="#1E3A8A" />
+    <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Fonts -->
-    <link
-      rel="preload"
-      href="/fonts/YourFont.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap"
-    />
-
-    <!-- Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
-    <!-- Structured Data (SEO) -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "JP Visual & Docs",
-        "url": "https://404notfontjp.vercel.app/",
-        "description": "เว็บไซต์ JP Visual & Docs สำหรับการแสดงผลและเอกสาร",
-        "publisher": {
-          "@type": "Organization",
-          "name": "JP Visual & Docs Team",
-          "logo": "https://404notfontjp.vercel.app/logo.png"
-        }
-      }
-    </script>
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
+    <link rel="stylesheet" href="/src/styles/variables.css" />
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <link rel="stylesheet" href="/src/styles/fonts.css" />
   </head>
 
-  <body
-    class="bg-white text-gray-900 antialiased dark:bg-gray-900 dark:text-white"
-  >
-    <noscript>
-      <div class="p-4 bg-red-100 text-red-800 text-center">
-        เว็บไซต์นี้ต้องการ JavaScript เพื่อการทำงานที่สมบูรณ์
-      </div>
-    </noscript>
-
-    <!-- Root Element -->
+  <body class="antialiased bg-bg text-text">
     <div id="root"></div>
 
-    <!-- Entry Point -->
+    <!-- Main Script -->
     <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
