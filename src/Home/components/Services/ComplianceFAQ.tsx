@@ -15,7 +15,7 @@ export interface ComplianceFAQProps {
 const defaultFAQ: QA[] = [
   {
     q: "ขอบเขตงานที่ไม่รับทำมีอะไรบ้าง?",
-    a: "งานที่ผิดกฎหมาย/ละเมิดสิทธิ์/หลอกลวงเชิงอาชญากรรม เราปฏิเสธทันที รวมถึงงานที่ฝ่าฝืนแพลตฟอร์มหรือเงื่อนไขผู้ให้บริการ",
+    a: "งานผิดกฎหมาย/ละเมิดสิทธิ์/หลอกลวง เราปฏิเสธทันที รวมถึงงานที่ฝ่าฝืนแพลตฟอร์มหรือเงื่อนไขผู้ให้บริการ",
   },
   {
     q: "การส่งมอบปลอดภัยอย่างไร?",
@@ -23,11 +23,11 @@ const defaultFAQ: QA[] = [
   },
   {
     q: "ข้อมูลลูกค้าถูกเก็บอย่างไร?",
-    a: "เราเก็บเท่าที่จำเป็นต่อการทำงาน ลบหรือทำให้เป็นนิรนามเมื่องานเสร็จตาม SLA ภายในระยะเวลาที่กำหนด",
+    a: "เก็บเท่าที่จำเป็น ลบหรือทำให้เป็นนิรนามเมื่องานเสร็จตาม SLA",
   },
   {
     q: "รอบแก้/ขอบเขตการแก้ไขเป็นอย่างไร?",
-    a: "ระบุชัดเจนก่อนเริ่มงาน โดยเน้นแก้จุดสำคัญตามตกลง รอบแก้เพิ่มเติมคิดตามจริง",
+    a: "ระบุชัดเจนก่อนเริ่มงาน เน้นแก้จุดสำคัญ รอบแก้เพิ่มเติมคิดตามจริง",
   },
 ];
 
@@ -37,37 +37,35 @@ const ComplianceFAQ: FC<ComplianceFAQProps> = ({
   headline = "ข้อกำกับและเงื่อนไข (Compliance)",
   subline = "โปร่งใสและปลอดภัย เพื่อความสบายใจของทุกฝ่าย",
 }) => {
-  const data = items?.length ? items : defaultFAQ;
+  const faqData = items?.length ? items : defaultFAQ;
 
   return (
-    <section className={clsx("py-12 md:py-16", className)}>
+    <section className={clsx("py-16 md:py-20", className)}>
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-2xl md:text-3xl font-semibold">{headline}</h2>
-          <p className="mt-2 text-base text-base-content/80">{subline}</p>
-        </div>
+        <header className="text-center max-w-2xl mx-auto mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary">{headline}</h2>
+          <p className="mt-3 text-base md:text-lg text-gray-600 dark:text-gray-400">{subline}</p>
+        </header>
 
         {/* FAQ List */}
-        <div className="flex flex-col gap-4">
-          {data.map((qa, idx) => (
+        <div className="grid gap-4 md:gap-6">
+          {faqData.map((item, idx) => (
             <details
               key={idx}
-              className="group border border-base-300 rounded-xl bg-base-100 p-4 
-                         hover:shadow-md transition-shadow duration-300"
+              className="group border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 p-5 transition-shadow hover:shadow-lg"
             >
               <summary
-                className="cursor-pointer select-none text-base md:text-lg font-medium 
-                           list-none marker:hidden flex justify-between items-center"
-                aria-label={`Toggle FAQ: ${qa.q}`}
+                className="cursor-pointer flex justify-between items-center font-medium text-base md:text-lg list-none focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                aria-label={`Toggle FAQ: ${item.q}`}
               >
-                {qa.q}
-                <span className="ml-2 transition-transform duration-300 group-open:rotate-180">
+                {item.q}
+                <span className="ml-2 transform transition-transform duration-300 group-open:rotate-180">
                   ▼
                 </span>
               </summary>
-              <div className="mt-2 text-base text-base-content/80 overflow-hidden transition-all duration-300 ease-in-out">
-                <p>{qa.a}</p>
+              <div className="mt-2 text-base md:text-base leading-relaxed text-gray-700 dark:text-gray-300 transition-all duration-300 ease-in-out">
+                {item.a}
               </div>
             </details>
           ))}

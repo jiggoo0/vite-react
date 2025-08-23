@@ -5,13 +5,9 @@ import clsx from "clsx";
 import { cardVariantClasses, cardSizeClasses, CardVariant, CardSize } from "./Card.styles";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /** เนื้อหาภายใน Card */
   children: ReactNode;
-  /** Variant ของ Card */
   variant?: CardVariant;
-  /** ขนาดของ Card */
   size?: CardSize;
-  /** คลาสเพิ่มเติมสำหรับการปรับแต่ง */
   className?: string;
 }
 
@@ -26,6 +22,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           cardSizeClasses[size],
           className
         )}
+        role="region"
         {...props}
       >
         {children}

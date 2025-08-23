@@ -3,12 +3,7 @@
 import { FC, ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import {
-  ButtonVariant,
-  ButtonSize,
-  buttonSizeClasses,
-  buttonVariantClasses,
-} from "./button.styles";
+import { ButtonVariant, ButtonSize, buttonSizeClasses, buttonVariantClasses } from "./button.styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -22,65 +17,52 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconRight?: ReactNode;
 }
 
-/**
- * 🔹 Button Component
- *
- * Features:
- * - Variant & size support
- * - Loading state with spinner
- * - Optional left/right icons
- * - Full width option
- * - Accessible: focus styles, aria-busy, aria-label
- * - Reusable across app
- */
 const Button: FC<ButtonProps> = ({
   children,
   variant = "primary",
   size = "md",
   className,
   type = "button",
-  fullWidth = false,
-  loading = false,
+  fullWidth,
+  loading,
   disabled,
   iconLeft,
   iconRight,
   ...props
 }) => {
+  const isDisabled = disabled || loading;
   const loaderSize = size === "sm" ? 16 : size === "lg" ? 24 : 20;
 
   return (
     <button
       type={type}
-      disabled={disabled || loading}
+      disabled={isDisabled}
       aria-busy={loading || undefined}
-      aria-label={loading ? "Loading..." : props["aria-label"]}
+      aria-label={loading ? "กำลังโหลด..." : props["aria-label"]}
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
         buttonSizeClasses[size],
         buttonVariantClasses[variant],
         fullWidth && "w-full",
+        isDisabled && "opacity-70 cursor-not-allowed",
         className
       )}
       {...props}
     >
-      {/* Loading Spinner */}
-      {loading && (
+      {loading ? (
         <Loader2
           className="animate-spin text-current"
           width={loaderSize}
           height={loaderSize}
           aria-hidden="true"
         />
+      ) : (
+        <>
+          {iconLeft && <span className="mr-1">{iconLeft}</span>}
+          <span>{children}</span>
+          {iconRight && <span className="ml-1">{iconRight}</span>}
+        </>
       )}
-
-      {/* Left Icon */}
-      {iconLeft && !loading && <span className="mr-1">{iconLeft}</span>}
-
-      {/* Button Text */}
-      <span className={clsx(loading && "opacity-70")}>{children}</span>
-
-      {/* Right Icon */}
-      {iconRight && !loading && <span className="ml-1">{iconRight}</span>}
     </button>
   );
 };

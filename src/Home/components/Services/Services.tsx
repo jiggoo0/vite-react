@@ -10,12 +10,12 @@ const Services: FC = () => (
     role="region"
     className="relative isolate overflow-hidden bg-base-100 text-base-content py-24 px-4 sm:px-6 lg:px-8"
   >
-    {/* Hidden accessible heading for screen readers */}
+    {/* Accessible heading */}
     <h2 id="services-title" className="sr-only">
       บริการของเรา
     </h2>
 
-    {/* Decorative gradient background */}
+    {/* Decorative background gradient */}
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-y-0 -left-10 -z-10 w-[500px] 
@@ -23,7 +23,7 @@ const Services: FC = () => (
                  blur-[120px] opacity-40"
     />
 
-    {/* Main services content */}
+    {/* Services content */}
     <div className="relative z-10">
       <ServicesSection />
     </div>
