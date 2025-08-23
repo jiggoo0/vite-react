@@ -1,5 +1,5 @@
 /* ==============================
-   Tailwind Base
+   Tailwind Directives
 ============================== */
 @tailwind base;
 @tailwind components;
@@ -17,6 +17,7 @@
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #d1d5db;
   --color-primary-content: #ffffff;
+
   --radius-md: 0px;
   --transition-base: 0.25s;
   --transition-fast: 0.2s;
@@ -57,9 +58,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5em;
 }
 
-p {
-  margin-bottom: 1em;
-}
+p { margin-bottom: 1em; }
 
 a {
   color: var(--color-primary);
@@ -67,18 +66,10 @@ a {
   transition: color var(--transition-fast) ease;
 }
 
-a:hover {
-  color: var(--color-primary-hover);
-}
+a:hover { color: var(--color-primary-hover); }
 
-ul, ol {
-  padding-left: 1.5em;
-  margin-bottom: 1em;
-}
-
-li {
-  margin-bottom: 0.5em;
-}
+ul, ol { padding-left: 1.5em; margin-bottom: 1em; }
+li { margin-bottom: 0.5em; }
 
 img, video, canvas, svg {
   max-width: 100%;
@@ -106,17 +97,14 @@ button {
   padding: 0.5rem 1rem;
 }
 
-button:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-}
-
+button:hover:not(:disabled) { background-color: var(--color-primary-hover); }
 button:disabled {
   background-color: var(--color-primary-disabled);
   cursor: not-allowed;
 }
 
 /* ==============================
-   Utilities
+   Utility Classes
 ============================== */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
