@@ -3,9 +3,6 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 
-// ==============================
-// Path Aliases
-// ==============================
 const alias = {
   "@": path.resolve(__dirname, "src"),
   "@home": path.resolve(__dirname, "src/Home"),
@@ -21,12 +18,9 @@ const alias = {
   "@api": path.resolve(__dirname, "src/api"),
   "@services": path.resolve(__dirname, "src/services"),
   "@__mocks__": path.resolve(__dirname, "src/__mocks__"),
-  "@config": path.resolve(__dirname, "src/config"), // เพิ่มเพื่อแก้ alias
+  "@config": path.resolve(__dirname, "src/config"),
 };
 
-// ==============================
-// Vendor Chunk Mapping
-// ==============================
 const vendorChunks = [
   { name: "vendor_react", match: /node_modules\/react(?!-dom)/ },
   { name: "vendor_react-dom", match: /node_modules\/react-dom/ },
@@ -41,13 +35,8 @@ const vendorChunks = [
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   resolve: { alias },
-
-  define: {
-    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "production"),
-  },
-
+  define: { "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "production") },
   server: { host: "0.0.0.0", port: 5173, strictPort: true },
-
   build: {
     target: "esnext",
     sourcemap: true,
@@ -61,16 +50,12 @@ export default defineConfig({
         chunkFileNames: "assets/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash].[ext]",
         manualChunks(id: string) {
-          for (const chunk of vendorChunks) {
-            if (chunk.match.test(id)) return chunk.name;
-          }
+          for (const chunk of vendorChunks) if (chunk.match.test(id)) return chunk.name;
         },
       },
     },
   },
-
   cacheDir: "node_modules/.vite",
-
   test: {
     globals: true,
     environment: "jsdom",

@@ -11,6 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "baseUrl": "src",
+    "outDir": "dist",
+    "rootDir": "src",
     "paths": {
       "@/*": ["*"],
       "@home/*": ["Home/*"],
@@ -29,5 +31,6 @@
       "@config/*": ["config/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
