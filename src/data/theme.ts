@@ -1,104 +1,61 @@
-// src/data/theme.ts
+export type ThemeType = "light" | "dark" | "business";
 
-export type ThemeColors = {
-  primary: string;
-  "primary-hover": string;
-  "primary-disabled": string;
-  "primary-content"?: string;
-  secondary: string;
-  accent: string;
-  neutral: string;
-  success: string;
-  warning: string;
-  error: string;
-  info: string;
-  "bg-light": string;
-  "bg-dark": string;
-  [key: string]: string | undefined;
-};
-
-export type Theme = {
-  name: string;
-  colors: ThemeColors;
-  fontFamily?: string[];
-  borderRadius?: { sm: string; md: string; lg: string };
-  boxShadow?: { sm: string; md: string };
-  transitionDuration?: { fast: string; base: string; slow: string };
-};
-
-// ---------- Light Theme ----------
-export const lightTheme: Theme = {
-  name: "light",
-  colors: {
-    primary: "#1E3A8A",
-    "primary-hover": "#2563EB",
-    "primary-disabled": "#9CA3AF",
-    secondary: "#374151",
-    accent: "#FBBF24",
-    neutral: "#6B7280",
-    success: "#10B981",
-    warning: "#FACC15",
-    error: "#EF4444",
-    info: "#3B82F6",
-    "bg-light": "#F9FAFB",
-    "bg-dark": "#1F2937",
+export const themes: Record<ThemeType, { name: string; colors: Record<string, string> }> = {
+  light: {
+    name: "Light",
+    colors: {
+      primary: "#2563eb",
+      "primary-hover": "#1e40af",
+      secondary: "#9333ea",
+      accent: "#f59e0b",
+      neutral: "#374151",
+      success: "#10b981",
+      warning: "#facc15",
+      error: "#ef4444",
+      info: "#3b82f6",
+      "bg-light": "#ffffff",
+      "bg-dark": "#f3f4f6",
+      text: "#111827",
+      "text-muted": "#374151",
+    },
   },
-  fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-  borderRadius: { sm: "0.25rem", md: "0.5rem", lg: "0.75rem" },
-  boxShadow: { sm: "0 1px 3px rgba(0,0,0,0.05)", md: "0 4px 6px rgba(0,0,0,0.08)" },
-  transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
-};
-
-// ---------- Dark Theme ----------
-export const darkTheme: Theme = {
-  name: "dark",
-  colors: {
-    primary: "#2563EB",
-    "primary-hover": "#1E40AF",
-    "primary-disabled": "#9CA3AF",
-    secondary: "#A1A1AA",
-    accent: "#FBBF24",
-    neutral: "#1F2937",
-    success: "#10B981",
-    warning: "#FACC15",
-    error: "#EF4444",
-    info: "#3B82F6",
-    "bg-light": "#111827",
-    "bg-dark": "#1F2937",
+  dark: {
+    name: "Dark",
+    colors: {
+      primary: "#3b82f6",
+      "primary-hover": "#2563eb",
+      secondary: "#a855f7",
+      accent: "#fbbf24",
+      neutral: "#1f2937",
+      success: "#34d399",
+      warning: "#fde047",
+      error: "#f87171",
+      info: "#60a5fa",
+      "bg-light": "#111827",
+      "bg-dark": "#1f2937",
+      text: "#f3f4f6",
+      "text-muted": "#9ca3af",
+    },
   },
-  fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-  borderRadius: { sm: "0.25rem", md: "0.5rem", lg: "0.75rem" },
-  boxShadow: { sm: "0 1px 3px rgba(255,255,255,0.05)", md: "0 4px 6px rgba(255,255,255,0.06)" },
-  transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
-};
-
-// ---------- Business Theme ----------
-export const businessTheme: Theme = {
-  name: "business",
-  colors: {
-    primary: "#1E3A8A",
-    "primary-hover": "#2563EB",
-    "primary-disabled": "#9CA3AF",
-    "primary-content": "#FFFFFF",
-    secondary: "#374151",
-    accent: "#FBBF24",
-    neutral: "#6B7280",
-    success: "#10B981",
-    warning: "#FACC15",
-    error: "#EF4444",
-    info: "#3B82F6",
-    "bg-light": "#F3F4F6",
-    "bg-dark": "#D1D5DB",
+  business: {
+    name: "Business",
+    colors: {
+      primary: "#1e3a8a",
+      "primary-hover": "#2563eb",
+      "primary-disabled": "#9ca3af",
+      "primary-content": "#ffffff",
+      secondary: "#2563eb",
+      "secondary-hover": "#1e40af",
+      accent: "#fbbf24",
+      neutral: "#374151",
+      success: "#10b981",
+      warning: "#facc15",
+      error: "#ef4444",
+      info: "#3b82f6",
+      "bg-light": "#e5e7eb",
+      "bg-dark": "#f3f4f6",
+      text: "#111827",
+      "text-muted": "#374151",
+    },
   },
-  fontFamily: ["Kanit", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-  borderRadius: { sm: "0.25rem", md: "0.5rem", lg: "0.75rem" },
-  boxShadow: { sm: "0 1px 3px rgba(0,0,0,0.05)", md: "0 4px 6px rgba(0,0,0,0.08)" },
-  transitionDuration: { fast: "150ms", base: "250ms", slow: "300ms" },
-};
-
-// ---------- Export All Themes ----------
-export const themes: Record<string, Theme> = {
-  light: lightTheme,
-  dark: darkTheme,
-  business: businessTheme,
 };

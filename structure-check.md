@@ -1,6 +1,6 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
-> เวลาตรวจสอบ: 2025-08-21 05:39:37 | สาขา: main
+> เวลาตรวจสอบ: 2025-08-23 20:49:20 | สาขา: main
 
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
@@ -13,7 +13,7 @@
 | VITE_API_URL Defined | ✅ |
 | Alias Import | ✅ |
 | ESLint Check | ✅ |
-| TypeScript Check | ❌ |
+| TypeScript Check | ✅ |
 | Dev Server               | ✅ |
 
 ## 📦 ตรวจสอบ package.json
@@ -37,7 +37,7 @@
     "prepare": "husky install",
     "type-check": "tsc --noEmit",
     "alias": "node scripts/alias.ts",
-    "postcss:watch": "node -r tsconfig-paths/register ./node_modules/.bin/tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
+    "postcss:watch": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
     "clean": "rm -rf dist node_modules .turbo .cache"
   },
   "dependencies": {
@@ -55,6 +55,7 @@
     "html2canvas": "1.4.1",
     "jspdf": "3.0.1",
     "lucide-react": "^0.540.0",
+    "markdown-it": "14.1.0",
     "markdown-it-anchor": "9.2.0",
     "markdown-it-task-checkbox": "1.0.6",
     "markdown-it-toc-done-right": "4.2.0",
@@ -68,7 +69,6 @@
     "sweetalert2": "11.22.4",
     "tailwind-merge": "^3.3.1",
     "theme-change": "2.5.0",
-    "tsconfig.json": "1.0.11",
     "uuid": "11.1.0",
     "zod": "^4.0.17"
   },
@@ -102,10 +102,8 @@
     "glob": "11.0.3",
     "globals": "16.3.0",
     "husky": "^9.1.7",
-    "install": "0.13.0",
     "jsdom": "26.1.0",
     "lint-staged": "^16.1.5",
-    "markdown-it": "14.1.0",
     "pnpm": "10.14.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
@@ -127,17 +125,6 @@
     "*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write",
       "eslint --fix"
-    ]
-  },
-  "pnpm": {
-    "workspace": {
-      "packages": [
-        "packages/*"
-      ]
-    },
-    "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "puppeteer"
     ]
   }
 }
@@ -195,9 +182,8 @@ src
 │   │   │   ├── SalaryCertificate.tsx
 │   │   │   └── types
 │   │   │       └── salaryCertificate.ts
-│   │   ├── SpecialBranchCertificate
-│   │   │   └── SpecialBranchCertificate.tsx
-│   │   └── common
+│   │   └── SpecialBranchCertificate
+│   │       └── SpecialBranchCertificate.tsx
 │   ├── SecretPage.tsx
 │   ├── components
 │   │   ├── About
@@ -332,7 +318,6 @@ src
 │   ├── images
 │   │   └── hero-bg.webp
 │   ├── logo.webp
-│   ├── portfolio
 │   └── react.svg
 ├── config
 │   └── secretCards.config.tsx
@@ -358,7 +343,6 @@ src
 │   └── driverLicenseOcr.ts
 ├── styles
 │   ├── driverLicense.css
-│   ├── fonts.css
 │   ├── global.css
 │   ├── print.css
 │   ├── theme.css
@@ -384,7 +368,7 @@ src
     ├── exportCard.ts
     └── index.ts
 
-58 directories, 167 files
+56 directories, 166 files
 ```
 
 ## 🛠️ Roadmap

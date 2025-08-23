@@ -1,5 +1,4 @@
 @media print {
-  /* Reset ทุกอย่างให้เรียบง่าย */
   * {
     background: transparent !important;
     color: #000 !important;
@@ -18,17 +17,16 @@
     color: #000;
   }
 
-  /* ซ่อน element ที่ไม่จำเป็น */
   .no-print, nav, header, footer, .btn, .hidden-print {
     display: none !important;
   }
 
-  /* ตารางอ่านง่าย */
   table {
     border-collapse: collapse;
     width: 100%;
     page-break-inside: avoid;
   }
+
   th, td {
     border: 1px solid #000;
     padding: 4px 8px;
@@ -36,37 +34,31 @@
     vertical-align: top;
   }
 
-  /* Page breaks */
   .page-break {
     page-break-after: always;
   }
 
-  /* Links แสดง URL */
   a:after {
     content: " (" attr(href) ")";
     font-size: 10pt;
   }
 
-  /* รูปและสื่อ */
   img, video, canvas, svg {
     max-width: 100% !important;
     height: auto !important;
     page-break-inside: avoid;
   }
 
-  /* ฟอร์มไม่แตกหน้า */
   form, fieldset {
     page-break-inside: avoid;
   }
 
-  /* Headings ชัดเจน */
   h1, h2, h3, h4, h5, h6 {
     color: #000 !important;
     page-break-after: avoid;
     page-break-inside: avoid;
   }
 
-  /* Code / Preformatted text */
   pre, code {
     font-family: monospace;
     font-size: 10pt;
@@ -74,7 +66,6 @@
     word-wrap: break-word;
   }
 
-  /* General spacing สำหรับ paragraph, lists, blockquote */
   p, ul, ol, blockquote {
     page-break-inside: avoid;
     orphans: 3;

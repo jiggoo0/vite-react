@@ -2,15 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import RootApp from "./App/RootApp";
 
-// 🔹 Global Styles
-import "./styles/global.css";        // Tailwind + DaisyUI
-import "./styles/driverLicense.css"; // Component-specific
-import "./styles/variables.css";     // CSS variables
-import "./styles/theme.css";         // Theme overrides
+import "./styles/global.css";
+import "./styles/driverLicense.css";
+import "./styles/variables.css";
+import "./styles/theme.css";
 
-/**
- * Ensure root element exists in DOM
- */
 const ensureRootElement = (): HTMLElement => {
   let root = document.getElementById("root");
   if (!root) {
@@ -21,7 +17,6 @@ const ensureRootElement = (): HTMLElement => {
   return root;
 };
 
-// 🔹 Initialize React Root
 const root = ReactDOM.createRoot(ensureRootElement());
 
 root.render(
@@ -30,7 +25,6 @@ root.render(
   </React.StrictMode>
 );
 
-// 🔹 Dev Build Info Logger
 if (import.meta.env.DEV) {
   console.groupCollapsed("📦 App Info");
   console.info("🚀 Version:", import.meta.env.VITE_APP_VERSION ?? "dev");
@@ -40,17 +34,15 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
-// 🔹 Service Worker Registration (Production Only)
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`)
-    .then((registration) => {
-      console.log("✅ Service Worker registered:", registration.scope);
-    })
-    .catch((error) => {
-      console.error("❌ Service Worker registration failed:", error);
-    });
+    .then((registration) =>
+      console.log("✅ Service Worker registered:", registration.scope)
+    )
+    .catch((error) =>
+      console.error("❌ Service Worker registration failed:", error)
+    );
 }
 
-// 🔹 Export empty for HMR compatibility
 export {};

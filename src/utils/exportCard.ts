@@ -1,6 +1,6 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { ThemeType } from "../ThemeProvider/colors"; // ✅ corrected path
+import { ThemeType } from "../ThemeProvider/colors";
 
 /**
  * Render an HTML element to a canvas
@@ -8,7 +8,7 @@ import { ThemeType } from "../ThemeProvider/colors"; // ✅ corrected path
 const renderElementToCanvas = async (
   elementId: string,
   scale = 2,
-  theme: ThemeType = "business"
+  theme: ThemeType = "primary"
 ): Promise<HTMLCanvasElement | null> => {
   const element = document.getElementById(elementId);
   if (!element) {
@@ -41,8 +41,8 @@ const renderElementToCanvas = async (
 export const exportCardAsPNG = async (
   elementId: string,
   fileName = "idcard.png",
-  theme: ThemeType = "business"
-): Promise<void> => {
+  theme: ThemeType = "primary"
+) => {
   const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
 
@@ -59,8 +59,8 @@ export const exportCardAsPDF = async (
   elementId: string,
   fileName = "idcard.pdf",
   useA4 = false,
-  theme: ThemeType = "business"
-): Promise<void> => {
+  theme: ThemeType = "primary"
+) => {
   const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
 

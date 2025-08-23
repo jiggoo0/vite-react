@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ==================================
-   Reset & Base Styles
-================================== */
 *,
 *::before,
 *::after {
@@ -23,15 +20,17 @@ body {
   background-color: var(--color-bg, #ffffff);
   color: var(--color-text, #111827);
   line-height: 1.5;
-  transition: 
+  transition:
     background-color var(--transition-base, 0.25s ease),
     color var(--transition-base, 0.25s ease);
 }
 
-/* ==================================
-   Typography
-================================== */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5em;
@@ -41,9 +40,6 @@ p {
   margin-bottom: 1em;
 }
 
-/* ==================================
-   Links
-================================== */
 a {
   color: var(--color-primary);
   text-decoration: none;
@@ -54,10 +50,8 @@ a:hover {
   color: var(--color-primary-hover);
 }
 
-/* ==================================
-   Lists
-================================== */
-ul, ol {
+ul,
+ol {
   padding-left: 1.5em;
   margin-bottom: 1em;
 }
@@ -66,19 +60,19 @@ li {
   margin-bottom: 0.5em;
 }
 
-/* ==================================
-   Media
-================================== */
-img, video, canvas, svg {
+img,
+video,
+canvas,
+svg {
   max-width: 100%;
   display: block;
   height: auto;
 }
 
-/* ==================================
-   Forms & Buttons
-================================== */
-input, button, select, textarea {
+input,
+button,
+select,
+textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -86,7 +80,7 @@ input, button, select, textarea {
 
 button {
   border-radius: var(--radius-md, 8px);
-  transition: 
+  transition:
     background-color var(--transition-base),
     color var(--transition-base);
   cursor: pointer;
@@ -103,17 +97,19 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ==================================
-   Utility Classes
-================================== */
-.text-center { text-align: center; }
-.text-left   { text-align: left; }
-.text-right  { text-align: right; }
-.hidden      { display: none !important; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.hidden {
+  display: none !important;
+}
 
-/* ==================================
-   Containers
-================================== */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -123,9 +119,6 @@ button:disabled {
   padding-right: 1rem;
 }
 
-/* ==================================
-   Custom Scrollbar
-================================== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -139,9 +132,6 @@ button:disabled {
   border-radius: 4px;
 }
 
-/* ==================================
-   Dark Mode Support
-================================== */
 [data-theme="dark"],
 .dark {
   --color-bg: #1f2937;

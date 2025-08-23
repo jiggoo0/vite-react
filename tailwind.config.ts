@@ -11,9 +11,7 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
-
   darkMode: "class",
-
   theme: {
     extend: {
       colors: {
@@ -63,9 +61,7 @@ const config: Config = {
       },
     },
   },
-
   plugins: [forms, typography, aspectRatio, containerQueries, daisyui],
-
   daisyui: {
     themes: [
       "light",
@@ -93,12 +89,11 @@ const config: Config = {
     styled: true,
     base: true,
     utils: true,
-    logs: false, // Disable logs in production
+    logs: false,
   },
-
   corePlugins: {
     container: true,
-    float: false, // Not used for flat professional layout
+    float: false,
     objectFit: true,
   },
 };

@@ -5,38 +5,40 @@ import { useProtectedAuth } from "@hooks/useProtectedAuth";
 import LazyA4Card from "@home/components/common/LazyA4Card";
 import { getLazyCards, EffectiveRole } from "../config/secretCards.config";
 
+interface LazyCard {
+  component: ReactNode;
+  delay?: number;
+  isBlurred?: boolean;
+  fallback?: ReactNode;
+}
+
 /**
  * SecretPage
  * --------------------
  * - แสดงชุดการ์ดแบบ lazy load
  * - แยก Section ตาม role ของผู้ใช้งาน
- * - Responsive, professional, readable
+ * - Flat, professional, readable
  */
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
 
-  // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-base-200 text-base-content">
-        <span className="text-lg font-medium animate-pulse">Loading...</span>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 text-gray-900">
+        <span className="text-lg font-medium">Loading...</span>
       </div>
     );
   }
 
-  // User not authenticated
   if (!user) return null;
 
-  // กำหนด effectiveRole สำหรับ user
   const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(user.role)
     ? (user.role as EffectiveRole)
     : "user";
 
-  // สร้างชุดการ์ดทั้งหมดตาม role
-  const lazyCards = getLazyCards(user, effectiveRole);
+  const lazyCards: LazyCard[] = getLazyCards(user, effectiveRole);
 
-  // แบ่ง sections ของการ์ดเพื่อให้อ่านง่าย
-  const sections: { cards: typeof lazyCards; title?: string }[] = [
+  const sections: { cards: LazyCard[]; title?: string }[] = [
     { cards: lazyCards.slice(0, 3), title: "Header Section" },
     { cards: lazyCards.slice(3, 4), title: "Registration Section" },
     { cards: lazyCards.slice(4, 5), title: "Salary Certificate" },
@@ -48,20 +50,23 @@ const SecretPage: FC = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-base-200 text-base-content px-4 sm:px-6 lg:px-8 py-8">
+    <main className="min-h-screen bg-gray-100 text-gray-900 px-4 sm:px-6 lg:px-8 py-8">
       <div className="container max-w-6xl mx-auto flex flex-col gap-12">
-        {sections.map(({ cards }, sectionIdx) =>
-          cards.map(({ component, delay, isBlurred, fallback }, idx) => (
-            <LazyA4Card
-              key={`${sectionIdx}-${idx}`}
-              delay={delay}
-              isBlurred={isBlurred}
-              fallback={fallback as ReactNode}
-            >
-              {component}
-            </LazyA4Card>
-          ))
-        )}
+        {sections.map(({ cards, title }, sectionIdx) => (
+          <section key={sectionIdx} className="flex flex-col gap-6">
+            {title && <h2 className="text-base font-semibold border-b border-gray-300">{title}</h2>}
+            {cards.map(({ component, delay, isBlurred, fallback }, idx) => (
+              <LazyA4Card
+                key={`${sectionIdx}-${idx}`}
+                delay={delay}
+                isBlurred={isBlurred}
+                fallback={fallback}
+              >
+                {component}
+              </LazyA4Card>
+            ))}
+          </section>
+        ))}
       </div>
     </main>
   );

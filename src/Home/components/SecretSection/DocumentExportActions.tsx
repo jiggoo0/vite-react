@@ -19,15 +19,12 @@ export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
     const element = document.getElementById(targetId);
     if (!element) return alert("ไม่พบเอกสารที่ต้องการ export");
 
-    // clone element เพื่อไม่รวมปุ่ม
     const clone = element.cloneNode(true) as HTMLElement;
-    const buttons = clone.querySelectorAll("button");
-    buttons.forEach((btn) => btn.remove());
+    clone.querySelectorAll("button").forEach((btn) => btn.remove());
 
     const canvas = await html2canvas(clone, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL("image/png");
 
-    // ขนาด A4 mm
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "mm",
@@ -44,16 +41,7 @@ export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
       const pageHeight = pdf.internal.pageSize.getHeight() - 2 * margin;
       const height = remainingHeight > pageHeight ? pageHeight : remainingHeight;
 
-      pdf.addImage(
-        imgData,
-        "PNG",
-        margin,
-        position,
-        pdfWidth,
-        height,
-        undefined,
-        "FAST"
-      );
+      pdf.addImage(imgData, "PNG", margin, position, pdfWidth, height, undefined, "FAST");
 
       remainingHeight -= pageHeight;
       if (remainingHeight > 0) pdf.addPage();
@@ -68,8 +56,7 @@ export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
     if (!element) return alert("ไม่พบเอกสารที่ต้องการ export");
 
     const clone = element.cloneNode(true) as HTMLElement;
-    const buttons = clone.querySelectorAll("button");
-    buttons.forEach((btn) => btn.remove());
+    clone.querySelectorAll("button").forEach((btn) => btn.remove());
 
     const canvas = await html2canvas(clone, { scale: 2, useCORS: true });
     const link = document.createElement("a");
@@ -82,13 +69,13 @@ export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
     <div className="flex gap-4">
       <button
         onClick={exportAsPDF}
-        className="px-4 py-2 bg-gray-800 text-white text-sm font-medium hover:bg-gray-700 transition-colors rounded"
+        className="px-4 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
       >
         Export as PDF (A4)
       </button>
       <button
         onClick={exportAsPNG}
-        className="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium hover:bg-gray-300 transition-colors rounded"
+        className="px-4 py-2 bg-gray-200 text-gray-900 text-sm font-medium hover:bg-gray-300 transition-colors"
       >
         Export as PNG
       </button>
@@ -97,5 +84,4 @@ export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
 };
 
 DocumentExportActions.displayName = "DocumentExportActions";
-
 export default DocumentExportActions;
