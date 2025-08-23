@@ -25,10 +25,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 /**
  * 🔹 Button Component
  *
- * - รองรับ variant และ size
- * - รองรับ loading state และ icons
- * - รองรับ fullWidth
- * - ออกแบบให้ accessible (focus, aria-busy, aria-label)
+ * Features:
+ * - Variant & size support
+ * - Loading state with spinner
+ * - Optional left/right icons
+ * - Full width option
+ * - Accessible: focus styles, aria-busy, aria-label
+ * - Reusable across app
  */
 const Button: FC<ButtonProps> = ({
   children,
@@ -60,6 +63,7 @@ const Button: FC<ButtonProps> = ({
       )}
       {...props}
     >
+      {/* Loading Spinner */}
       {loading && (
         <Loader2
           className="animate-spin text-current"
@@ -69,13 +73,17 @@ const Button: FC<ButtonProps> = ({
         />
       )}
 
+      {/* Left Icon */}
       {iconLeft && !loading && <span className="mr-1">{iconLeft}</span>}
 
+      {/* Button Text */}
       <span className={clsx(loading && "opacity-70")}>{children}</span>
 
+      {/* Right Icon */}
       {iconRight && !loading && <span className="ml-1">{iconRight}</span>}
     </button>
   );
 };
 
+Button.displayName = "Button";
 export default Button;

@@ -6,6 +6,35 @@
 @tailwind utilities;
 
 /* ==============================
+   Theme Variables (Light Mode)
+============================== */
+:root {
+  --color-primary: #1f2937;
+  --color-primary-hover: #111827;
+  --color-primary-disabled: #6b7280;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #4b5563;
+  --color-accent: #6b7280;
+  --color-neutral: #f3f4f6;
+
+  --color-info: #0ea5e9;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  --color-bg: #ffffff;
+  --color-bg-light: #f9fafb;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+
+  --radius-md: 0px;
+  --transition-base: 250ms;
+  --transition-fast: 200ms;
+  --font-family-base: 'Kanit', system-ui, sans-serif;
+}
+
+/* ==============================
    Global Reset
 ============================== */
 *,
@@ -22,72 +51,40 @@ html {
 }
 
 body {
-  font-family: var(--font-family-base, "Kanit", system-ui, sans-serif);
-  background-color: var(--color-bg, #ffffff);
-  color: var(--color-text, #111827);
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.5;
-  transition: background-color var(--transition-base, 0.25s ease),
-              color var(--transition-base, 0.25s ease);
+  transition: background-color var(--transition-base) ease,
+              color var(--transition-base) ease;
 }
 
 /* ==============================
-   Typography
+   Dark Mode
 ============================== */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 0.5em;
-}
+[data-theme="dark"], .dark {
+  --color-primary: #1f2937;
+  --color-primary-hover: #111827;
+  --color-primary-disabled: #6b7280;
+  --color-primary-content: #ffffff;
 
-p { margin-bottom: 1em; }
+  --color-secondary: #4b5563;
+  --color-accent: #6b7280;
+  --color-neutral: #111827;
 
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--transition-fast, 0.2s ease);
-}
-a:hover { color: var(--color-primary-hover); }
+  --color-info: #0ea5e9;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 
-ul, ol {
-  padding-left: 1.5em;
-  margin-bottom: 1em;
-}
-li { margin-bottom: 0.5em; }
-
-img, video, canvas, svg {
-  max-width: 100%;
-  display: block;
-  height: auto;
+  --color-bg: #1f2937;
+  --color-bg-light: #111827;
+  --color-text: #f3f4f6;
+  --color-text-muted: #9ca3af;
 }
 
 /* ==============================
-   Forms & Inputs
-============================== */
-input, button, select, textarea {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-button {
-  border-radius: var(--radius-md, 0px);
-  transition: background-color var(--transition-base, 0.25s),
-              color var(--transition-base, 0.25s);
-  cursor: pointer;
-  background-color: var(--color-primary);
-  color: var(--color-primary-content, #fff);
-  border: none;
-  padding: 0.5rem 1rem;
-}
-
-button:hover:not(:disabled) { background-color: var(--color-primary-hover); }
-button:disabled {
-  background-color: var(--color-primary-disabled);
-  cursor: not-allowed;
-}
-
-/* ==============================
-   Utilities
+   Utility Classes
 ============================== */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
@@ -107,30 +104,8 @@ button:disabled {
    Scrollbar
 ============================== */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-bg-light, #f3f4f6); }
-::-webkit-scrollbar-thumb { background-color: var(--color-primary); border-radius: 4px; }
-
-/* ==============================
-   Dark Mode
-============================== */
-[data-theme="dark"], .dark {
-  --color-bg: #1f2937;
-  --color-bg-light: #111827;
-  --color-text: #f3f4f6;
-  --color-text-muted: #9ca3af;
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-primary-disabled: #6b7280;
-  --color-primary-content: #ffffff;
-  --radius-md: 0px;
+::-webkit-scrollbar-track { background: var(--color-bg-light); }
+::-webkit-scrollbar-thumb { 
+  background-color: var(--color-primary); 
+  border-radius: 4px; 
 }
-
-.dark body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-}
-
-.dark a { color: var(--color-primary); }
-
-.dark ::-webkit-scrollbar-track { background: var(--color-bg-light); }
-.dark ::-webkit-scrollbar-thumb { background-color: var(--color-primary); }

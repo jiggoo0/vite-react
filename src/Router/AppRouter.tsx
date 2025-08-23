@@ -1,4 +1,7 @@
-import { FC, Suspense, lazy, ReactNode, ComponentType } from "react";
+// src/Router/AppRouter.tsx
+"use client";
+
+import { FC, Suspense, lazy, ComponentType, ReactNode } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Layout from "@/Layout/Layout";
@@ -12,28 +15,23 @@ import RoleGuard from "@/Router/RoleGuard";
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(
-  () => import("@/Home/CustomerAssessmentForm")
-);
+const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
 const IdCardFormPage = lazy(() => import("@/Home/IdCardForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
-// ---------- Suspense Wrapper ----------
-const RouteSuspense: FC<{ children: ReactNode; message?: string }> = ({
-  children,
-  message,
-}) => (
-  <Suspense fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}>
-    {children}
-  </Suspense>
-);
-
-// ---------- Lazy Page Helper ----------
+// ---------- Suspense + ErrorBoundary Wrapper ----------
 const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
   Page: ComponentType<P>,
   props?: P,
-  message?: string
-) => <RouteSuspense message={message}><Page {...(props ?? ({} as P))} /></RouteSuspense>;
+  message?: string,
+  errorMessage?: string
+) => (
+  <ErrorBoundary fallbackMessage={errorMessage ?? "เกิดข้อผิดพลาดในหน้า"}>
+    <Suspense fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}>
+      <Page {...(props ?? ({} as P))} />
+    </Suspense>
+  </ErrorBoundary>
+);
 
 // ---------- App Router ----------
 const AppRouter: FC = () => (
@@ -42,7 +40,7 @@ const AppRouter: FC = () => (
     <Routes>
       {/* Public Routes */}
       <Route element={<Layout />}>
-        <Route index element={<ErrorBoundary fallbackMessage="เกิดข้อผิดพลาดในหน้า Home">{lazyPage(Home)}</ErrorBoundary>} />
+        <Route index element={lazyPage(Home)} />
         <Route path="login" element={lazyPage(Login)} />
         <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
       </Route>

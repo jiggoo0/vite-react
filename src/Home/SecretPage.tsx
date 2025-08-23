@@ -1,16 +1,10 @@
 "use client";
 
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { useProtectedAuth } from "../hooks/useProtectedAuth";
 import LazyA4Card from "./components/common/LazyA4Card";
+import PageSection from "./components/common/PageSection";
 import { getLazyCards, EffectiveRole } from "../config/secretCards.config";
-
-type LazyCard = {
-  component: ReactNode;
-  delay?: number;
-  isBlurred?: boolean;
-  fallback?: ReactNode;
-};
 
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
@@ -26,11 +20,14 @@ const SecretPage: FC = () => {
   if (!user) return null;
 
   const effectiveRole: EffectiveRole =
-    ["admin", "manager", "user"].includes(user.role) ? (user.role as EffectiveRole) : "user";
+    ["admin", "manager", "user"].includes(user.role)
+      ? (user.role as EffectiveRole)
+      : "user";
 
-  const lazyCards: LazyCard[] = getLazyCards(user, effectiveRole);
+  const lazyCards = getLazyCards(user, effectiveRole);
 
-  const sectionTitles: readonly string[] = [
+  // Section titles สำหรับ accessibility / visual
+  const sectionTitles = [
     "Header Section",
     "Registration Section",
     "Salary Certificate",
@@ -39,36 +36,29 @@ const SecretPage: FC = () => {
     "Kbank Notifications",
     "Special Branch",
     "Footer / Actions",
-  ];
-
-  const sections = lazyCards.map((card, idx) => ({
-    title: sectionTitles[idx] ?? `Section ${idx + 1}`,
-    cards: [card],
-  }));
+  ] as const;
 
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900 px-4 sm:px-6 lg:px-8 py-8">
-      <div className="container max-w-6xl mx-auto flex flex-col gap-12">
-        {sections.map(({ title, cards }, sectionIdx) => (
-          <section key={sectionIdx} className="flex flex-col gap-6">
-            <h2 className="text-base font-semibold border-b border-gray-300">{title}</h2>
-            {cards.map(({ component, delay, isBlurred, fallback }, idx) => (
-              <LazyA4Card
-                key={`${sectionIdx}-${idx}`}
-                delay={delay}
-                isBlurred={isBlurred}
-                fallback={fallback}
-              >
-                {component}
-              </LazyA4Card>
-            ))}
-          </section>
-        ))}
-      </div>
+      {lazyCards.map(({ component, delay, isBlurred, fallback }, idx) => (
+        <PageSection
+          key={idx}
+          id={`section-${idx}`}
+          title={sectionTitles[idx] ?? `Section ${idx + 1}`}
+        >
+          <LazyA4Card
+            delay={delay}
+            isBlurred={isBlurred}
+            fallback={fallback}
+          >
+            {component}
+          </LazyA4Card>
+        </PageSection>
+      ))}
     </main>
   );
 };
 
-SecretPage.displayName = "SecretPage";
+// SecretPage.displayName = undefined; // ซ่อนชื่อใน DevTools
 
 export default SecretPage;

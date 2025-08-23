@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -11,47 +11,45 @@ interface DocumentExportActionsProps {
   margin?: number;
 }
 
-export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
+const DocumentExportActions: FC<DocumentExportActionsProps> = ({
   targetId = "document-preview",
   margin = 10,
 }) => {
-  const exportAsPDF = async () => {
+  const exportAsPDF = useCallback(async () => {
     const element = document.getElementById(targetId);
     if (!element) return alert("ไม่พบเอกสารที่ต้องการ export");
 
+    // clone element และ remove button ทุกตัว
     const clone = element.cloneNode(true) as HTMLElement;
     clone.querySelectorAll("button").forEach((btn) => btn.remove());
 
     const canvas = await html2canvas(clone, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
-
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pdfWidth = pdf.internal.pageSize.getWidth() - 2 * margin;
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     let remainingHeight = pdfHeight;
-    let position = margin;
+    let yOffset = margin;
 
     while (remainingHeight > 0) {
       const pageHeight = pdf.internal.pageSize.getHeight() - 2 * margin;
-      const height = remainingHeight > pageHeight ? pageHeight : remainingHeight;
+      const drawHeight = remainingHeight > pageHeight ? pageHeight : remainingHeight;
 
-      pdf.addImage(imgData, "PNG", margin, position, pdfWidth, height, undefined, "FAST");
+      pdf.addImage(imgData, "PNG", margin, yOffset, pdfWidth, drawHeight, undefined, "FAST");
 
       remainingHeight -= pageHeight;
-      if (remainingHeight > 0) pdf.addPage();
-      position = margin;
+      if (remainingHeight > 0) {
+        pdf.addPage();
+        yOffset = margin;
+      }
     }
 
     pdf.save("document.pdf");
-  };
+  }, [targetId, margin]);
 
-  const exportAsPNG = async () => {
+  const exportAsPNG = useCallback(async () => {
     const element = document.getElementById(targetId);
     if (!element) return alert("ไม่พบเอกสารที่ต้องการ export");
 
@@ -63,7 +61,7 @@ export const DocumentExportActions: FC<DocumentExportActionsProps> = ({
     link.href = canvas.toDataURL("image/png");
     link.download = "document.png";
     link.click();
-  };
+  }, [targetId]);
 
   return (
     <div className="flex gap-4">

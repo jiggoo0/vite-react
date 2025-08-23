@@ -19,6 +19,7 @@ const WithBlurIfUser: FC<WithBlurIfUserProps> = memo(
     // ถ้าไม่ต้องเบลอ, render ธรรมดา
     if (!isBlurred) return <>{children}</>;
 
+    // เบลอเนื้อหา + ป้องกัน interaction
     return (
       <div
         className={clsx(

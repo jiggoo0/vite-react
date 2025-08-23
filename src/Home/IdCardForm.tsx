@@ -40,33 +40,15 @@ const InputField: FC<InputFieldProps> = ({
   onChange,
 }) => {
   const isTextArea = type === "textarea";
-  const commonClass =
-    "border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400";
+  const commonClass = "border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400";
 
   return (
     <div className="flex flex-col space-y-1">
       <label htmlFor={name} className="font-medium">{label}</label>
       {isTextArea ? (
-        <textarea
-          id={name}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-          className={commonClass}
-        />
+        <textarea id={name} name={name} value={value} onChange={onChange} placeholder={placeholder} required={required} className={commonClass} />
       ) : (
-        <input
-          id={name}
-          name={name}
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-          className={commonClass}
-        />
+        <input id={name} name={name} type={type} value={value} onChange={onChange} placeholder={placeholder} required={required} className={commonClass} />
       )}
     </div>
   );
@@ -87,7 +69,6 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
     birthDate: "",
     address: "",
   });
-
   const [ocrLoading, setOcrLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +76,7 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
   // Handle input change
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   // =======================
@@ -110,8 +91,7 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
     }
 
     setError(null);
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
+    setImagePreview(URL.createObjectURL(file));
     setOcrLoading(true);
 
     // Simulate OCR
@@ -137,16 +117,10 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
     if (file) handleFileChange(file);
   };
 
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => e.preventDefault();
 
   // Cleanup object URL
-  useEffect(() => {
-    return () => {
-      if (imagePreview) URL.revokeObjectURL(imagePreview);
-    };
-  }, [imagePreview]);
+  useEffect(() => () => { if (imagePreview) URL.revokeObjectURL(imagePreview); }, [imagePreview]);
 
   // =======================
   // Form Submit
@@ -162,36 +136,22 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
 
     console.log("ID Card Form Submitted:", formData);
     alert("บันทึกข้อมูลเรียบร้อย!");
-    // TODO: implement actual submit logic
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={clsx("bg-white rounded-xl shadow-md p-6 w-full space-y-6", className)}
-    >
+    <form onSubmit={handleSubmit} className={clsx("bg-white rounded-xl shadow-md p-6 w-full space-y-6", className)}>
       <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน (OCR)</h2>
 
-      {/* Upload ID Card */}
-      <div
-        className="flex flex-col space-y-2 border-dashed border-2 border-gray-300 rounded-md p-4 text-center cursor-pointer"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      >
+      {/* Upload */}
+      <div className="flex flex-col space-y-2 border-dashed border-2 border-gray-300 rounded-md p-4 text-center cursor-pointer" onDrop={handleDrop} onDragOver={handleDragOver}>
         <label className="font-medium">คลิกหรือวางรูปบัตรประชาชนที่นี่</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileInputChange}
-          className="hidden"
-          id="idCardUpload"
-        />
+        <input type="file" accept="image/*" onChange={handleFileInputChange} className="hidden" id="idCardUpload" />
         <p className="text-sm text-gray-500">รองรับ PNG, JPG, JPEG</p>
         {ocrLoading && <p className="text-blue-500" role="status" aria-live="polite">กำลังอ่านข้อมูลจากภาพ...</p>}
         {imagePreview && <img src={imagePreview} alt="Preview" className="mt-2 max-h-40 object-contain rounded-md border" />}
       </div>
 
-      {/* Input Fields */}
+      {/* Fields */}
       <InputField label="ชื่อ-สกุล" name="fullName" value={formData.fullName} placeholder="กรอกชื่อ-นามสกุล" onChange={handleChange} />
       <InputField label="เลขบัตรประชาชน" name="idNumber" value={formData.idNumber} placeholder="กรอกเลขบัตรประชาชน" onChange={handleChange} />
       <InputField label="วันเกิด" name="birthDate" type="date" value={formData.birthDate} onChange={handleChange} />
@@ -200,15 +160,11 @@ const IdCardFormWithOCR: FC<IdCardFormWithOCRProps> = ({ className }) => {
       {error && <p className="text-red-600" role="alert">{error}</p>}
 
       {/* Submit */}
-      <button
-        type="submit"
-        disabled={ocrLoading}
-        className={clsx(
-          "w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors",
-          "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1",
-          ocrLoading && "opacity-50 cursor-not-allowed"
-        )}
-      >
+      <button type="submit" disabled={ocrLoading} className={clsx(
+        "w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors",
+        "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1",
+        ocrLoading && "opacity-50 cursor-not-allowed"
+      )}>
         {ocrLoading ? "กำลังประมวลผล..." : "บันทึก"}
       </button>
     </form>

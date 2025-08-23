@@ -18,8 +18,8 @@ interface PhotoFieldProps {
 
 /**
  * PhotoField
- * แสดงรูปภาพพร้อม draggable
- * pointerEvents ถูกตั้งเป็น "none" เพื่อไม่ให้ลากรูปแทนฟิลด์
+ * แสดงรูปภาพพร้อม draggable field
+ * pointerEvents ถูกตั้งเป็น "none" เพื่อไม่ให้ลากรูปแทน field
  */
 const PhotoField: React.FC<PhotoFieldProps> = ({
   src,
@@ -47,7 +47,7 @@ const PhotoField: React.FC<PhotoFieldProps> = ({
           border: `${borderWidth} solid ${borderColor}`,
           background,
           display: "block",
-          pointerEvents: "none", // ป้องกันไม่ให้ลากรูปแทนฟิลด์
+          pointerEvents: "none", // ป้องกันไม่ให้ลากรูปแทน field
           userSelect: "none",
         }}
       />

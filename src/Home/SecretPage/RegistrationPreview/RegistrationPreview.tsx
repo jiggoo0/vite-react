@@ -23,8 +23,8 @@ export type RegistrationPreviewProps = {
   registrarName?: string;
 };
 
-const defaultText = "—";
-const withFallback = (value?: string) => value?.trim() || defaultText;
+const DEFAULT_TEXT = "—";
+const withFallback = (value?: string) => value?.trim() || DEFAULT_TEXT;
 
 const RegistrationPreview: FC<RegistrationPreviewProps> = ({
   businessName,
@@ -40,27 +40,14 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
   const handleDownloadPdf = async () => {
     if (!ref.current) return;
 
-    const canvas = await html2canvas(ref.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#fff",
-    });
-
+    const canvas = await html2canvas(ref.current, { scale: 2, useCORS: true, backgroundColor: "#fff" });
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
       format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96],
     });
 
-    pdf.addImage(
-      canvas.toDataURL("image/png"),
-      "PNG",
-      0,
-      0,
-      (canvas.width * 72) / 96,
-      (canvas.height * 72) / 96
-    );
-
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, (canvas.width * 72) / 96, (canvas.height * 72) / 96);
     pdf.save("registration-preview.pdf");
   };
 
@@ -69,35 +56,18 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
       <section
         ref={ref}
         className="relative mx-auto w-full max-w-[800px] rounded-md border border-gray-400 bg-white p-12 shadow print:shadow-none print:border print:m-0 print:p-8"
-        style={{
-          fontFamily: '"THSarabunNew", sans-serif',
-          lineHeight: 1.8,
-          fontSize: "18pt",
-          minHeight: 1200,
-        }}
+        style={{ fontFamily: '"THSarabunNew", sans-serif', lineHeight: 1.8, fontSize: "18pt", minHeight: 1200 }}
       >
-        {/* Header Info */}
+        {/* Header */}
         <div className="absolute left-12 top-8 text-[14pt] leading-snug">
           <p className="mb-2">ทะเบียนเลขที่ {withFallback(registrationNumber)}</p>
-          <p>
-            คำขอที่{" "}
-            <span className="inline-block h-[1.7em] min-w-[160px] border-b border-gray-300" />
-          </p>
+          <p>คำขอที่ <span className="inline-block h-[1.7em] min-w-[160px] border-b border-gray-300" /></p>
         </div>
-
-        <div className="absolute right-12 top-8 text-right text-[14pt]">
-          <p>แบบ พค. 0403</p>
-        </div>
+        <div className="absolute right-12 top-8 text-right text-[14pt]">แบบ พค. 0403</div>
 
         {/* Emblem */}
         <div className="mb-6 mt-24 flex justify-center">
-          <img
-            src="/fonts/krut.webp"
-            alt="ตราครุฑ"
-            className="h-[100px] w-[100px] object-contain"
-            crossOrigin="anonymous"
-            draggable={false}
-          />
+          <img src="/fonts/krut.webp" alt="ตราครุฑ" className="h-[100px] w-[100px] object-contain" crossOrigin="anonymous" draggable={false} />
         </div>
 
         {/* Title */}
@@ -116,18 +86,13 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           <p className="text-[20pt]">{withFallback(ownerName)}</p>
           <p>ได้จดทะเบียนพาณิชย์ ตามพระราชบัญญัติทะเบียนพาณิชย์ พ.ศ. 2499</p>
           <p>เมื่อวันที่ {withFallback(issuedDate)}</p>
-
           <p className="mt-8">ชื่อที่ใช้ในการประกอบพาณิชยกิจ</p>
           <p className="text-[20pt] font-bold">{withFallback(businessName)}</p>
-
           <p className="mt-6">เขียนเป็นอักษรโรมัน</p>
           <p>{withFallback(businessName?.toUpperCase())}</p>
-
           <p className="mt-6 font-semibold">ที่ตั้งสถานประกอบการ</p>
           <p className="mx-auto max-w-[720px] indent-12 text-left leading-relaxed">
-            เลขที่ {withFallback(address.houseNumber)} หมู่ที่ {withFallback(address.villageNo)}{" "}
-            ตรอก/ซอย {withFallback(address.alley)} ตำบล/แขวง {withFallback(address.subDistrict)}{" "}
-            อำเภอ/เขต {withFallback(address.district)} จังหวัด {withFallback(address.province)}
+            เลขที่ {withFallback(address.houseNumber)} หมู่ที่ {withFallback(address.villageNo)} ตรอก/ซอย {withFallback(address.alley)} ตำบล/แขวง {withFallback(address.subDistrict)} อำเภอ/เขต {withFallback(address.district)} จังหวัด {withFallback(address.province)}
           </p>
         </div>
 
@@ -135,7 +100,6 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
         <div className="mx-auto mt-32 max-w-[720px] space-y-6 pr-10 text-right text-lg">
           <p>ออกให้ ณ วันที่ {withFallback(issuedDate)}</p>
           <p>ตำแหน่ง {withFallback(registrarPosition)}</p>
-
           <div className="mt-20">
             <p className="inline-block min-w-[250px] text-center text-[20pt] font-bold underline decoration-dotted">
               {withFallback(registrarName)}
@@ -147,7 +111,10 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
 
       {/* Download Button */}
       <div className="mt-6 text-center">
-        <button className="btn btn-primary" onClick={handleDownloadPdf}>
+        <button
+          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          onClick={handleDownloadPdf}
+        >
           ดาวน์โหลด PDF
         </button>
       </div>

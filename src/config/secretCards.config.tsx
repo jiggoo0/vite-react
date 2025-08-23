@@ -15,19 +15,10 @@ import mockSalaryCertificate from "@__mocks__/mockSalaryCertificate";
 import mockMedicalCertificate from "@__mocks__/mockMedicalCertificate";
 import { kbankMockData } from "@__mocks__/kbankIOSNotification";
 
-// Lazy-loaded components
-const RegistrationPreview = lazy(
-  () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
-);
-const SalaryCertificate = lazy(
-  () => import("@home/SecretPage/SalaryCertificate/SalaryCertificate")
-);
-const MedicalCertificate = lazy(
-  () => import("@home/SecretPage/MedicalCertificate/MedicalCertificate")
-);
-const SpecialBranchCertificate = lazy(
-  () => import("@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate")
-);
+const RegistrationPreview = lazy(() => import("@home/SecretPage/RegistrationPreview/RegistrationPreview"));
+const SalaryCertificate = lazy(() => import("@home/SecretPage/SalaryCertificate/SalaryCertificate"));
+const MedicalCertificate = lazy(() => import("@home/SecretPage/MedicalCertificate/MedicalCertificate"));
+const SpecialBranchCertificate = lazy(() => import("@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate"));
 
 export type EffectiveRole = "admin" | "user" | "manager";
 
@@ -43,86 +34,43 @@ interface User {
   role: string;
 }
 
-/**
- * ฟังก์ชันสร้าง LazyCard สำหรับ SecretPage
- * @param user ข้อมูลผู้ใช้งาน
- * @param effectiveRole สิทธิ์การเข้าถึง
- */
+const BASE_DELAY = 50;
+
 export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
   const isAdminOrManager = effectiveRole === "admin" || effectiveRole === "manager";
   const shouldBlur = effectiveRole !== "admin";
 
+  let delayCounter = 0;
+  const nextDelay = () => (delayCounter += BASE_DELAY);
+
   const lazyCards: LazyCard[] = [
-    // Header & Description
-    { component: <SecretHeader />, delay: 0 },
-    { component: <SecretDescription user={{ ...user, role: effectiveRole }} />, delay: 50 },
-
-    // Document Download
-    { component: <DocumentDownload />, delay: 100 },
-
-    // Driver License Form
-    { component: <DriverLicenseFormPage />, delay: 150, isBlurred: shouldBlur },
-
-    // Registration Preview
-    {
-      component: <RegistrationPreview {...mockRegistrationData} />,
-      delay: 200,
-      isBlurred: shouldBlur,
-      fallback: <div>Loading Registration...</div>,
-    },
-
-    // Salary Certificate
-    {
-      component: <SalaryCertificate data={mockSalaryCertificate} />,
-      delay: 300,
-      isBlurred: shouldBlur,
-      fallback: <div>Loading Salary Certificate...</div>,
-    },
-
-    // Medical Certificate
-    {
-      component: <MedicalCertificate data={mockMedicalCertificate} />,
-      delay: 400,
-      isBlurred: shouldBlur,
-      fallback: <div>Loading Medical Certificate...</div>,
-    },
-
-    // ID Card Form
-    { component: <IdCardFormWithOCR />, delay: 500, isBlurred: shouldBlur },
-
-    // Kbank Notifications
-    {
-      component: (
+    { component: <SecretHeader />, delay: nextDelay() },
+    { component: <SecretDescription user={{ ...user, role: effectiveRole }} />, delay: nextDelay() },
+    { component: <DocumentDownload />, delay: nextDelay() },
+    { component: <DriverLicenseFormPage />, delay: nextDelay(), isBlurred: shouldBlur },
+    { component: <RegistrationPreview {...mockRegistrationData} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Registration...</div> },
+    { component: <SalaryCertificate data={mockSalaryCertificate} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Salary Certificate...</div> },
+    { component: <MedicalCertificate data={mockMedicalCertificate} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Medical Certificate...</div> },
+    { component: <IdCardFormWithOCR />, delay: nextDelay(), isBlurred: shouldBlur },
+    { component: (
         <>
-          {kbankMockData.map((item) => (
+          {kbankMockData.map(item => (
             <KbankNotificationCard key={item.id} data={item} />
           ))}
         </>
-      ),
-      delay: 600,
-      isBlurred: shouldBlur,
+      ), 
+      delay: nextDelay(), 
+      isBlurred: shouldBlur 
     },
   ];
 
-  // Special Branch Certificate สำหรับ admin/manager
   if (isAdminOrManager) {
-    lazyCards.push({
-      component: <SpecialBranchCertificate />,
-      delay: 650,
-      fallback: <div>Loading Special Branch...</div>,
-    });
+    lazyCards.push({ component: <SpecialBranchCertificate />, delay: nextDelay(), fallback: <div>Loading Special Branch...</div> });
   }
 
-  // Footer & Actions
   lazyCards.push(
-    {
-      component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />,
-      delay: 700,
-    },
-    {
-      component: <SecretActions role={effectiveRole} />,
-      delay: 750,
-    }
+    { component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />, delay: nextDelay() },
+    { component: <SecretActions role={effectiveRole} />, delay: nextDelay() }
   );
 
   return lazyCards;

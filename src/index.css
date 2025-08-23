@@ -1,9 +1,30 @@
+/* ==============================
+   Tailwind Base
+============================== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ==============================
-   Reset & Box-Sizing
+   Theme Variables (Light Mode)
+============================== */
+:root {
+  --color-bg: #ffffff;
+  --color-bg-light: #f3f4f6;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-disabled: #d1d5db;
+  --color-primary-content: #ffffff;
+  --radius-md: 0px;
+  --transition-base: 0.25s;
+  --transition-fast: 0.2s;
+  --font-family-base: 'Kanit', system-ui, sans-serif;
+}
+
+/* ==============================
+   Global Reset
 ============================== */
 *,
 *::before,
@@ -13,66 +34,90 @@
   box-sizing: border-box;
 }
 
-/* ==============================
-   Typography & Layout
-============================== */
 html {
   font-size: 16px;
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-family-base, "Kanit", system-ui, sans-serif);
-  background-color: var(--color-bg, #ffffff);
-  color: var(--color-text, #111827);
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.5;
-  transition: background-color var(--transition-base, 0.25s ease),
-              color var(--transition-base, 0.25s ease);
+  transition: background-color var(--transition-base) ease,
+              color var(--transition-base) ease;
 }
 
-/* Headings */
+/* ==============================
+   Typography
+============================== */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5em;
 }
 
-/* Paragraphs */
-p { margin-bottom: 1em; }
+p {
+  margin-bottom: 1em;
+}
 
-/* Links */
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast, 0.2s ease);
+  transition: color var(--transition-fast) ease;
 }
-a:hover { color: var(--color-primary-hover); }
 
-/* Images & Media */
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+ul, ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
 img, video, canvas, svg {
   max-width: 100%;
   display: block;
   height: auto;
 }
 
-/* Buttons */
+/* ==============================
+   Forms & Buttons
+============================== */
+input, button, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 button {
-  border-radius: var(--radius-md, 0px);
-  transition: background-color var(--transition-base, 0.25s),
-              color var(--transition-base, 0.25s);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-base),
+              color var(--transition-base);
   cursor: pointer;
   background-color: var(--color-primary);
-  color: var(--color-primary-content, #fff);
+  color: var(--color-primary-content);
   border: none;
   padding: 0.5rem 1rem;
 }
-button:hover:not(:disabled) { background-color: var(--color-primary-hover); }
+
+button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
 button:disabled {
   background-color: var(--color-primary-disabled);
   cursor: not-allowed;
 }
 
-/* Utility classes */
+/* ==============================
+   Utilities
+============================== */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -87,12 +132,19 @@ button:disabled {
   padding-right: 1rem;
 }
 
-/* Scrollbar */
+/* ==============================
+   Scrollbar
+============================== */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-bg-light, #f3f4f6); }
-::-webkit-scrollbar-thumb { background-color: var(--color-primary); border-radius: 4px; }
+::-webkit-scrollbar-track { background: var(--color-bg-light); }
+::-webkit-scrollbar-thumb { 
+  background-color: var(--color-primary); 
+  border-radius: 4px; 
+}
 
-/* Dark mode */
+/* ==============================
+   Dark Mode
+============================== */
 [data-theme="dark"], .dark {
   --color-bg: #1f2937;
   --color-bg-light: #111827;
@@ -102,9 +154,15 @@ button:disabled {
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #6b7280;
   --color-primary-content: #ffffff;
-  --radius-md: 0px;
 }
+
 .dark body {
   background-color: var(--color-bg);
   color: var(--color-text);
 }
+
+.dark a { color: var(--color-primary); }
+.dark a:hover { color: var(--color-primary-hover); }
+
+.dark ::-webkit-scrollbar-track { background: var(--color-bg-light); }
+.dark ::-webkit-scrollbar-thumb { background-color: var(--color-primary); }

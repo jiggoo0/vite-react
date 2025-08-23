@@ -33,8 +33,11 @@ const MedicalCertificate: FC<MedicalCertificateProps> = ({ data }) => {
   } = data;
 
   return (
-    <div className="w-full h-full p-6 rounded-xl shadow-md bg-white relative overflow-hidden" style={{ minHeight: 400 }}>
-      <h2 className="text-xl font-bold mb-4">ใบรับรองแพทย์</h2>
+    <div
+      className="w-full h-full p-6 rounded-xl shadow-md bg-white relative overflow-hidden"
+      style={{ minHeight: 400 }}
+    >
+      <h2 className="text-xl font-bold mb-4 text-center">ใบรับรองแพทย์</h2>
 
       <div className="space-y-2 text-gray-700">
         <p><strong>เลขที่อ้างอิง:</strong> {withFallback(referenceNo)}</p>
@@ -53,11 +56,15 @@ const MedicalCertificate: FC<MedicalCertificateProps> = ({ data }) => {
         {otherNote && <p><strong>อื่นๆ:</strong> {withFallback(otherNote)}</p>}
 
         {/* Signatures */}
-        <p><strong>แพทย์ลงชื่อ:</strong> {withFallback(doctorSigner)}</p>
-        <p><strong>ผู้ป่วยลงชื่อ:</strong> {withFallback(patientSigner)}</p>
+        <div className="mt-4 space-y-1">
+          <p><strong>แพทย์ลงชื่อ:</strong> {withFallback(doctorSigner)}</p>
+          <p><strong>ผู้ป่วยลงชื่อ:</strong> {withFallback(patientSigner)}</p>
+        </div>
       </div>
     </div>
   );
 };
+
+MedicalCertificate.displayName = "MedicalCertificate";
 
 export default memo(MedicalCertificate);

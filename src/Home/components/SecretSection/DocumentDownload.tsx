@@ -1,13 +1,8 @@
 "use client";
 
 import { FC, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-/**
- * DocumentDownload
- * -------------------------
- * Form สำหรับตรวจสอบรหัสเอกสารและแสดงผลดาวน์โหลด
- */
 const DocumentDownload: FC = () => {
   const [docCode, setDocCode] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -26,10 +21,8 @@ const DocumentDownload: FC = () => {
 
     setLoading(true);
     try {
-      // 🔹 ตัวอย่างเรียก API หรือเช็ครหัสจริงกับ ADMIN
       await new Promise<void>((res) => setTimeout(res, 800));
-
-      const isValid = docCode === "ADMIN123"; // ตัวอย่างเช็ครหัส
+      const isValid = docCode === "ADMIN123";
       if (isValid) setSuccess(true);
       else setError("รหัสเอกสารถูกต้องไม่ถูกต้อง กรุณาลองใหม่");
     } catch {
@@ -78,37 +71,40 @@ const DocumentDownload: FC = () => {
           disabled={loading}
           aria-label="ตรวจสอบรหัสเอกสาร"
         >
-          {loading ? (
-            <span className="loading loading-spinner loading-sm" />
-          ) : (
-            "ตรวจสอบรหัสเอกสาร"
-          )}
+          {loading ? <span className="loading loading-spinner loading-sm" /> : "ตรวจสอบรหัสเอกสาร"}
         </button>
       </form>
 
-      {error && (
-        <motion.p
-          className="text-error text-center mt-4 font-semibold"
-          role="alert"
-          aria-live="assertive"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          {error}
-        </motion.p>
-      )}
-
-      {success && (
-        <motion.p
-          className="text-success text-center mt-4 font-semibold"
-          role="alert"
-          aria-live="polite"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          รหัสเอกสารถูกต้อง ✅ สามารถดาวน์โหลดเอกสารได้ที่ ADMIN
-        </motion.p>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            key="error"
+            className="text-error text-center mt-4 font-semibold"
+            role="alert"
+            aria-live="assertive"
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.3 }}
+          >
+            {error}
+          </motion.p>
+        )}
+        {success && (
+          <motion.p
+            key="success"
+            className="text-success text-center mt-4 font-semibold"
+            role="alert"
+            aria-live="polite"
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.3 }}
+          >
+            รหัสเอกสารถูกต้อง ✅ สามารถดาวน์โหลดเอกสารได้ที่ ADMIN
+          </motion.p>
+        )}
+      </AnimatePresence>
 
       <p
         id="doc-code-note"

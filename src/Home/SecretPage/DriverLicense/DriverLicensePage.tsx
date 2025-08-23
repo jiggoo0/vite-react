@@ -5,7 +5,9 @@ import DriverLicensePreviewWithActions from "./DriverLicensePreviewWithActions";
 import { driverLicenseFields } from "@/config/driverLicenseConfig";
 import { DriverLicenseData } from "./types/driverLicense";
 
-// generate default data ตาม field ids
+/**
+ * สร้าง default data สำหรับ DriverLicense ตาม field config
+ */
 const defaultDriverLicenseData: DriverLicenseData = driverLicenseFields.reduce(
   (acc, field) => {
     acc[field.id as keyof DriverLicenseData] = "";
@@ -14,6 +16,12 @@ const defaultDriverLicenseData: DriverLicenseData = driverLicenseFields.reduce(
   {} as DriverLicenseData
 );
 
+/**
+ * DriverLicensePage
+ * -------------------------
+ * Page แสดงตัวอย่างใบขับขี่
+ * - รองรับ preview + export PNG/PDF
+ */
 const DriverLicensePage: FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -27,5 +35,7 @@ const DriverLicensePage: FC = () => {
     </div>
   );
 };
+
+DriverLicensePage.displayName = "DriverLicensePage";
 
 export default DriverLicensePage;

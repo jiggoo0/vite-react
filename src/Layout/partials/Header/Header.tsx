@@ -1,3 +1,4 @@
+// src/Layout/partials/Header.tsx
 "use client";
 
 import { FC } from "react";
@@ -9,18 +10,9 @@ import ThemeToggle from "@layout/ui/ThemeToggle";
 import LogoutButton from "@home/components/common/LogoutButton";
 import { useAuth } from "@hooks/useAuth";
 
-/**
- * 🎯 Header Component
- *
- * Features:
- * - Sticky header with shadow
- * - Logo
- * - Theme toggle button
- * - Login / Logout button
- * - "ประเมินลูกค้า" menu
- * - Accessible and responsive design
- * - Clean and flat UI
- */
+/* ==============================
+   Header Component
+============================== */
 const Header: FC = () => {
   const { isAuthenticated } = useAuth();
 
@@ -74,5 +66,4 @@ const Header: FC = () => {
 };
 
 Header.displayName = "Header";
-
 export default Header;

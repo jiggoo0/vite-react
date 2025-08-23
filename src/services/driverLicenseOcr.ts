@@ -35,13 +35,14 @@ export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
 /**
  * 🔹 Mock OCR function
  * - แทนที่ด้วย OCR API จริงได้
- * @param _file ไฟล์ภาพใบขับขี่
+ * @param file ไฟล์ภาพใบขับขี่
  * @returns Promise<DriverLicenseData>
  */
-export async function driverLicenseOcr(
-  _file: File
-): Promise<DriverLicenseData> {
-  // TODO: เปลี่ยนเป็นเรียก OCR API จริง
+export async function driverLicenseOcr(file: File): Promise<DriverLicenseData> {
+  // Mock delay เลียนแบบเรียก API จริง
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // Mock data
   return {
     idNumber: "1234567890123",
     firstName: "สมชาย",

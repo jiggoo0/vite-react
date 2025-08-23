@@ -9,24 +9,17 @@ type User = {
 
 interface SecretDescriptionProps {
   user: User;
+  /** optional subtitle แยกออกจาก welcome message */
+  subtitle?: string;
 }
 
-/**
- * SecretDescription
- * -------------------------
- * แสดงข้อความต้อนรับผู้ใช้และบทบาทในระบบ
- * - Responsive
- * - Accessible
- * - Professional UI
- */
-const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
+const SecretDescription: FC<SecretDescriptionProps> = ({ user, subtitle }) => {
   return (
     <section
       aria-labelledby="secret-description-title"
       className="mb-8 p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-md
                  hover:shadow-lg transition-shadow duration-300"
     >
-      {/* Title */}
       <h2
         id="secret-description-title"
         className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
@@ -34,16 +27,14 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
         🎯 พื้นที่รับงานเฉพาะสมาชิก
       </h2>
 
-      {/* Welcome Message */}
       <p className="mb-3 text-gray-700 dark:text-gray-300 text-base sm:text-lg">
         ยินดีต้อนรับ{" "}
         <strong className="text-primary dark:text-primary-light">
           {user.username}
         </strong>{" "}
-        👋 หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น
+        👋 {subtitle ?? "หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น"}
       </p>
 
-      {/* Role Info */}
       <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg">
         คุณสามารถจัดการงานของคุณได้อย่างปลอดภัย และมีสิทธิ์เป็น{" "}
         <strong className="capitalize text-secondary dark:text-secondary-light">
@@ -51,7 +42,6 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
         </strong>
       </p>
 
-      {/* Divider */}
       <div className="mt-4 h-1 w-20 bg-primary dark:bg-primary-light rounded-full opacity-70"></div>
     </section>
   );

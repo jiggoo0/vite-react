@@ -8,17 +8,19 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-/**
- * 📱 MobileMenu
- *
- * - Drawer เมนูมือถือ
- * - รองรับ backdrop click, Esc key, focus trap เบื้องต้น
- * - ใช้ TailwindCSS + Transition
- */
+/* ==============================
+   📱 MobileMenu
+   -------------------------
+   - Drawer เมนูมือถือ
+   - รองรับ backdrop click, Esc key, focus trap เบื้องต้น
+   - ใช้ TailwindCSS + transition
+============================== */
 const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  // ป้องกัน scroll และปิดเมนูด้วย Esc
+  /* ==============================
+     ป้องกัน scroll และปิดเมนูด้วย Esc
+  ============================= */
   useEffect(() => {
     if (!open) return;
 
@@ -35,7 +37,9 @@ const MobileMenu: FC<MobileMenuProps> = ({ open, onClose }) => {
     };
   }, [open, onClose]);
 
-  // Focus trap เบื้องต้น
+  /* ==============================
+     Focus trap เบื้องต้น
+  ============================= */
   useEffect(() => {
     if (open && drawerRef.current) {
       const firstFocusable = drawerRef.current.querySelector<HTMLElement>(

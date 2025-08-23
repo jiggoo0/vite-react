@@ -1,97 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ==============================
    Driver License Styles
    -----------------------------
-   Flat, neutral, enterprise-ready
+   Tailwind-first, flat, neutral, enterprise-ready
 ============================== */
 
 /* Container */
 .driver-license-card {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 1.5rem;
-  background-color: var(--color-base-100);
-  color: var(--color-text);
-  border-radius: var(--radius-md);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  font-family: var(--font-family-base);
-  line-height: 1.4;
+  @apply w-full max-w-[850px] mx-auto p-6 rounded-md shadow bg-base-100 text-base;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 3;
+  font-family: var(--font-family-base);
+  line-height: 1.4;
 }
 
 /* Header */
 .driver-license-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  font-size: 1rem;
-  border-bottom: 1px solid var(--color-base-300);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.75rem;
+  @apply flex justify-between items-center font-semibold text-base border-b border-base-300 pb-2 mb-3;
 }
 
 /* Fields */
 .driver-license-field {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.875rem;
-  padding: 0.25rem 0;
+  @apply flex justify-between text-sm py-1;
 }
-
 .driver-license-field label {
-  font-weight: 500;
-  color: var(--color-text-muted);
+  @apply font-medium text-gray-500;
 }
-
 .driver-license-field .value {
-  font-weight: 600;
-  color: var(--color-text);
+  @apply font-semibold text-gray-900;
 }
 
 /* Photo */
 .driver-license-photo {
-  width: 120px;
-  height: 150px;
-  background-color: var(--color-base-200);
-  border: 1px solid var(--color-base-300);
-  object-fit: cover;
-  border-radius: var(--radius-md);
+  @apply w-[120px] h-[150px] bg-base-200 border border-base-300 rounded-md object-cover;
 }
 
 /* Footer / Notes */
 .driver-license-footer {
-  margin-top: 1rem;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
+  @apply mt-4 text-xs text-gray-500;
 }
 
 /* Print Styles */
 @media print {
   .driver-license-card {
-    box-shadow: none;
-    border: 1px solid var(--color-base-300);
+    @apply border border-base-300 shadow-none;
     page-break-inside: avoid;
   }
 }
 
 /* Dark Mode */
-[data-theme="dark"] .driver-license-card,
 .dark .driver-license-card {
-  background-color: var(--color-base-200);
-  color: var(--color-text);
-  border: 1px solid var(--color-base-300);
+  @apply bg-base-200 text-base border border-base-300;
 }
-
-[data-theme="dark"] .driver-license-field label,
 .dark .driver-license-field label {
-  color: var(--color-text-muted);
+  @apply text-gray-400;
 }
-
-[data-theme="dark"] .driver-license-photo,
 .dark .driver-license-photo {
-  background-color: var(--color-base-300);
-  border-color: var(--color-base-200);
+  @apply bg-base-300 border-base-200;
 }

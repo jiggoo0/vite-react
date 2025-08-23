@@ -1,3 +1,4 @@
+// src/Layout/Layout.tsx
 "use client";
 
 import { FC, ReactNode } from "react";
@@ -16,18 +17,16 @@ interface LayoutProps {
 }
 
 /**
- *  Layout Component
+ * 🔹 Layout Component
  *
- * :
- * - Header (Sticky)
- * - Sidebar ( mobile)
- * - Main Content
+ * - Sticky Header
+ * - Sidebar (responsive)
+ * - Main Content (focusable, accessible)
  * - Footer
  * - Floating Components: ChatWidget, BackToTop, DisclaimerModal
- * - Responsive, accessible, professional UI
  */
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const floatingComponents = [ChatWidget, BackToTop, DisclaimerModal];
+  const floatingComponents: FC[] = [ChatWidget, BackToTop, DisclaimerModal];
 
   return (
     <div className="flex min-h-screen bg-base-100 text-base-content transition-colors duration-300">

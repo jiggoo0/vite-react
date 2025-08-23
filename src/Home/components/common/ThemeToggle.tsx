@@ -6,9 +6,10 @@ import clsx from "clsx";
 
 /**
  * ThemeToggle
- * - สลับระหว่าง Light / Dark mode
+ * - สลับ Light / Dark mode
  * - เก็บ theme ลง localStorage
  * - รองรับ accessibility (aria-label, aria-pressed)
+ * - Flat, neutral tone UI (no rounded corners)
  */
 const ThemeToggle = () => {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -16,7 +17,6 @@ const ThemeToggle = () => {
     return window.localStorage.getItem("theme") === "dark" ? "dark" : "light";
   });
 
-  // Apply theme to <html> root
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
@@ -24,7 +24,8 @@ const ThemeToggle = () => {
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
 
   return (
     <button
@@ -33,7 +34,7 @@ const ThemeToggle = () => {
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       aria-pressed={theme === "dark"}
       className={clsx(
-        "btn btn-ghost btn-sm rounded-full p-2 transition-colors duration-300",
+        "btn btn-ghost p-2 transition-colors duration-300",
         "hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
       )}
     >

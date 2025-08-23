@@ -14,13 +14,19 @@ export interface PageSectionProps {
   className?: string;
   /** ชื่อ section สำหรับ accessibility / screen readers */
   title?: string;
+  /** กำหนด max-width container */
+  maxWidthClass?: string;
+  /** กำหนด responsive padding overrides */
+  paddingClass?: string;
 }
 
 /**
  * PageSection
- * - Section ทั่วไปสำหรับ layout
- * - รองรับ background class และ container class
+ * -------------------------
+ * Section ทั่วไปสำหรับ layout
+ * - รองรับ background class, container class และ responsive padding
  * - รองรับ accessibility ด้วย title สำหรับ screen reader
+ * - รองรับ max-width container
  */
 const PageSection: FC<PageSectionProps> = ({
   id,
@@ -28,16 +34,18 @@ const PageSection: FC<PageSectionProps> = ({
   bgClass = "bg-base-100",
   className,
   title,
+  maxWidthClass = "max-w-7xl mx-auto",
+  paddingClass = "py-16 px-4 md:px-8",
 }) => {
   return (
     <section
       id={id}
-      className={clsx(bgClass, "py-16 px-4 md:px-8", className)}
+      className={clsx(bgClass, paddingClass, className)}
       role="region"
       aria-label={title}
     >
       {title && <h2 className="sr-only">{title}</h2>}
-      {children}
+      <div className={clsx(maxWidthClass)}>{children ?? null}</div>
     </section>
   );
 };

@@ -26,7 +26,6 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const scaleRef = useRef(1);
 
-  // เริ่มลาก
   const startDrag = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,10 +39,8 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
     }
   };
 
-  // หยุดลาก
   const stopDrag = useCallback(() => setIsDragging(false), []);
 
-  // คำนวณตำแหน่งใหม่เมื่อมีการลาก
   const onDragMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
       if (!isDragging || !fieldRef.current || !containerRef.current) return;
@@ -63,28 +60,21 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
 
       const clampedX = Math.max(
         0,
-        Math.min(
-          adjustedX,
-          containerRect.width / scaleRef.current - fieldRect.width
-        )
+        Math.min(adjustedX, containerRect.width / scaleRef.current - fieldRect.width)
       );
       const clampedY = Math.max(
         0,
-        Math.min(
-          adjustedY,
-          containerRect.height / scaleRef.current - fieldRect.height
-        )
+        Math.min(adjustedY, containerRect.height / scaleRef.current - fieldRect.height)
       );
 
-      const newLeft = `${(clampedX / (containerRect.width / scaleRef.current)) * 100}%`;
-      const newTop = `${(clampedY / (containerRect.height / scaleRef.current)) * 100}%`;
+      const newLeft = `${((clampedX / (containerRect.width / scaleRef.current)) * 100).toFixed(2)}%`;
+      const newTop = `${((clampedY / (containerRect.height / scaleRef.current)) * 100).toFixed(2)}%`;
 
       onPositionChange(newTop, newLeft);
     },
     [isDragging, onPositionChange]
   );
 
-  // Attach / detach event listeners
   useEffect(() => {
     window.addEventListener("mousemove", onDragMove, { passive: false });
     window.addEventListener("touchmove", onDragMove, { passive: false });

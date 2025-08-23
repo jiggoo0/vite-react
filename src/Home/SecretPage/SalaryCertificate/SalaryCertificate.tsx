@@ -27,8 +27,11 @@ const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
   } = data;
 
   return (
-    <div className="font-[THSarabunNew] text-[16pt] leading-[1.6] text-black bg-white w-[210mm] h-[297mm] max-w-full overflow-auto p-10 mx-auto shadow print:shadow-none print:border print:m-0 print:p-8">
-
+    <div
+      className="font-[THSarabunNew] text-[16pt] leading-[1.6] text-black bg-white
+                 w-[210mm] h-[297mm] max-w-full overflow-auto p-10 mx-auto
+                 shadow print:shadow-none print:border print:m-0 print:p-8"
+    >
       {/* Header */}
       <header className="flex justify-between items-start mb-6">
         <div className="text-right leading-tight">

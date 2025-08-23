@@ -1,19 +1,20 @@
 "use client";
 
-import { FC } from "react";
+import { FC, memo } from "react";
 import { DriverLicenseData } from "./types/driverLicense";
 import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
 import DriverLicensePreview from "./DriverLicensePreview";
 
-interface DriverLicensePreviewWithActionsProps {
+interface Props {
   data: DriverLicenseData;
 }
 
 /**
  * DriverLicensePreviewWithActions
+ * -------------------------
  * แสดงใบขับขี่พร้อมปุ่ม export PNG/PDF
  */
-const DriverLicensePreviewWithActions: FC<DriverLicensePreviewWithActionsProps> = ({ data }) => {
+const DriverLicensePreviewWithActions: FC<Props> = ({ data }) => {
   const handleExportPNG = () =>
     exportCardAsPNG("driver-license-preview", "driver-license.png");
 
@@ -29,15 +30,17 @@ const DriverLicensePreviewWithActions: FC<DriverLicensePreviewWithActionsProps> 
       <div className="flex gap-4 mt-4">
         <button
           type="button"
-          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700"
+          className="btn btn-primary"
           onClick={handleExportPNG}
+          aria-label="ดาวน์โหลด PNG ใบขับขี่"
         >
           ดาวน์โหลด PNG
         </button>
         <button
           type="button"
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
+          className="btn btn-secondary"
           onClick={handleExportPDF}
+          aria-label="ดาวน์โหลด PDF ใบขับขี่"
         >
           ดาวน์โหลด PDF (A4)
         </button>
@@ -47,4 +50,5 @@ const DriverLicensePreviewWithActions: FC<DriverLicensePreviewWithActionsProps> 
 };
 
 DriverLicensePreviewWithActions.displayName = "DriverLicensePreviewWithActions";
-export default DriverLicensePreviewWithActions;
+
+export default memo(DriverLicensePreviewWithActions);

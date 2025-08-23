@@ -47,7 +47,7 @@ const TextField: React.FC<TextFieldProps> = ({
           border: `${borderWidth} solid ${borderColor}`,
           whiteSpace: "nowrap",
           userSelect: "none",
-          pointerEvents: "auto",
+          pointerEvents: "auto", // สามารถลาก Field ได้
           textAlign,
           display: "inline-block",
         }}

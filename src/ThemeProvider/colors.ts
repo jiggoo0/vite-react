@@ -1,76 +1,46 @@
 // src/ThemeProvider/colors.ts
-export type ThemeType = "light" | "dark" | "business";
 
-export type ThemeColors = {
-  primary: string;
-  primaryHover: string;
-  primaryDisabled: string;
-  primaryContent: string;
-  secondary: string;
-  secondaryHover: string;
-  secondaryContent: string;
-  accent: string;
-  accentHover: string;
-  accentContent: string;
-  neutral: string;
-  neutralHover: string;
-  neutralContent: string;
-  base100: string;
-  base200: string;
-  base300: string;
-  text: string;
-  textMuted: string;
-  bg: string;
-  bgLight: string;
-};
+export type ColorKeys =
+  | "primary"
+  | "primary-hover"
+  | "primary-disabled"
+  | "primary-content"
+  | "secondary"
+  | "accent"
+  | "neutral"
+  | "bg"
+  | "bg-light"
+  | "text"
+  | "text-muted"
+  | "info"
+  | "success"
+  | "warning"
+  | "error";
 
-export const lightColors: ThemeColors = {
-  primary: "#3b82f6",
-  primaryHover: "#2563eb",
-  primaryDisabled: "#6b7280",
-  primaryContent: "#ffffff",
-  secondary: "#facc15",
-  secondaryHover: "#eab308",
-  secondaryContent: "#1f2937",
-  accent: "#22c55e",
-  accentHover: "#16a34a",
-  accentContent: "#ffffff",
-  neutral: "#f3f4f6",
-  neutralHover: "#d1d5db",
-  neutralContent: "#111827",
-  base100: "#ffffff",
-  base200: "#f9fafb",
-  base300: "#e5e7eb",
-  text: "#111827",
-  textMuted: "#6b7280",
-  bg: "#ffffff",
-  bgLight: "#f3f4f6",
-};
+/**
+ * Colors type
+ * ใช้ Record แทน interface mapped type
+ */
+export type Colors = Record<ColorKeys, string>;
 
-export const darkColors: ThemeColors = {
-  primary: "#3b82f6",
-  primaryHover: "#2563eb",
-  primaryDisabled: "#6b7280",
-  primaryContent: "#ffffff",
-  secondary: "#facc15",
-  secondaryHover: "#eab308",
-  secondaryContent: "#1f2937",
-  accent: "#22c55e",
-  accentHover: "#16a34a",
-  accentContent: "#ffffff",
-  neutral: "#1f2937",
-  neutralHover: "#111827",
-  neutralContent: "#f3f4f6",
-  base100: "#1f2937",
-  base200: "#111827",
-  base300: "#1e293b",
-  text: "#f3f4f6",
-  textMuted: "#9ca3af",
-  bg: "#1f2937",
-  bgLight: "#111827",
-};
-
-export const businessTheme = {
-  light: lightColors,
-  dark: darkColors,
+/**
+ * Default color tokens
+ * ใช้ CSS variables fallback สำหรับ production-ready
+ */
+export const defaultColors: Colors = {
+  primary: "var(--color-primary, #1f2937)",        // dark/navy
+  "primary-hover": "var(--color-primary-hover, #111827)",
+  "primary-disabled": "var(--color-primary-disabled, #6b7280)",
+  "primary-content": "var(--color-primary-content, #ffffff)",
+  secondary: "var(--color-secondary, #4b5563)",
+  accent: "var(--color-accent, #6b7280)",
+  neutral: "var(--color-neutral, #f3f4f6)",
+  bg: "var(--color-bg, #ffffff)",
+  "bg-light": "var(--color-bg-light, #f9fafb)",
+  text: "var(--color-text, #111827)",
+  "text-muted": "var(--color-text-muted, #6b7280)",
+  info: "var(--color-info, #0ea5e9)",
+  success: "var(--color-success, #22c55e)",
+  warning: "var(--color-warning, #f59e0b)",
+  error: "var(--color-error, #ef4444)",
 };

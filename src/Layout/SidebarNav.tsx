@@ -1,3 +1,4 @@
+// src/Layout/SidebarNav.tsx
 "use client";
 
 import { FC } from "react";
@@ -19,7 +20,7 @@ const navItems: SidebarNavItem[] = [
  * SidebarNav
  * ----------------
  * - Enterprise-grade vertical sidebar navigation
- * - Flat, professional UI (no animation, no rounded corners)
+ * - Flat, professional UI (no animation)
  * - Accessible with aria roles
  * - Hidden on mobile (md breakpoint)
  */
@@ -55,5 +56,4 @@ const SidebarNav: FC = () => {
 };
 
 SidebarNav.displayName = "SidebarNav";
-
 export default SidebarNav;

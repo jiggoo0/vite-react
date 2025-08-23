@@ -1,23 +1,24 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useLayoutEffect, useCallback } from "react";
 import { Moon, Sun } from "lucide-react";
 import Button from "@/Home/components/ui/Button";
 
 const THEME_KEY = "theme";
 
 /**
- * ThemeToggle
- * ------------
+ * ThemeToggle Component
+ * ----------------------
  * - Toggle Light / Dark mode
- * - Syncs with localStorage & prefers-color-scheme
- * - Updates `dark` class and `data-theme` attribute
+ * - Sync with localStorage & prefers-color-scheme
+ * - Update `dark` class & `data-theme` attribute
+ * - Accessible: aria-label, aria-pressed
  */
 const ThemeToggle = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  /** Apply theme */
+  // Apply theme to document and localStorage
   const applyTheme = useCallback((dark: boolean) => {
     setIsDark(dark);
 
@@ -27,13 +28,13 @@ const ThemeToggle = () => {
 
     try {
       localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
-    } catch (err) {
-      console.warn("⚠️ Failed to save theme:", err);
+    } catch {
+      // ignore quota errors
     }
   }, []);
 
-  /** Initialize theme */
-  useEffect(() => {
+  // Initialize theme before paint to avoid FOUC
+  useLayoutEffect(() => {
     setIsMounted(true);
 
     const savedTheme = localStorage.getItem(THEME_KEY);
@@ -42,22 +43,20 @@ const ThemeToggle = () => {
     applyTheme(savedTheme ? savedTheme === "dark" : prefersDark);
   }, [applyTheme]);
 
-  /** Sync theme across tabs */
-  useEffect(() => {
+  // Sync theme across tabs/windows
+  useLayoutEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === THEME_KEY && e.newValue) {
         applyTheme(e.newValue === "dark");
       }
     };
-
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, [applyTheme]);
 
-  /** Toggle theme manually */
   const toggleTheme = () => applyTheme(!isDark);
 
-  // Prevent SSR hydration mismatch
+  // Avoid SSR / hydration mismatch
   if (!isMounted) return null;
 
   return (
@@ -76,5 +75,4 @@ const ThemeToggle = () => {
 };
 
 ThemeToggle.displayName = "ThemeToggle";
-
 export default ThemeToggle;

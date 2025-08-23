@@ -5,11 +5,18 @@ import { DriverLicenseData } from "./types/driverLicense";
 import { driverLicenseFields, driverLicenseCardConfig } from "@/config/driverLicenseConfig";
 import "@/styles/driverLicense.css";
 
-interface DriverLicensePreviewProps {
+interface Props {
   data: DriverLicenseData;
 }
 
-const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
+/**
+ * DriverLicensePreview
+ * -------------------------
+ * แสดงใบขับขี่พร้อม layout positioning ของแต่ละ field
+ * - รองรับ text, date, select, photo
+ * - ใช้ config จาก driverLicenseCardConfig
+ */
+const DriverLicensePreview: FC<Props> = ({ data }) => {
   const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
 
   return (
@@ -24,11 +31,11 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
         backgroundPosition: "center",
       }}
     >
-      {driverLicenseFields.map(field => {
+      {driverLicenseFields.map((field) => {
         const value = data[field.id as keyof DriverLicenseData];
         if (!value) return null;
 
-        // Photo field
+        // --- Photo field ---
         if (field.type === "photo") {
           return (
             <img
@@ -46,7 +53,7 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
           );
         }
 
-        // Text / date / select fields
+        // --- Text / Date / Select fields ---
         return (
           <span
             key={field.id}
@@ -55,8 +62,8 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
               top: field.top,
               left: field.left,
               fontSize: field.fontSize,
-              fontWeight: field.fontWeight || "400",
-              color: field.color || "#000",
+              fontWeight: field.fontWeight ?? "400",
+              color: field.color ?? "#000",
               width: field.width,
               height: field.height,
             }}
@@ -70,4 +77,5 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
 };
 
 DriverLicensePreview.displayName = "DriverLicensePreview";
+
 export default memo(DriverLicensePreview);

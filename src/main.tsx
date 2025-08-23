@@ -5,11 +5,11 @@ import "@/index.css";
 
 // Global Styles
 import "@styles/global.css";
-import "@styles/theme.css";
-import "@styles/variables.css";
 import "@styles/driverLicense.css";
 
-// Ensure root element
+/* ==============================
+   Ensure Root Element
+============================== */
 const ensureRootElement = (): HTMLElement => {
   let root = document.getElementById("root");
   if (!root) {
@@ -20,7 +20,9 @@ const ensureRootElement = (): HTMLElement => {
   return root;
 };
 
-// Render App
+/* ==============================
+   Render App
+============================== */
 const root = ReactDOM.createRoot(ensureRootElement());
 
 root.render(
@@ -29,7 +31,9 @@ root.render(
   </React.StrictMode>
 );
 
-// Dev Info Logging
+/* ==============================
+   Dev Info Logging
+============================== */
 if (import.meta.env.DEV) {
   console.groupCollapsed("📦 JP-System App Info");
   console.info("🚀 Version:", import.meta.env.VITE_APP_VERSION ?? "dev");
@@ -39,7 +43,9 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
-// Service Worker Registration (Prod Only)
+/* ==============================
+   Service Worker Registration (Prod Only)
+============================== */
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`)
