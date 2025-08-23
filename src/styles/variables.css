@@ -1,135 +1,93 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ==============================
+   CSS Variables
+   -----------------------------
+   Global design tokens
+============================== */
 
+/* ==============================
+   Colors
+============================== */
 :root {
-  --color-primary: #2563eb;
-  --color-primary-hover: #1e40af;
-  --color-primary-disabled: #9ca3af;
-  --color-secondary: #9333ea;
-  --color-secondary-hover: #7c2ae8;
-  --color-accent: #f59e0b;
-  --color-neutral: #374151;
-  --color-success: #10b981;
-  --color-warning: #facc15;
-  --color-error: #ef4444;
-  --color-info: #3b82f6;
-  --color-border: #d1d5db;
-  --color-border-light: #e5e7eb;
-  --color-bg: #ffffff;
-  --color-bg-light: #f9fafb;
-  --color-text: #111827;
-  --color-text-muted: #374151;
-  --font-family-base: "Kanit", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.25s ease;
-  --transition-slow: 0.3s ease;
-  transition: color var(--transition-base), background-color var(--transition-base);
-}
-
-[data-theme="dark"] {
   --color-primary: #3b82f6;
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #6b7280;
-  --color-secondary: #a855f7;
-  --color-secondary-hover: #9333ea;
-  --color-accent: #fbbf24;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #facc15;
+  --color-secondary-hover: #eab308;
+  --color-secondary-content: #1f2937;
+
+  --color-accent: #22c55e;
+  --color-accent-hover: #16a34a;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #f3f4f6;
+  --color-neutral-hover: #d1d5db;
+  --color-neutral-content: #111827;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f9fafb;
+  --color-base-300: #e5e7eb;
+
+  --color-bg: #ffffff;
+  --color-bg-light: #f3f4f6;
+
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+}
+
+/* ==============================
+   Radius
+============================== */
+:root {
+  --radius-md: 0px; /* Flat UI, enterprise style */
+}
+
+/* ==============================
+   Font
+============================== */
+:root {
+  --font-family-base: 'Kanit', system-ui, sans-serif;
+  --font-family-mono: 'Fira Code', monospace;
+}
+
+/* ==============================
+   Transition
+============================== */
+:root {
+  --transition-base: 0.25s ease;
+  --transition-fast: 0.2s ease;
+}
+
+/* ==============================
+   Dark Theme Overrides
+============================== */
+[data-theme="dark"],
+.dark {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-disabled: #6b7280;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #facc15;
+  --color-secondary-hover: #eab308;
+  --color-secondary-content: #1f2937;
+
+  --color-accent: #22c55e;
+  --color-accent-hover: #16a34a;
+  --color-accent-content: #ffffff;
+
   --color-neutral: #1f2937;
-  --color-success: #34d399;
-  --color-warning: #fde047;
-  --color-error: #f87171;
-  --color-info: #60a5fa;
-  --color-border: #4b5563;
-  --color-border-light: #374151;
+  --color-neutral-hover: #111827;
+  --color-neutral-content: #f3f4f6;
+
+  --color-base-100: #1f2937;
+  --color-base-200: #111827;
+  --color-base-300: #1e293b;
+
   --color-bg: #1f2937;
   --color-bg-light: #111827;
+
   --color-text: #f3f4f6;
   --color-text-muted: #9ca3af;
-  --shadow-sm: 0 2px 4px rgba(255,255,255,0.05);
-  --shadow-md: 0 4px 12px rgba(255,255,255,0.06);
 }
-
-[data-theme="business"] {
-  --color-primary: #1e3a8a;
-  --color-primary-hover: #2563eb;
-  --color-primary-disabled: #9ca3af;
-  --color-primary-content: #ffffff;
-  --color-secondary: #2563eb;
-  --color-secondary-hover: #1e40af;
-  --color-accent: #fbbf24;
-  --color-neutral: #374151;
-  --color-success: #10b981;
-  --color-warning: #facc15;
-  --color-error: #ef4444;
-  --color-info: #3b82f6;
-  --color-border: #d1d5db;
-  --color-border-light: #e5e7eb;
-  --color-bg: #f3f4f6;
-  --color-bg-light: #e5e7eb;
-  --color-text: #111827;
-  --color-text-muted: #374151;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-body {
-  font-family: var(--font-family-base);
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: inherit;
-}
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
-}
-
-button {
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-base), color var(--transition-base);
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-}
-
-button.primary {
-  background-color: var(--color-primary);
-  color: var(--color-primary-content, #fff);
-}
-
-button.primary:hover {
-  background-color: var(--color-primary-hover);
-}
-
-button.primary:disabled {
-  background-color: var(--color-primary-disabled);
-  cursor: not-allowed;
-}
-
-button.secondary {
-  background-color: var(--color-secondary);
-  color: #fff;
-}
-
-button.secondary:hover {
-  background-color: var(--color-secondary-hover);
-}
-
-.text-center { text-align: center; }
-.text-left   { text-align: left; }
-.text-right  { text-align: right; }
-.hidden      { display: none !important; }
-.flex        { display: flex; }
-.justify-center { justify-content: center; }
-.mt-2 { margin-top: 0.5rem; }
-.mb-2 { margin-bottom: 0.5rem; }

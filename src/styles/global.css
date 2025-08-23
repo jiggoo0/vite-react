@@ -1,7 +1,13 @@
+/* ==============================
+   Tailwind Base
+============================== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==============================
+   Global Reset
+============================== */
 *,
 *::before,
 *::after {
@@ -20,95 +26,73 @@ body {
   background-color: var(--color-bg, #ffffff);
   color: var(--color-text, #111827);
   line-height: 1.5;
-  transition:
-    background-color var(--transition-base, 0.25s ease),
-    color var(--transition-base, 0.25s ease);
+  transition: background-color var(--transition-base, 0.25s ease),
+              color var(--transition-base, 0.25s ease);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* ==============================
+   Typography
+============================== */
+h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5em;
 }
 
-p {
-  margin-bottom: 1em;
-}
+p { margin-bottom: 1em; }
 
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast, 0.2s ease);
 }
+a:hover { color: var(--color-primary-hover); }
 
-a:hover {
-  color: var(--color-primary-hover);
-}
-
-ul,
-ol {
+ul, ol {
   padding-left: 1.5em;
   margin-bottom: 1em;
 }
+li { margin-bottom: 0.5em; }
 
-li {
-  margin-bottom: 0.5em;
-}
-
-img,
-video,
-canvas,
-svg {
+img, video, canvas, svg {
   max-width: 100%;
   display: block;
   height: auto;
 }
 
-input,
-button,
-select,
-textarea {
+/* ==============================
+   Forms & Inputs
+============================== */
+input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
 }
 
 button {
-  border-radius: var(--radius-md, 8px);
-  transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
+  border-radius: var(--radius-md, 0px);
+  transition: background-color var(--transition-base, 0.25s),
+              color var(--transition-base, 0.25s);
   cursor: pointer;
   background-color: var(--color-primary);
   color: var(--color-primary-content, #fff);
+  border: none;
+  padding: 0.5rem 1rem;
 }
 
-button:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-}
-
+button:hover:not(:disabled) { background-color: var(--color-primary-hover); }
 button:disabled {
   background-color: var(--color-primary-disabled);
   cursor: not-allowed;
 }
 
-.text-center {
-  text-align: center;
-}
-.text-left {
-  text-align: left;
-}
-.text-right {
-  text-align: right;
-}
-.hidden {
-  display: none !important;
-}
+/* ==============================
+   Utilities
+============================== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.hidden { display: none !important; }
 
 .container {
   width: 100%;
@@ -119,21 +103,17 @@ button:disabled {
   padding-right: 1rem;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ==============================
+   Scrollbar
+============================== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg-light, #f3f4f6); }
+::-webkit-scrollbar-thumb { background-color: var(--color-primary); border-radius: 4px; }
 
-::-webkit-scrollbar-track {
-  background: var(--color-bg-light);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary);
-  border-radius: 4px;
-}
-
-[data-theme="dark"],
-.dark {
+/* ==============================
+   Dark Mode
+============================== */
+[data-theme="dark"], .dark {
   --color-bg: #1f2937;
   --color-bg-light: #111827;
   --color-text: #f3f4f6;
@@ -141,6 +121,8 @@ button:disabled {
   --color-primary: #3b82f6;
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #6b7280;
+  --color-primary-content: #ffffff;
+  --radius-md: 0px;
 }
 
 .dark body {
@@ -148,14 +130,7 @@ button:disabled {
   color: var(--color-text);
 }
 
-.dark a {
-  color: var(--color-primary);
-}
+.dark a { color: var(--color-primary); }
 
-.dark ::-webkit-scrollbar-track {
-  background: var(--color-bg-light);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary);
-}
+.dark ::-webkit-scrollbar-track { background: var(--color-bg-light); }
+.dark ::-webkit-scrollbar-thumb { background-color: var(--color-primary); }

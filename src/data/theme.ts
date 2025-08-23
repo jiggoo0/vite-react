@@ -1,61 +1,100 @@
-export type ThemeType = "light" | "dark" | "business";
+export type ThemeMode = "light" | "dark";
 
-export const themes: Record<ThemeType, { name: string; colors: Record<string, string> }> = {
+export interface ThemeColors {
+  primary: string;
+  primaryHover: string;
+  primaryDisabled: string;
+  primaryContent: string;
+  secondary: string;
+  secondaryHover: string;
+  secondaryContent: string;
+  accent: string;
+  accentHover: string;
+  accentContent: string;
+  neutral: string;
+  neutralHover: string;
+  neutralContent: string;
+  base100: string;
+  base200: string;
+  base300: string;
+  text: string;
+  textMuted: string;
+  bg: string;
+  bgLight: string;
+}
+
+export interface Theme {
+  mode: ThemeMode;
+  colors: ThemeColors;
+}
+
+/**
+ * Business Theme
+ * -------------------------
+ * ใช้ร่วมกับ Tailwind + DaisyUI
+ */
+export const businessTheme: Record<ThemeMode, ThemeColors> = {
   light: {
-    name: "Light",
-    colors: {
-      primary: "#2563eb",
-      "primary-hover": "#1e40af",
-      secondary: "#9333ea",
-      accent: "#f59e0b",
-      neutral: "#374151",
-      success: "#10b981",
-      warning: "#facc15",
-      error: "#ef4444",
-      info: "#3b82f6",
-      "bg-light": "#ffffff",
-      "bg-dark": "#f3f4f6",
-      text: "#111827",
-      "text-muted": "#374151",
-    },
+    primary: "#3b82f6",
+    primaryHover: "#2563eb",
+    primaryDisabled: "#6b7280",
+    primaryContent: "#ffffff",
+    secondary: "#facc15",
+    secondaryHover: "#eab308",
+    secondaryContent: "#1f2937",
+    accent: "#22c55e",
+    accentHover: "#16a34a",
+    accentContent: "#ffffff",
+    neutral: "#f3f4f6",
+    neutralHover: "#d1d5db",
+    neutralContent: "#111827",
+    base100: "#ffffff",
+    base200: "#f9fafb",
+    base300: "#e5e7eb",
+    text: "#111827",
+    textMuted: "#6b7280",
+    bg: "#ffffff",
+    bgLight: "#f3f4f6",
   },
   dark: {
-    name: "Dark",
-    colors: {
-      primary: "#3b82f6",
-      "primary-hover": "#2563eb",
-      secondary: "#a855f7",
-      accent: "#fbbf24",
-      neutral: "#1f2937",
-      success: "#34d399",
-      warning: "#fde047",
-      error: "#f87171",
-      info: "#60a5fa",
-      "bg-light": "#111827",
-      "bg-dark": "#1f2937",
-      text: "#f3f4f6",
-      "text-muted": "#9ca3af",
-    },
+    primary: "#3b82f6",
+    primaryHover: "#2563eb",
+    primaryDisabled: "#6b7280",
+    primaryContent: "#ffffff",
+    secondary: "#facc15",
+    secondaryHover: "#eab308",
+    secondaryContent: "#1f2937",
+    accent: "#22c55e",
+    accentHover: "#16a34a",
+    accentContent: "#ffffff",
+    neutral: "#1f2937",
+    neutralHover: "#111827",
+    neutralContent: "#f3f4f6",
+    base100: "#1f2937",
+    base200: "#111827",
+    base300: "#1e293b",
+    text: "#f3f4f6",
+    textMuted: "#9ca3af",
+    bg: "#1f2937",
+    bgLight: "#111827",
   },
-  business: {
-    name: "Business",
-    colors: {
-      primary: "#1e3a8a",
-      "primary-hover": "#2563eb",
-      "primary-disabled": "#9ca3af",
-      "primary-content": "#ffffff",
-      secondary: "#2563eb",
-      "secondary-hover": "#1e40af",
-      accent: "#fbbf24",
-      neutral: "#374151",
-      success: "#10b981",
-      warning: "#facc15",
-      error: "#ef4444",
-      info: "#3b82f6",
-      "bg-light": "#e5e7eb",
-      "bg-dark": "#f3f4f6",
-      text: "#111827",
-      "text-muted": "#374151",
-    },
-  },
+};
+
+/**
+ * Toggle Dark / Light Theme
+ */
+export const setThemeMode = (mode: ThemeMode) => {
+  const root = document.documentElement;
+  if (mode === "dark") {
+    root.classList.add("dark");
+    root.setAttribute("data-theme", "dark");
+  } else {
+    root.classList.remove("dark");
+    root.setAttribute("data-theme", "light");
+  }
+
+  const colors = businessTheme[mode];
+  Object.entries(colors).forEach(([key, value]) => {
+    root.style.setProperty(`--color-${key}`, value);
+  });
 };

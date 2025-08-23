@@ -1,20 +1,76 @@
-export const colors = {
-  primary: "#1e3a8a",
-  "primary-hover": "#2563eb",
-  "primary-disabled": "#9ca3af",
-  "primary-content": "#ffffff",
-  secondary: "#2563eb",
-  "secondary-hover": "#1e40af",
-  accent: "#fbbf24",
-  neutral: "#374151",
-  success: "#10b981",
-  warning: "#facc15",
-  error: "#ef4444",
-  info: "#3b82f6",
-  "bg-light": "#e5e7eb",
-  "bg-dark": "#f3f4f6",
-  text: "#111827",
-  "text-muted": "#374151",
-} as const;
+// src/ThemeProvider/colors.ts
+export type ThemeType = "light" | "dark" | "business";
 
-export type ThemeType = keyof typeof colors;
+export type ThemeColors = {
+  primary: string;
+  primaryHover: string;
+  primaryDisabled: string;
+  primaryContent: string;
+  secondary: string;
+  secondaryHover: string;
+  secondaryContent: string;
+  accent: string;
+  accentHover: string;
+  accentContent: string;
+  neutral: string;
+  neutralHover: string;
+  neutralContent: string;
+  base100: string;
+  base200: string;
+  base300: string;
+  text: string;
+  textMuted: string;
+  bg: string;
+  bgLight: string;
+};
+
+export const lightColors: ThemeColors = {
+  primary: "#3b82f6",
+  primaryHover: "#2563eb",
+  primaryDisabled: "#6b7280",
+  primaryContent: "#ffffff",
+  secondary: "#facc15",
+  secondaryHover: "#eab308",
+  secondaryContent: "#1f2937",
+  accent: "#22c55e",
+  accentHover: "#16a34a",
+  accentContent: "#ffffff",
+  neutral: "#f3f4f6",
+  neutralHover: "#d1d5db",
+  neutralContent: "#111827",
+  base100: "#ffffff",
+  base200: "#f9fafb",
+  base300: "#e5e7eb",
+  text: "#111827",
+  textMuted: "#6b7280",
+  bg: "#ffffff",
+  bgLight: "#f3f4f6",
+};
+
+export const darkColors: ThemeColors = {
+  primary: "#3b82f6",
+  primaryHover: "#2563eb",
+  primaryDisabled: "#6b7280",
+  primaryContent: "#ffffff",
+  secondary: "#facc15",
+  secondaryHover: "#eab308",
+  secondaryContent: "#1f2937",
+  accent: "#22c55e",
+  accentHover: "#16a34a",
+  accentContent: "#ffffff",
+  neutral: "#1f2937",
+  neutralHover: "#111827",
+  neutralContent: "#f3f4f6",
+  base100: "#1f2937",
+  base200: "#111827",
+  base300: "#1e293b",
+  text: "#f3f4f6",
+  textMuted: "#9ca3af",
+  bg: "#1f2937",
+  bgLight: "#111827",
+};
+
+export const businessTheme = {
+  light: lightColors,
+  dark: darkColors,
+};

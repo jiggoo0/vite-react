@@ -1,74 +1,116 @@
-@media print {
-  * {
-    background: transparent !important;
-    color: #000 !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
+/* ==============================
+   Print Styles
+   -----------------------------
+   สำหรับการพิมพ์เอกสาร / Export PDF
+   Flat, professional, enterprise-ready
+============================== */
 
-  html, body {
-    width: 100%;
-    margin: 0;
-    padding: 0;
+/* Hide elements not meant for print */
+@media print {
+  body {
+    background-color: #ffffff;
+    color: #111827;
     font-size: 12pt;
     line-height: 1.4;
-    font-family: "Kanit", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #fff;
-    color: #000;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .no-print, nav, header, footer, .btn, .hidden-print {
+  a::after,
+  a[href^="http"]::after {
+    content: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select,
+  .no-print {
     display: none !important;
   }
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    page-break-inside: avoid;
-  }
-
-  th, td {
-    border: 1px solid #000;
-    padding: 4px 8px;
-    text-align: left;
-    vertical-align: top;
-  }
-
+  /* Page break for cards / sections */
   .page-break {
-    page-break-after: always;
+    page-break-before: always;
+    break-before: page;
   }
 
-  a:after {
-    content: " (" attr(href) ")";
-    font-size: 10pt;
-  }
-
-  img, video, canvas, svg {
-    max-width: 100% !important;
-    height: auto !important;
+  /* Driver License / Certificate Card */
+  .driver-license-card,
+  .medical-certificate-card,
+  .salary-certificate-card,
+  .registration-card {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: var(--color-base-100);
+    color: var(--color-text);
+    border: 1px solid var(--color-base-300);
+    border-radius: var(--radius-md);
+    box-shadow: none;
     page-break-inside: avoid;
   }
 
-  form, fieldset {
-    page-break-inside: avoid;
+  /* Table for structured data */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    color: #000 !important;
-    page-break-after: avoid;
-    page-break-inside: avoid;
+  th,
+  td {
+    border: 1px solid var(--color-base-300);
+    padding: 0.5rem;
+    text-align: left;
   }
 
-  pre, code {
-    font-family: monospace;
-    font-size: 10pt;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+  th {
+    background-color: var(--color-base-200);
+    font-weight: 600;
   }
 
-  p, ul, ol, blockquote {
+  /* Remove unnecessary spacing / margins */
+  .no-margin,
+  .no-padding {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* QR Codes / Images */
+  img,
+  canvas,
+  svg {
+    max-width: 100%;
+    height: auto;
     page-break-inside: avoid;
-    orphans: 3;
-    widows: 3;
+  }
+}
+
+/* ==============================
+   Dark Mode Print Adjustment
+============================== */
+@media print {
+  [data-theme="dark"] &,
+  .dark & {
+    body {
+      background-color: #ffffff;
+      color: #111827;
+    }
+
+    .driver-license-card,
+    .medical-certificate-card,
+    .salary-certificate-card,
+    .registration-card {
+      background-color: #ffffff;
+      color: #111827;
+      border-color: #e5e7eb;
+    }
+
+    th {
+      background-color: #f3f4f6;
+    }
   }
 }

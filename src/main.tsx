@@ -1,20 +1,15 @@
-// src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import RootApp from "@/App/RootApp";
+import "@/index.css";
 
-// ==============================
 // Global Styles
-// ==============================
-import "@styles/fonts.css";
 import "@styles/global.css";
 import "@styles/theme.css";
 import "@styles/variables.css";
 import "@styles/driverLicense.css";
 
-// ==============================
 // Ensure root element
-// ==============================
 const ensureRootElement = (): HTMLElement => {
   let root = document.getElementById("root");
   if (!root) {
@@ -25,9 +20,7 @@ const ensureRootElement = (): HTMLElement => {
   return root;
 };
 
-// ==============================
 // Render App
-// ==============================
 const root = ReactDOM.createRoot(ensureRootElement());
 
 root.render(
@@ -36,9 +29,7 @@ root.render(
   </React.StrictMode>
 );
 
-// ==============================
 // Dev Info Logging
-// ==============================
 if (import.meta.env.DEV) {
   console.groupCollapsed("📦 JP-System App Info");
   console.info("🚀 Version:", import.meta.env.VITE_APP_VERSION ?? "dev");
@@ -48,9 +39,7 @@ if (import.meta.env.DEV) {
   console.groupEnd();
 }
 
-// ==============================
 // Service Worker Registration (Prod Only)
-// ==============================
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`)

@@ -1,6 +1,11 @@
+// src/utils/exportCard.ts
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { ThemeType } from "../ThemeProvider/colors";
+
+/**
+ * ThemeType - ชื่อธีมที่รองรับ
+ */
+export type ThemeType = "light" | "dark" | "business";
 
 /**
  * Render an HTML element to a canvas
@@ -8,7 +13,7 @@ import { ThemeType } from "../ThemeProvider/colors";
 const renderElementToCanvas = async (
   elementId: string,
   scale = 2,
-  theme: ThemeType = "primary"
+  theme: ThemeType = "light"
 ): Promise<HTMLCanvasElement | null> => {
   const element = document.getElementById(elementId);
   if (!element) {
@@ -41,7 +46,7 @@ const renderElementToCanvas = async (
 export const exportCardAsPNG = async (
   elementId: string,
   fileName = "idcard.png",
-  theme: ThemeType = "primary"
+  theme: ThemeType = "light"
 ) => {
   const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
@@ -59,7 +64,7 @@ export const exportCardAsPDF = async (
   elementId: string,
   fileName = "idcard.pdf",
   useA4 = false,
-  theme: ThemeType = "primary"
+  theme: ThemeType = "light"
 ) => {
   const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
