@@ -1,0 +1,77 @@
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+/**
+ * Render an HTML element to a canvas
+ */
+const renderElementToCanvas = async (elementId, scale = 2, theme = "primary") => {
+    const element = document.getElementById(elementId);
+    if (!element) {
+        console.error(`[exportCard] Element not found: id=${elementId}`);
+        return null;
+    }
+    const previousTheme = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+        const scaleFactor = scale * (window.devicePixelRatio || 1);
+        return await html2canvas(element, {
+            scale: scaleFactor,
+            useCORS: true,
+            logging: false,
+            backgroundColor: "#ffffff",
+        });
+    }
+    catch (err) {
+        console.error("[exportCard] Failed to render element:", err);
+        return null;
+    }
+    finally {
+        document.documentElement.setAttribute("data-theme", previousTheme || "light");
+    }
+};
+/**
+ * Export element as PNG
+ */
+export const exportCardAsPNG = async (elementId, fileName = "idcard.png", theme = "primary") => {
+    const canvas = await renderElementToCanvas(elementId, 2, theme);
+    if (!canvas)
+        return;
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = fileName;
+    link.click();
+};
+/**
+ * Export element as PDF
+ */
+export const exportCardAsPDF = async (elementId, fileName = "idcard.pdf", useA4 = false, theme = "primary") => {
+    const canvas = await renderElementToCanvas(elementId, 2, theme);
+    if (!canvas)
+        return;
+    const imgData = canvas.toDataURL("image/png");
+    try {
+        let pdf;
+        if (useA4) {
+            pdf = new jsPDF("p", "mm", "a4");
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+            const imgWidth = canvas.width * ratio;
+            const imgHeight = canvas.height * ratio;
+            const xOffset = (pageWidth - imgWidth) / 2;
+            const yOffset = (pageHeight - imgHeight) / 2;
+            pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
+        }
+        else {
+            pdf = new jsPDF({
+                orientation: canvas.width > canvas.height ? "landscape" : "portrait",
+                unit: "px",
+                format: [canvas.width, canvas.height],
+            });
+            pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+        }
+        pdf.save(fileName);
+    }
+    catch (err) {
+        console.error("[exportCard] PDF export failed:", err);
+    }
+};

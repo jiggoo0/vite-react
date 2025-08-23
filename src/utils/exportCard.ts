@@ -27,8 +27,8 @@ const renderElementToCanvas = async (
       logging: false,
       backgroundColor: "#ffffff",
     });
-  } catch (error) {
-    console.error("[exportCard] Failed to render element:", error);
+  } catch (err) {
+    console.error("[exportCard] Failed to render element:", err);
     return null;
   } finally {
     document.documentElement.setAttribute("data-theme", previousTheme || "light");
@@ -89,7 +89,7 @@ export const exportCardAsPDF = async (
     }
 
     pdf.save(fileName);
-  } catch (error) {
-    console.error("[exportCard] PDF export failed:", error);
+  } catch (err) {
+    console.error("[exportCard] PDF export failed:", err);
   }
 };

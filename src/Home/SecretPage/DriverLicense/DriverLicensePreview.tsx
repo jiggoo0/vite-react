@@ -1,24 +1,16 @@
 "use client";
 
 import { FC, memo } from "react";
-import {
-  DriverLicenseData,
-  DriverLicenseFieldKeys,
-} from "./types/driverLicense";
-import { driverLicenseConfig } from "./driverLicenseConfig";
+import { DriverLicenseData } from "./types/driverLicense";
+import { driverLicenseFields, driverLicenseCardConfig } from "@/config/driverLicenseConfig";
 import "@/styles/driverLicense.css";
 
 interface DriverLicensePreviewProps {
   data: DriverLicenseData;
 }
 
-/**
- * DriverLicensePreview
- * แสดงใบขับขี่จำลองโดยใช้ driverLicenseConfig
- * สำหรับตำแหน่งและสไตล์ของแต่ละ field
- */
 const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
-  const { cardWidth, cardHeight, bgDefault, fields } = driverLicenseConfig;
+  const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
 
   return (
     <div
@@ -32,40 +24,41 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
         backgroundPosition: "center",
       }}
     >
-      {/* Photo */}
-      {data.photo && fields.photo && (
-        <img
-          src={data.photo}
-          alt="Driver"
-          className="absolute rounded-md object-cover"
-          style={{
-            top: fields.photo.top,
-            left: fields.photo.left,
-            width: fields.photo.width,
-            height: fields.photo.height,
-          }}
-        />
-      )}
+      {driverLicenseFields.map(field => {
+        const value = data[field.id as keyof DriverLicenseData];
+        if (!value) return null;
 
-      {/* Text Fields */}
-      {(Object.keys(fields) as DriverLicenseFieldKeys[]).map((key) => {
-        if (key === "photo") return null; // Photo แสดงแล้ว
+        // Photo field
+        if (field.type === "photo") {
+          return (
+            <img
+              key={field.id}
+              src={value as string}
+              alt="Driver"
+              className="absolute rounded-md object-cover"
+              style={{
+                top: field.top,
+                left: field.left,
+                width: field.width,
+                height: field.height,
+              }}
+            />
+          );
+        }
 
-        const config = fields[key];
-        const value = (data[key] as string) || "";
-
+        // Text / date / select fields
         return (
           <span
-            key={key}
+            key={field.id}
             className="absolute font-sans"
             style={{
-              top: config.top,
-              left: config.left,
-              fontSize: config.fontSize,
-              fontWeight: config.fontWeight || "400",
-              color: config.color || "#000",
-              width: config.width,
-              height: config.height,
+              top: field.top,
+              left: field.left,
+              fontSize: field.fontSize,
+              fontWeight: field.fontWeight || "400",
+              color: field.color || "#000",
+              width: field.width,
+              height: field.height,
             }}
           >
             {value}
@@ -77,5 +70,4 @@ const DriverLicensePreview: FC<DriverLicensePreviewProps> = ({ data }) => {
 };
 
 DriverLicensePreview.displayName = "DriverLicensePreview";
-
 export default memo(DriverLicensePreview);

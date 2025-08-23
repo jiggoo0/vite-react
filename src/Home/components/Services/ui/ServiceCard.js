@@ -1,0 +1,10 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+/** สร้างลิงก์ LINE พร้อมข้อความ */
+const createLineLink = (message) => `https://lin.ee/sOKDUEg?text=${encodeURIComponent(message)}`;
+const ServiceCard = ({ service }) => {
+    const lineMessage = service.lineMessage ?? `สนใจบริการ: ${service.title}`;
+    const lineLink = createLineLink(lineMessage);
+    return (_jsxs("article", { tabIndex: 0, "aria-label": `บริการ: ${service.title}`, className: "group relative flex flex-col overflow-hidden rounded-2xl border border-base-200 bg-base-100 shadow-sm transition-shadow hover:shadow-lg focus-within:ring-2 focus-within:ring-primary", children: [_jsx("img", { src: service.image, alt: service.altText, loading: "lazy", decoding: "async", className: "h-48 w-full rounded-t-2xl object-cover transition-transform duration-300 group-hover:scale-105" }), _jsxs("div", { className: "flex flex-col flex-1 space-y-2 p-4", children: [_jsx("h3", { className: "text-lg font-semibold text-base-content", children: service.title }), _jsx("p", { className: "text-sm text-base-content/70 leading-relaxed", children: service.description }), service.price && (_jsx("p", { className: "text-sm font-medium text-green-600", children: service.price })), !service.available && service.comingSoonNote && (_jsxs("span", { "aria-hidden": "true", className: "inline-block mt-2 rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800", children: ["\uD83D\uDEA7 ", service.comingSoonNote] })), service.available && (_jsx("a", { href: lineLink, target: "_blank", rel: "noopener noreferrer", "aria-label": `สนใจบริการ ${service.title} ติดต่อผ่าน LINE`, className: "mt-3 inline-flex items-center justify-center rounded bg-primary px-5 py-2 text-sm font-semibold text-white shadow transition-transform duration-200 hover:bg-primary-dark hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary", children: "\u0E2A\u0E19\u0E43\u0E08\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23" }))] })] }));
+};
+export default ServiceCard;

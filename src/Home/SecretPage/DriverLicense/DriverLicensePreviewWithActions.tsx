@@ -1,51 +1,50 @@
+"use client";
+
 import { FC } from "react";
 import { DriverLicenseData } from "./types/driverLicense";
+import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
+import DriverLicensePreview from "./DriverLicensePreview";
 
 interface DriverLicensePreviewWithActionsProps {
   data: DriverLicenseData;
 }
 
-const DriverLicensePreviewWithActions: FC<DriverLicensePreviewWithActionsProps> = ({
-  data,
-}) => {
-  return (
-    <div className="driver-license-card p-4 rounded-lg border border-gray-300 shadow-md bg-white">
-      {data.photo && (
-        <img
-          src={data.photo}
-          alt="Driver License"
-          className="w-32 h-40 object-cover rounded-md mb-4"
-        />
-      )}
+/**
+ * DriverLicensePreviewWithActions
+ * แสดงใบขับขี่พร้อมปุ่ม export PNG/PDF
+ */
+const DriverLicensePreviewWithActions: FC<DriverLicensePreviewWithActionsProps> = ({ data }) => {
+  const handleExportPNG = () =>
+    exportCardAsPNG("driver-license-preview", "driver-license.png");
 
-      <div className="space-y-1 text-gray-800 font-medium">
-        <p>
-          <span className="font-semibold">Name:</span> {data.fullName}
-        </p>
-        <p>
-          <span className="font-semibold">ID:</span> {data.idNumber}
-        </p>
-        <p>
-          <span className="font-semibold">Birth Date:</span> {data.dob}
-        </p>
-        <p>
-          <span className="font-semibold">Issue Date:</span> {data.issueDate}
-        </p>
-        <p>
-          <span className="font-semibold">Expiry Date:</span> {data.expiryDate}
-        </p>
-        <p>
-          <span className="font-semibold">Address:</span> {data.address}
-        </p>
-        <p>
-          <span className="font-semibold">License Type:</span> {data.licenseType}
-        </p>
-        <p>
-          <span className="font-semibold">Blood Type:</span> {data.bloodType}
-        </p>
+  const handleExportPDF = () =>
+    exportCardAsPDF("driver-license-preview", "driver-license.pdf", true);
+
+  return (
+    <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
+      {/* Preview */}
+      <DriverLicensePreview data={data} />
+
+      {/* Export Actions */}
+      <div className="flex gap-4 mt-4">
+        <button
+          type="button"
+          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700"
+          onClick={handleExportPNG}
+        >
+          ดาวน์โหลด PNG
+        </button>
+        <button
+          type="button"
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500"
+          onClick={handleExportPDF}
+        >
+          ดาวน์โหลด PDF (A4)
+        </button>
       </div>
     </div>
   );
 };
 
+DriverLicensePreviewWithActions.displayName = "DriverLicensePreviewWithActions";
 export default DriverLicensePreviewWithActions;

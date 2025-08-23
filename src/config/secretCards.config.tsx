@@ -26,62 +26,71 @@ const MedicalCertificate = lazy(
   () => import("@home/SecretPage/MedicalCertificate/MedicalCertificate")
 );
 const SpecialBranchCertificate = lazy(
-  () =>
-    import(
-      "@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate"
-    )
+  () => import("@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate")
 );
 
 export type EffectiveRole = "admin" | "user" | "manager";
 
-export type LazyCard = {
+export interface LazyCard {
   component: ReactNode;
   delay: number;
   isBlurred?: boolean;
   fallback?: ReactNode;
-};
+}
+
+interface User {
+  username: string;
+  role: string;
+}
 
 /**
- * getLazyCards
- * --------------------
- * - คืนค่า array ของ LazyCard ตาม user role
- * - รองรับ blur สำหรับ user ที่ไม่ใช่ admin
- * - รองรับ fallback สำหรับ lazy-loaded components
+ * ฟังก์ชันสร้าง LazyCard สำหรับ SecretPage
+ * @param user ข้อมูลผู้ใช้งาน
+ * @param effectiveRole สิทธิ์การเข้าถึง
  */
-export const getLazyCards = (
-  user: { username: string; role: string },
-  effectiveRole: EffectiveRole
-): LazyCard[] => {
-  const shouldBlur = effectiveRole !== "admin";
+export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
   const isAdminOrManager = effectiveRole === "admin" || effectiveRole === "manager";
+  const shouldBlur = effectiveRole !== "admin";
 
-  const cards: LazyCard[] = [
+  const lazyCards: LazyCard[] = [
+    // Header & Description
     { component: <SecretHeader />, delay: 0 },
-    {
-      component: <SecretDescription user={{ ...user, role: effectiveRole }} />,
-      delay: 50,
-    },
+    { component: <SecretDescription user={{ ...user, role: effectiveRole }} />, delay: 50 },
+
+    // Document Download
     { component: <DocumentDownload />, delay: 100 },
+
+    // Driver License Form
     { component: <DriverLicenseFormPage />, delay: 150, isBlurred: shouldBlur },
+
+    // Registration Preview
     {
       component: <RegistrationPreview {...mockRegistrationData} />,
       delay: 200,
       isBlurred: shouldBlur,
       fallback: <div>Loading Registration...</div>,
     },
+
+    // Salary Certificate
     {
       component: <SalaryCertificate data={mockSalaryCertificate} />,
       delay: 300,
       isBlurred: shouldBlur,
       fallback: <div>Loading Salary Certificate...</div>,
     },
+
+    // Medical Certificate
     {
       component: <MedicalCertificate data={mockMedicalCertificate} />,
       delay: 400,
       isBlurred: shouldBlur,
       fallback: <div>Loading Medical Certificate...</div>,
     },
+
+    // ID Card Form
     { component: <IdCardFormWithOCR />, delay: 500, isBlurred: shouldBlur },
+
+    // Kbank Notifications
     {
       component: (
         <>
@@ -95,28 +104,26 @@ export const getLazyCards = (
     },
   ];
 
-  // สำหรับ admin / manager
+  // Special Branch Certificate สำหรับ admin/manager
   if (isAdminOrManager) {
-    cards.push({
+    lazyCards.push({
       component: <SpecialBranchCertificate />,
       delay: 650,
       fallback: <div>Loading Special Branch...</div>,
     });
   }
 
-  // Footer / Actions
-  cards.push(
+  // Footer & Actions
+  lazyCards.push(
     {
-      component: (
-        <BlurContact
-          imageUrl="/images/admin-contact.jpg"
-          contactText="ติดต่อฝ่ายสนับสนุน"
-        />
-      ),
+      component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />,
       delay: 700,
     },
-    { component: <SecretActions role={effectiveRole} />, delay: 750 }
+    {
+      component: <SecretActions role={effectiveRole} />,
+      delay: 750,
+    }
   );
 
-  return cards;
+  return lazyCards;
 };

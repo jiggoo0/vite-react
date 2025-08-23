@@ -1,7 +1,7 @@
 #!/bin/bash
 # export-structure.sh
 # 📦 Export project structure from src/ into Markdown
-# ใช้งาน:
+# Usage:
 #   ./export-structure.sh [--summary] [--output=FILE]
 
 set -e

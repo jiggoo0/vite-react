@@ -1,5 +1,5 @@
 #!/bin/bash
-# ✅ Clean.sh — JP-System Production Cleanup Script (Interactive + Args Mode)
+# ✅ Clean.sh — JP-System Production Cleanup Script
 
 set -euo pipefail
 
@@ -11,25 +11,23 @@ MODES=()
 # Functions
 # ==============================
 show_help() {
-  echo "Usage: $0 [options]"
-  echo ""
-  echo "Options:"
-  echo "  --all           ลบทุกอย่าง (build, cache, node_modules, lockfiles, logs)"
-  echo "  --cache-only    ลบเฉพาะ cache directories"
-  echo "  --node-only     ลบ node_modules และ lockfiles"
-  echo "  --build-only    ลบเฉพาะ build output (dist, build, coverage)"
-  echo "  --logs-only     ลบ log files"
-  echo "  -y, --yes       ข้ามการยืนยัน (force mode)"
-  echo "  -h, --help      แสดงวิธีใช้"
-  echo "  (ถ้าไม่ใส่ options จะเข้าสู่ Interactive Mode)"
-  echo ""
+  cat <<EOF
+Usage: $0 [options]
+
+Options:
+  --all           ลบทุกอย่าง (build, cache, node_modules, lockfiles, logs)
+  --cache-only    ลบเฉพาะ cache directories
+  --node-only     ลบ node_modules และ lockfiles
+  --build-only    ลบเฉพาะ build output (dist, build, coverage)
+  --logs-only     ลบ log files
+  -y, --yes       ข้ามการยืนยัน (force mode)
+  -h, --help      แสดงวิธีใช้
+EOF
 }
 
 confirm() {
-  if [[ "$FORCE" == "true" ]]; then
-    return 0
-  fi
-  read -p "⚠️  คุณแน่ใจหรือไม่ที่จะลบ? (y/N): " ans
+  if [[ "$FORCE" == true ]]; then return 0; fi
+  read -r -p "⚠️  คุณแน่ใจหรือไม่ที่จะลบ? (y/N): " ans
   case "$ans" in
     y|Y) return 0 ;;
     *) echo "❌ ยกเลิก"; exit 1 ;;
@@ -37,13 +35,13 @@ confirm() {
 }
 
 clean_build() {
-  echo "🗑️ Removing build output directories: dist/, build/, coverage/ ..."
+  echo "🗑️ Removing build output directories..."
   rm -rf dist build coverage
   mkdir -p dist
 }
 
 clean_cache() {
-  echo "🗑️ Removing various cache directories..."
+  echo "🗑️ Removing cache directories..."
   rm -rf node_modules/.vite node_modules/.cache .turbo .eslintcache .parcel-cache .next .vite .svelte-kit .nuxt .cache
 }
 
@@ -65,24 +63,25 @@ install_pnpm() {
     echo "📥 Installing dependencies via pnpm..."
     pnpm install
   else
-    echo "⚠️ pnpm not found! Please run 'npm install' or 'yarn install'."
+    echo "⚠️ pnpm not found! Run 'npm install' or 'yarn install'."
   fi
 }
 
 interactive_menu() {
-  echo ""
-  echo "============================"
-  echo "   🧹 JP-System Clean Menu   "
-  echo "============================"
-  echo "1) Clean Build (dist, build, coverage)"
-  echo "2) Clean Cache (.vite, .next, .cache, ...)"
-  echo "3) Clean Node (node_modules + lockfiles)"
-  echo "4) Clean Logs (*.log)"
-  echo "5) Clean All"
-  echo "0) Exit"
-  echo "============================"
-  read -p "👉 เลือกตัวเลขที่ต้องการ: " choice
+  cat <<EOF
 
+============================
+   🧹 JP-System Clean Menu
+============================
+1) Clean Build (dist, build, coverage)
+2) Clean Cache (.vite, .next, .cache, ...)
+3) Clean Node (node_modules + lockfiles)
+4) Clean Logs (*.log)
+5) Clean All
+0) Exit
+============================
+EOF
+  read -r -p "👉 เลือกตัวเลขที่ต้องการ: " choice
   case "$choice" in
     1) MODES=("build") ;;
     2) MODES=("cache") ;;

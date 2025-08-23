@@ -5,16 +5,24 @@ import prettier from "eslint-config-prettier";
 import globals from "globals";
 
 export default tseslint.config(
+  // ==============================
   // Base JS rules
+  // ==============================
   js.configs.recommended,
 
+  // ==============================
   // TypeScript recommended rules
+  // ==============================
   ...tseslint.configs.recommended,
 
-  // Prettier integration (disable conflicting rules)
+  // ==============================
+  // Prettier integration
+  // ==============================
   prettier,
 
+  // ==============================
   // TypeScript files
+  // ==============================
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -23,52 +31,56 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        { argsIgnorePattern: "^", varsIgnorePattern: "^" }
+        { argsIgnorePattern: "^", varsIgnorePattern: "^" },
       ],
       "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off"
-    }
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+    },
   },
 
+  // ==============================
   // JS/Config files (CommonJS / Node globals)
+  // ==============================
   {
-    files: [
-      "*.config.js",
-      "*.config.cjs",
-      ".prettier.config.js",
-      "postcss.config.cjs"
-    ],
+    files: ["*.config.js", "*.config.cjs", ".prettier.config.js", "postcss.config.cjs"],
     languageOptions: {
       globals: {
         module: true,
         require: true,
         __dirname: true,
-        process: true
-      }
-    }
+        process: true,
+      },
+    },
+    rules: {
+      "no-undef": "off",
+    },
   },
 
+  // ==============================
   // Node scripts
+  // ==============================
   {
     files: ["scripts/**/*.{js,ts}"],
     languageOptions: {
-      globals: globals.node
+      globals: globals.node,
     },
     rules: {
-      "no-irregular-whitespace": "off"
-    }
+      "no-irregular-whitespace": "off",
+    },
   },
 
+  // ==============================
   // Ignored files/folders
+  // ==============================
   {
     ignores: [
       "dev-dist/",
       "dist/",
       "node_modules/",
-      "/.d.ts",
-      "**/.spec.ts",
-      "/*.test.ts",
-      "/*.test.tsx"
-    ]
+      "**/*.d.ts",
+      "**/*.spec.ts",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+    ],
   }
 );

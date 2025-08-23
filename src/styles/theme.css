@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==============================
+   Theme Variables & Overrides
+   ============================== */
+
+/* Light / Default Theme */
 :root {
   --color-primary: #1e3a8a;
   --color-primary-hover: #2563eb;
   --color-primary-disabled: #9ca3af;
+  --color-primary-content: #ffffff;
   --color-secondary: #374151;
   --color-accent: #fbbf24;
   --color-neutral: #6b7280;
@@ -19,21 +25,14 @@
   --color-bg-light: #ffffff;
   --color-text: #111827;
   --color-text-muted: #374151;
-  --font-family-base: "Kanit", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.08);
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 300ms ease;
 }
 
+/* Dark Theme */
 [data-theme="dark"] {
   --color-primary: #2563eb;
   --color-primary-hover: #1e40af;
   --color-primary-disabled: #9ca3af;
+  --color-primary-content: #ffffff;
   --color-secondary: #a1a1aa;
   --color-accent: #fbbf24;
   --color-neutral: #1f2937;
@@ -47,10 +46,11 @@
   --color-bg-light: #111827;
   --color-text: #f3f4f6;
   --color-text-muted: #9ca3af;
-  --shadow-sm: 0 1px 3px rgba(255,255,255,0.05);
-  --shadow-md: 0 4px 6px rgba(255,255,255,0.06);
+  --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.05);
+  --shadow-md: 0 4px 6px rgba(255, 255, 255, 0.06);
 }
 
+/* Business Theme */
 [data-theme="business"] {
   --color-primary: #1e3a8a;
   --color-primary-hover: #2563eb;
@@ -71,19 +71,20 @@
   --color-text-muted: #374151;
 }
 
+/* ==============================
+   Utility Overrides
+   ============================== */
 body {
-  font-family: var(--font-family-base);
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color var(--transition-base),
-              color var(--transition-base);
-  margin: 0;
+  transition: background-color 250ms ease, color 250ms ease;
+  font-family: var(--font-family-base, "Kanit", Helvetica, Arial, sans-serif);
 }
 
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: color 150ms ease;
 }
 
 a:hover {
@@ -91,14 +92,13 @@ a:hover {
 }
 
 button {
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-base),
-              color var(--transition-base);
+  border-radius: var(--radius-md, 0.5rem);
+  transition: background-color 250ms ease, color 250ms ease;
 }
 
 button.primary {
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-primary-content);
 }
 
 button.primary:hover {
@@ -109,8 +109,3 @@ button.primary:disabled {
   background-color: var(--color-primary-disabled);
   cursor: not-allowed;
 }
-
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.text-left { text-align: left; }
-.hidden { display: none !important; }

@@ -2,12 +2,18 @@
 
 import { FC } from "react";
 import DriverLicensePreviewWithActions from "./DriverLicensePreviewWithActions";
-import mockDriverLicenseData from "@__mocks__/mockDriverLicenseData";
+import { driverLicenseFields } from "@/config/driverLicenseConfig";
+import { DriverLicenseData } from "./types/driverLicense";
 
-/**
- * DriverLicensePage
- * หน้าแสดงตัวอย่างใบขับขี่
- */
+// generate default data ตาม field ids
+const defaultDriverLicenseData: DriverLicenseData = driverLicenseFields.reduce(
+  (acc, field) => {
+    acc[field.id as keyof DriverLicenseData] = "";
+    return acc;
+  },
+  {} as DriverLicenseData
+);
+
 const DriverLicensePage: FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -16,8 +22,8 @@ const DriverLicensePage: FC = () => {
         ตัวอย่างใบขับขี่
       </h1>
 
-      {/* Driver License Preview */}
-      <DriverLicensePreviewWithActions data={mockDriverLicenseData} />
+      {/* Driver License Preview with Export Actions */}
+      <DriverLicensePreviewWithActions data={defaultDriverLicenseData} />
     </div>
   );
 };
