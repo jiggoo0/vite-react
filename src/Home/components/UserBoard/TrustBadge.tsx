@@ -1,10 +1,10 @@
 "use client";
 
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import clsx from "clsx";
 
 export interface TrustBadgeProps {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   description: string;
   className?: string;
@@ -13,25 +13,28 @@ export interface TrustBadgeProps {
 /**
  * TrustBadge
  * -------------------------
- *  Badge  Trust Dashboard
- * - icon: 
- * - title:  badge
- * - description:  badge
- * - className:  CSS 
+ * ✅ Badge card สำหรับ Trust Dashboard
+ * - รองรับ Icon
+ * - Responsive
+ * - Accessible
  */
 const TrustBadge: FC<TrustBadgeProps> = ({ icon, title, description, className }) => {
   return (
     <div
+      role="group"
+      aria-label={title}
       className={clsx(
-        "flex flex-col items-center p-4 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200 w-40 text-center",
+        "flex flex-col items-center p-4 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200 w-44 text-center",
         className
       )}
     >
       {/* Icon */}
-      <div className="mb-2">{icon}</div>
+      <div className="mb-3 text-primary dark:text-primary-light">{icon}</div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+      <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">
+        {title}
+      </h3>
 
       {/* Description */}
       <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>

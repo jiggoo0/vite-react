@@ -32,11 +32,12 @@ interface TrustDashboardProps {
 /**
  * TrustDashboard
  * -------------------------
- * แสดงข้อมูลความน่าเชื่อถือของบริษัท:
- * - Metrics: ข้อมูล KPI ของทีม
- * - Stats: ข้อมูลตัวเลขสำคัญ
- * - Badges: แสดงความน่าเชื่อถือและมาตรฐาน
- * - Responsive, professional, accessible
+ * Dashboard นี้รวมข้อมูลที่บอกว่า
+ * - ทีมทำงานเก่งแค่ไหน (Metrics)
+ * - ตัวเลขสำคัญ ๆ ที่น่าเชื่อใจ (Stats)
+ * - เหตุผลที่ลูกค้าเลือกเรา (Badges)
+ *
+ * ใช้ง่าย อ่านสบาย รองรับทั้งโหมดสว่าง/มืด
  */
 const TrustDashboard: FC<TrustDashboardProps> = ({ metrics, stats, badges }) => {
   return (
@@ -44,27 +45,33 @@ const TrustDashboard: FC<TrustDashboardProps> = ({ metrics, stats, badges }) => 
       aria-labelledby="trust-dashboard-title"
       className="bg-white dark:bg-gray-900 rounded-2xl shadow-md p-6 md:p-8 space-y-10"
     >
-      {/* Section Title */}
+      {/* Title */}
       <h2
         id="trust-dashboard-title"
-        className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white text-center mb-6"
+        className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white text-center"
       >
-        🛡️ Trust & Performance Dashboard
+        🛡️ Dashboard ความน่าเชื่อใจ & ผลงานทีม
       </h2>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
         {metrics.map((metric) => (
-          <MetricCard key={metric.key} label={metric.label} value={metric.value} />
+          <MetricCard
+            key={metric.key}
+            label={metric.label}
+            value={metric.value}
+          />
         ))}
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {stats.map((stat) => (
           <div
             key={stat.key}
-            className="bg-primary/10 dark:bg-primary/20 p-4 rounded-lg text-center"
+            role="group"
+            aria-label={stat.label}
+            className="flex flex-col items-center bg-primary/10 dark:bg-primary/20 p-4 rounded-lg"
           >
             <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
               {stat.label}
@@ -77,7 +84,7 @@ const TrustDashboard: FC<TrustDashboardProps> = ({ metrics, stats, badges }) => 
       </div>
 
       {/* Badges */}
-      <div className="flex flex-wrap justify-center gap-6 mt-6">
+      <div className="flex flex-wrap justify-center gap-6">
         {badges.map((badge) => (
           <TrustBadge
             key={badge.id}

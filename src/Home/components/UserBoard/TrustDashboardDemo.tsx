@@ -5,7 +5,7 @@ import TrustDashboard, { Metric, Stat, Badge } from "./TrustDashboard";
 import { ShieldCheckIcon, CheckBadgeIcon, SparklesIcon } from "@heroicons/react/24/solid";
 
 /** -----------------------------
- * Mock Metrics
+ * Mock Data
  * -----------------------------
  */
 const metrics: Metric[] = [
@@ -15,20 +15,12 @@ const metrics: Metric[] = [
   { key: "privacy", label: "ความลับ", value: "กฎข้อแรก" },
 ];
 
-/** -----------------------------
- * Mock Stats
- * -----------------------------
- */
 const stats: Stat[] = [
   { key: "customers", label: "ลูกค้ามั่นใจในเรา", count: 1200 },
   { key: "projects", label: "โปรเจกต์สำเร็จ", count: 350 },
   { key: "partners", label: "พันธมิตร", count: 25 },
 ];
 
-/** -----------------------------
- * Mock Badges
- * -----------------------------
- */
 const badges: Badge[] = [
   {
     id: 1,
@@ -51,12 +43,12 @@ const badges: Badge[] = [
 ];
 
 /** -----------------------------
- * TrustDashboardDemo Component
+ * TrustDashboardDemo
  * -----------------------------
  */
-const TrustDashboardDemo: FC = () => {
-  return <TrustDashboard metrics={metrics} stats={stats} badges={badges} />;
-};
+const TrustDashboardDemo: FC = () => (
+  <TrustDashboard metrics={metrics} stats={stats} badges={badges} />
+);
 
 TrustDashboardDemo.displayName = "TrustDashboardDemo";
 

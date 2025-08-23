@@ -1,6 +1,6 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
-> เวลาตรวจสอบ: 2025-08-24 04:04:14 | สาขา: main
+> เวลาตรวจสอบ: 2025-08-24 05:33:59 | สาขา: main
 
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
@@ -277,6 +277,7 @@ src
 │   │       │   ├── button.styles.ts
 │   │       │   └── index.ts
 │   │       └── Card
+│   │           ├── Card.styles.ts
 │   │           └── Card.tsx
 │   └── hooks
 │       └── useInView.ts
@@ -370,7 +371,7 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-57 directories, 164 files
+57 directories, 165 files
 ```
 
 ## 🛠️ Roadmap

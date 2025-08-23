@@ -28,7 +28,11 @@ const CORRECT_CODE = "9780";
 const getDeadline = (createdAt: string) => {
   const d = new Date(createdAt);
   d.setDate(d.getDate() + DEADLINE_DAYS);
-  return d.toLocaleDateString("th-TH");
+  return d.toLocaleDateString("th-TH", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 };
 
 // =======================
@@ -51,7 +55,12 @@ const labelMap: Record<
   status: { label: "สถานะ" },
   created_at: {
     label: "วันที่ยื่น",
-    compute: (val) => new Date(val as string).toLocaleDateString("th-TH"),
+    compute: (val) =>
+      new Date(val as string).toLocaleDateString("th-TH", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
   },
   deadline: {
     label: `ครบกำหนด (${DEADLINE_DAYS} วัน)`,
@@ -77,7 +86,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const displayKeys = useMemo(() => Object.keys(labelMap) as DisplayKey[], []);
-  const totalPages = useMemo(() => Math.ceil(data.length / pageSize), [data.length, pageSize]);
+  const totalPages = useMemo(
+    () => Math.ceil(data.length / pageSize),
+    [data.length, pageSize]
+  );
   const pageData = useMemo(
     () => data.slice((page - 1) * pageSize, page * pageSize),
     [data, page, pageSize]
@@ -90,10 +102,36 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
     (num: number) => {
       if (num < 1 || num > totalPages) return;
       setPage(num);
-      document.getElementById("user-table")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document
+        .getElementById("user-table")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     },
     [totalPages]
   );
+
+  const getPageNumbers = () => {
+    const delta = 2; // แสดงรอบ current page +-2
+    const start = Math.max(1, page - delta);
+    const end = Math.min(totalPages, page + delta);
+
+    const pages: (number | "...")[] = [];
+
+    if (start > 1) {
+      pages.push(1);
+      if (start > 2) pages.push("...");
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (end < totalPages) {
+      if (end < totalPages - 1) pages.push("...");
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
 
   // =======================
   // Authorization Form
@@ -173,10 +211,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
                   key === "full_name"
                     ? { width: "20%" }
                     : key === "address"
-                      ? { width: "25%" }
-                      : key === "status" || key === "province"
-                        ? { width: "10%" }
-                        : {};
+                    ? { width: "25%" }
+                    : key === "status" || key === "province"
+                    ? { width: "10%" }
+                    : {};
                 return (
                   <th
                     key={key}
@@ -198,16 +236,9 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
               >
                 {displayKeys.map((key) => {
                   const compute = labelMap[key]?.compute;
-                  const rawValue = compute
+                  const value = compute
                     ? compute(user[key as keyof IUser], user)
-                    : user[key as keyof IUser];
-
-                  const value =
-                    rawValue === null || rawValue === undefined
-                      ? ""
-                      : typeof rawValue === "object"
-                        ? JSON.stringify(rawValue)
-                        : String(rawValue);
+                    : user[key as keyof IUser] ?? "";
 
                   return (
                     <td
@@ -226,7 +257,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
       </motion.div>
 
       {totalPages > 1 && (
-        <nav className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4" role="navigation">
+        <nav
+          className="flex flex-wrap justify-center items-center gap-2 mt-6 mb-4 px-4"
+          role="navigation"
+        >
           <button
             onClick={() => gotoPage(page - 1)}
             disabled={page === 1}
@@ -237,19 +271,25 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
             Prev
           </button>
 
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-            <button
-              key={num}
-              onClick={() => gotoPage(num)}
-              className={`px-3 sm:px-5 py-2 rounded border font-semibold min-w-[40px] ${
-                num === page
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "hover:bg-gray-200 border-gray-400"
-              }`}
-            >
-              {num}
-            </button>
-          ))}
+          {getPageNumbers().map((num, i) =>
+            num === "..." ? (
+              <span key={`dots-${i}`} className="px-3 py-2">
+                ...
+              </span>
+            ) : (
+              <button
+                key={num}
+                onClick={() => gotoPage(num)}
+                className={`px-3 sm:px-5 py-2 rounded border font-semibold min-w-[40px] ${
+                  num === page
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "hover:bg-gray-200 border-gray-400"
+                }`}
+              >
+                {num}
+              </button>
+            )
+          )}
 
           <button
             onClick={() => gotoPage(page + 1)}

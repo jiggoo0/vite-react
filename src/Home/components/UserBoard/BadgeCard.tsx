@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, ReactNode } from "react";
-import clsx from "clsx";
+import { cn } from "@/utils/cn";
 
 export interface BadgeCardProps {
   icon: ReactNode;
@@ -13,26 +13,32 @@ export interface BadgeCardProps {
 /**
  * BadgeCard
  * -------------------------
- * แสดง Badge / ไอคอนพร้อมชื่อและคำอธิบาย
- * - Responsive
- * - Professional UI
- * - Accessible
+ * ✅ แสดง Badge / ไอคอนพร้อมชื่อและคำอธิบาย
+ * ✅ Responsive + Accessible + Professional UI
  */
 const BadgeCard: FC<BadgeCardProps> = ({ icon, title, description, className }) => {
+  const titleId = `${title.replace(/\s+/g, "-").toLowerCase()}-badge-title`;
+
   return (
     <div
       role="group"
-      aria-label={title}
-      className={clsx(
-        "flex flex-col items-center p-4 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200 w-40 text-center",
+      aria-labelledby={titleId}
+      className={cn(
+        "flex flex-col items-center p-4 rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-shadow duration-200 w-full sm:w-44 text-center",
         className
       )}
+      tabIndex={0}
     >
       {/* Icon */}
-      <div className="mb-2">{icon}</div>
+      <div className="mb-2 text-2xl text-blue-600 dark:text-blue-400">{icon}</div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+      <h3
+        id={titleId}
+        className="text-lg font-semibold text-gray-900 dark:text-white"
+      >
+        {title}
+      </h3>
 
       {/* Description */}
       {description && (
