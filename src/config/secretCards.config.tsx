@@ -1,3 +1,4 @@
+// secretCards.config.tsx
 "use client";
 
 import { ReactNode, lazy } from "react";
@@ -8,7 +9,6 @@ import DocumentDownload from "@home/components/SecretSection/DocumentDownload";
 import KbankNotificationCard from "@home/components/SecretSection/KbankNotificationCard";
 import BlurContact from "@home/components/SecretSection/BlurContact/BlurContact";
 import DriverLicenseFormPage from "@home/SecretPage/DriverLicense/DriverLicenseForm";
-import IdCardFormWithOCR from "@home/components/Forms/IdCardFormWithOCR";
 
 import mockRegistrationData from "@__mocks__/mockRegistrationData";
 import mockSalaryCertificate from "@__mocks__/mockSalaryCertificate";
@@ -51,8 +51,8 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
     { component: <RegistrationPreview {...mockRegistrationData} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Registration...</div> },
     { component: <SalaryCertificate data={mockSalaryCertificate} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Salary Certificate...</div> },
     { component: <MedicalCertificate data={mockMedicalCertificate} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Medical Certificate...</div> },
-    { component: <IdCardFormWithOCR />, delay: nextDelay(), isBlurred: shouldBlur },
-    { component: (
+    { 
+      component: (
         <>
           {kbankMockData.map(item => (
             <KbankNotificationCard key={item.id} data={item} />

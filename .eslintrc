@@ -1,4 +1,4 @@
-// eslint.config.js
+// .eslintrc.js
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import reactPlugin from "eslint-plugin-react";
@@ -79,10 +79,7 @@ export default [
       ],
 
       /** React Refresh */
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 
       /** Prettier */
       "prettier/prettier": "error",

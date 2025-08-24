@@ -9,25 +9,30 @@
    Theme Variables (Light Mode)
 ============================== */
 :root {
+  /* Primary Colors */
   --color-primary: #1f2937;
   --color-primary-hover: #111827;
   --color-primary-disabled: #6b7280;
   --color-primary-content: #ffffff;
 
+  /* Secondary / Accent / Neutral */
   --color-secondary: #4b5563;
   --color-accent: #6b7280;
   --color-neutral: #f3f4f6;
 
+  /* Semantic Colors */
   --color-info: #0ea5e9;
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
 
+  /* Background / Text */
   --color-bg: #ffffff;
   --color-bg-light: #f9fafb;
   --color-text: #111827;
   --color-text-muted: #6b7280;
 
+  /* Global Styles */
   --radius-md: 0px;
   --transition-base: 250ms;
   --transition-fast: 200ms;

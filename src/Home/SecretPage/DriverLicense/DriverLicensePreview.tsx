@@ -12,9 +12,9 @@ interface Props {
 /**
  * DriverLicensePreview
  * -------------------------
- * แสดงใบขับขี่พร้อม layout positioning ของแต่ละ field
- * - รองรับ text, date, select, photo
- * - ใช้ config จาก driverLicenseCardConfig
+ * Render driver license card layout:
+ * -  text, date, select, photo
+ * -  config  driverLicenseCardConfig
  */
 const DriverLicensePreview: FC<Props> = ({ data }) => {
   const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
@@ -22,11 +22,11 @@ const DriverLicensePreview: FC<Props> = ({ data }) => {
   return (
     <div
       id="driver-license-preview"
-      className="relative overflow-hidden rounded-xl border border-gray-300 shadow-lg bg-white"
+      className="relative overflow-hidden border border-gray-300 bg-white"
       style={{
-        width: cardWidth,
-        height: cardHeight,
-        backgroundImage: `url(${bgDefault})`,
+        width: cardWidth ?? "400px",
+        height: cardHeight ?? "250px",
+        backgroundImage: bgDefault ? `url(${bgDefault})` : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -35,37 +35,35 @@ const DriverLicensePreview: FC<Props> = ({ data }) => {
         const value = data[field.id as keyof DriverLicenseData];
         if (!value) return null;
 
-        // --- Photo field ---
         if (field.type === "photo") {
           return (
             <img
               key={field.id}
               src={value as string}
               alt="Driver"
-              className="absolute rounded-md object-cover"
+              className="absolute object-cover"
               style={{
-                top: field.top,
-                left: field.left,
-                width: field.width,
-                height: field.height,
+                top: field.top ?? 0,
+                left: field.left ?? 0,
+                width: field.width ?? 50,
+                height: field.height ?? 50,
               }}
             />
           );
         }
 
-        // --- Text / Date / Select fields ---
         return (
           <span
             key={field.id}
             className="absolute font-sans"
             style={{
-              top: field.top,
-              left: field.left,
-              fontSize: field.fontSize,
-              fontWeight: field.fontWeight ?? "400",
+              top: field.top ?? 0,
+              left: field.left ?? 0,
+              fontSize: field.fontSize ?? 12,
+              fontWeight: field.fontWeight ?? 400,
               color: field.color ?? "#000",
-              width: field.width,
-              height: field.height,
+              width: field.width ?? "auto",
+              height: field.height ?? "auto",
             }}
           >
             {value}

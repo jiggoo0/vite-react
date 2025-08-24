@@ -1,6 +1,6 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
-> เวลาตรวจสอบ: 2025-08-24 05:33:59 | สาขา: main
+> เวลาตรวจสอบ: 2025-08-24 08:10:59 | สาขา: main
 
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
@@ -404,10 +404,16 @@ src/Home/components/SecretSectoin/
 - ห้ามมีเนื้อหาแนวสอนหรือ Tutorial
 - ห้ามเสนอแนวคิดที่หาเจอใน Google หรือ YouTube
 ✅ สิ่งที่ต้องมี:
-- Components ที่ใช้สำหรับงานเฉพาะทาง เช่น:
-  - เครื่องมือสร้างเอกสารจาก Json/Config/Fakemok/data  หรือจะมีเทคนิคชั้นสูงกว่าที่เขียนไว้เสนอเข้ามา เน้นความสมจริงมาเป็นลำดับแรกเน้นการใช้งานได้จริงอย่าใช้เทคนิคพื้นฐานทั่วไปนำเสนอ  จำลองข้อมูลที่สมจริงที่ช่วยเสริมความหน้าเชื่อถือเว็ปไซร์หรือธุรกิจแบบdynamic
+- Components ที่ใช้สำหรับงานเฉพาะทาง
+ ใช้งานได้จริงอย่าใช้เทคนิคพื้นฐานทั่วไปนำเสนอ  จำลองข้อมูลที่สมจริงที่ช่วยเสริมความหน้าเชื่อถือเว็ปไซร์หรือธุรกิจแบบdynamic
  หรือระบบเบื้องหลังที่ไม่เปิดเผยต่อผู้ใช้ทั่วไป
 - รายชื่อ Components พร้อมคำอธิบายสั้น ๆ
-- ระบุว่า Component ใดใช้ใน `Home.tsx` และ Component ใดใช้ใน `SecretPage.tsx`
+- ระบุว่า Component ใดใช้ใน `Home.tsx` และ Component ใดใช้ใน `SecretPage.tsx`2. สร้าง **TypeScript interface** สำหรับทุกเอกสาร พร้อมค่า default / mock data ภายในไฟล์ types/
+ Component ต้อง render ข้อมูล mock data ได้
+ สร้าง **Preview Page /  สำหรับแต่ละเอกสาร พร้อมค่า mock data ให้ใช้งานทันที
+ จัด folder structure และ skeleton code ให้สอดคล้องกับ pattern ข้างต้น
+ Component ต้อง render ข้อมูล mock data ได้ทันที และ support memoization / print-friendly2. สร้าง **TypeScript interface** สำหรับทุกเอกสาร พร้อมค่า default / mock data ภายในไฟล์ types/
+Output: folder structure +  mock data สมจริงสำหรับทุก component
+
 
 

@@ -3,19 +3,13 @@
 @tailwind utilities;
 
 /* ==============================
-   Driver License Styles
-   -----------------------------
+   Driver License Card Styles
    Tailwind-first, flat, neutral, enterprise-ready
 ============================== */
 
 /* Container */
 .driver-license-card {
-  @apply w-full max-w-[850px] mx-auto p-6 rounded-md shadow bg-base-100 text-base;
-  display: flex;
-  flex-direction: column;
-  gap: 3;
-  font-family: var(--font-family-base);
-  line-height: 1.4;
+  @apply w-full max-w-[850px] mx-auto p-6 rounded-md shadow bg-base-100 text-base flex flex-col gap-3 font-sans leading-relaxed;
 }
 
 /* Header */
@@ -27,9 +21,11 @@
 .driver-license-field {
   @apply flex justify-between text-sm py-1;
 }
+
 .driver-license-field label {
   @apply font-medium text-gray-500;
 }
+
 .driver-license-field .value {
   @apply font-semibold text-gray-900;
 }
@@ -44,7 +40,9 @@
   @apply mt-4 text-xs text-gray-500;
 }
 
-/* Print Styles */
+/* ==============================
+   Print Styles
+============================== */
 @media print {
   .driver-license-card {
     @apply border border-base-300 shadow-none;
@@ -52,13 +50,17 @@
   }
 }
 
-/* Dark Mode */
+/* ==============================
+   Dark Mode Overrides
+============================== */
 .dark .driver-license-card {
   @apply bg-base-200 text-base border border-base-300;
 }
+
 .dark .driver-license-field label {
   @apply text-gray-400;
 }
+
 .dark .driver-license-photo {
   @apply bg-base-300 border-base-200;
 }
