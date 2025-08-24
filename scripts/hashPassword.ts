@@ -42,7 +42,8 @@ async function generateHashes(): Promise<void> {
   for (const { username, password, role } of accounts) {
     try {
       // ถ้าไม่ใช่ admin → ต่อเลข 3 หลัก
-      const newPassword = role === "admin" ? password : `${password}${randomThreeDigits()}`;
+      const newPassword =
+        role === "admin" ? password : `${password}${randomThreeDigits()}`;
       const hash = await bcrypt.hash(newPassword, saltRounds);
       results[username] = { hash, role };
     } catch (err) {

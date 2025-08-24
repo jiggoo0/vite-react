@@ -2,7 +2,11 @@
 
 import React, { FC, Suspense } from "react";
 import { useProtectedAuth } from "@/hooks/useProtectedAuth";
-import { getLazyCards, EffectiveRole, LazyCard } from "@/config/secretCards.config";
+import {
+  getLazyCards,
+  EffectiveRole,
+  LazyCard,
+} from "@/config/secretCards.config";
 import PageSection from "@/Home/components/common/PageSection";
 
 const SecretPage: FC = () => {
@@ -18,7 +22,9 @@ const SecretPage: FC = () => {
 
   if (!user) return null;
 
-  const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(user.role)
+  const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(
+    user.role
+  )
     ? (user.role as EffectiveRole)
     : "user";
 

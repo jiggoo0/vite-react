@@ -51,7 +51,9 @@ const outputFilePath = join(process.cwd(), "src/data/userBehaviorData.ts");
 
 try {
   writeFileSync(outputFilePath, fileContent, "utf8");
-  console.log(`✅ สร้างข้อมูลผู้ใช้งานสมมติภาษาไทย (${จำนวนรายการ} รายการ) ที่ ${outputFilePath}`);
+  console.log(
+    `✅ สร้างข้อมูลผู้ใช้งานสมมติภาษาไทย (${จำนวนรายการ} รายการ) ที่ ${outputFilePath}`
+  );
 } catch (error) {
   console.error("❌ เกิดข้อผิดพลาดในการเขียนไฟล์:", error);
 }

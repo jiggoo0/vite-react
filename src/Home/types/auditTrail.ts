@@ -1,11 +1,11 @@
 // src/Home/types/auditTrail.ts
 
 export interface AuditTrailEntry {
-  id: string | number;       // รหัสเอกลักษณ์ของรายการ
-  ผู้ใช้: string;             // ชื่อผู้ใช้
-  การกระทำ: string;          // การกระทำที่ทำ
-  เวลา: string;               // เวลาในรูปแบบ ISO string
-  รายละเอียด?: string;       // ข้อมูลเพิ่มเติม (optional)
+  id: string | number; // รหัสเอกลักษณ์ของรายการ
+  ผู้ใช้: string; // ชื่อผู้ใช้
+  การกระทำ: string; // การกระทำที่ทำ
+  เวลา: string; // เวลาในรูปแบบ ISO string
+  รายละเอียด?: string; // ข้อมูลเพิ่มเติม (optional)
 }
 
 // Mock data สำหรับทดสอบ AuditTrailViewer

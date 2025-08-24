@@ -31,7 +31,9 @@ const UserBehaviorTimeline: FC<UserBehaviorTimelineProps> = ({ events }) => {
 
       <ul className="space-y-4 pl-10 max-h-96 overflow-y-auto">
         {events.map((event, index) => {
-          const dotColor = event.type ? eventColors[event.type] : eventColors.info;
+          const dotColor = event.type
+            ? eventColors[event.type]
+            : eventColors.info;
 
           return (
             <motion.li

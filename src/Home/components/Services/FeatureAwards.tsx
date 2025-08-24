@@ -19,14 +19,12 @@ const awards = [
   {
     icon: <ShieldCheck className="h-6 w-6 text-primary" aria-hidden="true" />,
     title: "ความปลอดภัยสูงสุด",
-    description:
-      "ข้อมูลลูกค้าปลอดภัย 100% และมีระบบรักษาความลับขั้นสูง",
+    description: "ข้อมูลลูกค้าปลอดภัย 100% และมีระบบรักษาความลับขั้นสูง",
   },
   {
     icon: <Award className="h-6 w-6 text-primary" aria-hidden="true" />,
     title: "รางวัลและการรับรอง",
-    description:
-      "ได้รับการรับรองและรางวัลจากองค์กรชั้นนำ ทั้งในและต่างประเทศ",
+    description: "ได้รับการรับรองและรางวัลจากองค์กรชั้นนำ ทั้งในและต่างประเทศ",
   },
 ];
 

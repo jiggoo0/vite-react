@@ -20,7 +20,9 @@ const defaultRisks: RiskItem[] = [
   { หมวด: "การดำเนินงาน", คะแนน: 40, คำอธิบาย: "ความเสี่ยงต่ำ" },
 ];
 
-const DynamicRiskDashboard: FC<DynamicRiskDashboardProps> = ({ risks = defaultRisks }) => {
+const DynamicRiskDashboard: FC<DynamicRiskDashboardProps> = ({
+  risks = defaultRisks,
+}) => {
   return (
     <section className="w-full max-w-5xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">

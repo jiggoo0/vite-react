@@ -22,9 +22,7 @@ import LoadingSpinner from "@/Home/components/common/LoadingSpinner";
 const PortfolioGallery = lazy(
   () => import("@/Home/components/Portfolio/PortfolioGallery")
 );
-const SupportFAQ = lazy(
-  () => import("@/Home/components/Portfolio/SupportFAQ")
-);
+const SupportFAQ = lazy(() => import("@/Home/components/Portfolio/SupportFAQ"));
 
 // Clone readonly data
 const userBoardData = [...UserBoardDataReadonly];
@@ -42,7 +40,11 @@ export const homeSections: HomeSection[] = [
   { id: "about", enabled: true, content: <About /> },
   { id: "selling-points", enabled: true, content: <SellingPoints /> },
   { id: "services", enabled: true, content: <ServicesSection /> },
-  { id: "case-studies", enabled: true, content: <CaseStudyRedacted items={caseStudies} /> },
+  {
+    id: "case-studies",
+    enabled: true,
+    content: <CaseStudyRedacted items={caseStudies} />,
+  },
   {
     id: "portfolio",
     enabled: true,
@@ -52,7 +54,11 @@ export const homeSections: HomeSection[] = [
       </Suspense>
     ),
   },
-  { id: "user-board", enabled: true, content: <UserBoard data={userBoardData} /> },
+  {
+    id: "user-board",
+    enabled: true,
+    content: <UserBoard data={userBoardData} />,
+  },
   { id: "testimonials", enabled: true, content: <TestimonialSlider /> },
   {
     id: "faq",

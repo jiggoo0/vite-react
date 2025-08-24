@@ -9,7 +9,11 @@ interface TabPanelProps {
   className?: string;
 }
 
-const TabPanel: FC<TabPanelProps> = ({ children, isActive, className = "" }) => {
+const TabPanel: FC<TabPanelProps> = ({
+  children,
+  isActive,
+  className = "",
+}) => {
   return (
     <AnimatePresence initial={false}>
       {isActive && (

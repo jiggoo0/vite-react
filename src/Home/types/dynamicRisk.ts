@@ -1,9 +1,9 @@
 // src/Home/types/dynamicRisk.ts
 
 export interface RiskItem {
-  หมวด: string;       // ชื่อหมวดความเสี่ยง
-  คะแนน: number;      // คะแนนความเสี่ยง 0-100
-  คำอธิบาย: string;   // Remark / คำอธิบาย
+  หมวด: string; // ชื่อหมวดความเสี่ยง
+  คะแนน: number; // คะแนนความเสี่ยง 0-100
+  คำอธิบาย: string; // Remark / คำอธิบาย
 }
 
 // Mock data สำหรับทดสอบ DynamicRiskDashboard

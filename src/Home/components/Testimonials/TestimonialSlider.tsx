@@ -12,12 +12,12 @@ interface Testimonial {
   content: string;
 }
 
-const MotionTestimonialItem: FC<{ testimonial: Testimonial; index: number; prev: () => void; next: () => void }> = ({
-  testimonial,
-  index,
-  prev,
-  next,
-}) => (
+const MotionTestimonialItem: FC<{
+  testimonial: Testimonial;
+  index: number;
+  prev: () => void;
+  next: () => void;
+}> = ({ testimonial, index, prev, next }) => (
   <motion.div
     key={index}
     variants={carouselVariants}
@@ -40,7 +40,9 @@ const MotionTestimonialItem: FC<{ testimonial: Testimonial; index: number; prev:
         {testimonial.name.charAt(0)}
       </div>
       <div>
-        <p className="font-semibold text-sm text-gray-900">{testimonial.name}</p>
+        <p className="font-semibold text-sm text-gray-900">
+          {testimonial.name}
+        </p>
         <p className="text-xs text-gray-600">{testimonial.role}</p>
       </div>
     </div>
@@ -50,22 +52,33 @@ const MotionTestimonialItem: FC<{ testimonial: Testimonial; index: number; prev:
 const TestimonialSlider: FC = () => {
   const [index, setIndex] = useState(0);
 
-  const testimonial = useMemo(() => testimonials[index % testimonials.length], [index]);
+  const testimonial = useMemo(
+    () => testimonials[index % testimonials.length],
+    [index]
+  );
 
-  const prev = () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length);
+  const prev = () =>
+    setIndex((i) => (i - 1 + testimonials.length) % testimonials.length);
   const next = () => setIndex((i) => (i + 1) % testimonials.length);
 
   return (
     <section className="w-full max-w-2xl mx-auto border border-gray-300 bg-white text-gray-900 p-6 rounded-lg shadow relative overflow-hidden">
       <AnimatePresence initial={false} mode="wait">
-        <MotionTestimonialItem testimonial={testimonial} index={index} prev={prev} next={next} />
+        <MotionTestimonialItem
+          testimonial={testimonial}
+          index={index}
+          prev={prev}
+          next={next}
+        />
       </AnimatePresence>
 
       <div className="flex justify-end mt-6 gap-2 relative z-10">
         <button
           type="button"
           onClick={prev}
-          className={cn("px-3 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 rounded")}
+          className={cn(
+            "px-3 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 rounded"
+          )}
           aria-label="Previous testimonial"
         >
           Prev
@@ -73,7 +86,9 @@ const TestimonialSlider: FC = () => {
         <button
           type="button"
           onClick={next}
-          className={cn("px-3 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 rounded")}
+          className={cn(
+            "px-3 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 rounded"
+          )}
           aria-label="Next testimonial"
         >
           Next

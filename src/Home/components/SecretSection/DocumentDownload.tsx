@@ -79,7 +79,11 @@ const DocumentDownload: FC = () => {
           disabled={loading}
           aria-label="ตรวจสอบรหัสเอกสาร"
         >
-          {loading ? <span className="loading loading-spinner loading-sm" /> : "ตรวจสอบรหัสเอกสาร"}
+          {loading ? (
+            <span className="loading loading-spinner loading-sm" />
+          ) : (
+            "ตรวจสอบรหัสเอกสาร"
+          )}
         </button>
       </form>
 

@@ -38,7 +38,9 @@ const DocumentExportActions: FC<DocumentExportActionsProps> = ({
       {/* Export Button */}
       <button
         className={`px-4 py-2 rounded text-white transition ${
-          isAdmin ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
+          isAdmin
+            ? "bg-blue-600 hover:bg-blue-700"
+            : "bg-gray-400 cursor-not-allowed"
         }`}
         disabled={!isAdmin}
         onClick={() => isAdmin && onExport?.(documentId)}
