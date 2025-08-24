@@ -4,50 +4,24 @@ import { FC, ReactNode } from "react";
 import clsx from "clsx";
 
 export interface PageSectionProps {
-  /** Unique ID ของ section */
-  id: string;
-  /** เนื้อหาภายใน section */
-  children?: ReactNode;
-  /** CSS class สำหรับ background */
-  bgClass?: string;
-  /** CSS class เพิ่มเติมสำหรับ container */
-  className?: string;
-  /** ชื่อ section สำหรับ accessibility / screen readers */
+  id?: string;
   title?: string;
-  /** กำหนด max-width container */
-  maxWidthClass?: string;
-  /** กำหนด responsive padding overrides */
-  paddingClass?: string;
+  children: ReactNode;
+  className?: string;
 }
 
-/**
- * PageSection
- * -------------------------
- * Section ทั่วไปสำหรับ layout
- * - รองรับ background class, container class และ responsive padding
- * - รองรับ accessibility ด้วย title สำหรับ screen reader
- * - รองรับ max-width container
- */
-const PageSection: FC<PageSectionProps> = ({
-  id,
-  children,
-  bgClass = "bg-base-100",
-  className,
-  title,
-  maxWidthClass = "max-w-7xl mx-auto",
-  paddingClass = "py-16 px-4 md:px-8",
-}) => {
+const PageSection: FC<PageSectionProps> = ({ id, title, children, className }) => {
   return (
     <section
       id={id}
-      className={clsx(bgClass, paddingClass, className)}
-      role="region"
-      aria-label={title}
+      className={clsx("bg-white p-6 rounded-xl shadow-md", className)}
     >
-      {title && <h2 className="sr-only">{title}</h2>}
-      <div className={clsx(maxWidthClass)}>{children ?? null}</div>
+      {title && <h2 className="text-2xl font-semibold mb-4">{title}</h2>}
+      <div className="space-y-4">{children}</div>
     </section>
   );
 };
+
+PageSection.displayName = "PageSection";
 
 export default PageSection;

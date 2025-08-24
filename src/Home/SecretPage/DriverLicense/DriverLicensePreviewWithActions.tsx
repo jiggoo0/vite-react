@@ -1,86 +1,47 @@
 "use client";
 
-import { FC, memo } from "react";
-import FieldDraggable from "./ui/FieldDraggable"; // ปรับ path ให้ตรง
-import { DriverLicenseData } from "./types/driverLicense";
-import { driverLicenseFields, driverLicenseCardConfig } from "@/config/driverLicenseConfig";
-import "@/styles/driverLicense.css";
+import { FC } from "react";
+import DriverLicensePreview, { DriverLicenseData } from "./DriverLicensePreview";
 
 interface Props {
-  data: DriverLicenseData;
-  positions?: Record<string, { top: string; left: string }>;
-  onPositionChange?: (fieldId: string, top: string, left: string) => void;
+  className?: string;
+  isBlurred?: boolean;
+  data: DriverLicenseData; // ต้องส่งครบทุก field
+  onEdit?: () => void;
+  onDownload?: () => void;
 }
 
-const DriverLicensePreview: FC<Props> = ({ data, positions, onPositionChange }) => {
-  const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
-
+const DriverLicensePreviewWithActions: FC<Props> = ({
+  className,
+  isBlurred,
+  data,
+  onEdit,
+  onDownload,
+}) => {
   return (
-    <div
-      id="driver-license-preview"
-      className="relative overflow-hidden border border-gray-300 rounded-md shadow-md bg-white"
-      style={{
-        width: cardWidth,
-        height: cardHeight,
-        backgroundImage: bgDefault ? `url(${bgDefault})` : undefined,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {driverLicenseFields.map((field) => {
-        const value = data[field.id as keyof DriverLicenseData];
-        if (!value) return null;
+    <div className={className}>
+      <DriverLicensePreview isBlurred={isBlurred} data={data} />
 
-        const pos = positions?.[field.id] ?? { top: field.top, left: field.left };
-
-        if (field.type === "photo") {
-          return (
-            <FieldDraggable
-              key={field.id}
-              top={pos.top}
-              left={pos.left}
-              onPositionChange={(t: string, l: string) => onPositionChange?.(field.id, t, l)}
-            >
-              <img
-                src={value as string}
-                alt="Driver Photo"
-                draggable={false}
-                className="object-cover rounded-md"
-                style={{
-                  width: field.width,
-                  height: field.height,
-                }}
-              />
-            </FieldDraggable>
-          );
-        }
-
-        return (
-          <FieldDraggable
-            key={field.id}
-            top={pos.top}
-            left={pos.left}
-            onPositionChange={(t: string, l: string) => onPositionChange?.(field.id, t, l)}
+      <div className="flex gap-2 mt-4">
+        {onEdit && (
+          <button
+            className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500"
+            onClick={onEdit}
           >
-            <span
-              className="absolute font-sans whitespace-nowrap"
-              style={{
-                fontSize: field.fontSize,
-                fontWeight: field.fontWeight,
-                color: field.color ?? "#000",
-                width: field.width ?? "auto",
-                height: field.height ?? "auto",
-              }}
-            >
-              {value}
-            </span>
-          </FieldDraggable>
-        );
-      })}
+            แก้ไข
+          </button>
+        )}
+        {onDownload && (
+          <button
+            className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-500"
+            onClick={onDownload}
+          >
+            ดาวน์โหลด
+          </button>
+        )}
+      </div>
     </div>
   );
 };
 
-DriverLicensePreview.displayName = "DriverLicensePreview";
-
-export default memo(DriverLicensePreview);
+export default DriverLicensePreviewWithActions;

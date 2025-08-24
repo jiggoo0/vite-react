@@ -1,38 +1,29 @@
 "use client";
 
-import { FC, ReactNode, memo } from "react";
+import { FC, ReactNode } from "react";
 import clsx from "clsx";
 
-// ======================= Props =======================
 interface WithBlurIfUserProps {
-  /** ถ้า true จะทำให้เนื้อหาเบลอ + ไม่สามารถ interact ได้ */
-  isBlurred: boolean;
-  /** เนื้อหาภายใน component */
+  isBlurred?: boolean;
+  overlayMessage?: ReactNode;
   children: ReactNode;
-  /** CSS class เพิ่มเติม */
-  className?: string;
 }
 
-// ======================= Component =======================
-const WithBlurIfUser: FC<WithBlurIfUserProps> = memo(
-  ({ isBlurred, children, className }) => {
-    // ถ้าไม่ต้องเบลอ, render ธรรมดา
-    if (!isBlurred) return <>{children}</>;
+const WithBlurIfUser: FC<WithBlurIfUserProps> = ({ isBlurred = false, overlayMessage, children }) => {
+  if (!isBlurred) return <>{children}</>;
 
-    // เบลอเนื้อหา + ป้องกัน interaction
-    return (
-      <div
-        className={clsx(
-          "blur-sm pointer-events-none select-none transition-all duration-300",
-          className
-        )}
-      >
+  return (
+    <div className="relative">
+      <div className="filter blur-sm pointer-events-none select-none">
         {children}
       </div>
-    );
-  }
-);
-
-WithBlurIfUser.displayName = "WithBlurIfUser";
+      {overlayMessage && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-gray-700 font-medium">
+          {overlayMessage}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default WithBlurIfUser;

@@ -1,26 +1,17 @@
-/**
- * Keys ของ field ในใบขับขี่
- */
-export type DriverLicenseFieldKeys = keyof DriverLicenseData;
-
-/**
- * Type ของข้อมูลใบขับขี่
- */
 export interface DriverLicenseData {
-  fullName: string;       // ชื่อ-นามสกุล
-  idNumber: string;       // เลขบัตรประชาชน / ใบขับขี่
-  dob: string;            // วันเกิด
-  issueDate: string;      // วันออกบัตร
-  expiryDate: string;     // วันหมดอายุ
-  address: string;        // ที่อยู่
-  photo?: string;         // URL รูปถ่าย (optional)
-  licenseType: string;    // ประเภทใบขับขี่
-  bloodType: string;      // หมู่เลือด
+  fullName: string;
+  idNumber: string;
+  dob: string;
+  issueDate: string;
+  expiryDate: string;
+  address: string;
+  photo?: string;
+  licenseType: string;
+  bloodType: string;
 }
 
-/**
- * Config สำหรับวาง field บน template ใบขับขี่
- */
+export type DriverLicenseFieldKeys = keyof DriverLicenseData;
+
 export interface DriverLicenseFieldConfig {
   id: DriverLicenseFieldKeys;
   top: string;
@@ -34,9 +25,6 @@ export interface DriverLicenseFieldConfig {
   options?: string[];
 }
 
-/**
- * Mock Data ตัวอย่าง
- */
 export const mockDriverLicense: DriverLicenseData = {
   fullName: "John Doe",
   idNumber: "1234567890123",

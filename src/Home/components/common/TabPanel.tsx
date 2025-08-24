@@ -6,64 +6,38 @@ import clsx from "clsx";
 interface TabPanelProps {
   tabs: string[];
   children: ReactNode[];
+  defaultIndex?: number;
   className?: string;
 }
 
-/**
- * TabPanel Component
- * -----------------
- * - แสดงหลาย tab พร้อม switch content
- * - Flat, professional UI
- * - Responsive, accessible
- */
-const TabPanel: FC<TabPanelProps> = ({ tabs, children, className }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const TabPanel: FC<TabPanelProps> = ({ tabs, children, defaultIndex = 0, className }) => {
+  const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
-  if (tabs.length !== children.length) {
-    console.warn("จำนวน tabs และ children ไม่ตรงกัน");
-  }
+  if (!tabs.length || !children.length || tabs.length !== children.length) return null;
 
   return (
     <div className={clsx("w-full", className)}>
-      {/* Tab headers */}
-      <div className="flex border-b border-gray-200 dark:border-zinc-700">
-        {tabs.map((tab, index) => {
-          const isActive = index === activeIndex;
-          return (
-            <button
-              key={tab}
-              type="button"
-              className={clsx(
-                "px-4 py-2 text-sm font-medium transition-colors",
-                isActive
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary"
-              )}
-              onClick={() => setActiveIndex(index)}
-            >
-              {tab}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Tab content */}
-      <div className="mt-4">
-        {children.map((child, index) => (
-          <div
-            key={index}
-            className={clsx({ hidden: index !== activeIndex })}
-            role="tabpanel"
-            aria-hidden={index !== activeIndex}
+      <div className="flex border-b border-gray-300">
+        {tabs.map((tab, idx) => (
+          <button
+            key={tab}
+            className={clsx(
+              "px-4 py-2 -mb-px font-medium border-b-2 transition-colors",
+              activeIndex === idx
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            )}
+            onClick={() => setActiveIndex(idx)}
           >
-            {child}
-          </div>
+            {tab}
+          </button>
         ))}
+      </div>
+      <div className="mt-4">
+        {children[activeIndex]}
       </div>
     </div>
   );
 };
-
-TabPanel.displayName = "TabPanel";
 
 export default TabPanel;

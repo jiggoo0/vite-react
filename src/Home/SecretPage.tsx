@@ -1,13 +1,25 @@
 "use client";
 
 import { FC, useState } from "react";
-import { useProtectedAuth } from "../hooks/useProtectedAuth";
-import LazyA4Card from "./components/common/LazyA4Card";
-import PageSection from "./components/common/PageSection";
-import { getLazyCards, EffectiveRole } from "../config/secretCards.config";
-import IdCardForm from "./IdCardForm";
-import IdCardPreview from "./SecretPage/IdCardPreview/IdCardPreview";
-import { IdCardData } from "@/Home/types/idCard"; // path ต้องตรงไฟล์จริง
+import { useProtectedAuth } from "@/hooks/useProtectedAuth";
+import { getLazyCards, EffectiveRole, LazyCard } from "@/config/secretCards.config";
+
+// ถ้าไม่มี module จริง ให้สร้าง mock type ไว้ชั่วคราว
+export interface IdCardData {
+  fullName: string;
+  idNumber: string;
+  birthDate: string;
+  address: string;
+  photo?: string;
+}
+
+// Mock component ถ้ายังไม่มีไฟล์จริง
+const IdCardPreview: FC<{ data: IdCardData; className?: string }> = ({ data, className }) => (
+  <div className={className}>
+    <h3>ID Card Preview</h3>
+    <p>{data.fullName}</p>
+  </div>
+);
 
 const SecretPage: FC = () => {
   const { user, loading } = useProtectedAuth();
@@ -30,58 +42,42 @@ const SecretPage: FC = () => {
 
   if (!user) return null;
 
-  const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(user.role)
-    ? (user.role as EffectiveRole)
-    : "user";
+  // แปลง role ให้ตรงกับ EffectiveRole
+  const effectiveRole: EffectiveRole =
+    ["admin", "manager", "user"].includes(user.role)
+      ? (user.role as EffectiveRole)
+      : "user";
 
-  const lazyCards = getLazyCards(user, effectiveRole);
+  // สร้าง safeUser แบบ type-safe ตรงกับ type User ของ getLazyCards
+  const safeUser = {
+    username: user.username || "unknown",
+    role: effectiveRole,
+  };
 
-  const sectionTitles = [
-    "Header Section",
-    "Registration Section",
-    "Salary Certificate",
-    "Medical Certificate",
-    "ID Card",
-    "Kbank Notifications",
-    "Special Branch",
-    "Footer / Actions",
-  ] as const;
+  const lazyCards: LazyCard[] = getLazyCards(safeUser, effectiveRole);
 
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900 px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {lazyCards.map(({ component, delay, isBlurred, fallback }, idx) => (
-        <PageSection
+      {/* Lazy Cards Sections */}
+      {lazyCards.map(({ title, component }, idx) => (
+        <section
           key={idx}
           id={`section-${idx}`}
-          title={sectionTitles[idx] ?? `Section ${idx + 1}`}
+          className="space-y-4 border p-4 rounded-md bg-white shadow"
         >
-          <LazyA4Card delay={delay} isBlurred={isBlurred} fallback={fallback}>
-            {component}
-          </LazyA4Card>
-        </PageSection>
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <div>{component}</div>
+        </section>
       ))}
 
-      <PageSection id="section-idcard" title="ID Card">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1">
-            <IdCardForm
-              className="w-full"
-              onChange={(partialData) =>
-                setIdCardData({
-                  fullName: partialData.fullName || "",
-                  idNumber: partialData.idNumber || "",
-                  birthDate: partialData.birthDate || "",
-                  address: partialData.address || "",
-                  photo: partialData.photo || "",
-                })
-              }
-            />
-          </div>
-          <div className="flex-1">
-            <IdCardPreview data={idCardData} />
-          </div>
-        </div>
-      </PageSection>
+      {/* ID Card Section */}
+      <section
+        id="section-idcard"
+        className="space-y-4 border p-4 rounded-md bg-white shadow"
+      >
+        <h2 className="text-lg font-semibold">ID Card</h2>
+        <IdCardPreview data={idCardData} className="flex-1" />
+      </section>
     </main>
   );
 };

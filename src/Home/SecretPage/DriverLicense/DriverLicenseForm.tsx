@@ -4,162 +4,51 @@ import { FC } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import DriverLicensePreview from "./DriverLicensePreview";
-import {
-  driverLicenseFields,
-  driverLicenseFormSchema,
-} from "@/config/driverLicenseConfig";
-import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
-import "@/styles/driverLicense.css";
+import { driverLicenseFormSchema, driverLicenseFields } from "@/config/driverLicenseConfig";
 
-// ใช้ zod correctly
-type FormValues = z.infer<typeof driverLicenseFormSchema>;
+export type DriverLicenseData = z.infer<typeof driverLicenseFormSchema>;
 
-/**
- * DriverLicenseForm
- * -------------------------
- * ฟอร์มกรอกข้อมูลใบขับขี่จำลอง
- * - รองรับ preview และ export PNG/PDF
- * - รองรับ photo / date / select fields
- */
-const DriverLicenseForm: FC = () => {
-  const {
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm<FormValues>({
+interface Props {
+  onChange?: (data: DriverLicenseData) => void;
+}
+
+const DriverLicenseForm: FC<Props> = ({ onChange }) => {
+  const { handleSubmit, control, watch } = useForm<DriverLicenseData>({
     resolver: zodResolver(driverLicenseFormSchema),
-    defaultValues: Object.fromEntries(driverLicenseFields.map(f => [f.id, ""])) as FormValues,
+    defaultValues: Object.fromEntries(driverLicenseFields.map(f => [f.id, ""])) as DriverLicenseData,
   });
 
   const formData = watch();
 
-  const onSubmit = (data: FormValues) => {
+  const handleSubmitForm = (data: DriverLicenseData) => {
     console.log("Submitted data:", data);
   };
 
-  const handleExportPNG = () => exportCardAsPNG("driver-license-preview", "driver-license.png");
-  const handleExportPDF = () => exportCardAsPDF("driver-license-preview", "driver-license.pdf", true);
+  // watch → callback
+  onChange?.(formData);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen flex flex-col gap-8">
-
-      {/* Title */}
-      <h1 className="text-2xl font-semibold text-center text-gray-800">
-        ฟอร์มใบขับขี่จำลอง
-      </h1>
-
-      {/* Form */}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-6 border border-gray-300"
-      >
-        {driverLicenseFields.map((field) => {
-          const label = field.id
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, s => s.toUpperCase());
-
-          return (
-            <div key={field.id} className="flex flex-col">
-              <label className="mb-1 font-medium text-gray-700">{label}</label>
-
-              <Controller
-                name={field.id as keyof FormValues}
-                control={control}
-                render={({ field: controllerField }) => {
-                  // แก้ type ของ select/input ให้ตรงกับ HTML spec
-                  const commonProps = {
-                    id: field.id,
-                    value: controllerField.value,
-                    onChange: controllerField.onChange,
-                    onBlur: controllerField.onBlur,
-                    name: controllerField.name,
-                  };
-
-                  switch (field.type) {
-                    case "photo":
-                      return (
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            controllerField.onChange(file ? URL.createObjectURL(file) : "");
-                          }}
-                          className="border border-gray-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
-                        />
-                      );
-
-                    case "select":
-                      return (
-                        <select
-                          {...commonProps}
-                          className="border border-gray-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
-                        >
-                          <option value="">เลือก...</option>
-                          {field.options?.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      );
-
-                    default:
-                      return (
-                        <input
-                          {...commonProps}
-                          type={field.type === "date" ? "date" : "text"}
-                          className="border border-gray-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
-                        />
-                      );
-                  }
-                }}
-              />
-
-              {errors[field.id as keyof FormValues] && (
-                <span className="text-red-600 text-sm mt-1">
-                  {errors[field.id as keyof FormValues]?.message}
-                </span>
-              )}
-            </div>
-          );
-        })}
-
-        <button
-          type="submit"
-          className="col-span-full bg-gray-800 text-white px-4 py-2 mt-4 hover:bg-gray-700"
-        >
-          Submit
-        </button>
-      </form>
-
-      {/* Preview */}
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-xl font-semibold text-gray-800">Preview</h2>
-        <DriverLicensePreview data={formData} />
-
-        {/* Export buttons */}
-        <div className="flex gap-4 mt-4">
-          <button
-            type="button"
-            className="bg-gray-800 text-white px-4 py-2 hover:bg-gray-700"
-            onClick={handleExportPNG}
-          >
-            ดาวน์โหลด PNG
-          </button>
-          <button
-            type="button"
-            className="bg-gray-700 text-white px-4 py-2 hover:bg-gray-600"
-            onClick={handleExportPDF}
-          >
-            ดาวน์โหลด PDF (A4)
-          </button>
-        </div>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit(handleSubmitForm)} className="grid gap-4">
+      {driverLicenseFields.map(field => (
+        <Controller
+          key={field.id}
+          name={field.id as keyof DriverLicenseData}
+          control={control}
+          render={({ field: ctrl }) => (
+            <input
+              {...ctrl}
+              type={field.type === "date" ? "date" : "text"}
+              placeholder={field.id}
+              className="border p-2 rounded"
+            />
+          )}
+        />
+      ))}
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+        Submit
+      </button>
+    </form>
   );
 };
-
-DriverLicenseForm.displayName = "DriverLicenseForm";
 
 export default DriverLicenseForm;
