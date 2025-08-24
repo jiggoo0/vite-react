@@ -1,12 +1,15 @@
 "use client";
 
 import { FC, memo } from "react";
-import { DriverLicenseData } from "./types/driverLicense";
+import FieldDraggable from "./ui/FieldDraggable"; // ปรับ path ให้ตรง
+import { DriverLicenseData, DriverLicenseFieldConfig } from "./types/driverLicense";
 import { driverLicenseFields, driverLicenseCardConfig } from "@/config/driverLicenseConfig";
 import "@/styles/driverLicense.css";
 
 interface Props {
   data: DriverLicenseData;
+  positions?: Record<string, { top: string; left: string }>;
+  onPositionChange?: (fieldId: keyof DriverLicenseData, top: string, left: string) => void;
 }
 
 /**
@@ -14,15 +17,15 @@ interface Props {
  * -------------------------
  * Render driver license card layout:
  * - text, date, select, photo
- * - config จาก driverLicenseCardConfig
+ * - รองรับปรับตำแหน่งแบบ draggable
  */
-const DriverLicensePreview: FC<Props> = ({ data }) => {
+const DriverLicensePreview: FC<Props> = ({ data, positions, onPositionChange }) => {
   const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
 
   return (
     <div
       id="driver-license-preview"
-      className="relative overflow-hidden border border-gray-300 bg-white"
+      className="relative overflow-hidden border border-gray-300 rounded-md shadow-md bg-white"
       style={{
         width: cardWidth,
         height: cardHeight,
@@ -31,43 +34,58 @@ const DriverLicensePreview: FC<Props> = ({ data }) => {
         backgroundPosition: "center",
       }}
     >
-      {driverLicenseFields.map((field) => {
+      {driverLicenseFields.map((field: DriverLicenseFieldConfig) => {
         const value = data[field.id as keyof DriverLicenseData];
         if (!value) return null;
 
+        const pos = positions?.[field.id] ?? { top: field.top, left: field.left };
+
         if (field.type === "photo") {
           return (
-            <img
+            <FieldDraggable
               key={field.id}
-              src={value as string}
-              alt="Driver"
-              className="absolute object-cover"
-              style={{
-                top: field.top,
-                left: field.left,
-                width: field.width,
-                height: field.height,
-              }}
-            />
+              top={pos.top}
+              left={pos.left}
+              onPositionChange={(t: string, l: string) =>
+                onPositionChange?.(field.id, t, l)
+              }
+            >
+              <img
+                src={value as string}
+                alt="Driver Photo"
+                draggable={false}
+                className="object-cover rounded-md w-full h-full"
+                style={{
+                  width: field.width,
+                  height: field.height,
+                }}
+              />
+            </FieldDraggable>
           );
         }
 
         return (
-          <span
+          <FieldDraggable
             key={field.id}
-            className="absolute font-sans"
-            style={{
-              top: field.top,
-              left: field.left,
-              fontSize: field.fontSize,
-              fontWeight: field.fontWeight,
-              color: field.color ?? "#000",
-              width: field.width ?? "auto",
-              height: field.height ?? "auto",
-            }}
+            top={pos.top}
+            left={pos.left}
+            onPositionChange={(t: string, l: string) =>
+              onPositionChange?.(field.id, t, l)
+            }
           >
-            {value}
-          </span>
+            <span
+              className="font-sans whitespace-nowrap"
+              style={{
+                fontSize: field.fontSize,
+                fontWeight: field.fontWeight,
+                color: field.color ?? "#000",
+                width: field.width ?? "auto",
+                height: field.height ?? "auto",
+              }}
+            >
+              {value}
+            </span>
+          </FieldDraggable>
         );
       })}
     </div>

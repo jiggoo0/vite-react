@@ -37,7 +37,7 @@ const config: Config = {
         sans: ["var(--font-family-base, 'Kanit', system-ui, sans-serif)"],
       },
       borderRadius: {
-        md: "var(--radius-md, 0px)",
+        md: "var(--radius-md, 0.5rem)",
       },
       transitionDuration: {
         base: "var(--transition-base, 250ms)",

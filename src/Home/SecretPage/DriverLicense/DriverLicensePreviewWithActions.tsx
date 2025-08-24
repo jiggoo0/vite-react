@@ -1,57 +1,86 @@
 "use client";
 
 import { FC, memo } from "react";
-import DriverLicensePreview from "./DriverLicensePreview";
-import { DriverLicenseData, mockDriverLicense } from "./types/driverLicense";
-import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
+import FieldDraggable from "./ui/FieldDraggable"; // ปรับ path ให้ตรง
+import { DriverLicenseData } from "./types/driverLicense";
+import { driverLicenseFields, driverLicenseCardConfig } from "@/config/driverLicenseConfig";
+import "@/styles/driverLicense.css";
 
 interface Props {
-  data?: DriverLicenseData;
+  data: DriverLicenseData;
+  positions?: Record<string, { top: string; left: string }>;
+  onPositionChange?: (fieldId: string, top: string, left: string) => void;
 }
 
-/**
- * DriverLicensePreviewWithActions
- * --------------------------------
- * แสดงใบขับขี่พร้อมปุ่ม export PNG/PDF
- * - รองรับ default mock data
- * - memoized
- * - responsive, flat UI
- */
-const DriverLicensePreviewWithActions: FC<Props> = ({ data = mockDriverLicense }) => {
-  const handleExportPNG = () =>
-    exportCardAsPNG("driver-license-preview", "driver-license.png");
-
-  const handleExportPDF = () =>
-    exportCardAsPDF("driver-license-preview", "driver-license.pdf", true);
+const DriverLicensePreview: FC<Props> = ({ data, positions, onPositionChange }) => {
+  const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
-      {/* Preview Card */}
-      <DriverLicensePreview data={data} />
+    <div
+      id="driver-license-preview"
+      className="relative overflow-hidden border border-gray-300 rounded-md shadow-md bg-white"
+      style={{
+        width: cardWidth,
+        height: cardHeight,
+        backgroundImage: bgDefault ? `url(${bgDefault})` : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {driverLicenseFields.map((field) => {
+        const value = data[field.id as keyof DriverLicenseData];
+        if (!value) return null;
 
-      {/* Export Actions */}
-      <div className="flex gap-4 mt-4">
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={handleExportPNG}
-          aria-label="ดาวน์โหลด PNG ใบขับขี่"
-        >
-          ดาวน์โหลด PNG
-        </button>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={handleExportPDF}
-          aria-label="ดาวน์โหลด PDF ใบขับขี่"
-        >
-          ดาวน์โหลด PDF (A4)
-        </button>
-      </div>
+        const pos = positions?.[field.id] ?? { top: field.top, left: field.left };
+
+        if (field.type === "photo") {
+          return (
+            <FieldDraggable
+              key={field.id}
+              top={pos.top}
+              left={pos.left}
+              onPositionChange={(t: string, l: string) => onPositionChange?.(field.id, t, l)}
+            >
+              <img
+                src={value as string}
+                alt="Driver Photo"
+                draggable={false}
+                className="object-cover rounded-md"
+                style={{
+                  width: field.width,
+                  height: field.height,
+                }}
+              />
+            </FieldDraggable>
+          );
+        }
+
+        return (
+          <FieldDraggable
+            key={field.id}
+            top={pos.top}
+            left={pos.left}
+            onPositionChange={(t: string, l: string) => onPositionChange?.(field.id, t, l)}
+          >
+            <span
+              className="absolute font-sans whitespace-nowrap"
+              style={{
+                fontSize: field.fontSize,
+                fontWeight: field.fontWeight,
+                color: field.color ?? "#000",
+                width: field.width ?? "auto",
+                height: field.height ?? "auto",
+              }}
+            >
+              {value}
+            </span>
+          </FieldDraggable>
+        );
+      })}
     </div>
   );
 };
 
-DriverLicensePreviewWithActions.displayName = "DriverLicensePreviewWithActions";
+DriverLicensePreview.displayName = "DriverLicensePreview";
 
-export default memo(DriverLicensePreviewWithActions);
+export default memo(DriverLicensePreview);
