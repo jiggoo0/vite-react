@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useMemo } from "react";
 import { jpServices } from "@/data/services";
 import ServiceCard from "./ui/ServiceCard";
@@ -62,5 +64,7 @@ const ServicesSection: FC = () => {
     </SectionContainer>
   );
 };
+
+ServicesSection.displayName = "ServicesSection";
 
 export default ServicesSection;

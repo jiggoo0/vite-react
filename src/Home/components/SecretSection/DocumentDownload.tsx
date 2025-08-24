@@ -3,6 +3,14 @@
 import { FC, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+/**
+ * DocumentDownload
+ * ----------------
+ * - ฟอร์มสำหรับกรอกรหัสเอกสาร
+ * - รองรับ animation ด้วย Framer Motion
+ * - รองรับสถานะ: loading, success, error
+ * - Accessible: aria-labelledby, aria-live, role
+ */
 const DocumentDownload: FC = () => {
   const [docCode, setDocCode] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -71,11 +79,7 @@ const DocumentDownload: FC = () => {
           disabled={loading}
           aria-label="ตรวจสอบรหัสเอกสาร"
         >
-          {loading ? (
-            <span className="loading loading-spinner loading-sm" />
-          ) : (
-            "ตรวจสอบรหัสเอกสาร"
-          )}
+          {loading ? <span className="loading loading-spinner loading-sm" /> : "ตรวจสอบรหัสเอกสาร"}
         </button>
       </form>
 
@@ -119,5 +123,7 @@ const DocumentDownload: FC = () => {
     </motion.section>
   );
 };
+
+DocumentDownload.displayName = "DocumentDownload";
 
 export default DocumentDownload;

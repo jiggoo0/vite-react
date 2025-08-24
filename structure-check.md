@@ -1,6 +1,6 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
-> เวลาตรวจสอบ: 2025-08-24 21:21:57 | สาขา: main
+> เวลาตรวจสอบ: 2025-08-25 02:39:36 | สาขา: main
 
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
@@ -199,6 +199,8 @@ src
 │   │   │       ├── AboutImage.tsx
 │   │   │       ├── AboutQuote.tsx
 │   │   │       └── AboutTitle.tsx
+│   │   ├── Dashboard
+│   │   │   └── DynamicRiskDashboard.tsx
 │   │   ├── Forms
 │   │   │   ├── FormWrapper.tsx
 │   │   │   ├── IdCardFormWithOCR.tsx
@@ -228,6 +230,7 @@ src
 │   │   │       ├── PortfolioCTA.tsx
 │   │   │       └── PortfolioFilter.tsx
 │   │   ├── SecretSection
+│   │   │   ├── AuditTrailViewer.tsx
 │   │   │   ├── BlurContact
 │   │   │   │   ├── BlurContact.tsx
 │   │   │   │   └── motionVariants.ts
@@ -265,6 +268,8 @@ src
 │   │   │   ├── UserBoard.tsx
 │   │   │   ├── motionConfig.ts
 │   │   │   └── types.ts
+│   │   ├── UserTimeline
+│   │   │   └── UserBehaviorTimeline.tsx
 │   │   ├── common
 │   │   │   ├── CardWrapper.tsx
 │   │   │   ├── LazyA4Card.tsx
@@ -286,7 +291,11 @@ src
 │   ├── hooks
 │   │   └── useInView.ts
 │   └── types
-│       └── idCard.ts
+│       ├── auditTrail.ts
+│       ├── dynamicRisk.ts
+│       ├── idCard.ts
+│       ├── risk.ts
+│       └── userBehavior.ts
 ├── Layout
 │   ├── Layout.tsx
 │   ├── Navbar.tsx
@@ -332,6 +341,7 @@ src
 │   └── react.svg
 ├── config
 │   ├── driverLicenseConfig.tsx
+│   ├── homeSections.config.tsx
 │   ├── idCardConfig.tsx
 │   └── secretCards.config.tsx
 ├── context
@@ -379,7 +389,7 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-59 directories, 170 files
+61 directories, 178 files
 
 ## 🛠️ Roadmap
 'เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:

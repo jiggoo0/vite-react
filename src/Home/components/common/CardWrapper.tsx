@@ -1,19 +1,36 @@
 "use client";
 
-import { FC, ReactNode } from "react";
-import clsx from "clsx";
+import { FC, ReactNode, memo } from "react";
 
 interface CardWrapperProps {
   children: ReactNode;
   className?: string;
+  hideOverflow?: boolean;
+  rounded?: boolean;
+  shadow?: boolean;
 }
 
-const CardWrapper: FC<CardWrapperProps> = ({ children, className }) => {
-  return (
-    <div className={clsx("bg-white rounded-xl shadow-md p-6", className)}>
-      {children}
-    </div>
-  );
+const CardWrapper: FC<CardWrapperProps> = ({
+  children,
+  className = "",
+  hideOverflow = false,
+  rounded = true,
+  shadow = true,
+}) => {
+  const baseClasses = [
+    "bg-white",
+    "p-6",
+    hideOverflow ? "overflow-hidden" : "",
+    rounded ? "rounded-xl" : "",
+    shadow ? "shadow-md" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return <div className={baseClasses}>{children}</div>;
 };
 
-export default CardWrapper;
+CardWrapper.displayName = "CardWrapper";
+
+export default memo(CardWrapper);

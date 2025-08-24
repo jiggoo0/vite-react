@@ -1,54 +1,28 @@
 "use client";
 
-import { FC } from "react";
-
-type User = {
-  username: string;
-  role: "admin" | "user" | "manager";
-};
+import React, { FC, memo } from "react";
+import { EffectiveRole } from "@/config/secretCards.config";
 
 interface SecretDescriptionProps {
-  user: User;
-  /** optional subtitle แยกออกจาก welcome message */
-  subtitle?: string;
+  user: {
+    username: string;
+    role: EffectiveRole;
+  };
 }
 
-const SecretDescription: FC<SecretDescriptionProps> = ({ user, subtitle }) => {
+const SecretDescription: FC<SecretDescriptionProps> = ({ user }) => {
   return (
-    <section
-      aria-labelledby="secret-description-title"
-      className="mb-8 p-6 md:p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-md
-                 hover:shadow-lg transition-shadow duration-300"
-    >
-      <h2
-        id="secret-description-title"
-        className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
-      >
-        🎯 พื้นที่รับงานเฉพาะสมาชิก
-      </h2>
-
-      <p className="mb-3 text-gray-700 dark:text-gray-300 text-base sm:text-lg">
-        ยินดีต้อนรับ{" "}
-        <strong className="text-primary dark:text-primary-light">
-          {user.username}
-        </strong>{" "}
-        👋{" "}
-        {subtitle ??
-          "หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น"}
+    <section className="bg-white p-4 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold mb-2">รายละเอียดสำหรับผู้ใช้</h2>
+      <p className="mb-1">สวัสดี, {user.username}</p>
+      <p className="mb-1">สิทธิ์ของคุณ: {user.role}</p>
+      <p className="text-sm text-gray-600">
+        หน้านี้ประกอบด้วยข้อมูลที่มีความสำคัญและบางส่วนอาจถูกจำกัดสำหรับแอดมิน
       </p>
-
-      <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg">
-        คุณสามารถจัดการงานของคุณได้อย่างปลอดภัย และมีสิทธิ์เป็น{" "}
-        <strong className="capitalize text-secondary dark:text-secondary-light">
-          {user.role}
-        </strong>
-      </p>
-
-      <div className="mt-4 h-1 w-20 bg-primary dark:bg-primary-light rounded-full opacity-70"></div>
     </section>
   );
 };
 
 SecretDescription.displayName = "SecretDescription";
 
-export default SecretDescription;
+export default memo(SecretDescription);

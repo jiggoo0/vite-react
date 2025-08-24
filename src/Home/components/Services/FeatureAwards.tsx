@@ -12,18 +12,21 @@ interface FeatureAwardsProps {
 const awards = [
   {
     icon: <BadgeCheck className="h-6 w-6 text-primary" aria-hidden="true" />,
-    title: "ผ่านการตรวจสอบคุณภาพ",
-    description: "ทุกโปรเจกต์ผ่านมาตรฐานคุณภาพ ทีมงานมืออาชีพมากกว่า 4,000 งาน",
+    title: "ความถูกต้องสูง",
+    description:
+      "ทุกเอกสารที่จัดทำมีมาตรฐานสูง ตรวจสอบได้จริง มูลค่ากว่า 4,000 งาน",
   },
   {
     icon: <ShieldCheck className="h-6 w-6 text-primary" aria-hidden="true" />,
     title: "ความปลอดภัยสูงสุด",
-    description: "ข้อมูลลูกค้าปลอดภัย 100% และมีระบบป้องกันครบถ้วน",
+    description:
+      "ข้อมูลลูกค้าปลอดภัย 100% และมีระบบรักษาความลับขั้นสูง",
   },
   {
     icon: <Award className="h-6 w-6 text-primary" aria-hidden="true" />,
     title: "รางวัลและการรับรอง",
-    description: "ได้รับการรับรองและรางวัลด้านบริการและคุณภาพมากมาย",
+    description:
+      "ได้รับการรับรองและรางวัลจากองค์กรชั้นนำ ทั้งในและต่างประเทศ",
   },
 ];
 

@@ -1,50 +1,71 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react";
-import clsx from "clsx";
+import { FC, useEffect, useState } from "react";
 
-/**
- * ThemeToggle
- * - สลับ Light / Dark mode
- * - เก็บ theme ลง localStorage
- * - รองรับ accessibility (aria-label, aria-pressed)
- * - Flat, neutral tone UI (no rounded corners)
- */
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") return "light";
-    return window.localStorage.getItem("theme") === "dark" ? "dark" : "light";
-  });
+const ThemeToggle: FC = () => {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
-    root.classList.toggle("light", theme === "light");
-    window.localStorage.setItem("theme", theme);
-  }, [theme]);
+    // ตรวจสอบ theme จาก localStorage หรือ system preference
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    } else {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setTheme(prefersDark ? "dark" : "light");
+      document.documentElement.classList.toggle("dark", prefersDark);
+    }
+  }, []);
 
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    localStorage.setItem("theme", newTheme);
+  };
 
   return (
     <button
-      type="button"
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      aria-pressed={theme === "dark"}
-      className={clsx(
-        "btn btn-ghost p-2 transition-colors duration-300",
-        "hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-      )}
+      aria-label="Toggle Theme"
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 transition-colors hover:bg-gray-300 dark:hover:bg-gray-700"
     >
-      {theme === "dark" ? (
-        <Sun className="w-5 h-5 text-yellow-400" aria-hidden="true" />
+      {theme === "light" ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6 text-yellow-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364l-1.414-1.414M6.05 6.05L4.636 4.636m12.728 0l-1.414 1.414M6.05 17.95l-1.414 1.414M12 8a4 4 0 100 8 4 4 0 000-8z"
+          />
+        </svg>
       ) : (
-        <Moon className="w-5 h-5 text-gray-800" aria-hidden="true" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6 text-gray-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
+          />
+        </svg>
       )}
     </button>
   );
 };
+
+ThemeToggle.displayName = "ThemeToggle";
 
 export default ThemeToggle;

@@ -1,6 +1,6 @@
 # Project Structure
 
-_Generated at: 2025-08-24 17:30:06_
+_Generated at: 2025-08-25 02:22:38_
 
 ```
 src
@@ -12,13 +12,6 @@ src
 │   ├── IdCardForm.tsx
 │   ├── Login.tsx
 │   ├── SecretPage
-│   │   ├── DocumentIntegrity
-│   │   │   ├── DocumentIntegrityPage.tsx
-│   │   │   ├── DocumentIntegrityPreview.tsx
-│   │   │   ├── DocumentIntegrityPreviewWithActions.tsx
-│   │   │   ├── DocumentIntegrityScanner.tsx
-│   │   │   └── types
-│   │   │       └── documentIntegrity.ts
 │   │   ├── DriverLicense
 │   │   │   ├── DriverLicenseForm.tsx
 │   │   │   ├── DriverLicensePage.tsx
@@ -31,7 +24,6 @@ src
 │   │   │       ├── PhotoField.tsx
 │   │   │       └── TextField.tsx
 │   │   ├── IdCardPreview
-│   │   │   ├── IdCardFormWithOCR.tsx
 │   │   │   ├── IdCardPreview.tsx
 │   │   │   └── IdCardSection.tsx
 │   │   ├── MedicalCertificate
@@ -61,8 +53,12 @@ src
 │   │   │       ├── AboutImage.tsx
 │   │   │       ├── AboutQuote.tsx
 │   │   │       └── AboutTitle.tsx
+│   │   ├── Dashboard
+│   │   │   └── DynamicRiskDashboard.tsx
 │   │   ├── Forms
 │   │   │   ├── FormWrapper.tsx
+│   │   │   ├── IdCardFormWithOCR.tsx
+│   │   │   ├── IdCardPreview.tsx
 │   │   │   ├── SubmitButton.tsx
 │   │   │   ├── index.ts
 │   │   │   └── ui
@@ -88,23 +84,18 @@ src
 │   │   │       ├── PortfolioCTA.tsx
 │   │   │       └── PortfolioFilter.tsx
 │   │   ├── SecretSection
+│   │   │   ├── AuditTrailViewer.tsx
 │   │   │   ├── BlurContact
 │   │   │   │   ├── BlurContact.tsx
 │   │   │   │   └── motionVariants.ts
 │   │   │   ├── DocumentDownload.tsx
 │   │   │   ├── DocumentExportActions.tsx
-│   │   │   ├── InternalAuditTimeline.tsx
 │   │   │   ├── KbankIOSNotification.tsx
 │   │   │   ├── KbankNotificationCard.tsx
 │   │   │   ├── SecretActions.tsx
 │   │   │   ├── SecretDescription.tsx
 │   │   │   ├── SecretHeader.tsx
-│   │   │   ├── SecureExportConsole.tsx
-│   │   │   ├── TempCodeManager.tsx
-│   │   │   └── types
-│   │   │       ├── documentIntegrity.ts
-│   │   │       ├── internalAudit.ts
-│   │   │       └── tempCode.ts
+│   │   │   └── SecureExportConsole.tsx
 │   │   ├── SellingPoints
 │   │   │   ├── SellingPoints.tsx
 │   │   │   ├── SpeedGuaranteeBanner.tsx
@@ -131,6 +122,8 @@ src
 │   │   │   ├── UserBoard.tsx
 │   │   │   ├── motionConfig.ts
 │   │   │   └── types.ts
+│   │   ├── UserTimeline
+│   │   │   └── UserBehaviorTimeline.tsx
 │   │   ├── common
 │   │   │   ├── CardWrapper.tsx
 │   │   │   ├── LazyA4Card.tsx
@@ -152,7 +145,11 @@ src
 │   ├── hooks
 │   │   └── useInView.ts
 │   └── types
-│       └── idCard.ts
+│       ├── auditTrail.ts
+│       ├── dynamicRisk.ts
+│       ├── idCard.ts
+│       ├── risk.ts
+│       └── userBehavior.ts
 ├── Layout
 │   ├── Layout.tsx
 │   ├── Navbar.tsx
@@ -198,6 +195,7 @@ src
 │   └── react.svg
 ├── config
 │   ├── driverLicenseConfig.tsx
+│   ├── homeSections.config.tsx
 │   ├── idCardConfig.tsx
 │   └── secretCards.config.tsx
 ├── context

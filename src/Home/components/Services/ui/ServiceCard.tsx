@@ -71,4 +71,6 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
   );
 };
 
+ServiceCard.displayName = "ServiceCard";
+
 export default ServiceCard;

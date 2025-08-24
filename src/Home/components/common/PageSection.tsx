@@ -1,34 +1,42 @@
 "use client";
 
-import { FC, ReactNode } from "react";
-import clsx from "clsx";
+import { FC, ReactNode, memo } from "react";
+import { motion } from "framer-motion";
 
-export interface PageSectionProps {
-  id?: string;
-  title?: string;
+interface PageSectionProps {
   children: ReactNode;
+  title?: string;
+  hideTitle?: boolean;
   className?: string;
-  hideTitle?: boolean; // ซ่อน title
+  id?: string;
 }
 
 const PageSection: FC<PageSectionProps> = ({
-  id,
-  title,
   children,
-  className,
+  title,
   hideTitle = false,
-}) => (
-  <section
-    id={id}
-    className={clsx("bg-white p-6 rounded-xl shadow-md", className)}
-  >
-    {!hideTitle && title && (
-      <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-    )}
-    <div className="space-y-4">{children}</div>
-  </section>
-);
+  className = "",
+  id,
+}) => {
+  return (
+    <motion.section
+      id={id}
+      className={`w-full bg-white rounded-xl shadow-md p-6 sm:p-8 ${className}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      {!hideTitle && title && (
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+          {title}
+        </h2>
+      )}
+
+      <div className="w-full">{children}</div>
+    </motion.section>
+  );
+};
 
 PageSection.displayName = "PageSection";
 
-export default PageSection;
+export default memo(PageSection);

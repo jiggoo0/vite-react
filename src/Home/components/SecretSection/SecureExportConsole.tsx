@@ -1,108 +1,64 @@
 "use client";
 
-import { FC, useRef, useCallback } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { FC, useState, useMemo } from "react";
+import { testimonials } from "@data/testimonialsData";
+import { cn } from "@/utils/cn";
 
-import {
-  driverLicenseCardConfig,
-  driverLicenseFields,
-  DriverLicenseFormData,
-} from "@config/driverLicenseConfig";
-import Card from "../ui/Card/Card";
-import Button from "../ui/Button/Button";
-import mockDriverLicenseData from "@__mocks__/mockDriverLicenseData";
+const TestimonialSlider: FC = () => {
+  const [index, setIndex] = useState(0);
 
-interface SecureExportConsoleProps {
-  data?: DriverLicenseFormData;
-}
-
-const SecureExportConsole: FC<SecureExportConsoleProps> = ({
-  data = mockDriverLicenseData,
-}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const cardWidth = parseInt(driverLicenseCardConfig.cardWidth, 10);
-  const cardHeight = parseInt(driverLicenseCardConfig.cardHeight, 10);
-
-  const exportPNG = useCallback(async () => {
-    if (!cardRef.current) return;
-    const canvas = await html2canvas(cardRef.current, { scale: 2 });
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = "driver_license.png";
-    link.click();
-  }, []);
-
-  const exportPDF = useCallback(async () => {
-    if (!cardRef.current) return;
-    const canvas = await html2canvas(cardRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("l", "px", [cardWidth, cardHeight]);
-    pdf.addImage(imgData, "PNG", 0, 0, cardWidth, cardHeight);
-    pdf.save("driver_license.pdf");
-  }, [cardWidth, cardHeight]);
-
-  const renderField = (field: (typeof driverLicenseFields)[number]) => {
-    const value = data?.[field.id as keyof DriverLicenseFormData] || "";
-
-    if (field.type === "photo" && typeof value === "string" && value) {
-      return (
-        <img
-          key={field.id}
-          src={value}
-          alt="photo"
-          style={{
-            position: "absolute",
-            top: field.top,
-            left: field.left,
-            width: field.width,
-            height: field.height,
-            objectFit: "cover",
-          }}
-        />
-      );
-    }
-
-    return (
-      <span
-        key={field.id}
-        style={{
-          position: "absolute",
-          top: field.top,
-          left: field.left,
-          fontSize: field.fontSize,
-          fontWeight: field.fontWeight,
-          width: field.width,
-        }}
-      >
-        {String(value)}
-      </span>
-    );
-  };
+  const testimonial = useMemo(
+    () => testimonials[index % testimonials.length],
+    [index]
+  );
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <Card
-        ref={cardRef}
-        className="relative overflow-hidden shadow-xl"
-        style={{
-          width: driverLicenseCardConfig.cardWidth,
-          height: driverLicenseCardConfig.cardHeight,
-          backgroundImage: `url(${driverLicenseCardConfig.bgDefault})`,
-          backgroundSize: "cover",
-        }}
-      >
-        {driverLicenseFields.map(renderField)}
-      </Card>
+    <div
+      className="w-full max-w-2xl mx-auto border border-gray-300 bg-white text-gray-900 p-6"
+      role="region"
+      aria-label="Customer Testimonials"
+    >
+      {/* Content */}
+      <p className="text-base leading-relaxed mb-6">“{testimonial.content}”</p>
 
-      <div className="flex gap-3">
-        <Button onClick={exportPNG}>Export PNG</Button>
-        <Button onClick={exportPDF}>Export PDF</Button>
+      {/* Author */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 flex items-center justify-center border border-gray-400 bg-gray-100 text-gray-800 text-lg font-bold">
+          {testimonial.name.charAt(0)}
+        </div>
+        <div>
+          <p className="font-semibold text-sm text-gray-900">
+            {testimonial.name}
+          </p>
+          <p className="text-xs text-gray-600">{testimonial.role}</p>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="flex justify-end mt-4 gap-2">
+        <button
+          type="button"
+          onClick={() =>
+            setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)
+          }
+          className={cn(
+            "px-2 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100"
+          )}
+        >
+          Prev
+        </button>
+        <button
+          type="button"
+          onClick={() => setIndex((i) => (i + 1) % testimonials.length)}
+          className={cn(
+            "px-2 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100"
+          )}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
 };
 
-export default SecureExportConsole;
+export default TestimonialSlider;

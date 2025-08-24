@@ -15,6 +15,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,36 +24,27 @@ const Login: React.FC = () => {
     setError(null);
     setLoading(true);
 
-    const trimmedUsername = username.trim();
-
     try {
+      const trimmedUsername = username.trim();
       const userData = users[trimmedUsername];
-      const user: AuthUser | undefined = userData
-        ? { ...userData, username: trimmedUsername }
-        : undefined;
 
-      if (!user) {
-        setError("ไม่พบผู้ใช้นี้ในระบบ");
-        return;
-      }
+      if (!userData) throw new Error("ไม่พบผู้ใช้นี้ในระบบ");
 
-      const match = await bcrypt.compare(password, user.hash);
-      if (!match) {
-        setError("รหัสผ่านไม่ถูกต้อง");
-        return;
-      }
+      const match = await bcrypt.compare(password, userData.hash);
+      if (!match) throw new Error("รหัสผ่านไม่ถูกต้อง");
 
-      // เก็บข้อมูลผู้ใช้ใน localStorage
       localStorage.setItem(
         "user",
-        JSON.stringify({ username: user.username, role: user.role })
+        JSON.stringify({ username: trimmedUsername, role: userData.role })
       );
 
-      // นำทางไปหน้า secret หลัง login สำเร็จ
       navigate("/secret", { replace: true });
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+      }
     } finally {
       setLoading(false);
     }
@@ -66,7 +58,11 @@ const Login: React.FC = () => {
         </h1>
 
         {error && (
-          <div className="p-3 text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300 rounded-md">
+          <div
+            className="p-3 text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300 rounded-md"
+            role="alert"
+            aria-live="assertive"
+          >
             {error}
           </div>
         )}
@@ -85,17 +81,27 @@ const Login: React.FC = () => {
             spellCheck={false}
           />
 
-          <input
-            type="password"
-            placeholder="รหัสผ่าน"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="input input-bordered w-full"
-            required
-            disabled={loading}
-            autoComplete="current-password"
-            aria-label="รหัสผ่าน"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="รหัสผ่าน"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input input-bordered w-full"
+              required
+              disabled={loading}
+              autoComplete="current-password"
+              aria-label="รหัสผ่าน"
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-300"
+              onClick={() => setShowPassword((prev) => !prev)}
+              tabIndex={-1}
+            >
+              {showPassword ? "ซ่อน" : "แสดง"}
+            </button>
+          </div>
 
           <button
             type="submit"

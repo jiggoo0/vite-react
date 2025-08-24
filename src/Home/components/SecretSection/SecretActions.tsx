@@ -1,73 +1,59 @@
 "use client";
 
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FC, memo } from "react";
+import { EffectiveRole } from "@/config/secretCards.config";
 
-type SecretActionsProps = {
-  role: "admin" | "user" | "manager";
-};
+interface SecretActionsProps {
+  role: EffectiveRole;
+  onExport?: () => void;
+  onRefresh?: () => void;
+  onDeleteAll?: () => void;
+}
 
-const SecretActions: FC<SecretActionsProps> = ({ role }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login", { replace: true });
-  };
-
-  const actions = [
-    {
-      label: "จัดการงานของฉัน",
-      onClick: () => alert("Manage your jobs feature coming soon!"),
-      variant: "btn-primary",
-      show: true,
-      ariaLabel: "จัดการงานของฉัน",
-    },
-    {
-      label: "เข้าสู่แผงควบคุม Admin",
-      onClick: () => navigate("/admin"),
-      variant: "btn-secondary",
-      show: role === "admin" || role === "manager",
-      ariaLabel: "เข้าสู่แผงควบคุม Admin",
-    },
-    {
-      label: "ออกจากระบบ",
-      onClick: handleLogout,
-      variant: "btn-outline btn-error",
-      show: true,
-      ariaLabel: "ออกจากระบบ",
-    },
-  ];
+const SecretActions: FC<SecretActionsProps> = ({
+  role,
+  onExport,
+  onRefresh,
+  onDeleteAll,
+}) => {
+  const isAdmin = role === "admin";
 
   return (
-    <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-      {actions
-        .filter((action) => action.show)
-        .map((action) => (
-          <button
-            key={action.label}
-            type="button"
-            className={`flex-1 md:flex-none btn ${action.variant} 
-                        transition-transform duration-200 hover:scale-105
-                        focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                          action.variant.includes("primary")
-                            ? "focus:ring-primary"
-                            : action.variant.includes("secondary")
-                              ? "focus:ring-secondary"
-                              : action.variant.includes("error")
-                                ? "focus:ring-error"
-                                : "focus:ring-gray-500"
-                        }`}
-            onClick={action.onClick}
-            aria-label={action.ariaLabel}
-          >
-            {action.label}
-          </button>
-        ))}
+    <div className="w-full bg-white shadow-md rounded-lg p-6 flex flex-col sm:flex-row sm:justify-between gap-4">
+      {/* Export Button */}
+      <button
+        className={`px-4 py-2 rounded text-white transition ${
+          isAdmin
+            ? "bg-blue-600 hover:bg-blue-700"
+            : "bg-gray-400 cursor-not-allowed"
+        }`}
+        disabled={!isAdmin}
+        onClick={onExport}
+      >
+        Export Data
+      </button>
+
+      {/* Refresh Button */}
+      <button
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        onClick={onRefresh}
+      >
+        Refresh
+      </button>
+
+      {/* Delete All Button (Admin only) */}
+      {isAdmin && (
+        <button
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+          onClick={onDeleteAll}
+        >
+          Delete All
+        </button>
+      )}
     </div>
   );
 };
 
 SecretActions.displayName = "SecretActions";
 
-export default SecretActions;
+export default memo(SecretActions);

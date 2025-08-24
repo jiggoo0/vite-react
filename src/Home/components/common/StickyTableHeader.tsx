@@ -1,27 +1,30 @@
 "use client";
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, memo } from "react";
 
 interface StickyTableHeaderProps {
-  children: ReactNode;
+  headers: string[];
+  className?: string;
 }
 
-/**
- * StickyTableHeader Component
- * ---------------------------
- * - ทำให้ thead/table header ติดอยู่ด้านบนเวลา scroll
- * - ใช้กับตารางที่มีข้อมูลยาว
- */
-const StickyTableHeader: FC<StickyTableHeaderProps> = ({ children }) => {
+const StickyTableHeader: FC<StickyTableHeaderProps> = ({ headers, className = "" }) => {
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse">
-        <thead className="sticky top-0 bg-gray-100 z-10">{children}</thead>
-      </table>
-    </div>
+    <thead className={`bg-gray-100 dark:bg-gray-800 ${className}`}>
+      <tr className="sticky top-0 z-10">
+        {headers.map((header, idx) => (
+          <th
+            key={idx}
+            scope="col"
+            className="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wide"
+          >
+            {header}
+          </th>
+        ))}
+      </tr>
+    </thead>
   );
 };
 
 StickyTableHeader.displayName = "StickyTableHeader";
 
-export default StickyTableHeader;
+export default memo(StickyTableHeader);

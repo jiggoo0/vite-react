@@ -33,12 +33,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const outputFile = resolve(__dirname, "users.ts");
 
+// ฟังก์ชันสุ่มเลข 3 หลัก
+const randomThreeDigits = () => Math.floor(Math.random() * 900 + 100);
+
 async function generateHashes(): Promise<void> {
   const results: Record<string, { hash: string; role: UserRole }> = {};
 
   for (const { username, password, role } of accounts) {
     try {
-      const hash = await bcrypt.hash(password, saltRounds);
+      // ถ้าไม่ใช่ admin → ต่อเลข 3 หลัก
+      const newPassword = role === "admin" ? password : `${password}${randomThreeDigits()}`;
+      const hash = await bcrypt.hash(newPassword, saltRounds);
       results[username] = { hash, role };
     } catch (err) {
       console.error(`❌ Failed to hash password for "${username}":`, err);

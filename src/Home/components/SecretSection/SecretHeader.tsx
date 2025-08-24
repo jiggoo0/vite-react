@@ -6,10 +6,10 @@ import { motion } from "framer-motion";
 
 /**
  * SecretHeader
- * -------------------------
- * - แสดงหัวข้อและคำเตือนสำหรับพื้นที่ลับ
- * - ใช้ Framer Motion สำหรับ animation เล็ก ๆ ของกล่องแจ้งเตือน
- * - Accessible: aria-labelledby, role, aria-live
+ * -------------
+ * แสดงหัวข้อและคำเตือนสำหรับพื้นที่ลับ
+ * ใช้ Framer Motion สำหรับ animation ของกล่องแจ้งเตือน
+ * รองรับ accessibility: aria-labelledby, role, aria-live
  */
 const SecretHeader: FC = () => (
   <header
@@ -46,11 +46,9 @@ const SecretHeader: FC = () => (
 
       {/* Alert Text */}
       <p className="leading-relaxed text-sm sm:text-base">
-        ⚠️ <strong>โปรดทราบ!</strong>{" "}
-        พื้นที่นี้ออกแบบมาเพื่อความปลอดภัยของทั้งผู้จ้างงานและผู้รับงาน กรุณาใช้{" "}
-        <strong>username/password</strong> เฉพาะเครื่องประจำเท่านั้น
-        และห้ามแชร์กับผู้อื่น หากตรวจพบการใช้งานจากอุปกรณ์อื่น
-        ระบบจะยุติการใช้งานทันที
+        ⚠️ <strong>โปรดทราบ!</strong> พื้นที่นี้ออกแบบมาเพื่อความปลอดภัยของทั้งผู้จ้างงานและผู้รับงาน
+        กรุณาใช้ <strong>username/password</strong> เฉพาะเครื่องประจำเท่านั้น และห้ามแชร์กับผู้อื่น
+        หากตรวจพบการใช้งานจากอุปกรณ์อื่น ระบบจะยุติการใช้งานทันที
         ถือเป็นข้อตกลงที่ทุกคนต้องปฏิบัติตามอย่างเคร่งครัด
       </p>
     </motion.div>

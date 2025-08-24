@@ -1,5 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "✅ Skipping pnpm-lock.yaml check. Proceeding with commit..."
+# ถ้ามีการแก้ไข pnpm-lock.yaml → skip check
+if git diff --cached --name-only | grep -q "pnpm-lock.yaml"; then
+  echo "✅ Skipping pnpm-lock.yaml check. Proceeding with commit..."
+  exit 0
+fi
+
+# ถ้าไม่ใช่ไฟล์นั้น → commit ผ่านปกติ
 exit 0
