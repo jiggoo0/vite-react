@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import React, { FC, memo } from "react";
 import { motion } from "framer-motion";
 import CardWrapper from "@/Home/components/common/CardWrapper";
 
@@ -16,7 +16,7 @@ interface AuditTrailViewerProps {
   items: AuditTrailItem[];
 }
 
-const typeColors = {
+const typeColors: Record<string, string> = {
   info: "bg-blue-500 dark:bg-blue-400",
   warning: "bg-yellow-500 dark:bg-yellow-400",
   success: "bg-green-500 dark:bg-green-400",
@@ -33,7 +33,7 @@ const AuditTrailViewer: FC<AuditTrailViewerProps> = ({ items }) => {
 
       <ul className="space-y-4 max-h-96 overflow-y-auto">
         {items.map((item, index) => {
-          const dotColor = item.type ? typeColors[item.type] : typeColors.info;
+          const dotColor = typeColors[item.type ?? "info"] ?? typeColors.info;
 
           return (
             <motion.li
@@ -50,7 +50,7 @@ const AuditTrailViewer: FC<AuditTrailViewerProps> = ({ items }) => {
                       {item.action}
                     </p>
                     <p className="text-xs text-gray-600 dark:text-gray-300">
-                      : {item.user}
+                      User: {item.user}
                     </p>
                     <time className="text-xs text-gray-400 dark:text-gray-500">
                       {item.timestamp}
@@ -68,4 +68,4 @@ const AuditTrailViewer: FC<AuditTrailViewerProps> = ({ items }) => {
 
 AuditTrailViewer.displayName = "AuditTrailViewer";
 
-export default AuditTrailViewer;
+export default memo(AuditTrailViewer);
