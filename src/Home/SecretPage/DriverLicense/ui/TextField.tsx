@@ -19,6 +19,12 @@ interface TextFieldProps {
   onPositionChange: (top: string, left: string) => void;
 }
 
+/**
+ * TextField
+ * --------------------
+ * แสดง text field พร้อม draggable
+ * สามารถปรับ style เช่น font, background, border ได้
+ */
 const TextField: React.FC<TextFieldProps> = ({
   value,
   top,
@@ -33,29 +39,27 @@ const TextField: React.FC<TextFieldProps> = ({
   borderWidth = "0px",
   textAlign = "left",
   onPositionChange,
-}) => {
-  return (
-    <FieldDraggable top={top} left={left} onPositionChange={onPositionChange}>
-      <span
-        style={{
-          fontSize,
-          fontWeight,
-          color,
-          background,
-          padding,
-          borderRadius,
-          border: `${borderWidth} solid ${borderColor}`,
-          whiteSpace: "nowrap",
-          userSelect: "none",
-          pointerEvents: "auto", // สามารถลาก Field ได้
-          textAlign,
-          display: "inline-block",
-        }}
-      >
-        {value}
-      </span>
-    </FieldDraggable>
-  );
-};
+}) => (
+  <FieldDraggable top={top} left={left} onPositionChange={onPositionChange}>
+    <span
+      style={{
+        fontSize,
+        fontWeight,
+        color,
+        background,
+        padding,
+        borderRadius,
+        border: `${borderWidth} solid ${borderColor}`,
+        whiteSpace: "nowrap",
+        userSelect: "none",
+        pointerEvents: "auto", // สามารถลาก Field ได้
+        textAlign,
+        display: "inline-block",
+      }}
+    >
+      {value}
+    </span>
+  </FieldDraggable>
+);
 
 export default TextField;

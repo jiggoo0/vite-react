@@ -67,5 +67,5 @@ pnpm-lock.yaml
 *.tgz
 *.7z
 
-# Tailwind / PostCSS / Vite cache (optional)
+# Tailwind / PostCSS / Vite cache
 node_modules/.vite/

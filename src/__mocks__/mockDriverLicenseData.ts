@@ -1,8 +1,10 @@
 import { driverLicenseFormSchema } from "@config/driverLicenseConfig";
-import type { z } from "zod";
+import { z } from "zod"; // ใช้ import { z } แทน type-only
 
-type DriverLicenseType = z.infer<typeof driverLicenseFormSchema>;
+// สร้าง type จาก schema
+export type DriverLicenseType = z.infer<typeof driverLicenseFormSchema>;
 
+// mock data สำหรับ DriverLicense
 const mockDriverLicenseData: DriverLicenseType = {
   fullName: "John Doe",
   idNumber: "1234567890123",

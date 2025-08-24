@@ -1,6 +1,6 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
-> เวลาตรวจสอบ: 2025-08-24 08:10:59 | สาขา: main
+> เวลาตรวจสอบ: 2025-08-24 09:33:15 | สาขา: main
 
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
@@ -14,7 +14,7 @@
 | Alias Import | ✅ |
 | ESLint Check | ✅ |
 | TypeScript Check | ✅ |
-| Dev Server               | ✅ |
+| Dev Server               | ⚠️ skipped (headless/Termux) |
 
 ## 📦 ตรวจสอบ package.json
 ```json
@@ -168,6 +168,9 @@ src
 │   │   │       ├── FieldDraggable.tsx
 │   │   │       ├── PhotoField.tsx
 │   │   │       └── TextField.tsx
+│   │   ├── IdCardPreview
+│   │   │   ├── IdCardPreview.tsx
+│   │   │   └── IdCardSection.tsx
 │   │   ├── MedicalCertificate
 │   │   │   ├── MedicalCertificate.tsx
 │   │   │   └── types
@@ -279,8 +282,10 @@ src
 │   │       └── Card
 │   │           ├── Card.styles.ts
 │   │           └── Card.tsx
-│   └── hooks
-│       └── useInView.ts
+│   ├── hooks
+│   │   └── useInView.ts
+│   └── types
+│       └── idCard.ts
 ├── Layout
 │   ├── Layout.tsx
 │   ├── Navbar.tsx
@@ -310,6 +315,7 @@ src
 │   ├── KbankIOSNotification.mock.ts
 │   ├── kbankIOSNotification.ts
 │   ├── mockDriverLicenseData.ts
+│   ├── mockIdCardData.ts
 │   ├── mockMedicalCertificate.ts
 │   ├── mockRegistrationData.ts
 │   ├── mockSalaryCertificate.ts
@@ -325,6 +331,7 @@ src
 │   └── react.svg
 ├── config
 │   ├── driverLicenseConfig.tsx
+│   ├── idCardConfig.tsx
 │   └── secretCards.config.tsx
 ├── context
 │   ├── AppProviders.tsx
@@ -371,8 +378,7 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-57 directories, 165 files
-```
+59 directories, 170 files
 
 ## 🛠️ Roadmap
 เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:

@@ -13,8 +13,8 @@ interface Props {
  * DriverLicensePreview
  * -------------------------
  * Render driver license card layout:
- * -  text, date, select, photo
- * -  config  driverLicenseCardConfig
+ * - text, date, select, photo
+ * - config จาก driverLicenseCardConfig
  */
 const DriverLicensePreview: FC<Props> = ({ data }) => {
   const { cardWidth, cardHeight, bgDefault } = driverLicenseCardConfig;
@@ -24,8 +24,8 @@ const DriverLicensePreview: FC<Props> = ({ data }) => {
       id="driver-license-preview"
       className="relative overflow-hidden border border-gray-300 bg-white"
       style={{
-        width: cardWidth ?? "400px",
-        height: cardHeight ?? "250px",
+        width: cardWidth,
+        height: cardHeight,
         backgroundImage: bgDefault ? `url(${bgDefault})` : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -43,10 +43,10 @@ const DriverLicensePreview: FC<Props> = ({ data }) => {
               alt="Driver"
               className="absolute object-cover"
               style={{
-                top: field.top ?? 0,
-                left: field.left ?? 0,
-                width: field.width ?? 50,
-                height: field.height ?? 50,
+                top: field.top,
+                left: field.left,
+                width: field.width,
+                height: field.height,
               }}
             />
           );
@@ -57,10 +57,10 @@ const DriverLicensePreview: FC<Props> = ({ data }) => {
             key={field.id}
             className="absolute font-sans"
             style={{
-              top: field.top ?? 0,
-              left: field.left ?? 0,
-              fontSize: field.fontSize ?? 12,
-              fontWeight: field.fontWeight ?? 400,
+              top: field.top,
+              left: field.left,
+              fontSize: field.fontSize,
+              fontWeight: field.fontWeight,
               color: field.color ?? "#000",
               width: field.width ?? "auto",
               height: field.height ?? "auto",

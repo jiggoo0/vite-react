@@ -38,17 +38,19 @@ NOW=$(date +"%Y-%m-%d %H:%M:%S")
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "N/A")
 
 # สร้าง report
-echo "# ✅ JP Visual & Docs – Structure Check Report" > "$REPORT"
-echo "" >> "$REPORT"
-echo "> เวลาตรวจสอบ: $NOW | สาขา: $BRANCH" >> "$REPORT"
-echo "" >> "$REPORT"
-echo "> โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular" >> "$REPORT"
-echo "" >> "$REPORT"
-echo "---" >> "$REPORT"
-echo "" >> "$REPORT"
-echo "## 📊 Summary" >> "$REPORT"
-echo "| หมวดหมู่                 | สถานะ |" >> "$REPORT"
-echo "|--------------------------|--------|" >> "$REPORT"
+cat > "$REPORT" <<EOL
+# ✅ JP Visual & Docs – Structure Check Report
+
+> เวลาตรวจสอบ: $NOW | สาขา: $BRANCH
+
+> โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
+
+---
+
+## 📊 Summary
+| หมวดหมู่                 | สถานะ |
+|--------------------------|--------|
+EOL
 
 check_cmd() {
   local cmd="$1"
@@ -80,6 +82,7 @@ run_check() {
   rm -f "$TMPFILE"
 }
 
+# รัน checks พร้อมกัน
 (run_check "TypeScript Check" "pnpm tsc --noEmit") &
 (run_check "ESLint Check" "pnpm lint") &
 (
@@ -168,7 +171,7 @@ echo "" >> "$REPORT"
 echo "## 📁 โครงสร้าง src (ลึกสุด 10 ระดับ)" >> "$REPORT"
 echo '```' >> "$REPORT"
 [ -d "src" ] && tree -L 10 src >> "$REPORT" || echo "> ❌ ไม่พบโฟลเดอร์ src" >> "$REPORT"
-echo '```' >> "$REPORT"
+echo '```'
 
 # Note & Roadmap
 echo "" >> "$REPORT"

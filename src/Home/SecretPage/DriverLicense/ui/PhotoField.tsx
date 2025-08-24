@@ -18,6 +18,7 @@ interface PhotoFieldProps {
 
 /**
  * PhotoField
+ * --------------------
  * แสดงรูปภาพพร้อม draggable field
  * pointerEvents ถูกตั้งเป็น "none" เพื่อไม่ให้ลากรูปแทน field
  */
@@ -32,27 +33,25 @@ const PhotoField: React.FC<PhotoFieldProps> = ({
   borderWidth = "1px",
   background = "#fff",
   onPositionChange,
-}) => {
-  return (
-    <FieldDraggable top={top} left={left} onPositionChange={onPositionChange}>
-      <img
-        src={src}
-        alt="photo"
-        draggable={false}
-        style={{
-          width,
-          height,
-          objectFit: "cover",
-          borderRadius,
-          border: `${borderWidth} solid ${borderColor}`,
-          background,
-          display: "block",
-          pointerEvents: "none", // ป้องกันไม่ให้ลากรูปแทน field
-          userSelect: "none",
-        }}
-      />
-    </FieldDraggable>
-  );
-};
+}) => (
+  <FieldDraggable top={top} left={left} onPositionChange={onPositionChange}>
+    <img
+      src={src}
+      alt="photo"
+      draggable={false}
+      style={{
+        width,
+        height,
+        objectFit: "cover",
+        borderRadius,
+        border: `${borderWidth} solid ${borderColor}`,
+        background,
+        display: "block",
+        pointerEvents: "none", // ป้องกันไม่ให้ลากรูปแทน field
+        userSelect: "none",
+      }}
+    />
+  </FieldDraggable>
+);
 
 export default PhotoField;

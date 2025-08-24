@@ -12,6 +12,7 @@ import {
 import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
 import "@/styles/driverLicense.css";
 
+// ใช้ zod correctly
 type FormValues = z.infer<typeof driverLicenseFormSchema>;
 
 /**
@@ -22,7 +23,12 @@ type FormValues = z.infer<typeof driverLicenseFormSchema>;
  * - รองรับ photo / date / select fields
  */
 const DriverLicenseForm: FC = () => {
-  const { handleSubmit, control, watch, formState: { errors } } = useForm<FormValues>({
+  const {
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
     resolver: zodResolver(driverLicenseFormSchema),
     defaultValues: Object.fromEntries(driverLicenseFields.map(f => [f.id, ""])) as FormValues,
   });
@@ -33,10 +39,8 @@ const DriverLicenseForm: FC = () => {
     console.log("Submitted data:", data);
   };
 
-  const handleExportPNG = () =>
-    exportCardAsPNG("driver-license-preview", "driver-license.png");
-  const handleExportPDF = () =>
-    exportCardAsPDF("driver-license-preview", "driver-license.pdf", true);
+  const handleExportPNG = () => exportCardAsPNG("driver-license-preview", "driver-license.png");
+  const handleExportPDF = () => exportCardAsPDF("driver-license-preview", "driver-license.pdf", true);
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen flex flex-col gap-8">
@@ -52,7 +56,10 @@ const DriverLicenseForm: FC = () => {
         className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-6 border border-gray-300"
       >
         {driverLicenseFields.map((field) => {
-          const label = field.id.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+          const label = field.id
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, s => s.toUpperCase());
+
           return (
             <div key={field.id} className="flex flex-col">
               <label className="mb-1 font-medium text-gray-700">{label}</label>
@@ -61,6 +68,15 @@ const DriverLicenseForm: FC = () => {
                 name={field.id as keyof FormValues}
                 control={control}
                 render={({ field: controllerField }) => {
+                  // แก้ type ของ select/input ให้ตรงกับ HTML spec
+                  const commonProps = {
+                    id: field.id,
+                    value: controllerField.value,
+                    onChange: controllerField.onChange,
+                    onBlur: controllerField.onBlur,
+                    name: controllerField.name,
+                  };
+
                   switch (field.type) {
                     case "photo":
                       return (
@@ -74,10 +90,11 @@ const DriverLicenseForm: FC = () => {
                           className="border border-gray-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
                         />
                       );
+
                     case "select":
                       return (
                         <select
-                          {...controllerField}
+                          {...commonProps}
                           className="border border-gray-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
                         >
                           <option value="">เลือก...</option>
@@ -86,10 +103,11 @@ const DriverLicenseForm: FC = () => {
                           ))}
                         </select>
                       );
+
                     default:
                       return (
                         <input
-                          {...controllerField}
+                          {...commonProps}
                           type={field.type === "date" ? "date" : "text"}
                           className="border border-gray-300 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
                         />

@@ -1,20 +1,23 @@
 "use client";
 
 import { FC, memo } from "react";
-import { DriverLicenseData } from "./types/driverLicense";
-import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
 import DriverLicensePreview from "./DriverLicensePreview";
+import { DriverLicenseData, mockDriverLicense } from "./types/driverLicense";
+import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
 
 interface Props {
-  data: DriverLicenseData;
+  data?: DriverLicenseData;
 }
 
 /**
  * DriverLicensePreviewWithActions
- * -------------------------
+ * --------------------------------
  * แสดงใบขับขี่พร้อมปุ่ม export PNG/PDF
+ * - รองรับ default mock data
+ * - memoized
+ * - responsive, flat UI
  */
-const DriverLicensePreviewWithActions: FC<Props> = ({ data }) => {
+const DriverLicensePreviewWithActions: FC<Props> = ({ data = mockDriverLicense }) => {
   const handleExportPNG = () =>
     exportCardAsPNG("driver-license-preview", "driver-license.png");
 
@@ -23,7 +26,7 @@ const DriverLicensePreviewWithActions: FC<Props> = ({ data }) => {
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
-      {/* Preview */}
+      {/* Preview Card */}
       <DriverLicensePreview data={data} />
 
       {/* Export Actions */}

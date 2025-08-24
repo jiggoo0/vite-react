@@ -36,6 +36,9 @@ interface User {
 
 const BASE_DELAY = 50;
 
+/**
+ * สร้างลิสต์ LazyCards สำหรับหน้า Secret
+ */
 export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
   const isAdminOrManager = effectiveRole === "admin" || effectiveRole === "manager";
   const shouldBlur = effectiveRole !== "admin";
@@ -48,29 +51,54 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
     { component: <SecretDescription user={{ ...user, role: effectiveRole }} />, delay: nextDelay() },
     { component: <DocumentDownload />, delay: nextDelay() },
     { component: <DriverLicenseFormPage />, delay: nextDelay(), isBlurred: shouldBlur },
-    { component: <RegistrationPreview {...mockRegistrationData} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Registration...</div> },
-    { component: <SalaryCertificate data={mockSalaryCertificate} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Salary Certificate...</div> },
-    { component: <MedicalCertificate data={mockMedicalCertificate} />, delay: nextDelay(), isBlurred: shouldBlur, fallback: <div>Loading Medical Certificate...</div> },
-    { 
+    {
+      component: <RegistrationPreview {...mockRegistrationData} />,
+      delay: nextDelay(),
+      isBlurred: shouldBlur,
+      fallback: <div>Loading Registration...</div>,
+    },
+    {
+      component: <SalaryCertificate data={mockSalaryCertificate} />,
+      delay: nextDelay(),
+      isBlurred: shouldBlur,
+      fallback: <div>Loading Salary Certificate...</div>,
+    },
+    {
+      component: <MedicalCertificate data={mockMedicalCertificate} />,
+      delay: nextDelay(),
+      isBlurred: shouldBlur,
+      fallback: <div>Loading Medical Certificate...</div>,
+    },
+    {
       component: (
         <>
           {kbankMockData.map(item => (
             <KbankNotificationCard key={item.id} data={item} />
           ))}
         </>
-      ), 
-      delay: nextDelay(), 
-      isBlurred: shouldBlur 
+      ),
+      delay: nextDelay(),
+      isBlurred: shouldBlur,
     },
   ];
 
   if (isAdminOrManager) {
-    lazyCards.push({ component: <SpecialBranchCertificate />, delay: nextDelay(), fallback: <div>Loading Special Branch...</div> });
+    lazyCards.push({
+      component: <SpecialBranchCertificate />,
+      delay: nextDelay(),
+      fallback: <div>Loading Special Branch...</div>,
+    });
   }
 
   lazyCards.push(
-    { component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />, delay: nextDelay() },
-    { component: <SecretActions role={effectiveRole} />, delay: nextDelay() }
+    {
+      component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />,
+      delay: nextDelay(),
+    },
+    {
+      component: <SecretActions role={effectiveRole} />,
+      delay: nextDelay(),
+    }
   );
 
   return lazyCards;
