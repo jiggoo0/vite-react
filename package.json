@@ -1,26 +1,27 @@
 {
   "name": "vite-react",
-  "private": true,
   "version": "7.1.1",
+  "private": true,
   "type": "module",
+  "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
   },
-  "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "alias:check": "node scripts/alias.ts --check",
-    "alias:fix": "node scripts/alias.ts --fix",
-    "check": "pnpm type-check && pnpm lint && pnpm alias:check",
-    "validate": "pnpm type-check && pnpm lint && node scripts/alias.ts ${FIX:+--fix}",
+    "build": "tsc -b && vite build",
+    "clean": "rm -rf dist node_modules .turbo .cache",
+    "clean:space": "pnpm store prune && pnpm cache clean --all && rm -rf ~/.npm/_logs/* ~/.pnpm-store/* ~/.cache/*",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "prepare": "husky install",
     "type-check": "tsc --noEmit",
+    "check": "pnpm type-check && pnpm lint && pnpm alias:check",
+    "validate": "pnpm type-check && pnpm lint && node scripts/alias.ts ${FIX:+--fix}",
+    "alias:check": "node scripts/alias.ts --check",
+    "alias:fix": "node scripts/alias.ts --fix",
     "postcss:watch": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
-    "clean": "rm -rf dist node_modules .turbo .cache"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
@@ -105,7 +106,7 @@
     "typescript": "5.9.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "*.{js,jsx,ts,tsx,json,css,scss,md,html}": [
       "prettier --write",
       "eslint --fix"
     ]

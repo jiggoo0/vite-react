@@ -1,48 +1,47 @@
 # ✅ JP Visual & Docs – Structure Check Report
 
-> เวลาตรวจสอบ: 2025-08-24 13:31:49 | สาขา: main
+> เวลาตรวจสอบ: 2025-08-24 21:21:57 | สาขา: main
 
 > โปรเจกต์นี้คือ SPA React + TypeScript ระดับโปร ใช้ Vite + Tailwind + daisyUI + Framer Motion + Zod + react-hook-form สำหรับฟอร์ม + PDF/Canvas export พร้อมโครงสร้าง modular
 
 ---
 
 ## 📊 Summary
-
-| หมวดหมู่             | สถานะ |
-| -------------------- | ----- |
-| .env Exists          | ✅    |
-| VITE_API_URL Defined | ✅    |
-| Alias Import         | ✅    |
-| ESLint Check         | ❌    |
-| TypeScript Check     | ❌    |
-| Dev Server           | ✅    |
+| หมวดหมู่                 | สถานะ |
+|--------------------------|--------|
+| .env Exists | ✅ |
+| VITE_API_URL Defined | ✅ |
+| Alias Import | ✅ |
+| ESLint Check | ✅ |
+| TypeScript Check | ✅ |
+| Dev Server               | ✅ |
 
 ## 📦 ตรวจสอบ package.json
-
 ```json
 {
   "name": "vite-react",
-  "private": true,
   "version": "7.1.1",
+  "private": true,
   "type": "module",
+  "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
   },
-  "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "alias:check": "node scripts/alias.ts --check",
-    "alias:fix": "node scripts/alias.ts --fix",
-    "check": "pnpm type-check && pnpm lint && pnpm alias:check",
-    "validate": "pnpm type-check && pnpm lint && node scripts/alias.ts ${FIX:+--fix}",
+    "build": "tsc -b && vite build",
+    "clean": "rm -rf dist node_modules .turbo .cache",
+    "clean:space": "pnpm store prune && pnpm cache clean --all && rm -rf ~/.npm/_logs/* ~/.pnpm-store/* ~/.cache/*",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "prepare": "husky install",
     "type-check": "tsc --noEmit",
+    "check": "pnpm type-check && pnpm lint && pnpm alias:check",
+    "validate": "pnpm type-check && pnpm lint && node scripts/alias.ts ${FIX:+--fix}",
+    "alias:check": "node scripts/alias.ts --check",
+    "alias:fix": "node scripts/alias.ts --fix",
     "postcss:watch": "tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
-    "clean": "rm -rf dist node_modules .turbo .cache"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
@@ -127,26 +126,28 @@
     "typescript": "5.9.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": ["prettier --write", "eslint --fix"]
+    "*.{js,jsx,ts,tsx,json,css,scss,md,html}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
 ```
 
-| Dependency ที่จำเป็น | สถานะ |
-| -------------------- | ----- | ------- |
-| react                | ✅    |
-| react-dom            | ✅    |
-| vite                 | ✅    |
-| tailwindcss          | ✅    |
-| daisyui              | ✅    |
-| typescript           | ✅    |
-| eslint               | ✅    |
-| prettier             | ✅    |
-| React                | ✅    | ^19.1.1 |
-| TypeScript           | ✅    | 5.9.2   |
+| Dependency ที่จำเป็น     | สถานะ |
+|--------------------------|--------|
+| react                     | ✅ |
+| react-dom                     | ✅ |
+| vite                     | ✅ |
+| tailwindcss                     | ✅ |
+| daisyui                     | ✅ |
+| typescript                     | ✅ |
+| eslint                     | ✅ |
+| prettier                     | ✅ |
+| React                     | ✅ | ^19.1.1 |
+| TypeScript                | ✅ | 5.9.2 |
 
 ## 📁 โครงสร้าง src (ลึกสุด 10 ระดับ)
-
 ```
 src
 ├── App
@@ -381,7 +382,7 @@ src
 59 directories, 170 files
 
 ## 🛠️ Roadmap
-เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:
+'เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:
 - ห้ามแตกไฟล์ component โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
 - ปรับปรุง logic ให้สอดคล้องกับโครงสร้างธุรกิจ
 - ใช้รูปแบบ professional เท่านั้น: flat UI, ไม่มี animation, ไม่มีสีสดหรือลูกเล่น
@@ -419,8 +420,4 @@ src/Home/components/SecretSectoin/
  สร้าง **Preview Page /  สำหรับแต่ละเอกสาร พร้อมค่า mock data ให้ใช้งานทันที
  จัด folder structure และ skeleton code ให้สอดคล้องกับ pattern ข้างต้น
  Component ต้อง render ข้อมูล mock data ได้ทันที และ support memoization / print-friendly2. สร้าง **TypeScript interface** สำหรับทุกเอกสาร พร้อมค่า default / mock data ภายในไฟล์ types/
-Output: folder structure +  mock data สมจริงสำหรับทุก component
-
-
-
-```
+Output: folder structure +  mock data สมจริงสำหรับทุก component'

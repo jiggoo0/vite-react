@@ -8,6 +8,7 @@ export interface PageSectionProps {
   title?: string;
   children: ReactNode;
   className?: string;
+  hideTitle?: boolean; // ซ่อน title
 }
 
 const PageSection: FC<PageSectionProps> = ({
@@ -15,17 +16,18 @@ const PageSection: FC<PageSectionProps> = ({
   title,
   children,
   className,
-}) => {
-  return (
-    <section
-      id={id}
-      className={clsx("bg-white p-6 rounded-xl shadow-md", className)}
-    >
-      {title && <h2 className="text-2xl font-semibold mb-4">{title}</h2>}
-      <div className="space-y-4">{children}</div>
-    </section>
-  );
-};
+  hideTitle = false,
+}) => (
+  <section
+    id={id}
+    className={clsx("bg-white p-6 rounded-xl shadow-md", className)}
+  >
+    {!hideTitle && title && (
+      <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+    )}
+    <div className="space-y-4">{children}</div>
+  </section>
+);
 
 PageSection.displayName = "PageSection";
 

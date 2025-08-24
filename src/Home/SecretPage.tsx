@@ -7,8 +7,9 @@ import {
   EffectiveRole,
   LazyCard,
 } from "@/config/secretCards.config";
+import PageSection from "@/Home/components/common/PageSection";
 
-// ถ้าไม่มี module จริง ให้สร้าง mock type ไว้ชั่วคราว
+// Type สำหรับ ID Card
 export interface IdCardData {
   fullName: string;
   idNumber: string;
@@ -17,7 +18,7 @@ export interface IdCardData {
   photo?: string;
 }
 
-// Mock component ถ้ายังไม่มีไฟล์จริง
+// Mock ID Card Preview component
 const IdCardPreview: FC<{ data: IdCardData; className?: string }> = ({
   data,
   className,
@@ -25,6 +26,9 @@ const IdCardPreview: FC<{ data: IdCardData; className?: string }> = ({
   <div className={className}>
     <h3>ID Card Preview</h3>
     <p>{data.fullName}</p>
+    <p>{data.idNumber}</p>
+    <p>{data.birthDate}</p>
+    <p>{data.address}</p>
   </div>
 );
 
@@ -36,7 +40,6 @@ const SecretPage: FC = () => {
     idNumber: "",
     birthDate: "",
     address: "",
-    photo: "",
   });
 
   if (loading) {
@@ -49,14 +52,12 @@ const SecretPage: FC = () => {
 
   if (!user) return null;
 
-  // แปลง role ให้ตรงกับ EffectiveRole
   const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(
     user.role
   )
     ? (user.role as EffectiveRole)
     : "user";
 
-  // สร้าง safeUser แบบ type-safe ตรงกับ type User ของ getLazyCards
   const safeUser = {
     username: user.username || "unknown",
     role: effectiveRole,
@@ -66,26 +67,17 @@ const SecretPage: FC = () => {
 
   return (
     <main className="min-h-screen bg-gray-100 text-gray-900 px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Lazy Cards Sections */}
-      {lazyCards.map(({ title, component }, idx) => (
-        <section
-          key={idx}
-          id={`section-${idx}`}
-          className="space-y-4 border p-4 rounded-md bg-white shadow"
-        >
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <div>{component}</div>
-        </section>
+      {/* Lazy Cards Sections ปิดชื่อ section */}
+      {lazyCards.map(({ component }, idx) => (
+        <PageSection key={idx} hideTitle>
+          {component}
+        </PageSection>
       ))}
 
-      {/* ID Card Section */}
-      <section
-        id="section-idcard"
-        className="space-y-4 border p-4 rounded-md bg-white shadow"
-      >
-        <h2 className="text-lg font-semibold">ID Card</h2>
+      {/* ID Card Section ปิดชื่อ section */}
+      <PageSection hideTitle>
         <IdCardPreview data={idCardData} className="flex-1" />
-      </section>
+      </PageSection>
     </main>
   );
 };

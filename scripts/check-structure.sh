@@ -177,7 +177,7 @@ echo '```'
 echo "" >> "$REPORT"
 echo "## 🛠️ Roadmap" >> "$REPORT"
 cat <<'EOF' >> "$REPORT"
-เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:
+'เขียนโค้ด React + TypeScript สำหรับหน้าเว็บที่ใช้ TailwindCSS และ daisyUI โดยต้อง:
 - ห้ามแตกไฟล์ component โดยไม่จำเป็น ต้องอ้างอิงโครงสร้างที่กำหนด
 - ปรับปรุง logic ให้สอดคล้องกับโครงสร้างธุรกิจ
 - ใช้รูปแบบ professional เท่านั้น: flat UI, ไม่มี animation, ไม่มีสีสดหรือลูกเล่น
@@ -215,9 +215,6 @@ src/Home/components/SecretSectoin/
  สร้าง **Preview Page /  สำหรับแต่ละเอกสาร พร้อมค่า mock data ให้ใช้งานทันที
  จัด folder structure และ skeleton code ให้สอดคล้องกับ pattern ข้างต้น
  Component ต้อง render ข้อมูล mock data ได้ทันที และ support memoization / print-friendly2. สร้าง **TypeScript interface** สำหรับทุกเอกสาร พร้อมค่า default / mock data ภายในไฟล์ types/
-Output: folder structure +  mock data สมจริงสำหรับทุก component
-
-
-
+Output: folder structure +  mock data สมจริงสำหรับทุก component'
 EOF
 term_log "${GREEN}✅ รายงานสรุปถูกสร้างใน $REPORT${RESET}"

@@ -1,6 +1,6 @@
 # Project Structure
 
-_Generated at: 2025-08-24 08:14:27_
+_Generated at: 2025-08-24 17:30:06_
 
 ```
 src
@@ -12,6 +12,13 @@ src
 │   ├── IdCardForm.tsx
 │   ├── Login.tsx
 │   ├── SecretPage
+│   │   ├── DocumentIntegrity
+│   │   │   ├── DocumentIntegrityPage.tsx
+│   │   │   ├── DocumentIntegrityPreview.tsx
+│   │   │   ├── DocumentIntegrityPreviewWithActions.tsx
+│   │   │   ├── DocumentIntegrityScanner.tsx
+│   │   │   └── types
+│   │   │       └── documentIntegrity.ts
 │   │   ├── DriverLicense
 │   │   │   ├── DriverLicenseForm.tsx
 │   │   │   ├── DriverLicensePage.tsx
@@ -23,6 +30,10 @@ src
 │   │   │       ├── FieldDraggable.tsx
 │   │   │       ├── PhotoField.tsx
 │   │   │       └── TextField.tsx
+│   │   ├── IdCardPreview
+│   │   │   ├── IdCardFormWithOCR.tsx
+│   │   │   ├── IdCardPreview.tsx
+│   │   │   └── IdCardSection.tsx
 │   │   ├── MedicalCertificate
 │   │   │   ├── MedicalCertificate.tsx
 │   │   │   └── types
@@ -52,8 +63,6 @@ src
 │   │   │       └── AboutTitle.tsx
 │   │   ├── Forms
 │   │   │   ├── FormWrapper.tsx
-│   │   │   ├── IdCardFormWithOCR.tsx
-│   │   │   ├── IdCardPreview.tsx
 │   │   │   ├── SubmitButton.tsx
 │   │   │   ├── index.ts
 │   │   │   └── ui
@@ -84,12 +93,18 @@ src
 │   │   │   │   └── motionVariants.ts
 │   │   │   ├── DocumentDownload.tsx
 │   │   │   ├── DocumentExportActions.tsx
+│   │   │   ├── InternalAuditTimeline.tsx
 │   │   │   ├── KbankIOSNotification.tsx
 │   │   │   ├── KbankNotificationCard.tsx
 │   │   │   ├── SecretActions.tsx
 │   │   │   ├── SecretDescription.tsx
 │   │   │   ├── SecretHeader.tsx
-│   │   │   └── SecureExportConsole.tsx
+│   │   │   ├── SecureExportConsole.tsx
+│   │   │   ├── TempCodeManager.tsx
+│   │   │   └── types
+│   │   │       ├── documentIntegrity.ts
+│   │   │       ├── internalAudit.ts
+│   │   │       └── tempCode.ts
 │   │   ├── SellingPoints
 │   │   │   ├── SellingPoints.tsx
 │   │   │   ├── SpeedGuaranteeBanner.tsx
@@ -134,8 +149,10 @@ src
 │   │       └── Card
 │   │           ├── Card.styles.ts
 │   │           └── Card.tsx
-│   └── hooks
-│       └── useInView.ts
+│   ├── hooks
+│   │   └── useInView.ts
+│   └── types
+│       └── idCard.ts
 ├── Layout
 │   ├── Layout.tsx
 │   ├── Navbar.tsx
@@ -165,6 +182,7 @@ src
 │   ├── KbankIOSNotification.mock.ts
 │   ├── kbankIOSNotification.ts
 │   ├── mockDriverLicenseData.ts
+│   ├── mockIdCardData.ts
 │   ├── mockMedicalCertificate.ts
 │   ├── mockRegistrationData.ts
 │   ├── mockSalaryCertificate.ts
@@ -180,6 +198,7 @@ src
 │   └── react.svg
 ├── config
 │   ├── driverLicenseConfig.tsx
+│   ├── idCardConfig.tsx
 │   └── secretCards.config.tsx
 ├── context
 │   ├── AppProviders.tsx
