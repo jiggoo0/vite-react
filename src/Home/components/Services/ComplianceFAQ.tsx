@@ -44,8 +44,12 @@ const ComplianceFAQ: FC<ComplianceFAQProps> = ({
       <div className="container mx-auto px-4">
         {/* Header */}
         <header className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary">{headline}</h2>
-          <p className="mt-3 text-base md:text-lg text-gray-600 dark:text-gray-400">{subline}</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary">
+            {headline}
+          </h2>
+          <p className="mt-3 text-base md:text-lg text-gray-600 dark:text-gray-400">
+            {subline}
+          </p>
         </header>
 
         {/* FAQ List */}

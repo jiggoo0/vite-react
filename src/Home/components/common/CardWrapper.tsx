@@ -10,12 +10,7 @@ interface CardWrapperProps {
 
 const CardWrapper: FC<CardWrapperProps> = ({ children, className }) => {
   return (
-    <div
-      className={clsx(
-        "bg-white rounded-xl shadow-md p-6",
-        className
-      )}
-    >
+    <div className={clsx("bg-white rounded-xl shadow-md p-6", className)}>
       {children}
     </div>
   );

@@ -40,25 +40,61 @@ const MedicalCertificate: FC<MedicalCertificateProps> = ({ data }) => {
       <h2 className="text-xl font-bold mb-4 text-center">ใบรับรองแพทย์</h2>
 
       <div className="space-y-2 text-gray-700">
-        <p><strong>เลขที่อ้างอิง:</strong> {withFallback(referenceNo)}</p>
-        <p><strong>โรงพยาบาล:</strong> {withFallback(hospital)}</p>
-        <p><strong>สำนักงานกระทรวง:</strong> {withFallback(ministryOffice)}</p>
-        <p><strong>วันที่ออก:</strong> {withFallback(date)}</p>
-        <p><strong>ชื่อแพทย์:</strong> {withFallback(doctorName)}</p>
-        <p><strong>หมายเลขใบอนุญาต:</strong> {withFallback(doctorLicenseNo)}</p>
-        <p><strong>ชื่อผู้ป่วย:</strong> {withFallback(patientTitle)} {withFallback(patientName)}</p>
-        <p><strong>ที่อยู่:</strong> {withFallback(address)}</p>
-        <p><strong>หมายเลขบัตรประชาชน:</strong> {withFallback(citizenId)}</p>
-        <p><strong>วันที่ตรวจ:</strong> {withFallback(examinedDate)}</p>
-        <p><strong>การวินิจฉัย:</strong> {withFallback(diagnosis)}</p>
-        <p><strong>สรุปความเห็นแพทย์:</strong> {withFallback(doctorSummary)}</p>
-        <p><strong>หยุดพัก:</strong> ตั้งแต่ {withFallback(restFromDate)} ถึง {withFallback(restToDate)}</p>
-        {otherNote && <p><strong>อื่นๆ:</strong> {withFallback(otherNote)}</p>}
+        <p>
+          <strong>เลขที่อ้างอิง:</strong> {withFallback(referenceNo)}
+        </p>
+        <p>
+          <strong>โรงพยาบาล:</strong> {withFallback(hospital)}
+        </p>
+        <p>
+          <strong>สำนักงานกระทรวง:</strong> {withFallback(ministryOffice)}
+        </p>
+        <p>
+          <strong>วันที่ออก:</strong> {withFallback(date)}
+        </p>
+        <p>
+          <strong>ชื่อแพทย์:</strong> {withFallback(doctorName)}
+        </p>
+        <p>
+          <strong>หมายเลขใบอนุญาต:</strong> {withFallback(doctorLicenseNo)}
+        </p>
+        <p>
+          <strong>ชื่อผู้ป่วย:</strong> {withFallback(patientTitle)}{" "}
+          {withFallback(patientName)}
+        </p>
+        <p>
+          <strong>ที่อยู่:</strong> {withFallback(address)}
+        </p>
+        <p>
+          <strong>หมายเลขบัตรประชาชน:</strong> {withFallback(citizenId)}
+        </p>
+        <p>
+          <strong>วันที่ตรวจ:</strong> {withFallback(examinedDate)}
+        </p>
+        <p>
+          <strong>การวินิจฉัย:</strong> {withFallback(diagnosis)}
+        </p>
+        <p>
+          <strong>สรุปความเห็นแพทย์:</strong> {withFallback(doctorSummary)}
+        </p>
+        <p>
+          <strong>หยุดพัก:</strong> ตั้งแต่ {withFallback(restFromDate)} ถึง{" "}
+          {withFallback(restToDate)}
+        </p>
+        {otherNote && (
+          <p>
+            <strong>อื่นๆ:</strong> {withFallback(otherNote)}
+          </p>
+        )}
 
         {/* Signatures */}
         <div className="mt-4 space-y-1">
-          <p><strong>แพทย์ลงชื่อ:</strong> {withFallback(doctorSigner)}</p>
-          <p><strong>ผู้ป่วยลงชื่อ:</strong> {withFallback(patientSigner)}</p>
+          <p>
+            <strong>แพทย์ลงชื่อ:</strong> {withFallback(doctorSigner)}
+          </p>
+          <p>
+            <strong>ผู้ป่วยลงชื่อ:</strong> {withFallback(patientSigner)}
+          </p>
         </div>
       </div>
     </div>

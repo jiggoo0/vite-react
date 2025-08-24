@@ -17,10 +17,19 @@ import mockSalaryCertificate from "@__mocks__/mockSalaryCertificate";
 import mockMedicalCertificate from "@__mocks__/mockMedicalCertificate";
 import { kbankMockData } from "@__mocks__/kbankIOSNotification";
 
-const RegistrationPreview = lazy(() => import("@home/SecretPage/RegistrationPreview/RegistrationPreview"));
-const SalaryCertificate = lazy(() => import("@home/SecretPage/SalaryCertificate/SalaryCertificate"));
-const MedicalCertificate = lazy(() => import("@home/SecretPage/MedicalCertificate/MedicalCertificate"));
-const SpecialBranchCertificate = lazy(() => import("@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate"));
+const RegistrationPreview = lazy(
+  () => import("@home/SecretPage/RegistrationPreview/RegistrationPreview")
+);
+const SalaryCertificate = lazy(
+  () => import("@home/SecretPage/SalaryCertificate/SalaryCertificate")
+);
+const MedicalCertificate = lazy(
+  () => import("@home/SecretPage/MedicalCertificate/MedicalCertificate")
+);
+const SpecialBranchCertificate = lazy(
+  () =>
+    import("@home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate")
+);
 
 export type EffectiveRole = "admin" | "user" | "manager";
 
@@ -42,7 +51,11 @@ const BASE_DELAY = 50;
  * - wrapper ให้ blur component
  * - overlayMessage: ข้อความแจ้งผู้ใช้
  */
-const wrapBlur = (node: ReactNode, isBlurred?: boolean, overlayMessage?: ReactNode) => (
+const wrapBlur = (
+  node: ReactNode,
+  isBlurred?: boolean,
+  overlayMessage?: ReactNode
+) => (
   <WithBlurIfUser isBlurred={isBlurred} overlayMessage={overlayMessage}>
     {node}
   </WithBlurIfUser>
@@ -52,20 +65,40 @@ const wrapBlur = (node: ReactNode, isBlurred?: boolean, overlayMessage?: ReactNo
  * - คืน array ของ LazyCard ตาม role ของ user
  * - รองรับ blur, fallback และ delay
  */
-export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
-  const isAdminOrManager = effectiveRole === "admin" || effectiveRole === "manager";
+export const getLazyCards = (
+  user: User,
+  effectiveRole: EffectiveRole
+): LazyCard[] => {
+  const isAdminOrManager =
+    effectiveRole === "admin" || effectiveRole === "manager";
   const shouldBlur = effectiveRole !== "admin";
 
   let delayCounter = 0;
   const nextDelay = () => (delayCounter += BASE_DELAY);
 
   const lazyCards: LazyCard[] = [
-    { title: "Header Section", component: <SecretHeader />, delay: nextDelay() },
-    { title: "Description Section", component: <SecretDescription user={user} />, delay: nextDelay() },
-    { title: "Download Section", component: <DocumentDownload />, delay: nextDelay() },
+    {
+      title: "Header Section",
+      component: <SecretHeader />,
+      delay: nextDelay(),
+    },
+    {
+      title: "Description Section",
+      component: <SecretDescription user={user} />,
+      delay: nextDelay(),
+    },
+    {
+      title: "Download Section",
+      component: <DocumentDownload />,
+      delay: nextDelay(),
+    },
     {
       title: "Driver License Form",
-      component: wrapBlur(<DriverLicenseForm />, shouldBlur, "เฉพาะแอดมินเท่านั้น"),
+      component: wrapBlur(
+        <DriverLicenseForm />,
+        shouldBlur,
+        "เฉพาะแอดมินเท่านั้น"
+      ),
       delay: nextDelay(),
     },
     {
@@ -76,19 +109,28 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
     },
     {
       title: "Registration Section",
-      component: wrapBlur(<RegistrationPreview {...mockRegistrationData} />, shouldBlur),
+      component: wrapBlur(
+        <RegistrationPreview {...mockRegistrationData} />,
+        shouldBlur
+      ),
       delay: nextDelay(),
       fallback: <div>Loading Registration...</div>,
     },
     {
       title: "Salary Certificate",
-      component: wrapBlur(<SalaryCertificate data={mockSalaryCertificate} />, shouldBlur),
+      component: wrapBlur(
+        <SalaryCertificate data={mockSalaryCertificate} />,
+        shouldBlur
+      ),
       delay: nextDelay(),
       fallback: <div>Loading Salary Certificate...</div>,
     },
     {
       title: "Medical Certificate",
-      component: wrapBlur(<MedicalCertificate data={mockMedicalCertificate} />, shouldBlur),
+      component: wrapBlur(
+        <MedicalCertificate data={mockMedicalCertificate} />,
+        shouldBlur
+      ),
       delay: nextDelay(),
       fallback: <div>Loading Medical Certificate...</div>,
     },
@@ -119,7 +161,12 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
   lazyCards.push(
     {
       title: "Contact",
-      component: <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />,
+      component: (
+        <BlurContact
+          imageUrl="/images/admin-contact.jpg"
+          contactText="ติดต่อฝ่ายสนับสนุน"
+        />
+      ),
       delay: nextDelay(),
     },
     {

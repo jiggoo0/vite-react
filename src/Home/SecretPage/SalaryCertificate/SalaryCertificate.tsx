@@ -48,9 +48,9 @@ const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
 
       {/* Main Content */}
       <main className="whitespace-pre-line text-justify tracking-wide">
-        บริษัทฯ ขอรับรองว่า <strong>นาย {employeeName}</strong> เป็นพนักงานของบริษัทฯ
-        โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {startDate} จนถึงปัจจุบัน
-        ดำรงตำแหน่ง {position} สังกัดแผนก {department}.
+        บริษัทฯ ขอรับรองว่า <strong>นาย {employeeName}</strong>{" "}
+        เป็นพนักงานของบริษัทฯ โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {startDate}{" "}
+        จนถึงปัจจุบัน ดำรงตำแหน่ง {position} สังกัดแผนก {department}.
         <br />
         <br />
         โดยมีรายได้ประจำดังนี้:
@@ -60,7 +60,8 @@ const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
           <li>ค่าครองชีพ: {costOfLiving.toLocaleString()} บาท / เดือน</li>
         </ul>
         <br />
-        ออกให้ ณ วันที่ {issueDate} เพื่อใช้เป็นหลักฐานประกอบการยืนยันการเป็นพนักงานของบริษัทฯ เท่านั้น
+        ออกให้ ณ วันที่ {issueDate}{" "}
+        เพื่อใช้เป็นหลักฐานประกอบการยืนยันการเป็นพนักงานของบริษัทฯ เท่านั้น
       </main>
 
       {/* Signature */}
@@ -74,8 +75,13 @@ const SalaryCertificate: FC<SalaryCertificateProps> = ({ data }) => {
       <section className="mt-10 text-[14pt]">
         <p className="underline font-bold">หมายเหตุ</p>
         <ol className="list-decimal ml-6">
-          <li>หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น</li>
-          <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด จึงจะถือว่าสมบูรณ์</li>
+          <li>
+            หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น
+          </li>
+          <li>
+            หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด
+            จึงจะถือว่าสมบูรณ์
+          </li>
         </ol>
       </section>
 

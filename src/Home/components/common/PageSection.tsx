@@ -10,7 +10,12 @@ export interface PageSectionProps {
   className?: string;
 }
 
-const PageSection: FC<PageSectionProps> = ({ id, title, children, className }) => {
+const PageSection: FC<PageSectionProps> = ({
+  id,
+  title,
+  children,
+  className,
+}) => {
   return (
     <section
       id={id}

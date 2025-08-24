@@ -4,7 +4,9 @@ import { FC } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-import RegistrationPreview, { RegistrationPreviewProps } from "./RegistrationPreview";
+import RegistrationPreview, {
+  RegistrationPreviewProps,
+} from "./RegistrationPreview";
 import mockRegistrationData from "@__mocks__/mockRegistrationData";
 
 const RegistrationPreviewWithMock: FC = () => {
@@ -48,20 +50,16 @@ const RegistrationPreviewWithMock: FC = () => {
       </h1>
 
       <div id="registration-preview">
-        <RegistrationPreview {...(mockRegistrationData as RegistrationPreviewProps)} />
+        <RegistrationPreview
+          {...(mockRegistrationData as RegistrationPreviewProps)}
+        />
       </div>
 
       <div className="flex justify-center gap-4 mt-6">
-        <button
-          className="btn btn-primary"
-          onClick={handleDownloadPNG}
-        >
+        <button className="btn btn-primary" onClick={handleDownloadPNG}>
           ดาวน์โหลด PNG
         </button>
-        <button
-          className="btn btn-primary"
-          onClick={handleDownloadPDF}
-        >
+        <button className="btn btn-primary" onClick={handleDownloadPDF}>
           ดาวน์โหลด PDF
         </button>
       </div>

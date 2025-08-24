@@ -29,7 +29,13 @@ const IdCardForm: FC<Props> = ({ className, isBlurred, onChange }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [ocrLoading, setOcrLoading] = useState(false);
 
-  const { control, watch, setValue, handleSubmit, formState: { errors } } = useForm<IdCardData>({
+  const {
+    control,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IdCardData>({
     resolver: zodResolver(IdCardSchema),
     defaultValues: MOCK_ID_CARD,
   });
@@ -37,7 +43,10 @@ const IdCardForm: FC<Props> = ({ className, isBlurred, onChange }) => {
   const watchedData = watch();
 
   useEffect(() => {
-    onChange?.({ ...watchedData, photo: imagePreview || watchedData.photo || "" });
+    onChange?.({
+      ...watchedData,
+      photo: imagePreview || watchedData.photo || "",
+    });
   }, [watchedData, imagePreview, onChange]);
 
   const handleFileChange = (file: File) => {
@@ -71,7 +80,10 @@ const IdCardForm: FC<Props> = ({ className, isBlurred, onChange }) => {
 
   return (
     <CardWrapper className={className}>
-      <WithBlurIfUser isBlurred={isBlurred} overlayMessage="เฉพาะแอดมินเท่านั้น">
+      <WithBlurIfUser
+        isBlurred={isBlurred}
+        overlayMessage="เฉพาะแอดมินเท่านั้น"
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <h2 className="text-xl font-semibold">ฟอร์มบัตรประชาชน (OCR)</h2>
 
@@ -85,46 +97,66 @@ const IdCardForm: FC<Props> = ({ className, isBlurred, onChange }) => {
             }}
             onDragOver={(e) => e.preventDefault()}
           >
-            <label className="font-medium">คลิกหรือวางรูปบัตรประชาชนที่นี่</label>
-            <input type="file" accept="image/*" onChange={handleFileInputChange} className="hidden" />
+            <label className="font-medium">
+              คลิกหรือวางรูปบัตรประชาชนที่นี่
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileInputChange}
+              className="hidden"
+            />
             <p className="text-sm text-gray-500">รองรับ PNG, JPG, JPEG</p>
-            {ocrLoading && <p className="text-blue-500">กำลังอ่านข้อมูลจากภาพ...</p>}
+            {ocrLoading && (
+              <p className="text-blue-500">กำลังอ่านข้อมูลจากภาพ...</p>
+            )}
             {imagePreview && (
-              <img src={imagePreview} alt="Preview" className="mt-2 max-h-40 object-contain rounded-md border" />
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mt-2 max-h-40 object-contain rounded-md border"
+              />
             )}
           </div>
 
           {/* Form Fields */}
           <div className="space-y-3">
-            {(["fullName", "idNumber", "birthDate", "address"] as const).map((field) => (
-              <div key={field}>
-                <label className="font-medium">
-                  {field === "fullName"
-                    ? "ชื่อ-สกุล"
-                    : field === "idNumber"
-                    ? "เลขบัตรประชาชน"
-                    : field === "birthDate"
-                    ? "วันเกิด"
-                    : "ที่อยู่"}
-                </label>
-                <Controller
-                  name={field}
-                  control={control}
-                  render={({ field }) =>
-                    field.name === "address" ? (
-                      <textarea {...field} className="w-full border rounded-md p-2" />
-                    ) : (
-                      <input
-                        {...field}
-                        type={field.name === "birthDate" ? "date" : "text"}
-                        className="w-full border rounded-md p-2"
-                      />
-                    )
-                  }
-                />
-                {errors[field] && <p className="text-red-600">{errors[field]?.message}</p>}
-              </div>
-            ))}
+            {(["fullName", "idNumber", "birthDate", "address"] as const).map(
+              (field) => (
+                <div key={field}>
+                  <label className="font-medium">
+                    {field === "fullName"
+                      ? "ชื่อ-สกุล"
+                      : field === "idNumber"
+                        ? "เลขบัตรประชาชน"
+                        : field === "birthDate"
+                          ? "วันเกิด"
+                          : "ที่อยู่"}
+                  </label>
+                  <Controller
+                    name={field}
+                    control={control}
+                    render={({ field }) =>
+                      field.name === "address" ? (
+                        <textarea
+                          {...field}
+                          className="w-full border rounded-md p-2"
+                        />
+                      ) : (
+                        <input
+                          {...field}
+                          type={field.name === "birthDate" ? "date" : "text"}
+                          className="w-full border rounded-md p-2"
+                        />
+                      )
+                    }
+                  />
+                  {errors[field] && (
+                    <p className="text-red-600">{errors[field]?.message}</p>
+                  )}
+                </div>
+              )
+            )}
           </div>
 
           <button

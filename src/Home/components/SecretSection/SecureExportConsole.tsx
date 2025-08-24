@@ -4,7 +4,11 @@ import { FC, useRef, useCallback } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-import { driverLicenseCardConfig, driverLicenseFields, DriverLicenseFormData } from "@config/driverLicenseConfig";
+import {
+  driverLicenseCardConfig,
+  driverLicenseFields,
+  DriverLicenseFormData,
+} from "@config/driverLicenseConfig";
 import Card from "../ui/Card/Card";
 import Button from "../ui/Button/Button";
 import mockDriverLicenseData from "@__mocks__/mockDriverLicenseData";
@@ -13,7 +17,9 @@ interface SecureExportConsoleProps {
   data?: DriverLicenseFormData;
 }
 
-const SecureExportConsole: FC<SecureExportConsoleProps> = ({ data = mockDriverLicenseData }) => {
+const SecureExportConsole: FC<SecureExportConsoleProps> = ({
+  data = mockDriverLicenseData,
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const cardWidth = parseInt(driverLicenseCardConfig.cardWidth, 10);
@@ -38,7 +44,7 @@ const SecureExportConsole: FC<SecureExportConsoleProps> = ({ data = mockDriverLi
     pdf.save("driver_license.pdf");
   }, [cardWidth, cardHeight]);
 
-  const renderField = (field: typeof driverLicenseFields[number]) => {
+  const renderField = (field: (typeof driverLicenseFields)[number]) => {
     const value = data?.[field.id as keyof DriverLicenseFormData] || "";
 
     if (field.type === "photo" && typeof value === "string" && value) {

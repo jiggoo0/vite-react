@@ -19,9 +19,7 @@ const TestimonialSlider: FC = () => {
       aria-label="Customer Testimonials"
     >
       {/* Content */}
-      <p className="text-base leading-relaxed mb-6">
-        “{testimonial.content}”
-      </p>
+      <p className="text-base leading-relaxed mb-6">“{testimonial.content}”</p>
 
       {/* Author */}
       <div className="flex items-center gap-4">
@@ -32,9 +30,7 @@ const TestimonialSlider: FC = () => {
           <p className="font-semibold text-sm text-gray-900">
             {testimonial.name}
           </p>
-          <p className="text-xs text-gray-600">
-            {testimonial.role}
-          </p>
+          <p className="text-xs text-gray-600">{testimonial.role}</p>
         </div>
       </div>
 
@@ -42,7 +38,9 @@ const TestimonialSlider: FC = () => {
       <div className="flex justify-end mt-4 gap-2">
         <button
           type="button"
-          onClick={() => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)}
+          onClick={() =>
+            setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)
+          }
           className={cn(
             "px-2 py-1 border border-gray-300 text-sm text-gray-700 hover:bg-gray-100"
           )}

@@ -3,7 +3,12 @@
 import { FC, ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import { ButtonVariant, ButtonSize, buttonSizeClasses, buttonVariantClasses } from "./button.styles";
+import {
+  ButtonVariant,
+  ButtonSize,
+  buttonSizeClasses,
+  buttonVariantClasses,
+} from "./button.styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;

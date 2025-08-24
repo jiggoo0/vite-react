@@ -83,7 +83,8 @@ const faqs: FAQItem[] = [
 const SupportFAQ: FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggle = (index: number) => setOpenIndex(openIndex === index ? null : index);
+  const toggle = (index: number) =>
+    setOpenIndex(openIndex === index ? null : index);
 
   return (
     <section className="py-16 bg-base-200 text-base-content">
@@ -103,7 +104,9 @@ const SupportFAQ: FC = () => {
                 onClick={() => toggle(idx)}
                 className="w-full flex justify-between items-center p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                <span className="font-semibold text-lg md:text-xl">{faq.question}</span>
+                <span className="font-semibold text-lg md:text-xl">
+                  {faq.question}
+                </span>
                 <motion.div
                   animate={{ rotate: openIndex === idx ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
@@ -123,9 +126,11 @@ const SupportFAQ: FC = () => {
                     transition={{ duration: 0.3 }}
                     className="px-6 pb-6 text-gray-700 dark:text-gray-300 space-y-2 text-sm md:text-base leading-relaxed"
                   >
-                    {Array.isArray(faq.answer)
-                      ? faq.answer.map((line, i) => <p key={i}>{line}</p>)
-                      : <p>{faq.answer}</p>}
+                    {Array.isArray(faq.answer) ? (
+                      faq.answer.map((line, i) => <p key={i}>{line}</p>)
+                    ) : (
+                      <p>{faq.answer}</p>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

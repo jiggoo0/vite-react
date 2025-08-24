@@ -125,7 +125,9 @@ const main = async () => {
     return;
   }
 
-  const files: string[] = await glob("src/**/*.{ts,tsx,js,jsx}", { absolute: true });
+  const files: string[] = await glob("src/**/*.{ts,tsx,js,jsx}", {
+    absolute: true,
+  });
 
   if (mode === "--check") {
     await checkAlias(files, aliasEntries);

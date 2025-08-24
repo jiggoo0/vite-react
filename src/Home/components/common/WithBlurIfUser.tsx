@@ -9,7 +9,11 @@ interface WithBlurIfUserProps {
   children: ReactNode;
 }
 
-const WithBlurIfUser: FC<WithBlurIfUserProps> = ({ isBlurred = false, overlayMessage, children }) => {
+const WithBlurIfUser: FC<WithBlurIfUserProps> = ({
+  isBlurred = false,
+  overlayMessage,
+  children,
+}) => {
   if (!isBlurred) return <>{children}</>;
 
   return (

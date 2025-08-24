@@ -21,7 +21,7 @@
   --radius-md: 0px;
   --transition-base: 0.25s;
   --transition-fast: 0.2s;
-  --font-family-base: 'Kanit', system-ui, sans-serif;
+  --font-family-base: "Kanit", system-ui, sans-serif;
 }
 
 /* ==============================
@@ -45,20 +45,28 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
-  transition: background-color var(--transition-base) ease,
-              color var(--transition-base) ease;
+  transition:
+    background-color var(--transition-base) ease,
+    color var(--transition-base) ease;
 }
 
 /* ==============================
    Typography
 ============================== */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5em;
 }
 
-p { margin-bottom: 1em; }
+p {
+  margin-bottom: 1em;
+}
 
 a {
   color: var(--color-primary);
@@ -66,12 +74,23 @@ a {
   transition: color var(--transition-fast) ease;
 }
 
-a:hover { color: var(--color-primary-hover); }
+a:hover {
+  color: var(--color-primary-hover);
+}
 
-ul, ol { padding-left: 1.5em; margin-bottom: 1em; }
-li { margin-bottom: 0.5em; }
+ul,
+ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+li {
+  margin-bottom: 0.5em;
+}
 
-img, video, canvas, svg {
+img,
+video,
+canvas,
+svg {
   max-width: 100%;
   display: block;
   height: auto;
@@ -80,7 +99,10 @@ img, video, canvas, svg {
 /* ==============================
    Forms & Buttons
 ============================== */
-input, button, select, textarea {
+input,
+button,
+select,
+textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -88,8 +110,9 @@ input, button, select, textarea {
 
 button {
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-base),
-              color var(--transition-base);
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
   cursor: pointer;
   background-color: var(--color-primary);
   color: var(--color-primary-content);
@@ -97,7 +120,9 @@ button {
   padding: 0.5rem 1rem;
 }
 
-button:hover:not(:disabled) { background-color: var(--color-primary-hover); }
+button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
 button:disabled {
   background-color: var(--color-primary-disabled);
   cursor: not-allowed;
@@ -106,10 +131,18 @@ button:disabled {
 /* ==============================
    Utility Classes
 ============================== */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.hidden { display: none !important; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.hidden {
+  display: none !important;
+}
 
 .container {
   width: 100%;
@@ -123,17 +156,22 @@ button:disabled {
 /* ==============================
    Scrollbar
 ============================== */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-bg-light); }
-::-webkit-scrollbar-thumb { 
-  background-color: var(--color-primary); 
-  border-radius: 4px; 
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-light);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 4px;
 }
 
 /* ==============================
    Dark Mode
 ============================== */
-[data-theme="dark"], .dark {
+[data-theme="dark"],
+.dark {
   --color-bg: #1f2937;
   --color-bg-light: #111827;
   --color-text: #f3f4f6;
@@ -149,8 +187,16 @@ button:disabled {
   color: var(--color-text);
 }
 
-.dark a { color: var(--color-primary); }
-.dark a:hover { color: var(--color-primary-hover); }
+.dark a {
+  color: var(--color-primary);
+}
+.dark a:hover {
+  color: var(--color-primary-hover);
+}
 
-.dark ::-webkit-scrollbar-track { background: var(--color-bg-light); }
-.dark ::-webkit-scrollbar-thumb { background-color: var(--color-primary); }
+.dark ::-webkit-scrollbar-track {
+  background: var(--color-bg-light);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+}

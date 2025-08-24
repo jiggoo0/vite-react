@@ -51,14 +51,30 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
       const containerRect = containerRef.current.getBoundingClientRect();
       const fieldRect = fieldRef.current.getBoundingClientRect();
 
-      const clientX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-      const clientY = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
+      const clientX =
+        e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
+      const clientY =
+        e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
 
-      const adjustedX = (clientX - containerRect.left - fieldRect.width / 2) / scaleRef.current;
-      const adjustedY = (clientY - containerRect.top - fieldRect.height / 2) / scaleRef.current;
+      const adjustedX =
+        (clientX - containerRect.left - fieldRect.width / 2) / scaleRef.current;
+      const adjustedY =
+        (clientY - containerRect.top - fieldRect.height / 2) / scaleRef.current;
 
-      const clampedX = Math.max(0, Math.min(adjustedX, containerRect.width / scaleRef.current - fieldRect.width));
-      const clampedY = Math.max(0, Math.min(adjustedY, containerRect.height / scaleRef.current - fieldRect.height));
+      const clampedX = Math.max(
+        0,
+        Math.min(
+          adjustedX,
+          containerRect.width / scaleRef.current - fieldRect.width
+        )
+      );
+      const clampedY = Math.max(
+        0,
+        Math.min(
+          adjustedY,
+          containerRect.height / scaleRef.current - fieldRect.height
+        )
+      );
 
       const newLeft = `${((clampedX / (containerRect.width / scaleRef.current)) * 100).toFixed(2)}%`;
       const newTop = `${((clampedY / (containerRect.height / scaleRef.current)) * 100).toFixed(2)}%`;

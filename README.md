@@ -7,6 +7,7 @@
 ---
 
 ## ⚙️ Tech Stack
+
 - **Framework:** React 19 + Vite 7
 - **ภาษา:** TypeScript 5.9 (strict mode)
 - **สไตล์:** Tailwind CSS 3 + DaisyUI + shadcn/ui
@@ -21,7 +22,7 @@
 
 ## 📂 โครงสร้างโปรเจกต์
 
-src/ ├── App/                # RootApp.tsx = entry composition (providers, router, etc.) ├── Home/               # โมดูลฟีเจอร์หลัก (ฟอร์ม, เพจ, ฟีเจอร์เฉพาะ) ├── Layout/             # Layout หลัก: Navbar, Footer ├── Router/             # Routing + Guard ├── ThemeProvider/      # Theme context & hooks ├── assets/             # Static assets (โลโก้, รูปภาพ) ├── config/             # Config & ค่าคงที่ ├── context/            # React Contexts ├── data/               # Mock data (services, portfolio, testimonials) ├── hooks/              # Custom hooks ├── services/           # API utilities ├── styles/             # Global CSS ├── tests/              # Unit & Integration tests ├── types/              # Global TS types ├── utils/              # Helpers & utilities ├── index.tsx           # จุด entry ของระบบ (bootstrap React root)
+src/ ├── App/ # RootApp.tsx = entry composition (providers, router, etc.) ├── Home/ # โมดูลฟีเจอร์หลัก (ฟอร์ม, เพจ, ฟีเจอร์เฉพาะ) ├── Layout/ # Layout หลัก: Navbar, Footer ├── Router/ # Routing + Guard ├── ThemeProvider/ # Theme context & hooks ├── assets/ # Static assets (โลโก้, รูปภาพ) ├── config/ # Config & ค่าคงที่ ├── context/ # React Contexts ├── data/ # Mock data (services, portfolio, testimonials) ├── hooks/ # Custom hooks ├── services/ # API utilities ├── styles/ # Global CSS ├── tests/ # Unit & Integration tests ├── types/ # Global TS types ├── utils/ # Helpers & utilities ├── index.tsx # จุด entry ของระบบ (bootstrap React root)
 
 > **หมายเหตุ:** `main.tsx` และ `App.tsx` ถูกถอดออกแล้ว → ใช้ `index.tsx` + `App/RootApp.tsx` แทน
 
@@ -35,6 +36,7 @@ src/ ├── App/                # RootApp.tsx = entry composition (providers,
    - Git
 
 2. **ติดตั้ง dependency**
+
 ```bash
 pnpm install
 
@@ -215,3 +217,4 @@ UI/UX ต้องมีความเป็นมืออาชีพ → res
 🔗 Repository
 
 https://github.com/jiggoo0/vite-react
+```

@@ -32,7 +32,9 @@ const SecretDescription: FC<SecretDescriptionProps> = ({ user, subtitle }) => {
         <strong className="text-primary dark:text-primary-light">
           {user.username}
         </strong>{" "}
-        👋 {subtitle ?? "หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น"}
+        👋{" "}
+        {subtitle ??
+          "หน้านี้เปิดให้เฉพาะผู้ใช้ที่ผ่านการยืนยันตัวตนแล้วเท่านั้น"}
       </p>
 
       <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg">

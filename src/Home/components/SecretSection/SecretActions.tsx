@@ -53,10 +53,10 @@ const SecretActions: FC<SecretActionsProps> = ({ role }) => {
                           action.variant.includes("primary")
                             ? "focus:ring-primary"
                             : action.variant.includes("secondary")
-                            ? "focus:ring-secondary"
-                            : action.variant.includes("error")
-                            ? "focus:ring-error"
-                            : "focus:ring-gray-500"
+                              ? "focus:ring-secondary"
+                              : action.variant.includes("error")
+                                ? "focus:ring-error"
+                                : "focus:ring-gray-500"
                         }`}
             onClick={action.onClick}
             aria-label={action.ariaLabel}

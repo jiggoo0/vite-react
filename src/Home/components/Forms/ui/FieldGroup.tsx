@@ -26,7 +26,9 @@ const FieldGroup: React.FC<FieldGroupProps> = ({
     }
   })();
 
-  return <div className={`grid gap-4 ${columnClass} ${className}`}>{children}</div>;
+  return (
+    <div className={`grid gap-4 ${columnClass} ${className}`}>{children}</div>
+  );
 };
 
 export default FieldGroup;

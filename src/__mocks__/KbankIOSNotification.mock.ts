@@ -48,8 +48,7 @@ function computeCRC16(payload: string): string {
   for (let i = 0; i < payload.length; i++) {
     crc ^= payload.charCodeAt(i) << 8;
     for (let j = 0; j < 8; j++) {
-      crc =
-        (crc & 0x8000) !== 0 ? (crc << 1) ^ 0x1021 : crc << 1;
+      crc = (crc & 0x8000) !== 0 ? (crc << 1) ^ 0x1021 : crc << 1;
       crc &= 0xffff;
     }
   }
@@ -91,8 +90,7 @@ export const kbankMockData: KbankIOSNotification[] = [
     id: "noti-003",
     title: "ชำระค่าบริการสำเร็จ",
     subtitle: "TrueMove H",
-    message:
-      "คุณได้ชำระค่าบริการ 899.00 บาท สำหรับหมายเลข 099-xxx-xxxx",
+    message: "คุณได้ชำระค่าบริการ 899.00 บาท สำหรับหมายเลข 099-xxx-xxxx",
     amount: "-899.00",
     category: "info",
     time: "2025-08-05T20:10:00+07:00",

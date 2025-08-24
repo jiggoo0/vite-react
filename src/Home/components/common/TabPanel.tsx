@@ -10,10 +10,16 @@ interface TabPanelProps {
   className?: string;
 }
 
-const TabPanel: FC<TabPanelProps> = ({ tabs, children, defaultIndex = 0, className }) => {
+const TabPanel: FC<TabPanelProps> = ({
+  tabs,
+  children,
+  defaultIndex = 0,
+  className,
+}) => {
   const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
-  if (!tabs.length || !children.length || tabs.length !== children.length) return null;
+  if (!tabs.length || !children.length || tabs.length !== children.length)
+    return null;
 
   return (
     <div className={clsx("w-full", className)}>
@@ -33,9 +39,7 @@ const TabPanel: FC<TabPanelProps> = ({ tabs, children, defaultIndex = 0, classNa
           </button>
         ))}
       </div>
-      <div className="mt-4">
-        {children[activeIndex]}
-      </div>
+      <div className="mt-4">{children[activeIndex]}</div>
     </div>
   );
 };

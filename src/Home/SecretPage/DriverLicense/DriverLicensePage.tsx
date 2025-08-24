@@ -11,15 +11,15 @@ import LazyA4Card from "@/Home/components/common/LazyA4Card";
  * Type 
  */
 export interface DriverLicenseData {
-  fullName: string;       // -
-  idNumber: string;       //  / 
-  dob: string;            // 
-  issueDate: string;      // 
-  expiryDate: string;     // 
-  address: string;        // 
-  photo?: string;         // URL  (optional)
-  licenseType: string;    // 
-  bloodType: string;      // 
+  fullName: string; // -
+  idNumber: string; //  / 
+  dob: string; // 
+  issueDate: string; // 
+  expiryDate: string; // 
+  address: string; // 
+  photo?: string; // URL  (optional)
+  licenseType: string; // 
+  bloodType: string; // 
 }
 
 const DriverLicensePage: FC = () => {
@@ -57,7 +57,7 @@ const DriverLicensePage: FC = () => {
         <LazyA4Card delay={0}>
           <DriverLicenseForm
             onChange={(data: Partial<DriverLicenseData>) =>
-              setLicenseData(prev => ({ ...prev, ...data }))
+              setLicenseData((prev) => ({ ...prev, ...data }))
             }
           />
         </LazyA4Card>

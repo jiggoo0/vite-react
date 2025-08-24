@@ -15,7 +15,9 @@ import RoleGuard from "@/Router/RoleGuard";
 const Home = lazy(() => import("@/Home/Home"));
 const Login = lazy(() => import("@/Home/Login"));
 const SecretPage = lazy(() => import("@/Home/SecretPage"));
-const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
+const CustomerAssessmentForm = lazy(
+  () => import("@/Home/CustomerAssessmentForm")
+);
 const IdCardFormPage = lazy(() => import("@/Home/IdCardForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 
@@ -27,7 +29,9 @@ const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
   errorMessage?: string
 ) => (
   <ErrorBoundary fallbackMessage={errorMessage ?? "เกิดข้อผิดพลาดในหน้า"}>
-    <Suspense fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}>
+    <Suspense
+      fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}
+    >
       <Page {...(props ?? ({} as P))} />
     </Suspense>
   </ErrorBoundary>
@@ -46,20 +50,43 @@ const AppRouter: FC = () => (
       </Route>
 
       {/* Authenticated Routes */}
-      <Route element={<GuardRoutes><Layout /></GuardRoutes>}>
+      <Route
+        element={
+          <GuardRoutes>
+            <Layout />
+          </GuardRoutes>
+        }
+      >
         <Route path="secret" element={lazyPage(SecretPage)} />
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
       {/* Admin Routes */}
-      <Route path="admin" element={<RoleGuard allowedRoles={["admin"]}><Layout /></RoleGuard>}>
-        <Route index element={<div className="p-6 text-xl font-semibold text-white">🛠️ Admin Dashboard</div>} />
+      <Route
+        path="admin"
+        element={
+          <RoleGuard allowedRoles={["admin"]}>
+            <Layout />
+          </RoleGuard>
+        }
+      >
+        <Route
+          index
+          element={
+            <div className="p-6 text-xl font-semibold text-white">
+              🛠️ Admin Dashboard
+            </div>
+          }
+        />
         <Route path="secret" element={lazyPage(SecretPage)} />
         <Route path="id-card" element={lazyPage(IdCardFormPage)} />
       </Route>
 
       {/* Fallback */}
-      <Route path="*" element={lazyPage(Forbidden, {}, "กำลังโหลดหน้า 403...")} />
+      <Route
+        path="*"
+        element={lazyPage(Forbidden, {}, "กำลังโหลดหน้า 403...")}
+      />
     </Routes>
   </>
 );

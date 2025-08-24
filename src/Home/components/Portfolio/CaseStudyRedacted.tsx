@@ -28,7 +28,9 @@ const variants = {
 
 // REDACTED label component
 const Redact: FC<{ label?: string }> = ({ label = "REDACTED" }) => (
-  <span className="bg-black text-black px-1 rounded-sm select-none">{label}</span>
+  <span className="bg-black text-black px-1 rounded-sm select-none">
+    {label}
+  </span>
 );
 
 const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
@@ -80,7 +82,9 @@ const CaseStudyRedacted: FC<CaseStudyRedactedProps> = ({
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 opacity-90 mb-3">
                   {item.summary}{" "}
-                  {item.redactedFields?.includes("brand") && <Redact label="BRAND" />}
+                  {item.redactedFields?.includes("brand") && (
+                    <Redact label="BRAND" />
+                  )}
                 </p>
 
                 {/* Tags */}

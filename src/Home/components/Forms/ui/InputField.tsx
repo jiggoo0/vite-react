@@ -14,7 +14,18 @@ export type InputFieldProps<T extends FieldValues = FieldValues> =
   };
 
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ label, name, error = null, required = false, className = "", field, ...rest }, ref) => {
+  (
+    {
+      label,
+      name,
+      error = null,
+      required = false,
+      className = "",
+      field,
+      ...rest
+    },
+    ref
+  ) => {
     const inputProps = field
       ? {
           value: field.value ?? "",

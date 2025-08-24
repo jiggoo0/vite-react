@@ -2,7 +2,11 @@
 
 import { FC, useState } from "react";
 import { useProtectedAuth } from "@/hooks/useProtectedAuth";
-import { getLazyCards, EffectiveRole, LazyCard } from "@/config/secretCards.config";
+import {
+  getLazyCards,
+  EffectiveRole,
+  LazyCard,
+} from "@/config/secretCards.config";
 
 // ถ้าไม่มี module จริง ให้สร้าง mock type ไว้ชั่วคราว
 export interface IdCardData {
@@ -14,7 +18,10 @@ export interface IdCardData {
 }
 
 // Mock component ถ้ายังไม่มีไฟล์จริง
-const IdCardPreview: FC<{ data: IdCardData; className?: string }> = ({ data, className }) => (
+const IdCardPreview: FC<{ data: IdCardData; className?: string }> = ({
+  data,
+  className,
+}) => (
   <div className={className}>
     <h3>ID Card Preview</h3>
     <p>{data.fullName}</p>
@@ -43,10 +50,11 @@ const SecretPage: FC = () => {
   if (!user) return null;
 
   // แปลง role ให้ตรงกับ EffectiveRole
-  const effectiveRole: EffectiveRole =
-    ["admin", "manager", "user"].includes(user.role)
-      ? (user.role as EffectiveRole)
-      : "user";
+  const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(
+    user.role
+  )
+    ? (user.role as EffectiveRole)
+    : "user";
 
   // สร้าง safeUser แบบ type-safe ตรงกับ type User ของ getLazyCards
   const safeUser = {

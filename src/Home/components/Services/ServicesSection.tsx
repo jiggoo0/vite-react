@@ -8,8 +8,14 @@ import SectionContainer from "@/utils/common/SectionContainer";
 
 const ServicesSection: FC = () => {
   // แยกบริการที่พร้อมใช้งานและกำลังจะมา
-  const availableServices = useMemo(() => jpServices.filter((s) => s.available), []);
-  const comingSoonServices = useMemo(() => jpServices.filter((s) => !s.available), []);
+  const availableServices = useMemo(
+    () => jpServices.filter((s) => s.available),
+    []
+  );
+  const comingSoonServices = useMemo(
+    () => jpServices.filter((s) => !s.available),
+    []
+  );
 
   const allServices = [...availableServices, ...comingSoonServices];
 
@@ -21,7 +27,10 @@ const ServicesSection: FC = () => {
     >
       {/* Header */}
       <header className="mb-12 text-center max-w-2xl mx-auto">
-        <h2 id="services-title" className="text-3xl md:text-4xl font-bold text-primary">
+        <h2
+          id="services-title"
+          className="text-3xl md:text-4xl font-bold text-primary"
+        >
           บริการของเรา
         </h2>
         <p className="mt-3 text-base md:text-lg text-base-content/70">

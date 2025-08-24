@@ -4,7 +4,10 @@ import { FC } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { driverLicenseFormSchema, driverLicenseFields } from "@/config/driverLicenseConfig";
+import {
+  driverLicenseFormSchema,
+  driverLicenseFields,
+} from "@/config/driverLicenseConfig";
 
 export type DriverLicenseData = z.infer<typeof driverLicenseFormSchema>;
 
@@ -15,7 +18,9 @@ interface Props {
 const DriverLicenseForm: FC<Props> = ({ onChange }) => {
   const { handleSubmit, control, watch } = useForm<DriverLicenseData>({
     resolver: zodResolver(driverLicenseFormSchema),
-    defaultValues: Object.fromEntries(driverLicenseFields.map(f => [f.id, ""])) as DriverLicenseData,
+    defaultValues: Object.fromEntries(
+      driverLicenseFields.map((f) => [f.id, ""])
+    ) as DriverLicenseData,
   });
 
   const formData = watch();
@@ -29,7 +34,7 @@ const DriverLicenseForm: FC<Props> = ({ onChange }) => {
 
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)} className="grid gap-4">
-      {driverLicenseFields.map(field => (
+      {driverLicenseFields.map((field) => (
         <Controller
           key={field.id}
           name={field.id as keyof DriverLicenseData}
@@ -44,7 +49,10 @@ const DriverLicenseForm: FC<Props> = ({ onChange }) => {
           )}
         />
       ))}
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
         Submit
       </button>
     </form>

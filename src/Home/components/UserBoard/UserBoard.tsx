@@ -211,10 +211,10 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
                   key === "full_name"
                     ? { width: "20%" }
                     : key === "address"
-                    ? { width: "25%" }
-                    : key === "status" || key === "province"
-                    ? { width: "10%" }
-                    : {};
+                      ? { width: "25%" }
+                      : key === "status" || key === "province"
+                        ? { width: "10%" }
+                        : {};
                 return (
                   <th
                     key={key}
@@ -238,7 +238,7 @@ const UserBoard: FC<UserBoardProps> = ({ data, pageSize = 10 }) => {
                   const compute = labelMap[key]?.compute;
                   const value = compute
                     ? compute(user[key as keyof IUser], user)
-                    : user[key as keyof IUser] ?? "";
+                    : (user[key as keyof IUser] ?? "");
 
                   return (
                     <td

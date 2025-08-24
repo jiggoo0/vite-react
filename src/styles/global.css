@@ -36,7 +36,7 @@
   --radius-md: 0px;
   --transition-base: 250ms;
   --transition-fast: 200ms;
-  --font-family-base: 'Kanit', system-ui, sans-serif;
+  --font-family-base: "Kanit", system-ui, sans-serif;
 }
 
 /* ==============================
@@ -60,14 +60,16 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
-  transition: background-color var(--transition-base) ease,
-              color var(--transition-base) ease;
+  transition:
+    background-color var(--transition-base) ease,
+    color var(--transition-base) ease;
 }
 
 /* ==============================
    Dark Mode
 ============================== */
-[data-theme="dark"], .dark {
+[data-theme="dark"],
+.dark {
   --color-primary: #1f2937;
   --color-primary-hover: #111827;
   --color-primary-disabled: #6b7280;
@@ -91,10 +93,18 @@ body {
 /* ==============================
    Utility Classes
 ============================== */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.hidden { display: none !important; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.hidden {
+  display: none !important;
+}
 
 .container {
   width: 100%;
@@ -108,9 +118,13 @@ body {
 /* ==============================
    Scrollbar
 ============================== */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-bg-light); }
-::-webkit-scrollbar-thumb { 
-  background-color: var(--color-primary); 
-  border-radius: 4px; 
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-light);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 4px;
 }

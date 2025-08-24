@@ -40,14 +40,25 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
   const handleDownloadPdf = async () => {
     if (!ref.current) return;
 
-    const canvas = await html2canvas(ref.current, { scale: 2, useCORS: true, backgroundColor: "#fff" });
+    const canvas = await html2canvas(ref.current, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fff",
+    });
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
       format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96],
     });
 
-    pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, (canvas.width * 72) / 96, (canvas.height * 72) / 96);
+    pdf.addImage(
+      canvas.toDataURL("image/png"),
+      "PNG",
+      0,
+      0,
+      (canvas.width * 72) / 96,
+      (canvas.height * 72) / 96
+    );
     pdf.save("registration-preview.pdf");
   };
 
@@ -56,18 +67,36 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
       <section
         ref={ref}
         className="relative mx-auto w-full max-w-[800px] rounded-md border border-gray-400 bg-white p-12 shadow print:shadow-none print:border print:m-0 print:p-8"
-        style={{ fontFamily: '"THSarabunNew", sans-serif', lineHeight: 1.8, fontSize: "18pt", minHeight: 1200 }}
+        style={{
+          fontFamily: '"THSarabunNew", sans-serif',
+          lineHeight: 1.8,
+          fontSize: "18pt",
+          minHeight: 1200,
+        }}
       >
         {/* Header */}
         <div className="absolute left-12 top-8 text-[14pt] leading-snug">
-          <p className="mb-2">ทะเบียนเลขที่ {withFallback(registrationNumber)}</p>
-          <p>คำขอที่ <span className="inline-block h-[1.7em] min-w-[160px] border-b border-gray-300" /></p>
+          <p className="mb-2">
+            ทะเบียนเลขที่ {withFallback(registrationNumber)}
+          </p>
+          <p>
+            คำขอที่{" "}
+            <span className="inline-block h-[1.7em] min-w-[160px] border-b border-gray-300" />
+          </p>
         </div>
-        <div className="absolute right-12 top-8 text-right text-[14pt]">แบบ พค. 0403</div>
+        <div className="absolute right-12 top-8 text-right text-[14pt]">
+          แบบ พค. 0403
+        </div>
 
         {/* Emblem */}
         <div className="mb-6 mt-24 flex justify-center">
-          <img src="/fonts/krut.webp" alt="ตราครุฑ" className="h-[100px] w-[100px] object-contain" crossOrigin="anonymous" draggable={false} />
+          <img
+            src="/fonts/krut.webp"
+            alt="ตราครุฑ"
+            className="h-[100px] w-[100px] object-contain"
+            crossOrigin="anonymous"
+            draggable={false}
+          />
         </div>
 
         {/* Title */}
@@ -92,7 +121,12 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
           <p>{withFallback(businessName?.toUpperCase())}</p>
           <p className="mt-6 font-semibold">ที่ตั้งสถานประกอบการ</p>
           <p className="mx-auto max-w-[720px] indent-12 text-left leading-relaxed">
-            เลขที่ {withFallback(address.houseNumber)} หมู่ที่ {withFallback(address.villageNo)} ตรอก/ซอย {withFallback(address.alley)} ตำบล/แขวง {withFallback(address.subDistrict)} อำเภอ/เขต {withFallback(address.district)} จังหวัด {withFallback(address.province)}
+            เลขที่ {withFallback(address.houseNumber)} หมู่ที่{" "}
+            {withFallback(address.villageNo)} ตรอก/ซอย{" "}
+            {withFallback(address.alley)} ตำบล/แขวง{" "}
+            {withFallback(address.subDistrict)} อำเภอ/เขต{" "}
+            {withFallback(address.district)} จังหวัด{" "}
+            {withFallback(address.province)}
           </p>
         </div>
 

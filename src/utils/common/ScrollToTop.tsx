@@ -19,10 +19,7 @@ interface ScrollToTopProps {
  * - รองรับ smooth scroll และ offset สำหรับ header
  * - ใช้ใน `<App />` หรือ layout wrapper
  */
-const ScrollToTop = ({
-  smooth = true,
-  offset = 0,
-}: ScrollToTopProps): null => {
+const ScrollToTop = ({ smooth = true, offset = 0 }: ScrollToTopProps): null => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {

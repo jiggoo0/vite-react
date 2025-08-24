@@ -17,10 +17,22 @@ export interface SocialLink {
 
 const defaultLinks: SocialLink[] = [
   { href: "https://lin.ee/gVptUhR", label: "LINE", icon: FaLine },
-  { href: "https://www.instagram.com/jpsystem.official", label: "Instagram", icon: FaInstagram },
+  {
+    href: "https://www.instagram.com/jpsystem.official",
+    label: "Instagram",
+    icon: FaInstagram,
+  },
   { href: "mailto:contact@jpsystem.dev", label: "Email", icon: FaEnvelope },
-  { href: "https://m.me/61573307616115", label: "Messenger", icon: FaFacebookMessenger },
-  { href: "https://www.tiktok.com/@jaopa.zerofour", label: "TikTok", icon: SiTiktok },
+  {
+    href: "https://m.me/61573307616115",
+    label: "Messenger",
+    icon: FaFacebookMessenger,
+  },
+  {
+    href: "https://www.tiktok.com/@jaopa.zerofour",
+    label: "TikTok",
+    icon: SiTiktok,
+  },
 ];
 
 interface SocialIconsProps {

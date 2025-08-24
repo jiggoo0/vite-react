@@ -20,7 +20,19 @@ export type SelectFieldProps<T extends FieldValues = FieldValues> =
   };
 
 const SelectFieldUI = forwardRef<HTMLSelectElement, SelectFieldProps>(
-  ({ label, name, options, error = null, required = false, className = "", field, ...rest }, ref) => {
+  (
+    {
+      label,
+      name,
+      options,
+      error = null,
+      required = false,
+      className = "",
+      field,
+      ...rest
+    },
+    ref
+  ) => {
     const selectProps = field
       ? {
           value: field.value ?? "",

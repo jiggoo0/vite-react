@@ -16,9 +16,7 @@ const StickyTableHeader: FC<StickyTableHeaderProps> = ({ children }) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border-collapse">
-        <thead className="sticky top-0 bg-gray-100 z-10">
-          {children}
-        </thead>
+        <thead className="sticky top-0 bg-gray-100 z-10">{children}</thead>
       </table>
     </div>
   );

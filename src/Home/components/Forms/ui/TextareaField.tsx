@@ -2,16 +2,20 @@
 
 import React, { forwardRef } from "react";
 
-export type TextareaFieldProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  label: string;
-  name: string;
-  error?: string | null;
-  required?: boolean;
-  className?: string;
-};
+export type TextareaFieldProps =
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    label: string;
+    name: string;
+    error?: string | null;
+    required?: boolean;
+    className?: string;
+  };
 
 const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
-  ({ label, name, error = null, required = false, className = "", ...rest }, ref) => {
+  (
+    { label, name, error = null, required = false, className = "", ...rest },
+    ref
+  ) => {
     return (
       <div className={`flex flex-col ${className}`}>
         <label htmlFor={name} className="mb-1 font-medium text-gray-700">

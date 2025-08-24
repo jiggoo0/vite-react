@@ -79,7 +79,8 @@ const Footer: FC = () => {
 
         {/* Copyright */}
         <p className="text-xs text-neutral-500 dark:text-neutral-400 select-none leading-relaxed">
-          &copy; {year} <span className="font-semibold">JP Visual & Docs</span> — Powered by{" "}
+          &copy; {year} <span className="font-semibold">JP Visual & Docs</span>{" "}
+          — Powered by{" "}
           <a
             href="https://applicationlab.dev"
             target="_blank"

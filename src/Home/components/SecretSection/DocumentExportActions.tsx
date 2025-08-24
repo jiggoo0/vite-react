@@ -26,7 +26,11 @@ const DocumentExportActions: FC<DocumentExportActionsProps> = ({
     const canvas = await html2canvas(clone, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
     const pdfWidth = pdf.internal.pageSize.getWidth() - 2 * margin;
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
@@ -35,9 +39,19 @@ const DocumentExportActions: FC<DocumentExportActionsProps> = ({
 
     while (remainingHeight > 0) {
       const pageHeight = pdf.internal.pageSize.getHeight() - 2 * margin;
-      const drawHeight = remainingHeight > pageHeight ? pageHeight : remainingHeight;
+      const drawHeight =
+        remainingHeight > pageHeight ? pageHeight : remainingHeight;
 
-      pdf.addImage(imgData, "PNG", margin, yOffset, pdfWidth, drawHeight, undefined, "FAST");
+      pdf.addImage(
+        imgData,
+        "PNG",
+        margin,
+        yOffset,
+        pdfWidth,
+        drawHeight,
+        undefined,
+        "FAST"
+      );
 
       remainingHeight -= pageHeight;
       if (remainingHeight > 0) {

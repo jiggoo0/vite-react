@@ -13,8 +13,8 @@ export const containerVariants: Variants = {
     y: 0,
     transition: {
       staggerChildren: 0.12, // children จะเริ่ม animate ทีละ 0.12s
-      duration: 0.5,          // ความยาว animation ของ container
-      ease: easeInOut,        // easing แบบ smooth
+      duration: 0.5, // ความยาว animation ของ container
+      ease: easeInOut, // easing แบบ smooth
     },
   },
 };
@@ -30,9 +30,9 @@ export const fadeInUp: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.35,   // ปรับให้ slightly smoother
+      duration: 0.35, // ปรับให้ slightly smoother
       ease: easeInOut,
-      delay: i * 0.12,  // stagger effect ตามลำดับ
+      delay: i * 0.12, // stagger effect ตามลำดับ
     },
   }),
 };

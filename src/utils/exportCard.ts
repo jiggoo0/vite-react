@@ -36,7 +36,10 @@ const renderElementToCanvas = async (
     console.error("[exportCard] Failed to render element:", err);
     return null;
   } finally {
-    document.documentElement.setAttribute("data-theme", previousTheme || "light");
+    document.documentElement.setAttribute(
+      "data-theme",
+      previousTheme || "light"
+    );
   }
 };
 
@@ -78,7 +81,10 @@ export const exportCardAsPDF = async (
       pdf = new jsPDF("p", "mm", "a4");
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-      const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+      const ratio = Math.min(
+        pageWidth / canvas.width,
+        pageHeight / canvas.height
+      );
       const imgWidth = canvas.width * ratio;
       const imgHeight = canvas.height * ratio;
       const xOffset = (pageWidth - imgWidth) / 2;

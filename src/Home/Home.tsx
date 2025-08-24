@@ -15,7 +15,9 @@ import { UserBoard as UserBoardDataReadonly } from "@/data/UserBoard";
 import { caseStudies } from "@/data/caseStudies";
 
 // Lazy-loaded components
-const PortfolioGallery = lazy(() => import("./components/Portfolio/PortfolioGallery"));
+const PortfolioGallery = lazy(
+  () => import("./components/Portfolio/PortfolioGallery")
+);
 const SupportFAQ = lazy(() => import("./components/Portfolio/SupportFAQ"));
 
 const Home: FC = () => {
@@ -32,20 +34,62 @@ const Home: FC = () => {
   );
 
   const sections = [
-    { id: "hero", title: "Hero Section", className: "bg-base-100", content: <Hero /> },
-    { id: "about", title: "About Us", className: "bg-base-200", content: <About /> },
-    { id: "selling-points", title: "Selling Points", className: "bg-base-100", content: <SellingPoints /> },
-    { id: "services", title: "Services", className: "bg-base-100", content: <ServicesSection /> },
+    {
+      id: "hero",
+      title: "Hero Section",
+      className: "bg-base-100",
+      content: <Hero />,
+    },
+    {
+      id: "about",
+      title: "About Us",
+      className: "bg-base-200",
+      content: <About />,
+    },
+    {
+      id: "selling-points",
+      title: "Selling Points",
+      className: "bg-base-100",
+      content: <SellingPoints />,
+    },
+    {
+      id: "services",
+      title: "Services",
+      className: "bg-base-100",
+      content: <ServicesSection />,
+    },
     {
       id: "case-studies",
       title: "Case Studies",
       className: "bg-base-100",
-      content: <CaseStudyRedacted className="bg-base-100" items={caseStudies} />,
+      content: (
+        <CaseStudyRedacted className="bg-base-100" items={caseStudies} />
+      ),
     },
-    { id: "user-board", title: "User Board", className: "bg-base-200", content: <UserBoard data={userBoardData} /> },
-    { id: "testimonials", title: "Testimonials", className: "bg-base-100", content: <TestimonialSlider /> },
-    { id: "portfolio", title: "Portfolio Gallery", className: "bg-base-100", content: renderSuspense(<PortfolioGallery />, "Loading portfolio...") },
-    { id: "faq", title: "FAQ", className: "bg-base-200", content: renderSuspense(<SupportFAQ />, "Loading FAQ...") },
+    {
+      id: "user-board",
+      title: "User Board",
+      className: "bg-base-200",
+      content: <UserBoard data={userBoardData} />,
+    },
+    {
+      id: "testimonials",
+      title: "Testimonials",
+      className: "bg-base-100",
+      content: <TestimonialSlider />,
+    },
+    {
+      id: "portfolio",
+      title: "Portfolio Gallery",
+      className: "bg-base-100",
+      content: renderSuspense(<PortfolioGallery />, "Loading portfolio..."),
+    },
+    {
+      id: "faq",
+      title: "FAQ",
+      className: "bg-base-200",
+      content: renderSuspense(<SupportFAQ />, "Loading FAQ..."),
+    },
   ];
 
   return (

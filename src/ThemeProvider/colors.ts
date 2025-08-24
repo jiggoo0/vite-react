@@ -28,7 +28,7 @@ export type Colors = Record<ColorKeys, string>;
  * ใช้ CSS variables fallback สำหรับ production-ready
  */
 export const defaultColors: Colors = {
-  primary: "var(--color-primary, #1f2937)",        // dark/navy
+  primary: "var(--color-primary, #1f2937)", // dark/navy
   "primary-hover": "var(--color-primary-hover, #111827)",
   "primary-disabled": "var(--color-primary-disabled, #6b7280)",
   "primary-content": "var(--color-primary-content, #ffffff)",

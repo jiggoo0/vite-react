@@ -28,10 +28,7 @@ const FeatureList: FC<FeatureListProps> = ({ className }) => {
         จุดเด่นของบริการ
       </h3>
 
-      <ul
-        aria-label="รายการจุดเด่นของบริการทั้งหมด"
-        className="space-y-4"
-      >
+      <ul aria-label="รายการจุดเด่นของบริการทั้งหมด" className="space-y-4">
         {features.map((feature, idx) => (
           <li
             key={idx}

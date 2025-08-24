@@ -1,7 +1,9 @@
 "use client";
 
 import { FC } from "react";
-import DriverLicensePreview, { DriverLicenseData } from "./DriverLicensePreview";
+import DriverLicensePreview, {
+  DriverLicenseData,
+} from "./DriverLicensePreview";
 
 interface Props {
   className?: string;

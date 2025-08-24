@@ -7,16 +7,18 @@
 ---
 
 ## 📊 Summary
-| หมวดหมู่                 | สถานะ |
-|--------------------------|--------|
-| .env Exists | ✅ |
-| VITE_API_URL Defined | ✅ |
-| Alias Import | ✅ |
-| ESLint Check | ❌ |
-| TypeScript Check | ❌ |
-| Dev Server               | ✅ |
+
+| หมวดหมู่             | สถานะ |
+| -------------------- | ----- |
+| .env Exists          | ✅    |
+| VITE_API_URL Defined | ✅    |
+| Alias Import         | ✅    |
+| ESLint Check         | ❌    |
+| TypeScript Check     | ❌    |
+| Dev Server           | ✅    |
 
 ## 📦 ตรวจสอบ package.json
+
 ```json
 {
   "name": "vite-react",
@@ -125,28 +127,26 @@
     "typescript": "5.9.2"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": ["prettier --write", "eslint --fix"]
   }
 }
 ```
 
-| Dependency ที่จำเป็น     | สถานะ |
-|--------------------------|--------|
-| react                     | ✅ |
-| react-dom                     | ✅ |
-| vite                     | ✅ |
-| tailwindcss                     | ✅ |
-| daisyui                     | ✅ |
-| typescript                     | ✅ |
-| eslint                     | ✅ |
-| prettier                     | ✅ |
-| React                     | ✅ | ^19.1.1 |
-| TypeScript                | ✅ | 5.9.2 |
+| Dependency ที่จำเป็น | สถานะ |
+| -------------------- | ----- | ------- |
+| react                | ✅    |
+| react-dom            | ✅    |
+| vite                 | ✅    |
+| tailwindcss          | ✅    |
+| daisyui              | ✅    |
+| typescript           | ✅    |
+| eslint               | ✅    |
+| prettier             | ✅    |
+| React                | ✅    | ^19.1.1 |
+| TypeScript           | ✅    | 5.9.2   |
 
 ## 📁 โครงสร้าง src (ลึกสุด 10 ระดับ)
+
 ```
 src
 ├── App
@@ -423,3 +423,4 @@ Output: folder structure +  mock data สมจริงสำหรับทุ
 
 
 
+```

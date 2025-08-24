@@ -27,7 +27,10 @@ export default tseslint.config(
     files: ["**/*.{ts,tsx}"],
     languageOptions: { parser: tseslint.parser },
     rules: {
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^", varsIgnorePattern: "^" }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^", varsIgnorePattern: "^" },
+      ],
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
     },
@@ -37,8 +40,15 @@ export default tseslint.config(
   // JS/Config files (CommonJS / Node globals)
   // ==============================
   {
-    files: ["*.config.js", "*.config.cjs", ".prettier.config.js", "postcss.config.cjs"],
-    languageOptions: { globals: { module: true, require: true, __dirname: true, process: true } },
+    files: [
+      "*.config.js",
+      "*.config.cjs",
+      ".prettier.config.js",
+      "postcss.config.cjs",
+    ],
+    languageOptions: {
+      globals: { module: true, require: true, __dirname: true, process: true },
+    },
     rules: { "no-undef": "off" },
   },
 

@@ -39,7 +39,11 @@ interface TrustDashboardProps {
  *
  * ใช้ง่าย อ่านสบาย รองรับทั้งโหมดสว่าง/มืด
  */
-const TrustDashboard: FC<TrustDashboardProps> = ({ metrics, stats, badges }) => {
+const TrustDashboard: FC<TrustDashboardProps> = ({
+  metrics,
+  stats,
+  badges,
+}) => {
   return (
     <section
       aria-labelledby="trust-dashboard-title"

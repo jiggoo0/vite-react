@@ -18,7 +18,12 @@ export interface TrustBadgeProps {
  * - Responsive
  * - Accessible
  */
-const TrustBadge: FC<TrustBadgeProps> = ({ icon, title, description, className }) => {
+const TrustBadge: FC<TrustBadgeProps> = ({
+  icon,
+  title,
+  description,
+  className,
+}) => {
   return (
     <div
       role="group"
@@ -37,7 +42,9 @@ const TrustBadge: FC<TrustBadgeProps> = ({ icon, title, description, className }
       </h3>
 
       {/* Description */}
-      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
+      <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+        {description}
+      </p>
     </div>
   );
 };

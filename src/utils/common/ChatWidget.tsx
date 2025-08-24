@@ -27,7 +27,10 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
   // ปิด widget อัตโนมัติหลังเวลา autoCloseMs
   useEffect(() => {
     if (isOpen) {
-      autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
+      autoCloseTimer.current = window.setTimeout(
+        () => setIsOpen(false),
+        autoCloseMs
+      );
     }
     return () => {
       if (autoCloseTimer.current) {

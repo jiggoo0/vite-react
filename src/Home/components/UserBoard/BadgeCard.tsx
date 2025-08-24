@@ -16,7 +16,12 @@ export interface BadgeCardProps {
  * ✅ แสดง Badge / ไอคอนพร้อมชื่อและคำอธิบาย
  * ✅ Responsive + Accessible + Professional UI
  */
-const BadgeCard: FC<BadgeCardProps> = ({ icon, title, description, className }) => {
+const BadgeCard: FC<BadgeCardProps> = ({
+  icon,
+  title,
+  description,
+  className,
+}) => {
   const titleId = `${title.replace(/\s+/g, "-").toLowerCase()}-badge-title`;
 
   return (
@@ -30,7 +35,9 @@ const BadgeCard: FC<BadgeCardProps> = ({ icon, title, description, className }) 
       tabIndex={0}
     >
       {/* Icon */}
-      <div className="mb-2 text-2xl text-blue-600 dark:text-blue-400">{icon}</div>
+      <div className="mb-2 text-2xl text-blue-600 dark:text-blue-400">
+        {icon}
+      </div>
 
       {/* Title */}
       <h3
@@ -42,7 +49,9 @@ const BadgeCard: FC<BadgeCardProps> = ({ icon, title, description, className }) 
 
       {/* Description */}
       {description && (
-        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+          {description}
+        </p>
       )}
     </div>
   );

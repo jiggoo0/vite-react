@@ -1,6 +1,14 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState, useCallback, KeyboardEvent, useRef } from "react";
+import {
+  FC,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  KeyboardEvent,
+  useRef,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { containerVariants, fadeInUp } from "./motionVariants";
 
@@ -26,7 +34,10 @@ const BlurContact: FC<BlurContactProps> = ({
   onSubmitSecurityKey,
   installPassword = "สอบถามadmin",
 }) => {
-  const images = useMemo(() => (imageUrl ? [imageUrl] : DEFAULT_IMAGES), [imageUrl]);
+  const images = useMemo(
+    () => (imageUrl ? [imageUrl] : DEFAULT_IMAGES),
+    [imageUrl]
+  );
   const [currentImage, setCurrentImage] = useState(0);
   const [fadeImage, setFadeImage] = useState(false);
   const [securityKey, setSecurityKey] = useState("");
@@ -86,7 +97,9 @@ const BlurContact: FC<BlurContactProps> = ({
           fadeImage ? "opacity-0" : "opacity-40"
         }`}
         draggable={false}
-        onError={(e) => ((e.target as HTMLImageElement).src = DEFAULT_IMAGES[0])}
+        onError={(e) =>
+          ((e.target as HTMLImageElement).src = DEFAULT_IMAGES[0])
+        }
       />
       <div className="absolute inset-0 bg-white/60 backdrop-blur-sm transition-all" />
 
@@ -97,7 +110,11 @@ const BlurContact: FC<BlurContactProps> = ({
         animate="visible"
       >
         {/* Title */}
-        <motion.div className="flex flex-col items-center text-center mb-6" custom={0} variants={fadeInUp}>
+        <motion.div
+          className="flex flex-col items-center text-center mb-6"
+          custom={0}
+          variants={fadeInUp}
+        >
           <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center shadow-lg dark:bg-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +137,11 @@ const BlurContact: FC<BlurContactProps> = ({
         </motion.div>
 
         {/* Input & Button */}
-        <motion.div className="w-full max-w-md flex flex-col sm:flex-row gap-4 mt-4 relative" custom={1} variants={fadeInUp}>
+        <motion.div
+          className="w-full max-w-md flex flex-col sm:flex-row gap-4 mt-4 relative"
+          custom={1}
+          variants={fadeInUp}
+        >
           <input
             ref={inputRef}
             type="password"
@@ -147,7 +168,11 @@ const BlurContact: FC<BlurContactProps> = ({
             aria-busy={loading}
             tabIndex={0}
           >
-            {loading ? <span className="loading loading-spinner loading-sm" /> : "ยืนยัน"}
+            {loading ? (
+              <span className="loading loading-spinner loading-sm" />
+            ) : (
+              "ยืนยัน"
+            )}
           </button>
           <span className="absolute -top-6 right-0 bg-gray-900 text-white text-xs font-semibold px-2 py-1 rounded shadow-md select-none glow-neon animate-pulse">
             @462fqtfc

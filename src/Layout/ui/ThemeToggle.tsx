@@ -38,7 +38,9 @@ const ThemeToggle = () => {
     setIsMounted(true);
 
     const savedTheme = localStorage.getItem(THEME_KEY);
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
 
     applyTheme(savedTheme ? savedTheme === "dark" : prefersDark);
   }, [applyTheme]);

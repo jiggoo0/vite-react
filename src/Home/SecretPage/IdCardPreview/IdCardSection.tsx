@@ -17,7 +17,9 @@ const IdCardSection: FC<Props> = ({ data, className, onChange }) => {
   };
 
   return (
-    <div className={clsx("bg-white p-4 rounded-xl shadow-md space-y-3", className)}>
+    <div
+      className={clsx("bg-white p-4 rounded-xl shadow-md space-y-3", className)}
+    >
       <h3 className="text-lg font-semibold">แสดงข้อมูลบัตรประชาชน</h3>
 
       <div className="space-y-2">

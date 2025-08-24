@@ -17,9 +17,42 @@ export const idCardFields: Array<{
   fontWeight?: number | string;
   color?: string;
 }> = [
-  { id: "photo", type: "photo", top: "10px", left: "10px", width: "80px", height: "100px" },
-  { id: "fullName", type: "text", top: "10px", left: "100px", fontSize: "14px", fontWeight: 600 },
-  { id: "idNumber", type: "text", top: "30px", left: "100px", fontSize: "12px" },
-  { id: "birthDate", type: "text", top: "50px", left: "100px", fontSize: "12px" },
-  { id: "address", type: "text", top: "70px", left: "100px", fontSize: "12px", width: "200px" },
+  {
+    id: "photo",
+    type: "photo",
+    top: "10px",
+    left: "10px",
+    width: "80px",
+    height: "100px",
+  },
+  {
+    id: "fullName",
+    type: "text",
+    top: "10px",
+    left: "100px",
+    fontSize: "14px",
+    fontWeight: 600,
+  },
+  {
+    id: "idNumber",
+    type: "text",
+    top: "30px",
+    left: "100px",
+    fontSize: "12px",
+  },
+  {
+    id: "birthDate",
+    type: "text",
+    top: "50px",
+    left: "100px",
+    fontSize: "12px",
+  },
+  {
+    id: "address",
+    type: "text",
+    top: "70px",
+    left: "100px",
+    fontSize: "12px",
+    width: "200px",
+  },
 ];

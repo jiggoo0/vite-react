@@ -2,7 +2,11 @@
 
 import { FC } from "react";
 import TrustDashboard, { Metric, Stat, Badge } from "./TrustDashboard";
-import { ShieldCheckIcon, CheckBadgeIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import {
+  ShieldCheckIcon,
+  CheckBadgeIcon,
+  SparklesIcon,
+} from "@heroicons/react/24/solid";
 
 /** -----------------------------
  * Mock Data
