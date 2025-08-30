@@ -1,0 +1,50 @@
+"use client";
+
+import { useContext, createContext } from "react";
+
+export type UserRole = "admin" | "manager" | "user";
+
+export type User = {
+  username: string;
+  role: UserRole;
+};
+
+/** อ่าน user จาก localStorage */
+export const parseUserFromStorage = (): User | null => {
+  const raw = localStorage.getItem("user");
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw);
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      typeof parsed.username === "string" &&
+      ["admin", "manager", "user"].includes(parsed.role)
+    ) {
+      return parsed as User;
+    }
+  } catch (err) {
+    console.error("parseUserFromStorage error:", err);
+  }
+
+  return null;
+};
+
+export type AuthContextType = {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  isAuthenticated: boolean;
+  hasRole: (roles: UserRole | UserRole[]) => boolean;
+  logout: () => void;
+};
+
+/** Context ของการยืนยันตัวตน */
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+/** Hook สำหรับเรียกใช้งาน AuthContext */
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
+};

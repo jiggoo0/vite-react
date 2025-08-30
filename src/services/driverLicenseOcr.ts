@@ -1,0 +1,72 @@
+// src/services/driverLicenseOcr.ts
+import { z } from "zod";
+
+/**
+ * 🔹 Zod Schema สำหรับข้อมูลใบขับขี่
+ * - idNumber: ตัวเลข 13 หลัก
+ * - firstName / lastName: ต้องมีค่า
+ * - dob / issueDate / expiryDate: yyyy-mm-dd หรือว่าง
+ */
+export const driverLicenseSchema = z.object({
+  idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
+  firstName: z.string().min(1, "กรุณากรอกชื่อ"),
+  lastName: z.string().min(1, "กรุณากรอกนามสกุล"),
+  dob: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "วันเกิดไม่ถูกต้อง")
+    .optional()
+    .or(z.literal("")),
+  issueDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "วันที่ออกบัตรไม่ถูกต้อง")
+    .optional()
+    .or(z.literal("")),
+  expiryDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "วันหมดอายุไม่ถูกต้อง")
+    .optional()
+    .or(z.literal("")),
+});
+
+// 🔹 Export type
+export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
+
+/**
+ * 🔹 Mock OCR function
+ * - แทนที่ด้วย OCR API จริงได้
+ * @param _file ไฟล์ภาพใบขับขี่ (ยังไม่ได้ใช้)
+ * @returns Promise<DriverLicenseData>
+ */
+export async function driverLicenseOcr(_file: File): Promise<DriverLicenseData> {
+  // Mock delay เลียนแบบเรียก API จริง
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // Mock data
+  const mockData: DriverLicenseData = {
+    idNumber: "1234567890123",
+    firstName: "สมชาย",
+    lastName: "ใจดี",
+    dob: "1990-01-01",
+    issueDate: "2020-01-01",
+    expiryDate: "2030-01-01",
+  };
+
+  return mockData;
+}
+
+/**
+ * 🔹 Mapping OCR result → Form default values
+ * - ใช้สำหรับ React Hook Form / Formik
+ * @param data DriverLicenseData
+ * @returns Object ที่พร้อมเป็น defaultValues ของ form
+ */
+export function mapDriverLicenseToForm(data: DriverLicenseData) {
+  return {
+    idNumber: data.idNumber,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    dob: data.dob || "",
+    issueDate: data.issueDate || "",
+    expiryDate: data.expiryDate || "",
+  };
+}
