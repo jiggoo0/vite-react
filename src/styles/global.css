@@ -1,0 +1,161 @@
+/* ==============================
+   Tailwind Base
+============================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==============================
+   Theme Variables (Light Mode)
+============================== */
+:root {
+  /* Primary Colors */
+  --color-primary: #1f2937;
+  --color-primary-hover: #111827;
+  --color-primary-disabled: #6b7280;
+  --color-primary-content: #ffffff;
+
+  /* Secondary / Accent / Neutral */
+  --color-secondary: #4b5563;
+  --color-accent: #6b7280;
+  --color-neutral: #f3f4f6;
+
+  /* Semantic Colors */
+  --color-info: #0ea5e9;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* Background / Text */
+  --color-bg: #ffffff;
+  --color-bg-light: #f9fafb;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+
+  /* Global Styles */
+  --radius-md: 0.5rem;
+  --transition-base: 250ms;
+  --transition-fast: 200ms;
+  --font-family-base: "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+}
+
+/* ==============================
+   Global Reset
+============================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  transition:
+    background-color var(--transition-base) ease,
+    color var(--transition-base) ease;
+}
+
+/* ==============================
+   Dark Mode
+============================== */
+[data-theme="dark"],
+.dark {
+  --color-primary: #1f2937;
+  --color-primary-hover: #111827;
+  --color-primary-disabled: #6b7280;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #4b5563;
+  --color-accent: #6b7280;
+  --color-neutral: #111827;
+
+  --color-info: #0ea5e9;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  --color-bg: #1f2937;
+  --color-bg-light: #111827;
+  --color-text: #f3f4f6;
+  --color-text-muted: #9ca3af;
+}
+
+/* ==============================
+   Utility Classes
+============================== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.hidden { display: none !important; }
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* ==============================
+   Scrollbar
+============================== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg-light); }
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  transition: background-color var(--transition-base) ease;
+}
+[data-theme="dark"] ::-webkit-scrollbar-track { background: var(--color-bg); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background-color: var(--color-primary-hover); }
+
+/* ==============================
+   Tailwind Variable Mapping
+============================== */
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-hover:hover { background-color: var(--color-primary-hover); }
+.text-primary { color: var(--color-primary); }
+.text-primary-content { color: var(--color-primary-content); }
+
+.bg-secondary { background-color: var(--color-secondary); }
+.text-secondary { color: var(--color-secondary); }
+
+.bg-accent { background-color: var(--color-accent); }
+.text-accent { color: var(--color-accent); }
+
+.bg-neutral { background-color: var(--color-neutral); }
+.text-neutral { color: var(--color-neutral); }
+
+/* ==============================
+   Semantic Colors Mapping
+============================== */
+.bg-info { background-color: var(--color-info); }
+.text-info { color: var(--color-info); }
+
+.bg-success { background-color: var(--color-success); }
+.text-success { color: var(--color-success); }
+
+.bg-warning { background-color: var(--color-warning); }
+.text-warning { color: var(--color-warning); }
+
+.bg-error { background-color: var(--color-error); }
+.text-error { color: var(--color-error); }
+
+/* ==============================
+   Background / Text Utilities
+============================== */
+.bg-bg { background-color: var(--color-bg); }
+.bg-bg-light { background-color: var(--color-bg-light); }
+.text-text { color: var(--color-text); }
+.text-text-muted { color: var(--color-text-muted); }

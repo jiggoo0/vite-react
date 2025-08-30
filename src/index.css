@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Enforce flat style */
+* {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
