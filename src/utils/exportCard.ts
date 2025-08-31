@@ -24,11 +24,12 @@ const renderElementToCanvas = async (
       scale: scaleFactor,
       useCORS: true,
       logging: false,
-      backgroundColor: "#ffffff",
+      backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
       scrollX: -window.scrollX,
       scrollY: -window.scrollY,
       windowWidth: document.documentElement.offsetWidth,
       windowHeight: document.documentElement.offsetHeight,
+      allowTaint: true,
     });
   } catch (err) {
     console.error("[exportCard] Failed to render element:", err);
@@ -42,7 +43,7 @@ export const exportCardAsPNG = async (
   elementId: string,
   fileName = "idcard.png",
   theme: ThemeType = "light"
-) => {
+): Promise<void> => {
   const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
 
@@ -59,7 +60,7 @@ export const exportCardAsPDF = async (
   fileName = "idcard.pdf",
   useA4 = false,
   theme: ThemeType = "light"
-) => {
+): Promise<void> => {
   const canvas = await renderElementToCanvas(elementId, 2, theme);
   if (!canvas) return;
 

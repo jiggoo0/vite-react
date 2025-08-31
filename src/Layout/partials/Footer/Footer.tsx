@@ -1,14 +1,19 @@
+// src/Layout/partials/Footer.tsx
+"use client";
+
 import { FC } from "react";
 import { FaLine, FaInstagram, FaEnvelope, FaFacebookMessenger } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 
-const socialLinks = [
-  {
-    href: "https://lin.ee/gVptUhR",
-    label: "LINE",
-    text: "LINE: @462FQFC",
-    icon: FaLine,
-  },
+interface SocialLink {
+  href: string;
+  label: string;
+  text: string;
+  icon: FC<{ className?: string; "aria-hidden"?: boolean }>;
+}
+
+const socialLinks: SocialLink[] = [
+  { href: "https://lin.ee/gVptUhR", label: "LINE", text: "LINE: @462FQFC", icon: FaLine },
   {
     href: "https://www.instagram.com/jpsystem.official",
     label: "Instagram",
@@ -60,7 +65,7 @@ const Footer: FC = () => {
             >
               <Icon
                 className="text-xl text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
-                aria-hidden="true"
+                aria-hidden
               />
               <span className="transition-colors duration-300 group-hover:text-primary">
                 {text}
@@ -90,4 +95,5 @@ const Footer: FC = () => {
   );
 };
 
+Footer.displayName = "Footer";
 export default Footer;

@@ -1,32 +1,29 @@
 // src/Layout/Layout.tsx
 "use client";
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, lazy, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 import Header from "./partials/Header";
 import SidebarNav from "./SidebarNav";
 import Footer from "./partials/Footer";
+import FallbackLoader from "../utils/common/FallbackLoader";
 
-import ChatWidget from "../utils/common/ChatWidget";
-import DisclaimerModal from "../utils/common/DisclaimerModal";
-import BackToTop from "../utils/common/BackToTop";
+// Lazy-loaded floating components
+const ChatWidget = lazy(() => import("../utils/common/ChatWidget"));
+const BackToTop = lazy(() => import("../utils/common/BackToTop"));
+const DisclaimerModal = lazy(() => import("../utils/common/DisclaimerModal"));
 
 interface LayoutProps {
   children?: ReactNode;
 }
 
-/**
- * 🔹 Layout Component
- *
- * - Sticky Header
- * - Sidebar (responsive)
- * - Main Content (focusable, accessible)
- * - Footer
- * - Floating Components: ChatWidget, BackToTop, DisclaimerModal
- */
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const floatingComponents = [ChatWidget, BackToTop, DisclaimerModal];
+  const floatingComponents = [
+    { Component: ChatWidget, name: "ChatWidget" },
+    { Component: BackToTop, name: "BackToTop" },
+    { Component: DisclaimerModal, name: "DisclaimerModal" },
+  ];
 
   return (
     <div className="flex min-h-screen bg-base-100 text-base-content transition-colors duration-300">
@@ -35,10 +32,8 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
       {/* Main Section */}
       <div className="flex flex-col flex-1 min-h-screen">
-        {/* Header */}
         <Header />
 
-        {/* Main Content */}
         <main
           id="main-content"
           role="main"
@@ -52,15 +47,16 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           </div>
         </main>
 
-        {/* Footer */}
         <Footer />
       </div>
 
       {/* Floating Components */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-4 pointer-events-none">
-        {floatingComponents.map((Component, idx) => (
-          <div key={idx} className="pointer-events-auto" aria-label={`floating-component-${idx}`}>
-            <Component />
+        {floatingComponents.map(({ Component, name }) => (
+          <div key={name} className="pointer-events-auto" aria-label={name}>
+            <Suspense fallback={<FallbackLoader message={`⏳ กำลังโหลด ${name}...`} />}>
+              <Component />
+            </Suspense>
           </div>
         ))}
       </div>
@@ -69,5 +65,4 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 };
 
 Layout.displayName = "Layout";
-
 export default Layout;

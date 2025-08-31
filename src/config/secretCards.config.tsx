@@ -117,6 +117,9 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
       title: "Special Branch Certificate",
       component: <SpecialBranchCertificate />,
       delay: nextDelay(),
+      fallback: (
+        <div className="text-center py-6 text-gray-500">Loading Special Branch Certificate...</div>
+      ),
     });
   }
 

@@ -8,9 +8,7 @@ term_log() { echo -e "$1"; }
 # -----------------------------
 # 0️⃣ Load .env if exists
 # -----------------------------
-if [ -f .env ]; then
-  export $(grep -v '^#' .env | xargs || true)
-fi
+[ -f .env ] && export $(grep -v '^#' .env | xargs || true)
 
 # -----------------------------
 # 1️⃣ Git Status
@@ -49,7 +47,7 @@ fi
 # -----------------------------
 # 3️⃣ Config Files
 # -----------------------------
-CONFIG_FILES=(tsconfig.json tailwind.config.ts vite.config.ts .eslintrc .prettierrc .prettierrc.json .prettierrc.js .gitignore)
+CONFIG_FILES=(tsconfig.json tailwind.config.ts vite.config.ts .eslintrc .prettierrc .gitignore)
 CONFIG_TABLE="| Config File | Status |"$'\n'"|------------|--------|"
 for f in "${CONFIG_FILES[@]}"; do
   [ -f "$f" ] && CONFIG_TABLE+=$'\n'"| $f | ✅ exists |" || CONFIG_TABLE+=$'\n'"| $f | ❌ missing |"
@@ -73,11 +71,7 @@ fi
 # -----------------------------
 TREE_TOP="src"
 if [ -d "$TREE_TOP" ]; then
-  if command -v tree >/dev/null 2>&1; then
-    TREE_CONTENT=$(tree -L 10 "$TREE_TOP")
-  else
-    TREE_CONTENT=$(find "$TREE_TOP" -maxdepth 10 -print)
-  fi
+  TREE_CONTENT=$(command -v tree >/dev/null 2>&1 && tree -L 10 "$TREE_TOP" || find "$TREE_TOP" -maxdepth 10 -print)
 else
   TREE_CONTENT="> ❌ $TREE_TOP folder not found"
 fi
@@ -85,27 +79,31 @@ fi
 # -----------------------------
 # 6️⃣ Project Info
 # -----------------------------
-GITHUB_URL=${GITHUB_URL:-"N/A"}
-DEVELOPER_EMAIL=${DEVELOPER_EMAIL:-"N/A"}
-WEBSITE_URL=${WEBSITE_URL:-"N/A"}
-VERCEL_ACCOUNT=${VERCEL_ACCOUNT:-"N/A"}
-VERCEL_PROJECT_NAME=${VERCEL_PROJECT_NAME:-"N/A"}
-VERCEL_PROJECT_ID=${VERCEL_PROJECT_ID:-"N/A"}
+GITHUB_URL="${GITHUB_URL:-https://github.com/jiggoo0/vite-react}"
+DEVELOPER_EMAIL="${DEVELOPER_EMAIL:-jiggo0@outlook.co.th}"
+WEBSITE_URL="${WEBSITE_URL:-https://404notfontjp.vercel.app/}"
+VERCEL_ACCOUNT="${VERCEL_ACCOUNT:-jiggoos-projects}"
+VERCEL_PROJECT_NAME="${VERCEL_PROJECT_NAME:-N/A}"
+VERCEL_PROJECT_ID="${VERCEL_PROJECT_ID:-N/A}"
 
-PKG_NAME=$(jq -r '.name // "N/A"' package.json 2>/dev/null)
-PKG_VER=$(jq -r '.version // "N/A"' package.json 2>/dev/null)
+PKG_NAME=$(jq -r '.name // "vite-react"' package.json 2>/dev/null)
+PKG_VER=$(jq -r '.version // "7.1.1"' package.json 2>/dev/null)
 PKG_DESC=$(jq -r '.description // "N/A"' package.json 2>/dev/null)
 
-PROJECT_INFO="| Item | Value |"$'\n'"|------|-------|"
-PROJECT_INFO+=$'\n'"| Project Name | $PKG_NAME |"
-PROJECT_INFO+=$'\n'"| Version | $PKG_VER |"
-PROJECT_INFO+=$'\n'"| Description | $PKG_DESC |"
-PROJECT_INFO+=$'\n'"| GitHub URL | $GITHUB_URL |"
-PROJECT_INFO+=$'\n'"| Developer Email | $DEVELOPER_EMAIL |"
-PROJECT_INFO+=$'\n'"| Website URL | $WEBSITE_URL |"
-PROJECT_INFO+=$'\n'"| Vercel Account | $VERCEL_ACCOUNT |"
-PROJECT_INFO+=$'\n'"| Vercel Project Name | $VERCEL_PROJECT_NAME |"
-PROJECT_INFO+=$'\n'"| Vercel Project ID | $VERCEL_PROJECT_ID |"
+PROJECT_INFO=$(cat <<EOF
+| Item | Value |
+|------|-------|
+| Project Name | $PKG_NAME |
+| Version | $PKG_VER |
+| Description | $PKG_DESC |
+| GitHub URL | $GITHUB_URL |
+| Developer Email | $DEVELOPER_EMAIL |
+| Website URL | $WEBSITE_URL |
+| Vercel Account | $VERCEL_ACCOUNT |
+| Vercel Project Name | $VERCEL_PROJECT_NAME |
+| Vercel Project ID | $VERCEL_PROJECT_ID |
+EOF
+)
 
 # -----------------------------
 # 7️⃣ Generate Summary Report
@@ -138,7 +136,7 @@ $PROJECT_INFO
 - RODEMAP.md & WORKFLOW.md included if present
 EOF
 
-# Append RODEMAP.md and WORKFLOW.md
+# Append RODEMAP.md and WORKFLOW.md if exists
 for file in RODEMAP.md WORKFLOW.md; do
   [ -f "$file" ] && echo -e "\n## 📝 $file\n$(cat "$file")" >> "$REPORT"
 done

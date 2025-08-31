@@ -1,3 +1,4 @@
+// src/Home/components/SellingPoints/SellingPoints.tsx
 "use client";
 
 import { FC } from "react";
@@ -14,16 +15,11 @@ const containerVariants: Variants = {
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 // =======================
-// Component
+// SellingPoints Component
 // =======================
 /**
  * SellingPoints

@@ -1,3 +1,4 @@
+// src/Home/AdminTools/SpecialBranchCertificate/SpecialBranchCertificate.tsx
 "use client";
 
 import { FC, memo, useRef } from "react";
@@ -6,8 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import mockCertificateData, {
   SpecialBranchCertificateData,
 } from "@/__mocks__/specialBranchCertificate";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { exportCardAsPNG, exportCardAsPDF } from "@/utils/exportCard";
 
 // Reusable row component
 const InfoRow: FC<{ label: string; value: string }> = memo(({ label, value }) => (
@@ -21,6 +21,7 @@ InfoRow.displayName = "InfoRow";
 const SpecialBranchCertificate: FC = () => {
   const { user, isAuthenticated } = useAuth();
   const certRef = useRef<HTMLDivElement>(null);
+  const elementId = "special-branch-cert";
 
   if (!isAuthenticated || !user) return null;
 
@@ -38,31 +39,20 @@ const SpecialBranchCertificate: FC = () => {
 
   const data: SpecialBranchCertificateData = mockCertificateData;
 
-  // Download PNG
   const handleDownloadPNG = async () => {
     if (!certRef.current) return;
-    const canvas = await html2canvas(certRef.current, { scale: 2 });
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = "special-branch-certificate.png";
-    link.click();
+    await exportCardAsPNG(elementId, "special-branch-certificate.png", "light");
   };
 
-  // Download PDF
   const handleDownloadPDF = async () => {
     if (!certRef.current) return;
-    const canvas = await html2canvas(certRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("special-branch-certificate.pdf");
+    await exportCardAsPDF(elementId, "special-branch-certificate.pdf", true, "light");
   };
 
   return (
     <div className="space-y-4">
       <div
+        id={elementId}
         ref={certRef}
         className={clsx(
           "relative overflow-hidden rounded-xl bg-white p-6 shadow-md space-y-6 animate-fadeInUp"

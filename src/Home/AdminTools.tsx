@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, Suspense, useEffect } from "react";
+import { FC, Suspense, memo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { getLazyCards, EffectiveRole, LazyCard } from "@/config/secretCards.config";
@@ -11,7 +11,9 @@ const AdminTools: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) navigate("/login", { replace: true });
+    if (!isAuthenticated) {
+      navigate("/login", { replace: true });
+    }
   }, [isAuthenticated, navigate]);
 
   if (!isAuthenticated || !user) return null;
@@ -24,6 +26,7 @@ const AdminTools: FC = () => {
     username: user.username || "unknown",
     role: effectiveRole,
   };
+
   const lazyCards: LazyCard[] = getLazyCards(safeUser, effectiveRole);
 
   return (
@@ -47,4 +50,4 @@ const AdminTools: FC = () => {
   );
 };
 
-export default AdminTools;
+export default memo(AdminTools);

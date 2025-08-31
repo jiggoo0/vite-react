@@ -1,111 +1,111 @@
-// home::/data/data/com.termux/files/home/projects/src/config/homeSections.config.tsx
-"use client";
-
-import { ReactNode, lazy } from "react";
+// src/config/homeSections.config.tsx
+import { ReactNode, ComponentType, lazy } from "react";
 import Hero from "@/Home/components/Hero/Hero";
 import About from "@/Home/components/About/About";
 import SellingPoints from "@/Home/components/SellingPoints/SellingPoints";
+import SpeedGuaranteeBanner from "@/Home/components/SellingPoints/SpeedGuaranteeBanner";
 import ServicesSection from "@/Home/components/Services/ServicesSection";
 import TestimonialSlider from "@/Home/components/Testimonials/TestimonialSlider";
 import CaseStudyRedacted from "@/Home/components/Portfolio/CaseStudyRedacted";
-import TrustDashboard, { Metric, Stat, Badge } from "@/Home/components/UserBoard/TrustDashboard";
 import UserBoard, { UserBoardDataReadonly } from "@/Home/components/UserBoard/UserBoard";
 import { caseStudies } from "@/data/caseStudies";
 
-// Lazy-loaded components
+// Lazy-load heavy sections
 const PortfolioGallery = lazy(() => import("@/Home/components/Portfolio/PortfolioGallery"));
 
-// Mock data for TrustDashboard
-const metrics: Metric[] = [];
-const stats: Stat[] = [];
-const badges: Badge[] = [];
+// Wrapper for consistent padding
+export const SectionWrapper: ComponentType<{ children: ReactNode }> = ({ children }) => (
+  <div className="px-6 md:px-12 lg:px-24 py-16">{children}</div>
+);
 
 export interface HomeSection {
   id: string;
-  content: ReactNode;
   enabled: boolean;
+  content: ComponentType;
 }
 
+// Home sections arranged for better flow
 export const homeSections: HomeSection[] = [
+  // Hero & Intro
   {
     id: "hero",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
+    content: () => (
+      <SectionWrapper>
         <Hero />
-      </div>
+      </SectionWrapper>
     ),
   },
   {
     id: "about",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
+    content: () => (
+      <SectionWrapper>
         <About />
-      </div>
+      </SectionWrapper>
     ),
   },
+
+  // Selling points with guarantee banner
   {
     id: "selling-points",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
+    content: () => (
+      <SectionWrapper>
         <SellingPoints />
-      </div>
+        <SpeedGuaranteeBanner />
+      </SectionWrapper>
     ),
   },
+
+  // Services & Portfolio
   {
     id: "services",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
+    content: () => (
+      <SectionWrapper>
         <ServicesSection />
-      </div>
-    ),
-  },
-  {
-    id: "trust-dashboard",
-    enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
-        <TrustDashboard metrics={metrics} stats={stats} badges={badges} />
-      </div>
-    ),
-  },
-  {
-    id: "case-studies",
-    enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
-        <CaseStudyRedacted items={caseStudies} />
-      </div>
+      </SectionWrapper>
     ),
   },
   {
     id: "portfolio",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
+    content: () => (
+      <SectionWrapper>
         <PortfolioGallery />
-      </div>
+      </SectionWrapper>
     ),
   },
+
+  // Case Studies & Testimonials
   {
-    id: "user-board",
+    id: "case-studies",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
-        <UserBoard data={UserBoardDataReadonly} />
-      </div>
+    content: () => (
+      <SectionWrapper>
+        <CaseStudyRedacted items={caseStudies} />
+      </SectionWrapper>
     ),
   },
   {
     id: "testimonials",
     enabled: true,
-    content: (
-      <div className="px-6 md:px-12 lg:px-24 py-16">
+    content: () => (
+      <SectionWrapper>
         <TestimonialSlider />
-      </div>
+      </SectionWrapper>
+    ),
+  },
+
+  // User Board
+  {
+    id: "user-board",
+    enabled: true,
+    content: () => (
+      <SectionWrapper>
+        <UserBoard data={UserBoardDataReadonly} />
+      </SectionWrapper>
     ),
   },
 ];
