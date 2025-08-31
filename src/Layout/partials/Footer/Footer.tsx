@@ -16,7 +16,7 @@ const socialLinks = [
     icon: FaInstagram,
   },
   {
-    href: "mailto:contact@jpsystem.dev",
+    href: "mailto:jpvisouldocs@outlook.co.th",
     label: "Email",
     text: "contact@jpsystem.dev",
     icon: FaEnvelope,

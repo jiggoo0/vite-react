@@ -8,11 +8,10 @@ import ScrollToTop from "@/utils/common/ScrollToTop";
 import FallbackLoader from "@/utils/common/FallbackLoader";
 import ErrorBoundary from "@/utils/common/ErrorBoundary";
 
-import GuardRoutes from "@/Router/GuardRoutes";
-import RoleGuard from "@/Router/RoleGuard";
+import ProtectedRoute from "@/Router/ProtectedRoute";
 import PublicRoute from "@/Router/PublicRoute";
 
-// ---------- Import Home ตรง ๆ (ไม่ lazy) ----------
+// ---------- Import Home ตรง ๆ ----------
 import Home from "@/Home/Home";
 
 // ---------- Lazy-loaded Pages ----------
@@ -51,26 +50,41 @@ const AppRouter: FC = () => (
         <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
       </Route>
 
-      {/* Authenticated Routes */}
-      <Route
-        element={
-          <GuardRoutes>
-            <Layout />
-          </GuardRoutes>
-        }
-      >
-        <Route path="secret" element={lazyPage(SecretPage)} />
-        <Route path="user" element={lazyPage(Dashboard, { role: "user" as const })} />
-        <Route path="manager" element={lazyPage(Dashboard, { role: "manager" as const })} />
+      {/* Protected Routes */}
+      <Route element={<Layout />}>
+        <Route
+          path="user"
+          element={
+            <ProtectedRoute allowedRoles={["user"]}>
+              {lazyPage(Dashboard, { role: "user" as const })}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="manager"
+          element={
+            <ProtectedRoute allowedRoles={["manager"]}>
+              {lazyPage(Dashboard, { role: "manager" as const })}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="secret"
+          element={
+            <ProtectedRoute allowedRoles={["user", "manager", "admin"]}>
+              {lazyPage(SecretPage)}
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       {/* Admin Routes */}
       <Route
         path="admin"
         element={
-          <RoleGuard allowedRoles={["admin"]}>
+          <ProtectedRoute allowedRoles={["admin"]}>
             <Layout />
-          </RoleGuard>
+          </ProtectedRoute>
         }
       >
         <Route
