@@ -12,7 +12,11 @@ const Home: FC = () => {
         .filter((section) => section.enabled)
         .map((section) => (
           <section key={section.id} id={section.id} className="scroll-mt-20">
-            <Suspense fallback={<FallbackLoader message={`⏳ กำลังโหลดส่วน ${section.id}...`} />}>
+            <Suspense
+              fallback={
+                <FallbackLoader message={`⏳ กำลังโหลดส่วน ${section.id}...`} />
+              }
+            >
               {section.content}
             </Suspense>
           </section>

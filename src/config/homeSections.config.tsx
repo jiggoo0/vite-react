@@ -1,3 +1,4 @@
+// home::/data/data/com.termux/files/home/projects/src/config/homeSections.config.tsx
 "use client";
 
 import { ReactNode, lazy } from "react";
@@ -13,14 +14,12 @@ import { caseStudies } from "@/data/caseStudies";
 
 // Lazy-loaded components
 const PortfolioGallery = lazy(() => import("@/Home/components/Portfolio/PortfolioGallery"));
-const SupportFAQ = lazy(() => import("@/Home/components/Portfolio/SupportFAQ"));
 
 // Mock data for TrustDashboard
 const metrics: Metric[] = [];
 const stats: Stat[] = [];
 const badges: Badge[] = [];
 
-// Section config
 export interface HomeSection {
   id: string;
   content: ReactNode;
@@ -28,26 +27,53 @@ export interface HomeSection {
 }
 
 export const homeSections: HomeSection[] = [
-  { id: "hero", enabled: true, content: <Hero /> },
-  { id: "about", enabled: true, content: <About /> },
-  { id: "selling-points", enabled: true, content: <SellingPoints /> },
-  { id: "services", enabled: true, content: <ServicesSection /> },
+  { id: "hero", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><Hero /></div> },
+  { id: "about", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><About /></div> },
+  { id: "selling-points", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><SellingPoints /></div> },
+  { id: "services", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><ServicesSection /></div> },
   {
     id: "trust-dashboard",
     enabled: true,
-    content: <TrustDashboard metrics={metrics} stats={stats} badges={badges} />,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <TrustDashboard metrics={metrics} stats={stats} badges={badges} />
+      </div>
+    ),
   },
   {
     id: "case-studies",
     enabled: true,
-    content: <CaseStudyRedacted items={caseStudies} />,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <CaseStudyRedacted items={caseStudies} />
+      </div>
+    ),
   },
-  { id: "portfolio", enabled: true, content: <PortfolioGallery /> },
+  {
+    id: "portfolio",
+    enabled: true,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <PortfolioGallery />
+      </div>
+    ),
+  },
   {
     id: "user-board",
     enabled: true,
-    content: <UserBoard data={UserBoardDataReadonly} />,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <UserBoard data={UserBoardDataReadonly} />
+      </div>
+    ),
   },
-  { id: "testimonials", enabled: true, content: <TestimonialSlider /> },
-  { id: "faq", enabled: true, content: <SupportFAQ /> },
+  {
+    id: "testimonials",
+    enabled: true,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <TestimonialSlider />
+      </div>
+    ),
+  },
 ];

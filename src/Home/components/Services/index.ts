@@ -5,4 +5,3 @@ export { default as ComplianceFAQ } from "./ComplianceFAQ";
 
 // ui
 export { default as ServiceCard } from "./ui/ServiceCard";
-export { default as ComingSoonServiceCard } from "./ui/ComingSoonServiceCard";
