@@ -1,7 +1,6 @@
 "use client";
 
 import { FC } from "react";
-import Button from "@/Home/components/ui/Button";
 
 interface QuickActionsProps {
   onUpload?: () => void;
@@ -9,18 +8,29 @@ interface QuickActionsProps {
   onSettings?: () => void;
 }
 
-const QuickActions: FC<QuickActionsProps> = ({ onUpload, onReport, onSettings }) => (
-  <div className="flex flex-wrap gap-3">
-    <Button onClick={onUpload} className="btn-primary">
-      📤 อัปโหลด
-    </Button>
-    <Button onClick={onReport} className="btn-secondary">
-      📊 รายงาน
-    </Button>
-    <Button onClick={onSettings} className="btn-accent">
-      ⚙️ ตั้งค่า
-    </Button>
-  </div>
-);
+const QuickActions: FC<QuickActionsProps> = ({ onUpload, onReport, onSettings }) => {
+  return (
+    <div className="flex gap-4 flex-wrap">
+      <button
+        onClick={onUpload}
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        อัปโหลดเอกสาร
+      </button>
+      <button
+        onClick={onReport}
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+      >
+        สร้างรายงาน
+      </button>
+      <button
+        onClick={onSettings}
+        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+      >
+        การตั้งค่า
+      </button>
+    </div>
+  );
+};
 
 export default QuickActions;

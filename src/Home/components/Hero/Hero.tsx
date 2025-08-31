@@ -1,8 +1,9 @@
+// src/Home/components/Hero/Hero.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { HeroBackground, HeroBadge, HeroStats } from "./index";
+import { HeroBackground, HeroBadge, HeroStats } from "@/Home/components/Hero";
+import CTAButtons from "@/Home/components/common/CTAButtons";
 
 /** =======================
  * Hero Section Component
@@ -44,31 +45,7 @@ const Hero = () => {
         </motion.p>
 
         {/* Call-to-Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.6 }}
-          className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4"
-          role="group"
-          aria-label="Hero CTA Buttons"
-        >
-          {/* Portfolio Button */}
-          <a
-            href="#portfolio"
-            className="btn px-6 py-3 text-sm font-semibold rounded-xl border border-neutral-700 bg-transparent text-white hover:bg-neutral-800 transition duration-200 focus:outline-none focus-visible:ring focus-visible:ring-white/40"
-          >
-            ดูผลงาน
-          </a>
-
-          {/* Free Assessment Button */}
-          <Link
-            to="/form"
-            className="btn px-6 py-3 text-sm font-semibold rounded-xl border border-green-500 text-green-400 hover:bg-green-500 hover:text-white transition duration-200 focus:outline-none focus-visible:ring focus-visible:ring-green-500/40"
-          >
-            ประเมินเบื้องต้นฟรี
-          </Link>
-        </motion.div>
+        <CTAButtons />
 
         {/* Hero Statistics */}
         <HeroStats />

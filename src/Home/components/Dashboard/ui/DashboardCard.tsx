@@ -1,53 +1,57 @@
+// src/Home/components/Dashboard/ui/DashboardCard.tsx
 "use client";
 
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode } from "react";
 
 interface DashboardCardProps {
   title: string;
   description: string;
-  actions?: ReactNode; // ปุ่มหรือ element เพิ่มเติมด้านล่าง
-  realtime?: boolean; // ถ้า true จะเปิด Realtime mock update
+  children?: ReactNode;
+  canAccess?: boolean; // true = มีสิทธิ์, false = ไม่มีสิทธิ์
+  realtime?: boolean; // ใช้สำหรับแสดงสถานะ real-time
 }
 
 /**
  * DashboardCard
- * -------------------------
- * แสดง Card สำหรับหน้า Dashboard
- * - title: ชื่อ Card
- * - description: คำอธิบายสั้น
- * - actions: ปุ่มหรือ element เพิ่มเติมด้านล่าง
- * - realtime: เปิด/ปิดการอัปเดตข้อมูลแบบเรียลไทม์
+ * -------------
+ * Component สำหรับแสดงการ์ดบน Dashboard
+ * - ปรับสไตล์ตามสิทธิ์ผู้ใช้
+ * - รองรับ children สำหรับ component เสริม
+ * - รองรับ realtime แสดง badge หรือ status
  */
 const DashboardCard: FC<DashboardCardProps> = ({
   title,
   description,
-  actions,
+  children,
+  canAccess = true,
   realtime = false,
 }) => {
-  const [desc, setDesc] = useState(description);
-
-  useEffect(() => {
-    if (!realtime) return;
-
-    const interval = setInterval(() => {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
-      const updates = [
-        `อัปเดตล่าสุด ${timeStr} น.`,
-        `มีงานใหม่ ${timeStr} น.`,
-        `แจ้งเตือนใหม่ ${timeStr} น.`,
-      ];
-      setDesc(updates[Math.floor(Math.random() * updates.length)]);
-    }, 5000);
-
-    return () => clearInterval(interval); // Cleanup interval
-  }, [realtime]);
-
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow">
-      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-      <p className="mt-2 text-gray-500">{desc}</p>
-      {actions && <div className="mt-4">{actions}</div>}
+    <div
+      className={`p-6 rounded-xl shadow-md transition-shadow ${
+        canAccess
+          ? "bg-white hover:shadow-lg"
+          : "bg-gray-100 border border-gray-300 opacity-70 cursor-not-allowed"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <h2 className={`text-lg font-semibold ${canAccess ? "text-gray-800" : "text-gray-500"}`}>
+          {title}
+        </h2>
+        {realtime && (
+          <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">
+            Realtime
+          </span>
+        )}
+      </div>
+
+      <p className={`mt-2 ${canAccess ? "text-gray-500" : "text-gray-400"}`}>{description}</p>
+
+      {children && <div className="mt-4">{children}</div>}
+
+      {!canAccess && (
+        <div className="text-gray-400 text-sm text-center mt-2">🔒 ไม่มีสิทธิ์เข้าถึง</div>
+      )}
     </div>
   );
 };
