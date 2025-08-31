@@ -27,10 +27,42 @@ export interface HomeSection {
 }
 
 export const homeSections: HomeSection[] = [
-  { id: "hero", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><Hero /></div> },
-  { id: "about", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><About /></div> },
-  { id: "selling-points", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><SellingPoints /></div> },
-  { id: "services", enabled: true, content: <div className="px-6 md:px-12 lg:px-24 py-16"><ServicesSection /></div> },
+  {
+    id: "hero",
+    enabled: true,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <Hero />
+      </div>
+    ),
+  },
+  {
+    id: "about",
+    enabled: true,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <About />
+      </div>
+    ),
+  },
+  {
+    id: "selling-points",
+    enabled: true,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <SellingPoints />
+      </div>
+    ),
+  },
+  {
+    id: "services",
+    enabled: true,
+    content: (
+      <div className="px-6 md:px-12 lg:px-24 py-16">
+        <ServicesSection />
+      </div>
+    ),
+  },
   {
     id: "trust-dashboard",
     enabled: true,

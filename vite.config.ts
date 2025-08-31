@@ -32,7 +32,6 @@ export default defineConfig({
           { src: "pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
         ],
       },
-      // ปิด PWA ชั่วคราวบน Termux เพื่อหลีกเลี่ยง build crash
       disable: isTermux,
     }),
   ],
@@ -67,7 +66,7 @@ export default defineConfig({
     outDir: "dist",
     target: "esnext",
     sourcemap: true,
-    minify: "esbuild", // ใช้ esbuild แทน terser
+    minify: "esbuild",
     chunkSizeWarningLimit: 2000,
     cssCodeSplit: true,
     rollupOptions: {

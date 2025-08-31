@@ -17,19 +17,12 @@ const features: string[] = [
 ];
 
 const FeatureList: FC<FeatureListProps> = ({ className }) => (
-  <section
-    role="region"
-    aria-labelledby="feature-list-title"
-    className={clsx("mt-8", className)}
-  >
+  <section role="region" aria-labelledby="feature-list-title" className={clsx("mt-8", className)}>
     <h3 id="feature-list-title" className="sr-only">
       จุดเด่นบริการของเรา
     </h3>
 
-    <ul
-      aria-label="รายการจุดเด่นของบริการทั้งหมด"
-      className="space-y-3"
-    >
+    <ul aria-label="รายการจุดเด่นของบริการทั้งหมด" className="space-y-3">
       {features.map((feature, idx) => (
         <li
           key={idx}
@@ -44,9 +37,7 @@ const FeatureList: FC<FeatureListProps> = ({ className }) => (
             className="mt-1 h-5 w-5 text-green-500 flex-shrink-0"
             aria-hidden="true"
           />
-          <span className="text-base text-gray-700 dark:text-gray-300">
-            {feature}
-          </span>
+          <span className="text-base text-gray-700 dark:text-gray-300">{feature}</span>
         </li>
       ))}
     </ul>

@@ -93,10 +93,18 @@ body {
 /* ==============================
    Utility Classes
 ============================== */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.hidden { display: none !important; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.hidden {
+  display: none !important;
+}
 
 .container {
   width: 100%;
@@ -110,52 +118,104 @@ body {
 /* ==============================
    Scrollbar
 ============================== */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-bg-light); }
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-light);
+}
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-primary);
   border-radius: 4px;
   transition: background-color var(--transition-base) ease;
 }
-[data-theme="dark"] ::-webkit-scrollbar-track { background: var(--color-bg); }
-[data-theme="dark"] ::-webkit-scrollbar-thumb { background-color: var(--color-primary-hover); }
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary-hover);
+}
 
 /* ==============================
    Tailwind Variable Mapping
 ============================== */
-.bg-primary { background-color: var(--color-primary); }
-.bg-primary-hover:hover { background-color: var(--color-primary-hover); }
-.text-primary { color: var(--color-primary); }
-.text-primary-content { color: var(--color-primary-content); }
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-primary-hover:hover {
+  background-color: var(--color-primary-hover);
+}
+.text-primary {
+  color: var(--color-primary);
+}
+.text-primary-content {
+  color: var(--color-primary-content);
+}
 
-.bg-secondary { background-color: var(--color-secondary); }
-.text-secondary { color: var(--color-secondary); }
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+.text-secondary {
+  color: var(--color-secondary);
+}
 
-.bg-accent { background-color: var(--color-accent); }
-.text-accent { color: var(--color-accent); }
+.bg-accent {
+  background-color: var(--color-accent);
+}
+.text-accent {
+  color: var(--color-accent);
+}
 
-.bg-neutral { background-color: var(--color-neutral); }
-.text-neutral { color: var(--color-neutral); }
+.bg-neutral {
+  background-color: var(--color-neutral);
+}
+.text-neutral {
+  color: var(--color-neutral);
+}
 
 /* ==============================
    Semantic Colors Mapping
 ============================== */
-.bg-info { background-color: var(--color-info); }
-.text-info { color: var(--color-info); }
+.bg-info {
+  background-color: var(--color-info);
+}
+.text-info {
+  color: var(--color-info);
+}
 
-.bg-success { background-color: var(--color-success); }
-.text-success { color: var(--color-success); }
+.bg-success {
+  background-color: var(--color-success);
+}
+.text-success {
+  color: var(--color-success);
+}
 
-.bg-warning { background-color: var(--color-warning); }
-.text-warning { color: var(--color-warning); }
+.bg-warning {
+  background-color: var(--color-warning);
+}
+.text-warning {
+  color: var(--color-warning);
+}
 
-.bg-error { background-color: var(--color-error); }
-.text-error { color: var(--color-error); }
+.bg-error {
+  background-color: var(--color-error);
+}
+.text-error {
+  color: var(--color-error);
+}
 
 /* ==============================
    Background / Text Utilities
 ============================== */
-.bg-bg { background-color: var(--color-bg); }
-.bg-bg-light { background-color: var(--color-bg-light); }
-.text-text { color: var(--color-text); }
-.text-text-muted { color: var(--color-text-muted); }
+.bg-bg {
+  background-color: var(--color-bg);
+}
+.bg-bg-light {
+  background-color: var(--color-bg-light);
+}
+.text-text {
+  color: var(--color-text);
+}
+.text-text-muted {
+  color: var(--color-text-muted);
+}

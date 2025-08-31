@@ -92,24 +92,36 @@
 - Email: contact@jpsystem.dev
 - Messenger: @jaopa.zerofour
   🧩 แนวทางการออกแบบเว็บไซต์
+
 1. Layout ที่ชัดเจน
+
 - ใช้ Grid หรือ Flexbox เพื่อจัดวาง Header, Content, Sidebar, Footer อย่างเป็นระเบียบ
+
 2. สีและ Typography
+
 - ใช้สีที่มีคอนทราสต์สูง อ่านง่าย
 - เลือกฟอนต์ให้เหมาะกับบริบท (ทางการ vs เป็นกันเอง)
 - ขนาดตัวอักษรและระยะห่างต้องเหมาะสม
+
 3. ปุ่มและการโต้ตอบ
+
 - ปุ่มต้องกดง่าย มีสถานะชัดเจน (hover, active, disabled)
 - ใช้ข้อความที่เข้าใจง่าย เช่น “ยืนยัน”, “ย้อนกลับ”
+
 4. การนำทาง
+
 - เมนูหลักอยู่ในตำแหน่งที่ผู้ใช้คุ้นเคย  
   มี Breadcrumbs และระบบค้นหา
+
 5. รองรับมือถือ (Responsive)
+
 - UI ปรับตามอุปกรณ์
 - ปุ่มและเมนูต้องไม่เล็กเกินไป
+
 6. Feedback จากระบบ
+
 - แจ้งเตือนเมื่อมีการกระทำ เช่น “บันทึกสำเร็จ”
- ใช้ loading indicators หรือ skeleton screens
+  ใช้ loading indicators หรือ skeleton screens
   ⚙️ ข้อกำชับด้านการพัฒนา
 - ห้ามเขียนโค้ดซ้ำซ้อน
 - ห้าม import ผิดหรือตั้งค่าไม่ตรง
@@ -119,40 +131,53 @@
 - ออกแบบให้ดูสมจริงและน่าเชื่อถือ
 - ทุก Component ต้องผ่าน Type-check, ESLint, Prettier
 - ห้ามเปลี่ยนชื่อไฟล์หรือโครงสร้างโดยไม่ได้รับอนุญาต
+
 ## โครงการ
+
 - หน้า: Home.tsx / SecretPage.tsx
 - เทคโนโลยี: React + TypeScript + Vite + TailwindCSS + DaisyUI
 - เป้าหมาย: สร้าง/ปรับ Component ให้ Production-ready, Type-safe, responsive, accessible, minimal UI, animation feedback
+
 ## 1️⃣ Home.tsx Components & File Actions
+
 | Component | Action | Source File / Suggested Path | Notes / Enhancement Ideas `src/Home/components/UserBoard/TrustBadge.tsx` | เพิ่ม animation, counter metrics |
 | PortfolioGallery / CaseStudy | ใช้ไฟล์เดิม | `src/Home/components/Portfolio/PortfolioGallery.tsx` | เลือก case study เด่น, lazy load, hover overlay |
 | PortfolioOverlay | สร้างใหม่ | `src/Home/components/Portfolio/PortfolioOverlay.tsx` | Overlay hover + CTA + animation |
 | CTASection | สร้างใหม่ | `src/Home/components/CTA/CTASection.tsx` | ปุ่ม Call-to-Action, props control, Tailwind/DaisyUI |
 | FooterMinimal | ใช้ไฟล์เดิม | `src/Layout/partials/Footer/Footer.tsx` | ปรับ minimal, link socials/contact, responsive |
+
 ## 2️⃣ SecretPage.tsx / SecretSection Components & File Actions
-| Component | Action | Source File / Suggested Path | Notes / Enhancement Ideas |
-|-----------|--------|-----------------------------|---------------------------|
-| AdminLoginForm | ปรับแก้ | `src/Home/Login.tsx` | แยก logic, UI secure, error handling, accessibility |
-| SecureDocumentList | สร้างใหม่ | `src/Home/components/SecretSection/SecureDocumentList.tsx` | Wrapper ของ IdCardPreview + RegistrationPreview + export/download actions |
-| CustomerDataPanel | สร้างใหม่ | `src/Home/components/SecretSection/CustomerDataPanel.tsx` | รวม MetricCard, BadgeCard, Dashboard mini panel ของลูกค้า |
-| AuditLogViewer | ปรับแก้ | `src/Home/components/SecretSection/AuditTrailViewer.tsx` | เพิ่ม filter/search/pagination, highlight changes |
-| AccessControlBanner | สร้างใหม่ | `src/Home/components/SecretSection/AccessControlBanner.tsx` | แจ้งสิทธิ์เข้าถึง, role-based UI feedback |
-| SecureExportConsole | ปรับแก้ | `src/Home/components/SecretSection/SecureExportConsole.tsx` | ปรับ UI ใช้ง่าย, safe mode, feedback animation |
+
+| Component           | Action    | Source File / Suggested Path                                | Notes / Enhancement Ideas                                                 |
+| ------------------- | --------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| AdminLoginForm      | ปรับแก้   | `src/Home/Login.tsx`                                        | แยก logic, UI secure, error handling, accessibility                       |
+| SecureDocumentList  | สร้างใหม่ | `src/Home/components/SecretSection/SecureDocumentList.tsx`  | Wrapper ของ IdCardPreview + RegistrationPreview + export/download actions |
+| CustomerDataPanel   | สร้างใหม่ | `src/Home/components/SecretSection/CustomerDataPanel.tsx`   | รวม MetricCard, BadgeCard, Dashboard mini panel ของลูกค้า                 |
+| AuditLogViewer      | ปรับแก้   | `src/Home/components/SecretSection/AuditTrailViewer.tsx`    | เพิ่ม filter/search/pagination, highlight changes                         |
+| AccessControlBanner | สร้างใหม่ | `src/Home/components/SecretSection/AccessControlBanner.tsx` | แจ้งสิทธิ์เข้าถึง, role-based UI feedback                                 |
+| SecureExportConsole | ปรับแก้   | `src/Home/components/SecretSection/SecureExportConsole.tsx` | ปรับ UI ใช้ง่าย, safe mode, feedback animation                            |
+
 ## 3️⃣ Enhancement Guidelines
-1. แยก **logic** ออกจาก **UI components** ด้วย custom hooks สำหรับ data fetching หรือ export  
-2. ใช้ **Tailwind/DaisyUI** เป็นระบบ styling หลัก, เพิ่ม responsive + accessibility  
-3. ใช้ **animation/motion** กับ interactive / sensitive actions เช่น export, delete, hover effects  
-4. ทุก Component ต้องเป็น **FC<Props>** และ type-safe  
-5. Home.tsx: เน้น marketing + trust + CTA, Hero dynamic, Portfolio gallery filterable 
-6. SecretPage.tsx: เน้น security + admin workflow + real-time metrics + role-based access  
-## 4️⃣ Action Summary 
-- **สร้างไฟล์ใหม่**: HeroStatsDynamic, ServiceBadge, PortfolioOverlay, CTASection, AccessControlBanner, CustomerDataPanel, SecureDocumentList  
-- **ปรับแก้ไฟล์เดิม**: AdminLoginForm, AuditLogViewer, SecureExportConsole  
-- **ใช้ไฟล์เดิม**: HeroSection, ServiceOverview, TrustBadge, PortfolioGallery, FooterMinimal  
+
+1. แยก **logic** ออกจาก **UI components** ด้วย custom hooks สำหรับ data fetching หรือ export
+2. ใช้ **Tailwind/DaisyUI** เป็นระบบ styling หลัก, เพิ่ม responsive + accessibility
+3. ใช้ **animation/motion** กับ interactive / sensitive actions เช่น export, delete, hover effects
+4. ทุก Component ต้องเป็น **FC<Props>** และ type-safe
+5. Home.tsx: เน้น marketing + trust + CTA, Hero dynamic, Portfolio gallery filterable
+6. SecretPage.tsx: เน้น security + admin workflow + real-time metrics + role-based access
+
+## 4️⃣ Action Summary
+
+- **สร้างไฟล์ใหม่**: HeroStatsDynamic, ServiceBadge, PortfolioOverlay, CTASection, AccessControlBanner, CustomerDataPanel, SecureDocumentList
+- **ปรับแก้ไฟล์เดิม**: AdminLoginForm, AuditLogViewer, SecureExportConsole
+- **ใช้ไฟล์เดิม**: HeroSection, ServiceOverview, TrustBadge, PortfolioGallery, FooterMinimal
+
 ### ⚡ Usage
-- ให้ AI สร้าง/ปรับ Component ตามตารางด้านบน  
-- ตรวจสอบให้ผ่าน **Type-check, ESLint, Prettier**  
-- ส่งโค้ด **พร้อมใช้งานทันที** ในโครงสร้างโปรเจกต์ปัจจุบัน  
+
+- ให้ AI สร้าง/ปรับ Component ตามตารางด้านบน
+- ตรวจสอบให้ผ่าน **Type-check, ESLint, Prettier**
+- ส่งโค้ด **พร้อมใช้งานทันที** ในโครงสร้างโปรเจกต์ปัจจุบัน
 - เพิ่ม comment หรือ prop interface สำหรับ developer ใช้งานต่อได้ง่าย.
-หลังจากที่ได้รับรายละเอียดทั้งหมดให้สรุปเนื้อหาที่ส่งให้เข้าใจโจทย์หรือเข้าใจรายละเอียดที่ส่งให้มากน้อยขนาดไหนเพื่อประเมินศักยภาพของ AI ตัวนั้นพร้อมทำงานหรือไม่
+  หลังจากที่ได้รับรายละเอียดทั้งหมดให้สรุปเนื้อหาที่ส่งให้เข้าใจโจทย์หรือเข้าใจรายละเอียดที่ส่งให้มากน้อยขนาดไหนเพื่อประเมินศักยภาพของ AI ตัวนั้นพร้อมทำงานหรือไม่
+
 #####
