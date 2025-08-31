@@ -2,9 +2,8 @@
 
 import { ReactNode, lazy } from "react";
 import WithBlurIfUser from "@/Home/components/common/WithBlurIfUser";
-import SecretDescription from "@/Home/components/SecretSection/SecretDescription";
 import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotificationCard";
-import DriverLicenseForm from "@/Home/SecretPage/DriverLicense/DriverLicenseForm";
+import DriverLicenseForm from "@/Home/AdminTools/DriverLicense/DriverLicenseForm";
 import IdCardForm from "@/Home/IdCardForm";
 import { kbankMockData } from "@__mocks__/kbankIOSNotification";
 import mockRegistrationData from "@__mocks__/mockRegistrationData";
@@ -13,16 +12,16 @@ import mockMedicalCertificate from "@__mocks__/mockMedicalCertificate";
 
 // Lazy-loaded components
 const RegistrationPreview = lazy(
-  () => import("@/Home/SecretPage/RegistrationPreview/RegistrationPreview")
+  () => import("@/Home/AdminTools/RegistrationPreview/RegistrationPreview")
 );
 const SalaryCertificate = lazy(
-  () => import("@/Home/SecretPage/SalaryCertificate/SalaryCertificate")
+  () => import("@/Home/AdminTools/SalaryCertificate/SalaryCertificate")
 );
 const MedicalCertificate = lazy(
-  () => import("@/Home/SecretPage/MedicalCertificate/MedicalCertificate")
+  () => import("@/Home/AdminTools/MedicalCertificate/MedicalCertificate")
 );
 const SpecialBranchCertificate = lazy(
-  () => import("@/Home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate")
+  () => import("@/Home/AdminTools/SpecialBranchCertificate/SpecialBranchCertificate")
 );
 
 export type EffectiveRole = "admin" | "user" | "manager";
@@ -55,7 +54,6 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
   const nextDelay = () => (delayCounter += BASE_DELAY);
 
   const baseCards: LazyCard[] = [
-    { title: "Description", component: <SecretDescription user={user} />, delay: nextDelay() },
     {
       title: "Driver License Form",
       component: wrapBlur(

@@ -69,3 +69,4 @@ pnpm-lock.yaml
 
 # Tailwind / PostCSS / Vite cache
 node_modules/.vite/
+

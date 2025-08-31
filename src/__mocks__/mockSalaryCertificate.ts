@@ -1,4 +1,4 @@
-import type { SalaryCertificateData } from "@home/SecretPage/SalaryCertificate/types/salaryCertificate";
+import type { SalaryCertificateData } from "@home/AdminTools/SalaryCertificate/types/salaryCertificate";
 
 export const mockSalaryCertificate: SalaryCertificateData = {
   companyName: "บริษัท ตัวอย่าง จำกัด",

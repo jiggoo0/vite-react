@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { DriverLicenseFieldConfig } from "@/Home/SecretPage/DriverLicense/types/driverLicense";
+import type { DriverLicenseFieldConfig } from "@/Home/AdminTools/DriverLicense/types/driverLicense";
 
 export interface CardConfig {
   id: string;

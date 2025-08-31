@@ -16,7 +16,7 @@ import Home from "@/Home/Home";
 
 // ---------- Lazy-loaded Pages ----------
 const Login = lazy(() => import("@/Home/Login"));
-const SecretPage = lazy(() => import("@/Home/SecretPage"));
+const AdminTools = lazy(() => import("@/Home/AdminTools"));
 const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 const Dashboard = lazy(() => import("@/Home/components/Dashboard/Dashboard"));
@@ -72,7 +72,7 @@ const AppRouter: FC = () => (
           path="secret"
           element={
             <ProtectedRoute allowedRoles={["user", "manager", "admin"]}>
-              {lazyPage(SecretPage)}
+              {lazyPage(AdminTools)}
             </ProtectedRoute>
           }
         />
@@ -91,7 +91,7 @@ const AppRouter: FC = () => (
           index
           element={<div className="p-6 text-xl font-semibold text-white">🛠️ Admin Dashboard</div>}
         />
-        <Route path="secret" element={lazyPage(SecretPage)} />
+        <Route path="secret" element={lazyPage(AdminTools)} />
         <Route path="dashboard" element={lazyPage(Dashboard, { role: "admin" as const })} />
       </Route>
 

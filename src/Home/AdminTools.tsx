@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getLazyCards, EffectiveRole, LazyCard } from "@/config/secretCards.config";
 import PageSection from "@/Home/components/common/PageSection";
 
-const SecretPage: FC = () => {
+const AdminTools: FC = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -47,4 +47,4 @@ const SecretPage: FC = () => {
   );
 };
 
-export default SecretPage;
+export default AdminTools;

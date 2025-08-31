@@ -1,5 +1,5 @@
 // src/__mocks__/mockRegistrationData.ts
-import type { RegistrationPreviewProps } from "@home/SecretPage/RegistrationPreview/RegistrationPreview";
+import type { RegistrationPreviewProps } from "@home/AdminTools/RegistrationPreview/RegistrationPreview";
 
 export const mockRegistrationData: RegistrationPreviewProps = {
   registrationNumber: "0105551234567",
