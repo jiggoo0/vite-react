@@ -39,7 +39,6 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
 
   const handleDownloadPdf = async () => {
     if (!ref.current) return;
-
     const canvas = await html2canvas(ref.current, {
       scale: 2,
       useCORS: true,
@@ -50,7 +49,6 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
       unit: "pt",
       format: [(canvas.width * 72) / 96, (canvas.height * 72) / 96],
     });
-
     pdf.addImage(
       canvas.toDataURL("image/png"),
       "PNG",
@@ -60,6 +58,19 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
       (canvas.height * 72) / 96
     );
     pdf.save("registration-preview.pdf");
+  };
+
+  const handleDownloadPng = async () => {
+    if (!ref.current) return;
+    const canvas = await html2canvas(ref.current, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fff",
+    });
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "registration-preview.png";
+    link.click();
   };
 
   return (
@@ -136,13 +147,19 @@ const RegistrationPreview: FC<RegistrationPreviewProps> = ({
         </div>
       </section>
 
-      {/* Download Button */}
-      <div className="mt-6 text-center">
+      {/* Download Buttons */}
+      <div className="mt-6 flex justify-center gap-4">
         <button
           className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
           onClick={handleDownloadPdf}
         >
-          ดาวน์โหลด PDF
+          Download PDF
+        </button>
+        <button
+          className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
+          onClick={handleDownloadPng}
+        >
+          Download PNG
         </button>
       </div>
     </>

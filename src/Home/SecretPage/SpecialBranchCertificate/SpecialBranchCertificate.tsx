@@ -1,11 +1,13 @@
 "use client";
 
-import { FC, memo } from "react";
+import { FC, memo, useRef } from "react";
 import clsx from "clsx";
 import { useAuth } from "@/hooks/useAuth";
 import mockCertificateData, {
   SpecialBranchCertificateData,
 } from "@/__mocks__/specialBranchCertificate";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 // Reusable row component
 const InfoRow: FC<{ label: string; value: string }> = memo(({ label, value }) => (
@@ -18,6 +20,8 @@ InfoRow.displayName = "InfoRow";
 
 const SpecialBranchCertificate: FC = () => {
   const { user, isAuthenticated } = useAuth();
+  const certRef = useRef<HTMLDivElement>(null);
+
   if (!isAuthenticated || !user) return null;
 
   const effectiveRole: "admin" | "manager" | "user" = ["admin", "manager", "user"].includes(
@@ -34,48 +38,89 @@ const SpecialBranchCertificate: FC = () => {
 
   const data: SpecialBranchCertificateData = mockCertificateData;
 
+  // Download PNG
+  const handleDownloadPNG = async () => {
+    if (!certRef.current) return;
+    const canvas = await html2canvas(certRef.current, { scale: 2 });
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "special-branch-certificate.png";
+    link.click();
+  };
+
+  // Download PDF
+  const handleDownloadPDF = async () => {
+    if (!certRef.current) return;
+    const canvas = await html2canvas(certRef.current, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("special-branch-certificate.pdf");
+  };
+
   return (
-    <div
-      className={clsx(
-        "relative overflow-hidden rounded-xl bg-white p-6 shadow-md space-y-6 animate-fadeInUp"
-      )}
-    >
-      {/* Background */}
+    <div className="space-y-4">
       <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: "url('/images/certificate-bg.png')",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center space-y-4">
-        <img
-          src="/assets/images/krut.webp"
-          alt="Royal Thai Police Emblem"
-          className="h-28 w-auto object-contain"
+        ref={certRef}
+        className={clsx(
+          "relative overflow-hidden rounded-xl bg-white p-6 shadow-md space-y-6 animate-fadeInUp"
+        )}
+      >
+        {/* Background */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: "url('/images/certificate-bg.png')",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
         />
-        <h2 className="text-3xl font-bold text-center">Special Branch Certificate</h2>
 
-        <div className="w-full max-w-md space-y-2 text-base leading-relaxed">
-          {Object.entries(data).map(([key, value]) => (
-            <InfoRow key={key} label={key} value={value as string} />
-          ))}
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center space-y-4">
+          <img
+            src="/assets/images/krut.webp"
+            alt="Royal Thai Police Emblem"
+            className="h-28 w-auto object-contain"
+          />
+          <h2 className="text-3xl font-bold text-center">Special Branch Certificate</h2>
+
+          <div className="w-full max-w-md space-y-2 text-base leading-relaxed">
+            {Object.entries(data).map(([key, value]) => (
+              <InfoRow key={key} label={key} value={value as string} />
+            ))}
+          </div>
+
+          <p className="text-sm text-red-500 italic text-center">
+            หมายเหตุ: รายละเอียดเนื้อหาทั้งหมดเป็นการจัดวาง ยังไม่รีทัช
+            หากเนื้อหาไม่ตรงให้ลูกค้าทักแชทแจ้งทันที เมื่อรีทัชแล้วไม่สามารถแก้ไขได้ทุกกรณี
+          </p>
+
+          <img
+            src="/images/test.jpg"
+            alt="ตัวอย่างประกอบ"
+            className="h-[150px] w-auto object-contain rounded-md shadow-sm"
+          />
         </div>
+      </div>
 
-        <p className="text-sm text-red-500 italic text-center">
-          หมายเหตุ: รายละเอียดเนื้อหาทั้งหมดเป็นการจัดวาง ยังไม่รีทัช
-          หากเนื้อหาไม่ตรงให้ลูกค้าทักแชทแจ้งทันที เมื่อรีทัชแล้วไม่สามารถแก้ไขได้ทุกกรณี
-        </p>
-
-        <img
-          src="/images/test.jpg"
-          alt="ตัวอย่างประกอบ"
-          className="h-[150px] w-auto object-contain rounded-md shadow-sm"
-        />
+      {/* Action buttons */}
+      <div className="flex justify-center space-x-4">
+        <button
+          onClick={handleDownloadPDF}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700"
+        >
+          Download PDF
+        </button>
+        <button
+          onClick={handleDownloadPNG}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
+        >
+          Download PNG
+        </button>
       </div>
     </div>
   );

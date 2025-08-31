@@ -1,14 +1,14 @@
 "use client";
 
-import { FC, useMemo } from "react";
+import { FC, useMemo, useRef } from "react";
 import QRCode from "react-qr-code";
+import html2canvas from "html2canvas";
 
 // ==============================
 // Helpers
 // ==============================
 const formatCurrency = (value?: string | number): string | null => {
   if (value === undefined || isNaN(Number(value))) return null;
-
   return Number(value).toLocaleString("th-TH", {
     style: "currency",
     currency: "THB",
@@ -41,7 +41,6 @@ interface AmountProps {
 const Amount: FC<AmountProps> = ({ amount }) => {
   const formatted = useMemo(() => formatCurrency(amount), [amount]);
   if (!formatted) return null;
-
   const isPositive = Number(amount) >= 0;
 
   return (
@@ -142,12 +141,25 @@ interface KbankNotificationCardProps {
 }
 
 const KbankNotificationCard: FC<KbankNotificationCardProps> = ({ data }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPNG = async () => {
+    if (!cardRef.current) return;
+
+    const canvas = await html2canvas(cardRef.current, { scale: 2, useCORS: true });
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = `kbank-notification-${data.id}.png`;
+    link.click();
+  };
+
   return (
     <section
+      ref={cardRef}
       className="rounded-3xl p-5 shadow bg-white border border-gray-200
                  hover:shadow-lg hover:-translate-y-1 transition-transform duration-200
                  focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-                 max-w-md mx-auto"
+                 max-w-md mx-auto mb-6 relative"
       role="region"
       aria-labelledby={`notif-title-${data.id}`}
       tabIndex={0}
@@ -192,6 +204,16 @@ const KbankNotificationCard: FC<KbankNotificationCardProps> = ({ data }) => {
         time={data.time}
         qrCodeUrl={data.qrCodeUrl}
       />
+
+      {/* Download Button */}
+      <div className="mt-4 text-right">
+        <button
+          className="bg-blue-600 text-white px-4 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm"
+          onClick={handleDownloadPNG}
+        >
+          ดาวน์โหลด PNG
+        </button>
+      </div>
     </section>
   );
 };

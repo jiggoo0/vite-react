@@ -2,12 +2,8 @@
 
 import { ReactNode, lazy } from "react";
 import WithBlurIfUser from "@/Home/components/common/WithBlurIfUser";
-import SecretHeader from "@/Home/components/SecretSection/SecretHeader";
 import SecretDescription from "@/Home/components/SecretSection/SecretDescription";
-import SecretActions from "@/Home/components/SecretSection/SecretActions";
-import DocumentDownload from "@/Home/components/SecretSection/DocumentDownload";
 import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotificationCard";
-import BlurContact from "@/Home/components/SecretSection/BlurContact/BlurContact";
 import DriverLicenseForm from "@/Home/SecretPage/DriverLicense/DriverLicenseForm";
 import IdCardForm from "@/Home/IdCardForm";
 import { kbankMockData } from "@__mocks__/kbankIOSNotification";
@@ -29,9 +25,6 @@ const SpecialBranchCertificate = lazy(
   () => import("@/Home/SecretPage/SpecialBranchCertificate/SpecialBranchCertificate")
 );
 
-// ---------------------
-// Types
-// ---------------------
 export type EffectiveRole = "admin" | "user" | "manager";
 
 export interface LazyCard {
@@ -46,23 +39,14 @@ interface User {
   role: EffectiveRole;
 }
 
-// ---------------------
-// Constants
-// ---------------------
 const BASE_DELAY = 50;
 
-// ---------------------
-// Utilities
-// ---------------------
 const wrapBlur = (node: ReactNode, isBlurred?: boolean, overlayMessage?: ReactNode) => (
   <WithBlurIfUser isBlurred={isBlurred} overlayMessage={overlayMessage}>
     {node}
   </WithBlurIfUser>
 );
 
-// ---------------------
-// Exported function
-// ---------------------
 export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
   const isAdminOrManager = ["admin", "manager"].includes(effectiveRole);
   const shouldBlur = effectiveRole !== "admin";
@@ -70,26 +54,8 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
   let delayCounter = 0;
   const nextDelay = () => (delayCounter += BASE_DELAY);
 
-  // Base cards
   const baseCards: LazyCard[] = [
-    {
-      title: "Header",
-      component: <SecretHeader />,
-      delay: nextDelay(),
-      fallback: <div>Loading Header...</div>,
-    },
-    {
-      title: "Description",
-      component: <SecretDescription user={user} />,
-      delay: nextDelay(),
-      fallback: <div>Loading Description...</div>,
-    },
-    {
-      title: "Download",
-      component: <DocumentDownload />,
-      delay: nextDelay(),
-      fallback: <div>Loading Download...</div>,
-    },
+    { title: "Description", component: <SecretDescription user={user} />, delay: nextDelay() },
     {
       title: "Driver License Form",
       component: wrapBlur(
@@ -98,13 +64,11 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
         "เฉพาะแอดมินเท่านั้น"
       ),
       delay: nextDelay(),
-      fallback: <div>Loading Driver License Form...</div>,
     },
     {
       title: "ID Card Form",
       component: wrapBlur(<IdCardForm role={effectiveRole} />, shouldBlur, "เฉพาะแอดมินเท่านั้น"),
       delay: nextDelay(),
-      fallback: <div>Loading ID Card Form...</div>,
     },
     {
       title: "Registration Preview",
@@ -114,7 +78,6 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
         "เฉพาะแอดมินเท่านั้น"
       ),
       delay: nextDelay(),
-      fallback: <div>Loading Registration Preview...</div>,
     },
     {
       title: "Salary Certificate",
@@ -124,7 +87,6 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
         "เฉพาะแอดมินเท่านั้น"
       ),
       delay: nextDelay(),
-      fallback: <div>Loading Salary Certificate...</div>,
     },
     {
       title: "Medical Certificate",
@@ -134,7 +96,6 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
         "เฉพาะแอดมินเท่านั้น"
       ),
       delay: nextDelay(),
-      fallback: <div>Loading Medical Certificate...</div>,
     },
     {
       title: "Kbank Notifications",
@@ -150,7 +111,6 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
         </>
       ),
       delay: nextDelay(),
-      fallback: <div>Loading Kbank Notifications...</div>,
     },
   ];
 
@@ -159,26 +119,8 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
       title: "Special Branch Certificate",
       component: <SpecialBranchCertificate />,
       delay: nextDelay(),
-      fallback: <div>Loading Special Branch Certificate...</div>,
     });
   }
 
-  const footerCards: LazyCard[] = [
-    {
-      title: "Contact",
-      component: (
-        <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />
-      ),
-      delay: nextDelay(),
-      fallback: <div>Loading Contact...</div>,
-    },
-    {
-      title: "Footer / Actions",
-      component: <SecretActions role={effectiveRole} />,
-      delay: nextDelay(),
-      fallback: <div>Loading Footer Actions...</div>,
-    },
-  ];
-
-  return [...baseCards, ...footerCards];
+  return baseCards;
 };

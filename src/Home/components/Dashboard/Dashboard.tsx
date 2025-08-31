@@ -11,6 +11,8 @@ import TeamOverview, {
   TeamMember as TeamOverviewMember,
 } from "@/Home/components/Dashboard/ui/TeamOverview";
 import UserStats from "@/Home/components/Dashboard/ui/UserStats";
+import BlurContact from "@/Home/components/Dashboard/common/BlurContact/BlurContact";
+import DocumentDownload from "@/Home/components/Dashboard/common/DocumentDownload/DocumentDownload";
 
 import { useAuth } from "@/hooks/useAuth";
 import { dashboardCards } from "@/config/dashboardCards";
@@ -22,18 +24,15 @@ import {
 const Dashboard: FC = () => {
   const { user } = useAuth();
 
-  // -------- User Info --------
   const [username, setUsername] = useState("ผู้ใช้");
   const [role, setRole] = useState<"admin" | "manager" | "user">("user");
 
-  // -------- Activities --------
   const [activities] = useState<Activity[]>([
     { id: "1", action: "เข้าสู่ระบบ", timestamp: "09:00 น." },
     { id: "2", action: "อัปโหลดเอกสาร", timestamp: "09:30 น." },
     { id: "3", action: "สร้างรายงาน", timestamp: "10:00 น." },
   ]);
 
-  // -------- Stats --------
   const [stats] = useState([
     { id: "1", label: "เอกสารทั้งหมด", value: 120 },
     { id: "2", label: "สมาชิกทีม", value: initialTeamMembers.length },
@@ -41,13 +40,9 @@ const Dashboard: FC = () => {
     { id: "4", label: "แจ้งเตือน", value: 3 },
   ]);
 
-  // -------- Team Members --------
   const [teamMembers] = useState<TeamMemberType[]>(initialTeamMembers);
-
-  // -------- Dashboard Cards --------
   const [cards, setCards] = useState(dashboardCards[role]);
 
-  // -------- Initialize User --------
   useEffect(() => {
     if (!user) return;
     setUsername(user.username);
@@ -55,7 +50,6 @@ const Dashboard: FC = () => {
     setCards(dashboardCards[user.role]);
   }, [user]);
 
-  // -------- Map Team Members for TeamOverview --------
   const mappedMembers: TeamOverviewMember[] = teamMembers.map((m) => ({
     id: m.id,
     name: m.name,
@@ -64,11 +58,21 @@ const Dashboard: FC = () => {
   }));
 
   return (
-    <main className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <main className="min-h-screen bg-gray-50 py-10">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        {/* ⚠️ Security Notice */}
+        <div className="p-5 text-center bg-yellow-50 text-yellow-900 border border-yellow-300 rounded-lg shadow-sm">
+          <p className="text-lg font-semibold mb-2">⚠️ โปรดทราบ</p>
+          <p className="text-sm leading-relaxed">
+            พื้นที่นี้ออกแบบเพื่อความปลอดภัยของผู้ใช้งานเท่านั้น.
+            กรุณาใช้เฉพาะเครื่องประจำและห้ามแชร์กับผู้อื่น. หากตรวจพบการใช้งานจากอุปกรณ์อื่น
+            ระบบจะยุติการใช้งานทันที. ถือเป็นข้อตกลงที่ทุกคนต้องปฏิบัติตามอย่างเคร่งครัด.
+          </p>
+        </div>
+
         {/* Greeting */}
         <PageSection hideTitle>
-          <h1 className="text-2xl font-bold text-gray-800">สวัสดี, {username}</h1>
+          <h1 className="text-3xl font-bold text-gray-800">สวัสดี, {username} 👋</h1>
           <p className="text-gray-600 mt-2">ยินดีต้อนรับเข้าสู่แดชบอร์ดของคุณ</p>
         </PageSection>
 
@@ -85,10 +89,10 @@ const Dashboard: FC = () => {
         <DashboardSection>
           {cards.map((card) => (
             <DashboardCard
-              key={card.title + card.description}
+              key={card.title}
               title={card.title}
               description={card.description}
-              realtime={false} // ปิด Realtime
+              realtime={false}
             />
           ))}
         </DashboardSection>
@@ -109,6 +113,16 @@ const Dashboard: FC = () => {
             <TeamOverview members={mappedMembers} />
           </PageSection>
         )}
+
+        {/* Document Download */}
+        <PageSection title="ดาวน์โหลดเอกสาร">
+          <DocumentDownload />
+        </PageSection>
+
+        {/* Blur Contact */}
+        <PageSection title="ติดต่อฝ่ายสนับสนุน">
+          <BlurContact imageUrl="/images/admin-contact.jpg" contactText="ติดต่อฝ่ายสนับสนุน" />
+        </PageSection>
       </div>
     </main>
   );
