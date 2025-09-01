@@ -1,206 +1,135 @@
+// src/Home/CustomerAssessmentForm.tsx
 "use client";
 
-import React, { useMemo } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import {
-  FormWrapper,
-  FieldGroup,
-  InputField,
-  SelectFieldUI,
-  TextareaField,
-  SubmitButton,
-} from "@/Home/components/Forms";
+import React, { useState, useMemo } from "react";
+import CreditProfileForm, {
+  CreditProfileData,
+} from "./components/CreditAssessmentForm/CreditProfileForm";
+import { ApplicantData, exampleApplicant } from "@/data/applicantData";
+import { defaultConfig } from "@/config/assessmentConfig";
+import { calculateDTI, calculateCreditScore, assessCreditStatus } from "@/utils/calculations";
+import ResultCard from "./components/CreditAssessmentForm/ResultCard";
 
-export type CreditProfileData = {
-  fullName: string;
-  email: string;
-  phone: string;
-  occupation: string;
-  monthlyIncome: number;
-  existingDebt: number;
-  paymentHistory: string;
-  creditRating: string;
-  notes?: string;
-};
+const CustomerAssessmentForm: React.FC = () => {
+  const [profileData, setProfileData] = useState<CreditProfileData | null>(null);
+  const [applicant, setApplicant] = useState<ApplicantData>(exampleApplicant);
 
-const CreditProfileForm: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting },
-    watch,
-    reset,
-  } = useForm<CreditProfileData>({
-    defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      occupation: "",
-      monthlyIncome: 0,
-      existingDebt: 0,
-      paymentHistory: "",
-      creditRating: "",
-      notes: "",
-    },
-  });
+  const dti = useMemo(() => calculateDTI(applicant), [applicant]);
+  const score = useMemo(() => calculateCreditScore(applicant, defaultConfig), [applicant]);
+  const status = useMemo(() => assessCreditStatus(score, defaultConfig.creditThreshold), [score]);
 
-  const monthlyIncome = watch("monthlyIncome") || 0;
-  const existingDebt = watch("existingDebt") || 0;
+  const handleProfileSubmit = (data: CreditProfileData) => {
+    setProfileData(data);
+    console.log("Submitted Profile Data:", data);
+  };
 
-  const debtToIncomeRatio = useMemo(() => {
-    if (monthlyIncome <= 0) return 0;
-    return (existingDebt / monthlyIncome) * 100;
-  }, [existingDebt, monthlyIncome]);
-
-  const ratioColor = useMemo(() => {
-    if (debtToIncomeRatio > 50) return "text-red-600";
-    if (debtToIncomeRatio > 30) return "text-yellow-600";
-    return "text-green-600";
-  }, [debtToIncomeRatio]);
-
-  const onSubmit: SubmitHandler<CreditProfileData> = async (data) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Customer Credit Profile:", data);
-      alert("บันทึกแบบฟอร์มประเมินโปรไฟล์เรียบร้อยแล้ว");
-      reset();
-    } catch (error) {
-      console.error("เกิดข้อผิดพลาด:", error);
-      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-    }
+  const handleDebtChange = (index: number, value: number) => {
+    const newDebts = [...applicant.debts];
+    newDebts[index] = value;
+    setApplicant({ ...applicant, debts: newDebts });
   };
 
   return (
-    <FormWrapper
-      title="แบบฟอร์มประเมินโปรไฟล์ลูกค้าเพื่อยื่นสินเชื่อ"
-      description="กรุณากรอกข้อมูลลูกค้าเพื่อประเมินความสามารถในการขอสินเชื่อเบื้องต้น"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <FieldGroup columns={2}>
-        {/* ข้อมูลพื้นฐาน */}
-        <InputField
-          label="ชื่อ-สกุล"
-          placeholder="กรอกชื่อ-นามสกุล"
-          required
-          error={errors.fullName?.message || undefined}
-          {...register("fullName", { required: "กรุณากรอกชื่อ-สกุล" })}
-        />
+    <div className="max-w-3xl mx-auto p-6 space-y-6">
+      {/* แบบฟอร์มข้อมูลลูกค้า */}
+      <CreditProfileForm onSubmit={handleProfileSubmit} />
+
+      {/* ข้อความแจ้งเตือน */}
+      <div className="p-4 border-l-4 border-red-500 bg-red-50 text-red-700 text-sm">
+        <strong>หมายเหตุ:</strong> แบบฟอร์มในการประเมินใช้เทคนิคการคำนวณจาก DTI (Debt-to-Income
+        Ratio) ซึ่งเป็นข้อมูลปัจจุบันที่เชื่อถือได้ 100%. ผลลัพธ์ที่คุณเห็นคือผลการประเมินของคุณ
+        สิ่งที่เราทำให้คุณประเมินฟรีเพื่อไม่ให้คุณเสียเงินเสียทองกับเรื่องที่ไม่ควรเสีย.
+      </div>
+
+      {/* แบบฟอร์มประเมินเครดิต */}
+      <div className="p-6 border rounded-lg shadow-md space-y-4 bg-white">
+        <h2 className="text-xl font-bold text-center">แบบประเมินความสามารถทางการเงิน</h2>
 
         <InputField
-          label="อีเมล"
-          type="email"
-          placeholder="example@email.com"
-          required
-          error={errors.email?.message || undefined}
-          {...register("email", {
-            required: "กรุณากรอกอีเมล",
-            pattern: { value: /^\S+@\S+$/i, message: "รูปแบบอีเมลไม่ถูกต้อง" },
-          })}
+          label="รายได้รวม (บาท/เดือน)"
+          description="กรอกจำนวนรายได้สุทธิที่ได้รับต่อเดือน เช่น เงินเดือน ค่าคอมมิชชั่น หรือรายได้เสริม"
+          value={applicant.income}
+          onChange={(val) => setApplicant({ ...applicant, income: val })}
         />
 
-        <InputField
-          label="เบอร์โทรศัพท์"
-          type="tel"
-          placeholder="เช่น 0812345678"
-          required
-          error={errors.phone?.message || undefined}
-          {...register("phone", { required: "กรุณากรอกเบอร์โทรศัพท์" })}
-        />
+        {applicant.debts.map((debt, idx) => (
+          <InputField
+            key={idx}
+            label={`หนี้รายการ ${idx + 1} (บาท/เดือน)`}
+            description="กรอกภาระหนี้สินที่ต้องชำระต่อเดือน เช่น ค่างวดรถ, ค่าบัตรเครดิต, ค่ากู้ยืม"
+            value={debt}
+            onChange={(val) => handleDebtChange(idx, val)}
+          />
+        ))}
 
         <InputField
-          label="อาชีพ"
-          placeholder="กรอกอาชีพปัจจุบัน"
-          required
-          error={errors.occupation?.message || undefined}
-          {...register("occupation", { required: "กรุณากรอกอาชีพ" })}
+          label="เงินออม / หลักประกัน (บาท)"
+          description="ระบุจำนวนเงินออมรวม หรือมูลค่าหลักประกันเพื่อยืนยันความมั่นคงทางการเงิน"
+          value={applicant.savings}
+          onChange={(val) => setApplicant({ ...applicant, savings: val })}
         />
 
         <InputField
-          label="รายได้ต่อเดือน (บาท)"
-          type="number"
-          placeholder="0"
-          required
-          error={errors.monthlyIncome?.message || undefined}
-          {...register("monthlyIncome", {
-            required: "กรุณากรอกรายได้ต่อเดือน",
-            min: { value: 0, message: "ต้องมากกว่า 0" },
-          })}
+          label="คะแนนประวัติชำระหนี้ (0-35)"
+          description="ประเมินจากประวัติการชำระหนี้ที่ผ่านมา เช่น ชำระตรงเวลา ไม่มีค้างชำระ"
+          value={applicant.paymentHistoryScore}
+          onChange={(val) => setApplicant({ ...applicant, paymentHistoryScore: val })}
+          min={0}
+          max={35}
         />
 
         <InputField
-          label="หนี้สินปัจจุบัน (บาท)"
-          type="number"
-          placeholder="0"
-          required
-          error={errors.existingDebt?.message || undefined}
-          {...register("existingDebt", {
-            required: "กรุณากรอกหนี้สินปัจจุบัน",
-            min: { value: 0, message: "ต้องมากกว่า 0" },
-          })}
+          label="คะแนนความเสถียรของรายได้ (0-15)"
+          description="ประเมินความมั่นคงของรายได้ เช่น งานประจำ ระยะเวลาการทำงาน รายได้คงที่"
+          value={applicant.incomeStabilityScore}
+          onChange={(val) => setApplicant({ ...applicant, incomeStabilityScore: val })}
+          min={0}
+          max={15}
         />
 
-        <InputField
-          label="อัตราส่วนหนี้ต่อรายได้ (%)"
-          name="debtToIncomeRatio"
-          type="text"
-          value={debtToIncomeRatio.toFixed(2)}
-          readOnly
-          className={`bg-gray-100 font-semibold ${ratioColor}`}
-        />
+        <ResultCard dti={dti} score={score} status={status} />
+      </div>
 
-        {/* Select Fields */}
-        <Controller
-          control={control}
-          name="paymentHistory"
-          rules={{ required: "กรุณาเลือกประวัติการชำระ" }}
-          render={({ field }) => (
-            <SelectFieldUI
-              {...field}
-              label="ประวัติการชำระ"
-              required
-              options={[
-                { label: "ดีมาก", value: "excellent" },
-                { label: "ดี", value: "good" },
-                { label: "ปานกลาง", value: "average" },
-                { label: "ไม่ดี", value: "poor" },
-              ]}
-              error={errors.paymentHistory?.message || undefined}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="creditRating"
-          rules={{ required: "กรุณาเลือกคะแนนเครดิต" }}
-          render={({ field }) => (
-            <SelectFieldUI
-              {...field}
-              label="คะแนนเครดิตปัจจุบัน"
-              required
-              options={[
-                { label: "A (ยอดเยี่ยม)", value: "A" },
-                { label: "B (ดี)", value: "B" },
-                { label: "C (พอใช้)", value: "C" },
-                { label: "D (ต้องปรับปรุง)", value: "D" },
-              ]}
-              error={errors.creditRating?.message || undefined}
-            />
-          )}
-        />
-
-        <TextareaField
-          label="หมายเหตุเพิ่มเติม"
-          placeholder="กรอกข้อเสนอแนะหรือข้อมูลสำคัญอื่น ๆ"
-          rows={4}
-          {...register("notes")}
-        />
-      </FieldGroup>
-
-      <SubmitButton loading={isSubmitting} label="ส่งแบบฟอร์ม" loadingLabel="กำลังส่ง..." />
-    </FormWrapper>
+      {/* แสดงข้อมูล Profile ที่บันทึก */}
+      {profileData && (
+        <div className="p-4 border rounded-lg shadow-md bg-gray-50">
+          <h3 className="font-semibold mb-2">ข้อมูลโปรไฟล์ลูกค้าที่บันทึก</h3>
+          <pre className="bg-gray-100 p-2 rounded">{JSON.stringify(profileData, null, 2)}</pre>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default CreditProfileForm;
+interface InputFieldProps {
+  label: string;
+  description?: string;
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+}
+
+const InputField: React.FC<InputFieldProps> = ({
+  label,
+  description,
+  value,
+  onChange,
+  min,
+  max,
+}) => (
+  <div className="mb-4">
+    <label className="block mb-1 font-semibold">{label}</label>
+    {description && <p className="text-sm text-gray-500 mb-1 leading-snug">{description}</p>}
+    <input
+      type="number"
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      min={min}
+      max={max}
+      className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+);
+
+export default CustomerAssessmentForm;
