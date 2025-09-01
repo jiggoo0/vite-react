@@ -16,16 +16,19 @@ interface Account {
 // รายการบัญชีทั้งหมด
 const accounts: Account[] = [
   { username: "admin2517", password: "myub2517", role: "admin" },
-  { username: "JPKYETONKEY244", password: "CODSLOUVPJ305", role: "manager" },
-  { username: "JPKYETONKEY201", password: "CODSLOUVPJ301", role: "user" },
-  { username: "JPKYETONKEY222", password: "CODSLOUVPJ337", role: "user" },
-  { username: "JPKYETONKEY233", password: "CODSLOUVPJ379", role: "user" },
-  { username: "JPKYETONKEY255", password: "CODSLOUVPJ398", role: "user" },
-  { username: "JPKYETONKEY266", password: "CODSLOUVPJ320", role: "user" },
-  { username: "JPKYETONKEY277", password: "CODSLOUVPJ341", role: "user" },
-  { username: "JPKYETONKEY288", password: "CODSLOUVPJ359", role: "user" },
-  { username: "JPKYETONKEY299", password: "CODSLOUVPJ407", role: "user" },
-  { username: "JPKYETONKEY300", password: "CODSLOUVPJ399", role: "user" },
+  { username: "Addmintest", password: "myub2517", role: "admin" },
+  { username: "Usertest", password: "myub25217", role: "user" },
+  { username: "Managertest", password: "myub25217", role: "manager" },
+  { username: "JPKYETONKEY244", password: "CODSLOUVPJ307", role: "user" },
+  { username: "JPKYETONKEY201", password: "CODSLOUVPJ309", role: "user" },
+  { username: "JPKYETONKEY222", password: "CODSLOUVPJ537", role: "user" },
+  { username: "JPKYETONKEY233", password: "CODSLOUVPJ309", role: "user" },
+  { username: "JPKYETONKEY255", password: "CODSLOUVPJ368", role: "user" },
+  { username: "JPKYETONKEY266", password: "CODSLOUVPJ520", role: "user" },
+  { username: "JPKYETONKEY277", password: "CODSLOUVPJ300", role: "user" },
+  { username: "JPKYETONKEY288", password: "CODSLOUVPJ388", role: "user" },
+  { username: "JPKYETONKEY299", password: "CODSLOUVPJ507", role: "user" },
+  { username: "JPKYETONKEY300", password: "CODSLOUVPJ300", role: "user" },
   { username: "JPusertest01", password: "Peudhdo5", role: "user" },
   { username: "JPusertest02", password: "PassUser2", role: "user" },
   { username: "JPusertest03", password: "PassUser3", role: "user" },
@@ -43,12 +46,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const outputFile = resolve(__dirname, "../src/data/users.ts");
 
+export interface UserData {
+  hash: string;
+  role: "admin" | "manager" | "user";
+}
+
 async function generateHashes() {
-  const results: Record<string, { hash: string; role: UserRole }> = {};
+  const results: Record<string, UserData> = {};
 
   for (const { username, password, role } of accounts) {
     try {
-      // Hash ตามรหัสตรง ๆ ไม่เพิ่มเลข
       const hash = await bcrypt.hash(password, saltRounds);
       results[username] = { hash, role };
     } catch (err) {
@@ -56,11 +63,12 @@ async function generateHashes() {
     }
   }
 
-  const fileContent = `export const users: Record<string, { hash: string; role: "admin" | "user" | "manager" }> = ${JSON.stringify(
-    results,
-    null,
-    2
-  )};\n`;
+  const fileContent = `export interface UserData {
+  hash: string;
+  role: "admin" | "manager" | "user";
+}
+
+export const users: Record<string, UserData> = ${JSON.stringify(results, null, 2)};\n`;
 
   writeFileSync(outputFile, fileContent, { encoding: "utf-8" });
   console.log(`✅ users.ts generated at: ${outputFile}`);
