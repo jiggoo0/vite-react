@@ -1,6 +1,6 @@
 # 📊 Project Summary Report
 
-Date: 2025-09-01 19:18:53  
+Date: 2025-09-01 22:31:01  
 Branch: main  
 Git Status: Uncommitted / untracked changes ❌
 
@@ -86,6 +86,10 @@ src
 │   │   │       ├── AboutImage.tsx
 │   │   │       ├── AboutQuote.tsx
 │   │   │       └── AboutTitle.tsx
+│   │   ├── CreditAssessmentForm
+│   │   │   ├── CreditAssessmentForm.tsx
+│   │   │   ├── CreditProfileForm.tsx
+│   │   │   └── ResultCard.tsx
 │   │   ├── Dashboard
 │   │   │   ├── Dashboard.tsx
 │   │   │   ├── common
@@ -227,6 +231,7 @@ src
 │   ├── logo.webp
 │   └── react.svg
 ├── config
+│   ├── assessmentConfig.ts
 │   ├── dashboardCards.tsx
 │   ├── driverLicenseConfig.tsx
 │   ├── homeSections.config.tsx
@@ -240,6 +245,7 @@ src
 │   └── types.ts
 ├── data
 │   ├── UserTempCodes.ts
+│   ├── applicantData.ts
 │   ├── caseStudies.ts
 │   ├── portfolioItems.ts
 │   ├── testimonialsData.ts
@@ -262,6 +268,7 @@ src
 │   └── dashboard.ts
 ├── utils
 │   ├── auth.ts
+│   ├── calculations.ts
 │   ├── cn.ts
 │   ├── common
 │   │   ├── 403.tsx
@@ -281,7 +288,7 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-64 directories, 181 files
+65 directories, 187 files
 ```
 
 ## 5️⃣ Project Info
