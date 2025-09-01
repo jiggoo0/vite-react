@@ -1,34 +1,39 @@
 # 📊 Project Summary Report
-Date: 2025-09-01 16:43:27  
+
+Date: 2025-09-01 18:27:40  
 Branch: main  
 Git Status: Uncommitted / untracked changes ❌
 
 ## 1️⃣ Dependencies
-| Dependency | Status | Version |
-|------------|--------|---------|
-| react | ✅ | ^19.1.1 |
-| react-dom | ✅ | ^19.1.1 |
-| vite | ✅ | ^7.1.2 |
-| tailwindcss | ✅ | ^3.3.3 |
-| daisyui | ✅ | ^3.9.4 |
-| typescript | ✅ | ^5.9.2 |
-| eslint | ✅ | ^9.33.0 |
-| prettier | ✅ | ^3.6.2 |
+
+| Dependency  | Status | Version |
+| ----------- | ------ | ------- |
+| react       | ✅     | ^19.1.1 |
+| react-dom   | ✅     | ^19.1.1 |
+| vite        | ✅     | ^7.1.2  |
+| tailwindcss | ✅     | ^3.3.3  |
+| daisyui     | ✅     | ^3.9.4  |
+| typescript  | ✅     | ^5.9.2  |
+| eslint      | ✅     | ^9.33.0 |
+| prettier    | ✅     | ^3.6.2  |
 
 ## 2️⃣ Config Files
-| Config File | Status |
-|------------|--------|
-| tsconfig.json | ✅ exists |
+
+| Config File        | Status    |
+| ------------------ | --------- |
+| tsconfig.json      | ✅ exists |
 | tailwind.config.ts | ✅ exists |
-| vite.config.ts | ✅ exists |
-| .eslintrc | ✅ exists |
-| .prettierrc | ✅ exists |
-| .gitignore | ✅ exists |
+| vite.config.ts     | ✅ exists |
+| .eslintrc          | ✅ exists |
+| .prettierrc        | ✅ exists |
+| .gitignore         | ✅ exists |
 
 ## 3️⃣ Alias Check
+
 - ✅ all imports alias ok (Node: v22.18.0, ts-node: N/A)
 
 ## 4️⃣ Project Tree (src, depth 10)
+
 ```
 src
 ├── App
@@ -70,6 +75,8 @@ src
 │   ├── Home.tsx
 │   ├── IdCardForm.tsx
 │   ├── Login.tsx
+│   ├── Profile.tsx
+│   ├── Settings.tsx
 │   ├── components
 │   │   ├── About
 │   │   │   ├── About.tsx
@@ -240,7 +247,7 @@ src
 │   └── users.ts
 ├── env.d.ts
 ├── hooks
-│   ├── useAuth.ts
+│   ├── useAuth.tsx
 │   ├── useProtectedAuth.tsx
 │   └── useTempCodeAuth.ts
 ├── index.css
@@ -274,194 +281,506 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-64 directories, 179 files
+64 directories, 181 files
 ```
 
 ## 5️⃣ Project Info
-| Item | Value |
-|------|-------|
-| Project Name | vite-react |
-| Version | 7.1.1 |
-| Description | N/A |
-| GitHub URL | https://github.com/jiggoo0/vite-react |
-| Developer Email | jiggo0@outlook.co.th |
-| Website URL | https://404notfontjp.vercel.app/ |
-| Vercel Account | jiggoos-projects |
-| Vercel Project Name | N/A |
-| Vercel Project ID | N/A |
+
+| Item                | Value                                 |
+| ------------------- | ------------------------------------- |
+| Project Name        | vite-react                            |
+| Version             | 7.1.1                                 |
+| Description         | N/A                                   |
+| GitHub URL          | https://github.com/jiggoo0/vite-react |
+| Developer Email     | jiggo0@outlook.co.th                  |
+| Website URL         | https://404notfontjp.vercel.app/      |
+| Vercel Account      | jiggoos-projects                      |
+| Vercel Project Name | vite-react                            |
+| Vercel Project ID   | prj_MBF9hbw032OzD2gDVkUQ7mvoYA2t      |
 
 ## 6️⃣ Notes
+
 - RODEMAP.md & WORKFLOW.md included if present
 
 ## 📝 RODEMAP.md
-คำสั่ง
-📋 JP - VISOUL & DOSC – Business Overview & Logic
+
+📋 JP - VISOUL & DOSC – Business Overview & Technical Logic
 
 1️⃣ ข้อมูลธุรกิจพื้นฐาน
+
 ชื่อธุรกิจ: JP - VISOUL & DOSC
+
 Tagline: “ทำธุรกิจสีเทาให้มีความมืออาชีพ มาตรฐาน”
-ระยะเวลา: ทีมงานมีประสบการณ์ 8-9 ปี
+
+ระยะเวลา: ทีมงานมีประสบการณ์ 8–9 ปี
+
 ช่องทางติดต่อ: LINE Official @462FQFC
-บริการหลัก 8 ประเภท:
+
+1.1 บริการหลัก 8 ประเภท
 
 1. วางแผนยื่นกู้สินเชื่อ (บุคคล, SME, รีไฟแนนซ์)
+
 2. ดูแลเอกสารยื่นวีซ่า (ทุกประเภท)
+
 3. SLIBBANK – สลิปโอนเงิน/รับเงิน ตรวจสอบได้
+
 4. บริการเอกสาร: แก้ไข / สร้างใหม่ / จัดหา
+
 5. ผลิตชิ้นงานจริง (บัตรแข็ง/บัตรพลาสติก)
+
 6. ออกแบบโลโก้ / แบนเนอร์ / ปกเพจ
+
 7. ดูแลการตลาดครบวงจร + ระบบหลังบ้าน
+
 8. โครงการ “ให้น้องได้พักผ่อน” – AI Matching
-   2️⃣ ปรัชญาและ Logic ของธุรกิจ
-   Core Logic: ช่องว่างระหว่างความต้องการจริงของคนกับข้อจำกัดระบบราชการ/ธนาคาร
-   ปัญหาสังคม: ระบบราชการ/ธนาคารซับซ้อน คนรายได้น้อย-กลางเข้าถึงยาก
-   Solution: ปรับข้อมูลจริงให้อยู่ในรูปแบบที่ระบบยอมรับ โดยไม่สร้างข้อมูลเท็จ
-   Analogy:
-   “เหมือนการแต่งหน้า” → ปรับสิ่งที่มีอยู่ให้ดูดีที่สุด
-   “เหมือนการเขียน CV” → นำเสนอข้อมูลจริงในมุมที่เป็นมืออาชี
-   3️⃣ การเปิดเผยความสามารถและขีดจำกัด
-   เตือนสติเตือนภัยบุคคลที่สามารแก้ยอดในระบบได
-   ข้อจำกัด: สามารถปรับจังหวะหรือข้อมูลเล็กน้อยให้สมจริง ไม่สร้างรายได้เกินจริง
-   เตือนสติลูกค้า: ความเสี่ยงสูง, ต้องเข้าใจบริบท, มีราคาสะท้อนความเสี่ยง
-   4️⃣ กฎเกณฑ์การทำงาน (Rules)
-   รับเงินเท่ากับเริ่มงาน – ไม่มีข้อยกเว้น
-   กรองลูกค้า:
-   กิริยาไม่ดี = ไม่รับ
-   ส่งคนอื่นมาแทน/ทำเนียน = ยึดเงิน
-   ประกาศครั้งสุดท้าย: ไม่โปรโมตเรื่องนี้อีก
-   สื่อสารความเสี่ยง: โปร่งใส ให้ลูกค้าตัดสินใจเอง
-   5️⃣ การจัดการความเสี่ยงและ Pricing Strategy
-   การตั้งราคาตามความเสี่ยง:
-   ความเสี่ยงต่ำ: 100–400 บาท
-   ความเสี่ยงกลาง: 4,000–50,000 บาท
-   ความเสี่ยงสูง: 25,000 บาท/รายการ.
-   Customer Filtering:
-   อ่านเนื้อหา → เข้าใจธุรกิจ
-   ยอมจ่ายเงินก่อน → จริงจัง
-   กิริยาดี → ทำงานร่วมกันได้
-   6️⃣ Business Logic & Service Design
-   Service Gap / Pain Point Solution ความสมจริง / Limitations
-   สินเชื่อ คนมีรายได้จริงแต่เอกสารไม่ครบ วิเคราะห์โปรไฟล์ + จัดชุดเอกสาร ธนาคารแต่ละแห่งต้องรู้จุดต่าง
-   วีซ่า ต้องพิสูจน์ความสามารถทางการเงิน คำนวณรายรับ-รายจ่ายให้สมจริง ต้องพิสูจน์ได้ตามมาตรฐานแต่ละประเทศ
-   SLIBBANK แสดงประวัติการเงิน สร้างสลิปตรวจสอบได้จริง แก้ชื่อ, เวลา, โลโก้, ยอดเงินได้ไม่เกินขอบเขต
-   เอกสาร เอกสารไม่ตรงมาตรฐาน แปลงข้อมูลจริงให้อยู่ในรูปแบบมาตรฐาน ไม่สร้างข้อมูลเท็จ
-   บัตรแข็ง / พลาสติก ต้องยืนยันตัวตน ผลิตพร้อมลายน้ำ, QR, Hologram สำหรับงานยืนยันเท่านั้น
-   การตลาด ขาดความมืออาชีพ Branding, Ads, Automation ราคาสะท้อนขนาดงานและระบบ
-   AI Matching ฟรีแลนซ์ยุ่งยาก ระบบจัดคิวงาน + แชทอัตโนมัติ ใช้กับงานเอกสารและหลังบ้าน
-   โลโก้ / แบนเนอร์ ขาดภาพลักษณ์ ออกแบบครบชุด PNG/JPG/SVG ไม่สร้าง brand identity เกินจริง
-   7️⃣ Customer Psychology Management
-   สร้าง FOMO: “บางอย่างที่หาไม่ได้ที่ไหน”
-   สร้างความปลอดภัย: ราคาชัดเจน, แยกแพ็กเกจ, SLA
-   Trust Ladder: สงสัย → อ่าน → เข้าใจ → จ่ายเงิน → เชื่อใจ → ใช้บริการต่อ
-   8️⃣ Market Positioning & Branding
-   Positioning: “ผู้เชี่ยวชาญ ไม่ใช่ผู้ให้บริการทั่วไป”
-   Scarcity Marketing: ทักษะหายาก, “ไม่กี่ที่ในประเทศทำได้”
-   Authority Building: ประสบการณ์ 8-9 ปี, เปิดเผยเทคนิคบางส่วน, ยอมรับข้อจำกัด
-   9️⃣ Legal & Risk Navigation
-   Legal Gray Area: ไม่อ้างว่าถูกกฎหมาย
-   Customer Protection: แจ้งความเสี่ยง, ปล่อยให้ลูกค้าตัดสินใจเอง
-   Communication: ใช้คำ “ปรับแต่ง / เติมเต็ม / จัดรูปแบบ” แทนคำว่า “ปลอม”
-   🔟 Core DNA & Philosophy
-   ปรัชญาหลัก: “เราไม่ได้แก้ปัญหาของระบบ แต่แก้ปัญหาของคนที่ถูกระบบทิ้ง”
-   Value Creation:
-   ลูกค้า: เข้าถึงสิทธิ์ที่ควรได้
-   สังคม: ลดความเหลื่อมล้ำ
-   ทีมงาน: รายได้จากความเชี่ยวชาญหายาก
-   1️⃣1️⃣ Customer Journey
-9. ความสงสัย → อ่านเนื้อหา
-10. เข้าใจความเสี่ยง → ตัดสินใจ
-11. จ่ายเงิน → ได้ผลงาน
-12. เชื่อใจ → ใช้บริการต่อ
-    1️⃣2️⃣ Exit & Legacy Strategy
-    ประกาศครั้งสุดท้าย ไม่โปรโมตต่อ
-    ไม่โจมตีคู่แข่ง
-    คงความมืออาชีพและความซื่อสัตย์
-    Legacy Message: “ผมทำได้ แต่ราคาเท่านี้ ส่วนใครจะทำอย่างไร ผมไม่รู้”
-    ✅ สรุปภาพรวม:
-    ธุรกิจ JP - VISOUL & DOSC เป็น บริการปรับข้อมูลจริงให้ระบบยอมรับ, มี มาตรฐาน, กรองลูกค้า, โปร่งใส, สร้าง ความเชื่อมั่นและความน่าเชื่อถือ พร้อม บริหารความเสี่ยงอย่างชาญฉลาด เพื่อแก้ pain point ของกลุ่มลูกค้าที่ถูกระบบทิ้ง โดยไม่ละเมิดกฎหมายโดยตรง แต่ใช้ ความเชี่ยวชาญและทักษะสูง เป็นแกนหลัก
-    1️⃣ Directory Overview
-    Top-level folders
-    hooks → ฟังก์ชัน hook สำหรับ Home เช่น useInView.ts
-    types → Type definitions ของระบบ เช่น auditTrail.ts, idCard.ts
-    components → UI modules แบ่งย่อยตามฟีเจอร์
-    AdminTools → ฟีเจอร์ฝั่งแอดมิน
-    UserBoard → ฟีเจอร์ฝั่งผู้ใช้งาน
-    Forms / Services / Portfolio / Hero / SellingPoints / Testimonials → ส่วนประกอบ UI/UX
-    AdminTools
-    รับผิดชอบงานด้านเอกสาร, การตรวจสอบ, การอนุมัต
-    ตัวอย่างฟังก์ชัน:
-    DriverLicense → Form, Preview, UI fields
-    MedicalCertificate → Form + Types
-    SalaryCertificate → Types + Form
-    Reviews → Gallery + UI card
-    SpecialBranchCertificate → Form
-    UserBoard
-    แสดงข้อมูลและเมตริกของผู้ใช้
-    ตัวอย่างฟังก์ชัน:
-    MetricCard, BadgeCard, TrustBadge
-    Dashboard demo: TrustDashboardDemo.tsx
-    Configs: motionConfig.ts, types.ts
-    Component หลัก: UserBoard.tsx
-    Components
-    About → หน้า About พร้อม UI subcomponents
-    Dashboard → UI + common components เช่น BlurContact, DocumentDownload
-    Forms → ฟอร์มผู้ใช้ / OCR / Field group
-    Portfolio → Portfolio gallery + filters
-    Hero / SellingPoints / Testimonials → หน้า landing / showcase
-    Services / SecretSection → ฟีเจอร์พิเศษ + secret audit tools
-    UI / common → ส่วนประกอบ reusable: Button, Card, Icon, PageSection, ThemeToggle
-    Mermaid Diagram (Hierarchy)
-    graph TD
-    subgraph AdminTools
-    Home --> AdminTools
-    MedicalCertificate --> types
-    DriverLicense --> types
-    DriverLicense --> ui
-    SalaryCertificate --> types
-    Reviews --> ui
-    SpecialBranchCertificate
-    RegistrationPreview
+
+---
+
+2️⃣ ปรัชญาและ Logic ของธุรกิจ
+
+Core Logic: ช่องว่างระหว่างความต้องการจริงของคน กับข้อจำกัดของระบบราชการ/ธนาคาร
+
+Pain Point: คนรายได้น้อย–กลางเข้าถึงบริการยาก
+
+Solution: ปรับข้อมูลจริงให้ระบบยอมรับ โดยไม่สร้างข้อมูลเท็จ
+
+Analogy:
+
+“เหมือนการแต่งหน้า” → ปรับสิ่งที่มีอยู่ให้ดีที่สุด
+
+“เหมือนการเขียน CV” → นำเสนอข้อมูลจริงในมุมมืออาชีพ
+
+---
+
+3️⃣ การเปิดเผยความสามารถและขีดจำกัด
+
+ข้อจำกัด: ปรับข้อมูลเล็กน้อยให้สมจริง แต่ไม่สร้างรายได้เกินจริง
+
+การเตือนลูกค้า: สื่อสารความเสี่ยงชัดเจน
+
+---
+
+4️⃣ กฎเกณฑ์การทำงาน (Rules)
+
+รับเงินเท่ากับเริ่มงาน – ไม่มีข้อยกเว้น
+
+กรองลูกค้า: กิริยาไม่ดี = ไม่รับ
+
+ส่งคนอื่นมาแทน / ทำเนียน = ยึดเงิน
+
+ประกาศครั้งสุดท้าย: ไม่โปรโมตเรื่องนี้อีก
+
+สื่อสารความเสี่ยง: โปร่งใส ให้ลูกค้าตัดสินใจเอง
+
+---
+
+5️⃣ การจัดการความเสี่ยงและ Pricing Strategy
+
+ความเสี่ยง ราคา
+
+ต่ำ 100–400 บาท
+กลาง 4,000–50,000 บาท
+สูง 25,000 บาท/รายการ
+
+Customer Filtering: อ่านเนื้อหา → เข้าใจธุรกิจ → ยอมจ่ายเงิน → กิริยาดี → ทำงานร่วมกันได้
+
+---
+
+6️⃣ Business Logic & Service Design
+
+Service Logic & Limitations
+
+สินเชื่อ คนมีรายได้จริงแต่เอกสารไม่ครบ → วิเคราะห์โปรไฟล์ + จัดชุดเอกสาร
+วีซ่า ต้องพิสูจน์ความสามารถทางการเงิน → คำนวณรายรับ-รายจ่ายให้สมจริง
+SLIBBANK แสดงประวัติการเงิน ตรวจสอบได้จริง → แก้ชื่อ, เวลา, โลโก้, ยอดเงินไม่เกินขอบเขต
+เอกสาร แปลงข้อมูลจริงให้อยู่ในรูปแบบมาตรฐาน ไม่สร้างข้อมูลเท็จ
+บัตรแข็ง/พลาสติก ต้องยืนยันตัวตน ผลิตพร้อมลายน้ำ, QR, Hologram สำหรับงานยืนยันเท่านั้น
+การตลาด Branding, Ads, Automation ราคาสะท้อนขนาดงานและระบบ
+AI Matching ระบบจัดคิวงาน + แชทอัตโนมัติ ใช้กับงานเอกสารและหลังบ้าน
+โลโก้ / แบนเนอร์ ออกแบบครบชุด PNG/JPG/SVG ไม่สร้าง brand identity เกินจริง
+
+---
+
+7️⃣ Customer Psychology Management
+
+สร้าง FOMO: “บางอย่างที่หาไม่ได้ที่ไหน”
+
+สร้างความปลอดภัย: ราคาชัดเจน, แยกแพ็กเกจ, SLA
+
+Trust Ladder: สงสัย → อ่าน → เข้าใจ → จ่ายเงิน → เชื่อใจ → ใช้บริการต่อ
+
+---
+
+8️⃣ Market Positioning & Branding
+
+Positioning: ผู้เชี่ยวชาญ ไม่ใช่ผู้ให้บริการทั่วไป
+
+Scarcity Marketing: ทักษะหายาก, “ไม่กี่ที่ในประเทศทำได้”
+
+Authority Building: ประสบการณ์ 8–9 ปี, เปิดเผยเทคนิคบางส่วน, ยอมรับข้อจำกัด
+
+---
+
+9️⃣ Legal & Risk Navigation
+
+Legal Gray Area: ไม่อ้างว่าถูกกฎหมาย
+
+Customer Protection: แจ้งความเสี่ยง, ปล่อยให้ลูกค้าตัดสินใจเอง
+
+Communication: ใช้คำ “ปรับแต่ง / เติมเต็ม / จัดรูปแบบ” แทนคำว่า “ปลอม”
+
+---
+
+🔟 Core DNA & Philosophy
+
+ปรัชญาหลัก: “เราไม่ได้แก้ปัญหาของระบบ แต่แก้ปัญหาของคนที่ถูกระบบทิ้ง”
+
+Value Creation:
+
+ลูกค้า: เข้าถึงสิทธิ์ที่ควรได้
+
+สังคม: ลดความเหลื่อมล้ำ
+
+ทีมงาน: รายได้จากความเชี่ยวชาญหายาก
+
+---
+
+1️⃣1️⃣ Customer Journey
+
+1. ความสงสัย → อ่านเนื้อหา
+
+2. เข้าใจความเสี่ยง → ตัดสินใจ
+
+3. จ่ายเงิน → ได้ผลงาน
+
+4. เชื่อใจ → ใช้บริการต่อ
+
+---
+
+1️⃣2️⃣ Exit & Legacy Strategy
+
+ประกาศครั้งสุดท้าย: ไม่โปรโมตต่อ
+
+ไม่โจมตีคู่แข่ง
+
+คงความมืออาชีพและซื่อสัตย์
+
+Legacy Message: “ผมทำได้ แต่ราคาเท่านี้ ส่วนใครจะทำอย่างไร ผมไม่รู้”
+
+---
+
+13️⃣ Directory & Technical Overview
+
+Folder หน้าที่หลัก
+
+hooks ฟังก์ชัน hook สำหรับ Home / reusable logic
+types Type definitions เช่น auditTrail.ts, idCard.ts
+components UI modules แบ่งตามฟีเจอร์
+AdminTools Back-office, เอกสาร, การตรวจสอบ, การอนุมัติ
+UserBoard Front-end user metrics & dashboard
+Forms / Services / Portfolio / Hero / SellingPoints / Testimonials ส่วนประกอบ UI/UX
+UI / common Reusable components: Button, Card, Icon, PageSection, ThemeToggle
+
+ตัวอย่างฟีเจอร์:
+
+AdminTools → DriverLicense, MedicalCertificate, SalaryCertificate, Reviews
+
+UserBoard → MetricCard, BadgeCard, TrustBadge, TrustDashboardDemo
+
+Dashboard → DashboardCard, UserStats, RecentActivity, QuickActions, BlurContact, DocumentDownload
+
+---
+
+14️⃣ Notes / Key Points
+
+AdminTools: งานหลังบ้าน, ตรวจสอบเอกสาร, อนุมัติ
+
+UserBoard: แสดงข้อมูลผู้ใช้, เมตริก, dashboard, UI demo
+
+Components: Shared UI, reusable elements, forms, portfolio, hero sections
+
+Types & Hooks: ใช้ซ้ำทั่วทั้งระบบ
+
+# Home Project Structure
+
+_Generated at: Mon Sep 1 18:18:14 +07 2025_
+
+## Directory Tree
+
+```
+Home
+  hooks
+    useInView.ts
+  IdCardForm.tsx
+  AdminTools
     IdCardPreview
-    end
-    subgraph UserBoard
-    Home --> UserBoard
-    MetricCard
-    BadgeCard
-    TrustBadge
-    TrustDashboard
-    TrustDashboardDemo
-    motionConfig
-    types.ts
-    end
-    subgraph components
-    Home --> components
-    About --> ui
-    Dashboard --> ui
-    Dashboard --> common
-    common --> BlurContact
-    common --> DocumentDownload
-    Forms --> ui
-    Portfolio --> ui
-    Hero --> ui
-    ui --> Icon
-    ui --> Card
-    ui --> Button
-    Services --> ui
+      IdCardPreview.tsx
+      IdCardSection.tsx
+    RegistrationPreview
+      RegistrationPreview.tsx
+    MedicalCertificate
+      MedicalCertificate.tsx
+      types
+        medicalCertificate.ts
+    SpecialBranchCertificate
+      SpecialBranchCertificate.tsx
+    DriverLicense
+      DriverLicenseForm.tsx
+      DriverLicensePreviewWithActions.tsx
+      DriverLicensePage.tsx
+      DriverLicensePreview.tsx
+      types
+        driverLicense.ts
+      ui
+        FieldDraggable.tsx
+        TextField.tsx
+        PhotoField.tsx
+    SalaryCertificate
+      types
+        salaryCertificate.ts
+      SalaryCertificate.tsx
+    Reviews
+      ReviewsGallery.tsx
+      ui
+        ReviewCard.tsx
+  CustomerAssessmentForm.tsx
+  Home.tsx
+  components
+    About
+      ui
+        AboutTitle.tsx
+        AboutQuote.tsx
+        AboutImage.tsx
+        AboutDescription.tsx
+      index.ts
+      About.tsx
+    UserBoard
+      UserBoard.tsx
+    Dashboard
+      ui
+        RecentActivity.tsx
+        QuickActions.tsx
+        UserStats.tsx
+        DashboardCard.tsx
+        DashboardSection.tsx
+      index.ts
+      Dashboard.tsx
+      common
+        BlurContact
+          motionVariants.ts
+          BlurContact.tsx
+        DocumentDownload
+          DocumentDownload.tsx
+    Testimonials
+      TrustBadge.tsx
+      TestimonialSlider.tsx
+    Portfolio
+      CaseStudyRedacted.tsx
+      index.ts
+      PortfolioGallery.tsx
+      ui
+        PortfolioCTA.tsx
+        FilterButton.tsx
+        PortfolioFilter.tsx
+    Forms
+      IdCardFormWithOCR.tsx
+      index.ts
+      FormWrapper.tsx
+      IdCardPreview.tsx
+      ui
+        SelectField.tsx
+        FieldGroup.tsx
+        InputField.tsx
+        SelectFieldUI.tsx
+        TextareaField.tsx
+      SubmitButton.tsx
+    SellingPoints
+      SpeedGuaranteeBanner.tsx
+      SellingPoints.tsx
+      points.ts
+    Hero
+      ui
+        HeroStats.tsx
+        HeroBadge.tsx
+        HeroBackground.tsx
+      Hero.tsx
+      index.ts
+    common
+      LogoutButton.tsx
+      TabPanel.tsx
+      StickyTableHeader.tsx
+      CardWrapper.tsx
+      ThemeToggle.tsx
+      LazyA4Card.tsx
+      LoadingSpinner.tsx
+      PageSection.tsx
+      WithBlurIfUser.tsx
+      CTAButtons.tsx
+    ui
+      Icon
+        Icon.tsx
+        Icon.styles.ts
+        index.ts
+      Card
+        Card.styles.ts
+        Card.tsx
+      Button
+        button.styles.ts
+        index.ts
+        Button.tsx
+    Services
+      ComplianceFAQ.tsx
+      index.ts
+      ServicesSection.tsx
+      ui
+        ServiceCard.tsx
+      FeatureAwards.tsx
+      FeatureList.tsx
     SecretSection
-    end
-    subgraph hooks
+      AuditTrailViewer.tsx
+      SecretDescription.tsx
+      KbankNotificationCard.tsx
+      KbankIOSNotification.tsx
+  types
+    auditTrail.ts
+    dynamicRisk.ts
+    risk.ts
+    idCard.ts
+    userBehavior.ts
+  Login.tsx
+  Profile.tsx
+  AdminTools.tsx
+  Settings.tsx
+```
+
+## Mermaid Diagram
+
+```mermaid
+graph TD
+  subgraph AdminTools
+    Home --> AdminTools
+  subgraph DriverLicense
+    AdminTools --> DriverLicense
+  subgraph types
+    DriverLicense --> types
+  end
+  subgraph ui
+    DriverLicense --> ui
+  end
+  end
+  subgraph IdCardPreview
+    AdminTools --> IdCardPreview
+  end
+  subgraph MedicalCertificate
+    AdminTools --> MedicalCertificate
+  subgraph types
+    MedicalCertificate --> types
+  end
+  end
+  subgraph RegistrationPreview
+    AdminTools --> RegistrationPreview
+  end
+  subgraph Reviews
+    AdminTools --> Reviews
+  subgraph ui
+    Reviews --> ui
+  end
+  end
+  subgraph SalaryCertificate
+    AdminTools --> SalaryCertificate
+  subgraph types
+    SalaryCertificate --> types
+  end
+  end
+  subgraph SpecialBranchCertificate
+    AdminTools --> SpecialBranchCertificate
+  end
+  end
+  subgraph components
+    Home --> components
+  subgraph About
+    components --> About
+  subgraph ui
+    About --> ui
+  end
+  end
+  subgraph Dashboard
+    components --> Dashboard
+  subgraph common
+    Dashboard --> common
+  subgraph BlurContact
+    common --> BlurContact
+  end
+  subgraph DocumentDownload
+    common --> DocumentDownload
+  end
+  end
+  subgraph ui
+    Dashboard --> ui
+  end
+  end
+  subgraph Forms
+    components --> Forms
+  subgraph ui
+    Forms --> ui
+  end
+  end
+  subgraph Hero
+    components --> Hero
+  subgraph ui
+    Hero --> ui
+  end
+  end
+  subgraph Portfolio
+    components --> Portfolio
+  subgraph ui
+    Portfolio --> ui
+  end
+  end
+  subgraph SecretSection
+    components --> SecretSection
+  end
+  subgraph SellingPoints
+    components --> SellingPoints
+  end
+  subgraph Services
+    components --> Services
+  subgraph ui
+    Services --> ui
+  end
+  end
+  subgraph Testimonials
+    components --> Testimonials
+  end
+  subgraph UserBoard
+    components --> UserBoard
+  end
+  subgraph common
+    components --> common
+  end
+  subgraph ui
+    components --> ui
+  subgraph Button
+    ui --> Button
+  end
+  subgraph Card
+    ui --> Card
+  end
+  subgraph Icon
+    ui --> Icon
+  end
+  end
+  end
+  subgraph hooks
     Home --> hooks
-    end
-    subgraph types
+  end
+  subgraph types
     Home --> types
-    end
-    🔹 Notes
-13. AdminTools → Back-office, Document & Review workflows
-14. UserBoard → Front-end user metrics & dashboard
-15. Components → Shared UI, reusable elements, forms, portfolio, hero sections
-16. Types & Hooks → Shared type definitions + reusable hooks
+  end
+```
 
 ## 📝 WORKFLOW.md
+
 เมื่อได้รับข้อความทั้งหมดสรุปตามหัว
 เป้าหมายหลัก:
 สร้าง แก้ไข ปรับแต่ง React + TypeScript + Vite + TailwindCSS/DaisyUI components ให้เป็น Production-ready, Type-safe, Minimal UI, Flat UI, Enterprise-grade
@@ -481,32 +800,191 @@ AI สามารถ:
 สร้างสรุปรายงาน Markdown อัตโนมัติ (เหมือนสคริปต์ NOTEDEVSEO_SUMMARY.md)
 ปรับปรุงและฟอร์แมตโค้ด ให้ production-ready ตาม strict TypeScript + ESLint rules
 ให้คำแนะนำเชิงเทคนิค เกี่ยวกับโครงสร้าง Component, Hooks, และ Config
-📁 ไฟล์ที่ควรเพิ่ม (แยกตามหมวด)
+📝 บันทึกข้อมูล Dashboard Project
 
-🔹 1. Config & Schema
-| ไฟล์ | บทบาท |
-|------|--------|
-| src/config/dashboardCards.tsx | กำหนด schema และ metadata สำหรับ Dashboard card |
+1️⃣ Dashboard Cards
 
-🔹 2. Layout & Structure
-| ไฟล์ | บทบาท |
-|------|--------|
-| src/layouts/DashboardLayout.tsx
-🔹 3. UI Components (Reusable)
-| ไฟล์ | บทบาท |
-|------|--------|
-ui
-/StatusBadge.tsx | แสดงสถานะเอกสาร เช่น “รอตรวจสอบ”, “ผ่านแล้ว” |
-EmptyState.tsx | แสดงเมื่อไม่มีข้อมูล เช่น “ยังไม่มีเอกสาร” |
-SectionHeader.tsx | ใช้ใน DashboardSection เพื่อแสดงหัวข้อ |
-ActionButton.tsx | ปุ่มที่มี icon + label เช่น “ดูรายละเอียด” |
-ardAnimation.ts | จัดการ motion variants สำหรับ card |
+ไฟล์หลัก: src/config/dashboardCards.tsx
 
-🔹 5. Types & Validation
-| ไฟล์ | บทบาท |
-|------|--------|
-| src/types/dashboard.ts | กำหนด type ของ DashboardCard, Section, Permission |
+1.1 โครงสร้าง DashboardCard
 
+export interface DashboardCard {
+title: string; // ชื่อการ์ด
+description: string; // คำอธิบายการ์ด
+roles: UserRole[]; // สิทธิ์เข้าถึง
+icon: React.ElementType; // Icon จาก lucide-react
+route: string; // path สำหรับ navigation
+category: DashboardCategory; // หมวดหมู่
+realtime?: boolean; // แสดง badge Realtime
+}
+
+1.2 สิทธิ์เข้าถึง (Roles)
+
+export enum UserRole {
+Admin = "admin",
+Manager = "manager",
+User = "user",
+}
+
+ใช้ควบคุมว่าใครสามารถเห็นหรือคลิกการ์ดได้
+
+ถ้า roles ของการ์ดไม่รวม Role ของผู้ใช้ จะ ล็อคการ์ด
+
+1.3 Realtime
+
+ควบคุมว่าแสดง badge “Realtime” บนการ์ด
+
+ใช้ฟิลด์ realtime?: boolean
+
+ตัว component DashboardCard จะ render <span> ถ้า realtime === true
+
+---
+
+2️⃣ Component DashboardCard
+
+ไฟล์: src/Home/components/Dashboard/ui/DashboardCard.tsx
+
+2.1 Props
+
+interface DashboardCardProps {
+title: string;
+description: string;
+icon?: React.ElementType;
+\_route?: string; // ใช้ navigation (เปลี่ยนชื่อ \_route เพื่อป้องกัน warning)
+canAccess?: boolean; // สิทธิ์เข้าถึง
+realtime?: boolean; // แสดง badge Realtime
+children?: ReactNode;
+}
+
+2.2 การทำงานสำคัญ
+
+ปรับ สไตล์การ์ด ตามสิทธิ์ canAccess
+
+แสดง badge Realtime ถ้า realtime === true
+
+รองรับ children สำหรับ component เสริมภายในการ์ด
+
+ไม่สามารถคลิกการ์ดถ้า canAccess === false
+
+---
+
+3️⃣ Dashboard Component
+
+ไฟล์: src/Home/components/Dashboard/Dashboard.tsx
+
+3.1 Mock Data
+
+const mockStats = [
+{ id: "1", label: "เอกสารทั้งหมด", value: 120 },
+{ id: "2", label: "สมาชิกทีม", value: 5 },
+{ id: "3", label: "รายงานล่าสุด", value: 15 },
+{ id: "4", label: "แจ้งเตือน", value: 3 },
+];
+
+const mockActivities: Activity[] = [
+{ id: "1", action: "เข้าสู่ระบบ", timestamp: "09:00 น." },
+{ id: "2", action: "อัปโหลดเอกสาร", timestamp: "09:30 น." },
+{ id: "3", action: "สร้างรายงาน", timestamp: "10:00 น." },
+];
+
+mockStats → ข้อมูล สถิติผู้ใช้ (UserStats)
+
+mockActivities → ข้อมูล กิจกรรมล่าสุด (RecentActivity)
+
+ใช้เพื่อ render UI ก่อนมีข้อมูลจริงจาก API
+
+3.2 การ map การ์ด
+
+cards.map((card) => (
+<DashboardCard
+key={card.route}
+title={card.title}
+description={card.description}
+icon={card.icon}
+\_route={card.route}
+realtime={card.realtime}
+canAccess={card.roles.includes(role)} // ตรวจสอบสิทธิ์
+/>
+))
+
+canAccess → ถ้า false จะ ล็อคการ์ด
+
+---
+
+4️⃣ UserStats Component
+
+ไฟล์: src/Home/components/Dashboard/ui/UserStats.tsx
+
+4.1 Props
+
+interface Stat {
+id: string;
+label: string;
+value: number;
+}
+
+interface UserStatsProps {
+stats: Stat[];
+}
+
+4.2 การทำงาน
+
+แสดง สถิติผู้ใช้แบบ grid
+
+แต่ละสถิติแสดง value + label
+
+ใช้ mock data ในการพัฒนา
+
+---
+
+5️⃣ Protected Auth Context
+
+ไฟล์: src/hooks/useProtectedAuth.tsx
+
+5.1 ฟังก์ชันสำคัญ
+
+const updateUser = useCallback(
+(data: Partial<User>) => {
+if (!user) return;
+const updated = { ...user, ...data };
+setUser(updated);
+localStorage.setItem("user", JSON.stringify(updated));
+},
+[user]
+);
+
+อัปเดต user object ทั้งใน state และ localStorage
+
+ใช้กับการตั้งค่าผู้ใช้ เช่น เปลี่ยนรหัสผ่าน
+
+---
+
+6️⃣ เทคนิคสำคัญ
+
+1. สิทธิ์เข้าถึงการ์ด
+
+กำหนดใน roles ของแต่ละ DashboardCard
+
+ตรวจสอบใน Dashboard component ก่อน render → \_canAccess
+
+2. Realtime badge
+
+กำหนดใน realtime ของ DashboardCard
+
+Component DashboardCard แสดง <span> badge
+
+3. Mock Data
+
+ใช้ mockStats และ mockActivities สำหรับพัฒนา UI
+
+ใน production ต้องเปลี่ยนเป็น fetch จาก API
+(ยังไม่มีแผนพัฒนา)
+
+4. Component แบบ reusable
+
+DashboardCard, UserStats, RecentActivity, DashboardSection
+
+สามารถปรับใช้ในหลายส่วนของ Dashboard
 
 AI ยังต้อง:
 ปรับปรุงหรือแก้ไข Component จริง ในโปรเจกต์ตาม requirement

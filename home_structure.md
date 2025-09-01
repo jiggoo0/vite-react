@@ -1,6 +1,9 @@
 # Home Project Structure
-_Generated at: Mon Sep  1 07:25:01 +07 2025_\n
+
+_Generated at: Mon Sep 1 18:18:14 +07 2025_\n
+
 ## Directory Tree
+
 ```
 Home
   hooks
@@ -142,43 +145,133 @@ Home
     idCard.ts
     userBehavior.ts
   Login.tsx
+  Profile.tsx
   AdminTools.tsx
+  Settings.tsx
 ```
 
 ## Mermaid Diagram
+
 ```mermaid
 graph TD
-  subgraph hooks
-    Home --> hooks
-    Home --> hooks
-  end
   subgraph AdminTools
     Home --> AdminTools
-    Home --> AdminTools
-    MedicalCertificate --> types
+  subgraph DriverLicense
+    AdminTools --> DriverLicense
+  subgraph types
     DriverLicense --> types
+  end
+  subgraph ui
     DriverLicense --> ui
-    SalaryCertificate --> types
+  end
+  end
+  subgraph IdCardPreview
+    AdminTools --> IdCardPreview
+  end
+  subgraph MedicalCertificate
+    AdminTools --> MedicalCertificate
+  subgraph types
+    MedicalCertificate --> types
+  end
+  end
+  subgraph RegistrationPreview
+    AdminTools --> RegistrationPreview
+  end
+  subgraph Reviews
+    AdminTools --> Reviews
+  subgraph ui
     Reviews --> ui
+  end
+  end
+  subgraph SalaryCertificate
+    AdminTools --> SalaryCertificate
+  subgraph types
+    SalaryCertificate --> types
+  end
+  end
+  subgraph SpecialBranchCertificate
+    AdminTools --> SpecialBranchCertificate
+  end
   end
   subgraph components
     Home --> components
-    Home --> components
+  subgraph About
+    components --> About
+  subgraph ui
     About --> ui
-    Dashboard --> ui
+  end
+  end
+  subgraph Dashboard
+    components --> Dashboard
+  subgraph common
     Dashboard --> common
+  subgraph BlurContact
     common --> BlurContact
+  end
+  subgraph DocumentDownload
     common --> DocumentDownload
-    Portfolio --> ui
+  end
+  end
+  subgraph ui
+    Dashboard --> ui
+  end
+  end
+  subgraph Forms
+    components --> Forms
+  subgraph ui
     Forms --> ui
+  end
+  end
+  subgraph Hero
+    components --> Hero
+  subgraph ui
     Hero --> ui
-    ui --> Icon
-    ui --> Card
-    ui --> Button
+  end
+  end
+  subgraph Portfolio
+    components --> Portfolio
+  subgraph ui
+    Portfolio --> ui
+  end
+  end
+  subgraph SecretSection
+    components --> SecretSection
+  end
+  subgraph SellingPoints
+    components --> SellingPoints
+  end
+  subgraph Services
+    components --> Services
+  subgraph ui
     Services --> ui
   end
+  end
+  subgraph Testimonials
+    components --> Testimonials
+  end
+  subgraph UserBoard
+    components --> UserBoard
+  end
+  subgraph common
+    components --> common
+  end
+  subgraph ui
+    components --> ui
+  subgraph Button
+    ui --> Button
+  end
+  subgraph Card
+    ui --> Card
+  end
+  subgraph Icon
+    ui --> Icon
+  end
+  end
+  end
+  subgraph hooks
+    Home --> hooks
+  end
   subgraph types
-    Home --> types
     Home --> types
   end
 ```

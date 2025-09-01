@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================
 # Script: generate_home_structure.sh
-# Purpose: Generate Markdown file with Directory Tree and Mermaid Diagram
+# Purpose: Generate Markdown file with Directory Tree and Mermaid Diagram (folders only)
 # Target: ./src/Home
 # ============================================
 
@@ -15,7 +15,7 @@ echo "# Home Project Structure" > $OUTPUT_MD
 echo "_Generated at: $(date)_\n" >> $OUTPUT_MD
 
 # --------------------------------------------
-# 2️⃣ Generate Directory Tree
+# 2️⃣ Generate Directory Tree (including files)
 # --------------------------------------------
 echo "## Directory Tree" >> $OUTPUT_MD
 echo '```' >> $OUTPUT_MD
@@ -23,30 +23,28 @@ find "$ROOT" | sed -e "s|$ROOT|Home|;s|[^/]*/|  |g" >> $OUTPUT_MD
 echo '```' >> $OUTPUT_MD
 
 # --------------------------------------------
-# 3️⃣ Generate Mermaid Diagram
+# 3️⃣ Generate Mermaid Diagram (folders only)
 # --------------------------------------------
 echo -e "\n## Mermaid Diagram" >> $OUTPUT_MD
 echo '```mermaid' >> $OUTPUT_MD
 echo "graph TD" >> $OUTPUT_MD
 
-# Detect top-level directories
-for module in $(find "$ROOT" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;); do
-  echo "  subgraph $module" >> $OUTPUT_MD
-  echo "    Home --> $module" >> $OUTPUT_MD
-  DIR="$ROOT/$module"
+# Recursive function to generate folders only
+generate_mermaid() {
+  local parent_path="$1"
+  local parent_name="$2"
 
-  # Detect subfolders recursively
-  if [ -d "$DIR" ]; then
-    find "$DIR" -type d | while read sub; do
-      subname=$(basename "$sub")
-      parent=$(basename $(dirname "$sub"))
-      if [ "$parent" != "$module" ]; then
-        echo "    $parent --> $subname" >> $OUTPUT_MD
-      fi
-    done
-  fi
-  echo "  end" >> $OUTPUT_MD
-done
+  for dir in "$parent_path"/*/; do
+    [ -d "$dir" ] || continue
+    local name=$(basename "$dir")
+    echo "  subgraph $name" >> $OUTPUT_MD
+    echo "    $parent_name --> $name" >> $OUTPUT_MD
+    generate_mermaid "$dir" "$name"
+    echo "  end" >> $OUTPUT_MD
+  done
+}
+
+generate_mermaid "$ROOT" "Home"
 
 echo '```' >> $OUTPUT_MD
-echo "✅ Markdown file generated: $OUTPUT_MD"
+echo "✅ Markdown file generated: $OUTPUT_MD (folders only)"

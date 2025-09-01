@@ -1,94 +1,125 @@
-# JP Visual & Docs - Vite React Project
+# JP - VISOUL & DOSC Project
 
-โปรเจกต์ Single Page Application (SPA) ด้วย **React + TypeScript** พร้อม **Vite** และ **TailwindCSS**  
-รองรับฟีเจอร์: modular components, Framer Motion animation, react-hook-form, PDF/Canvas export, และ dashboard components
+**Business Overview:**  
+“ทำธุรกิจสีเทาให้มีความมืออาชีพ มาตรฐาน”
 
----
-
-## 📂 โครงสร้างโปรเจกต์
-
-src/ ├─ components/ # React Components │ ├─ Hero/ │ ├─ About/ │ ├─ Services/ │ ├─ Dashboard/ │ ├─ Testimonials/ │ └─ common/ # CardWrapper, LoadingSpinner, etc. ├─ data/ # JSON / static data ├─ types/ # TypeScript types ├─ utils/ # Helper functions and common utils ├─ styles/ # Global CSS / Tailwind overrides └─ pages/ # Route-based components (if using file-based routing)
+ทีมงานมีประสบการณ์ 8-9 ปี | ติดต่อ LINE Official: `@462FQFC`
 
 ---
 
-## 🚀 เทคโนโลยีหลัก
+## 1️⃣ Services
 
-- **React 18 + TypeScript**
-- **Vite** (fast bundler)
-- **TailwindCSS + DaisyUI**
-- **Framer Motion** (animation & transitions)
-- **Zod + react-hook-form** (form validation)
-- **Husky + lint-staged** (pre-commit checks)
-- **ESLint + Prettier** (code quality & formatting)
-
----
-
-## ⚡ การติดตั้ง & รันโปรเจกต์
-
-```bash
-# Clone repository
-git clone https://github.com/jiggoo0/vite-react.git
-cd vite-react
-
-# ติดตั้ง dependencies
-pnpm install
-
-# รันโปรเจกต์ในโหมด dev
-pnpm dev
-
-# build สำหรับ production
-pnpm build
-
-# ตรวจสอบ TypeScript
-pnpm type-check
-
-# รัน ESLint
-pnpm lint
-
+1. วางแผนยื่นกู้สินเชื่อ (บุคคล, SME, รีไฟแนนซ์)
+2. ดูแลเอกสารยื่นวีซ่า (ทุกประเภท)
+3. SLIBBANK – สลิปโอนเงิน/รับเงิน ตรวจสอบได้
+4. บริการเอกสาร: แก้ไข / สร้างใหม่ / จัดหา
+5. ผลิตชิ้นงานจริง (บัตรแข็ง/บัตรพลาสติก)
+6. ออกแบบโลโก้ / แบนเนอร์ / ปกเพจ
+7. ดูแลการตลาดครบวงจร + ระบบหลังบ้าน
+8. โครงการ “ให้น้องได้พักผ่อน” – AI Matching
 
 ---
 
-🧩 การใช้งาน Husky Pre-commit
+## 2️⃣ Core Logic
 
-Pre-commit script จะรัน:
+- ช่องว่างระหว่างความต้องการจริงของคนกับข้อจำกัดระบบราชการ/ธนาคาร
+- ปรับข้อมูลจริงให้อยู่ในรูปแบบที่ระบบยอมรับ โดยไม่สร้างข้อมูลเท็จ
+- Analogy:
+  - “เหมือนการแต่งหน้า” → ปรับสิ่งที่มีอยู่ให้ดีที่สุด
+  - “เหมือนการเขียน CV” → นำเสนอข้อมูลจริงในมุมมืออาชีพ
 
-1. TypeScript type-check
+---
 
+## 3️⃣ Rules & Risk Management
 
-2. ESLint (เฉพาะไฟล์ staged)
+- รับเงินเท่ากับเริ่มงาน – ไม่มีข้อยกเว้น
+- กรองลูกค้า: กิริยาไม่ดี → ไม่รับ, ส่งคนอื่นแทน → ยึดเงิน
+- การตั้งราคาตามความเสี่ยง:
+  - ต่ำ: 100–400 บาท
+  - กลาง: 4,000–50,000 บาท
+  - สูง: 25,000 บาท/รายการ
+- โปร่งใส แจ้งความเสี่ยง ลูกค้าตัดสินใจเอง
 
+---
 
-3. Prettier formatting (เฉพาะไฟล์ staged)
+## 4️⃣ Tech Stack
 
+- **Frontend:** React 19 + TypeScript + TailwindCSS + DaisyUI
+- **Bundler:** Vite
+- **Version Control:** Git + GitHub
+- **Deployment:** Vercel
 
+---
 
-ไฟล์: .husky/pre-commit
+## 5️⃣ Project Structure
 
-pnpm pre-commit
+src/ ├─ Home/ │ ├─ components/ │ │ ├─ Dashboard/ │ │ │ ├─ ui/ │ │ │ │ ├─ DashboardCard.tsx │ │ │ │ ├─ DashboardSection.tsx │ │ │ │ └─ QuickActions.tsx │ │ │ ├─ common/ │ │ │ │ ├─ BlurContact/ │ │ │ │ └─ DocumentDownload/ │ │ ├─ Forms/ │ │ ├─ Portfolio/ │ │ ├─ Hero/ │ │ └─ Services/ │ ├─ hooks/ │ │ ├─ useAuth.ts │ │ └─ useProtectedAuth.tsx │ ├─ types/ │ └─ AdminTools/ └─ ...
+
+---
+
+## 6️⃣ Project Info
+
+| Item                | Value                                                                          |
+| ------------------- | ------------------------------------------------------------------------------ |
+| Project Name        | vite-react                                                                     |
+| Version             | 7.1.1                                                                          |
+| Description         | JP - VISOUL & DOSC Dashboard                                                   |
+| GitHub URL          | [https://github.com/jiggoo0/vite-react](https://github.com/jiggoo0/vite-react) |
+| Developer Email     | jiggo0@outlook.co.th                                                           |
+| Website URL         | [https://404notfontjp.vercel.app/](https://404notfontjp.vercel.app/)           |
+| Vercel Account      | jiggoos-projects                                                               |
+| Vercel Project Name | vite-react                                                                     |
+| Vercel Project ID   | prj_MBF9hbw032OzD2gDVkUQ7mvoYA2t                                               |
+
+---
+
+## 7️⃣ Mock Data
+
+### User Stats
+
+```ts
+const mockStats = [
+  { id: "1", label: "เอกสารทั้งหมด", value: 120 },
+  { id: "2", label: "สมาชิกทีม", value: 5 },
+  { id: "3", label: "รายงานล่าสุด", value: 15 },
+  { id: "4", label: "แจ้งเตือน", value: 3 },
+];
+
+Recent Activities
+
+const mockActivities = [
+  { id: "1", action: "เข้าสู่ระบบ", timestamp: "09:00 น." },
+  { id: "2", action: "อัปโหลดเอกสาร", timestamp: "09:30 น." },
+  { id: "3", action: "สร้างรายงาน", timestamp: "10:00 น." },
+];
 
 
 ---
 
-📝 ข้อมูลเพิ่มเติม
+8️⃣ Husky Pre-commit Hook
 
-ID Card Preview & Form
+TypeScript type-check
 
-Dynamic Risk Dashboard
+ESLint (staged files)
 
-Portfolio Gallery
-
-FAQ & Support Components
-
-User Board / Testimonials / About / Hero Sections
+Prettier (staged files)
 
 
+git add .
+git commit -m "your message"
+# จะรันตรวจสอบอัตโนมัติ
 
----
-
-📄 License
-
-MIT © JP Visual & Docs
 
 ---
+
+9️⃣ Notes
+
+AdminTools → Back-office, Document & Review workflows
+
+UserBoard → Front-end user metrics & dashboard
+
+Components → Shared UI / reusable elements
+
+Types & Hooks → Shared type definitions + reusable hooks
 
 ```
