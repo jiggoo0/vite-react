@@ -2,7 +2,6 @@
 "use client";
 
 import React, { FC, useState, useEffect } from "react";
-import PageSection from "@/Home/components/common/PageSection";
 import DashboardCard from "@/Home/components/Dashboard/ui/DashboardCard";
 import DashboardSection from "@/Home/components/Dashboard/ui/DashboardSection";
 import QuickActions from "@/Home/components/Dashboard/ui/QuickActions";
@@ -10,10 +9,13 @@ import RecentActivity, { Activity } from "@/Home/components/Dashboard/ui/RecentA
 import UserStats from "@/Home/components/Dashboard/ui/UserStats";
 import BlurContact from "@/Home/components/Dashboard/common/BlurContact/BlurContact";
 import DocumentDownload from "@/Home/components/Dashboard/common/DocumentDownload/DocumentDownload";
+import DashboardGreeting from "@/Home/components/Dashboard/ui/DashboardGreeting";
 import { useAuth } from "@/hooks/useAuth";
 import { dashboardCards, UserRole } from "@/config/dashboardCardsConfig";
 
-// -------- Mock Data --------
+// --------------------------
+// Mock Data
+// --------------------------
 const mockActivities: Activity[] = [
   { id: "1", action: "เข้าสู่ระบบ", timestamp: "09:00 น." },
   { id: "2", action: "อัปโหลดเอกสาร", timestamp: "09:30 น." },
@@ -28,6 +30,9 @@ const mockStats = [
 ];
 
 const Dashboard: FC = () => {
+  // --------------------------
+  // Authentication
+  // --------------------------
   const { user } = useAuth();
   const [username, setUsername] = useState("ผู้ใช้");
   const [role, setRole] = useState<UserRole>(UserRole.User);
@@ -38,6 +43,9 @@ const Dashboard: FC = () => {
     setRole((user.role as UserRole) ?? UserRole.User);
   }, [user]);
 
+  // --------------------------
+  // Prepare Dashboard Cards
+  // --------------------------
   const cards =
     dashboardCards[role]?.map((card) => ({
       ...card,
@@ -47,22 +55,18 @@ const Dashboard: FC = () => {
   return (
     <main className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Greeting */}
-        <PageSection hideTitle>
-          <h1 className="text-2xl font-bold text-gray-800">สวัสดี, {username}</h1>
-          <p className="text-gray-600 mt-2">ยินดีต้อนรับเข้าสู่แดชบอร์ดของคุณ</p>
-        </PageSection>
+        {/* Greeting Section */}
+        <DashboardGreeting username={username} />
 
-        {/* Quick Actions */}
-        <PageSection hideTitle>
-          <QuickActions
-            onUpload={() => console.log("Upload triggered")}
-            onReport={() => console.log("Report triggered")}
-            onSettings={() => console.log("Settings triggered")}
-          />
-        </PageSection>
+        {/* Quick Actions Section */}
+        <QuickActions
+          onContact={() => console.log("Contact team triggered")}
+          onCheckStatus={() => console.log("Check status triggered")}
+          onDownload={() => console.log("Download triggered")}
+          onPay={() => console.log("Pay triggered")}
+        />
 
-        {/* Dashboard Cards */}
+        {/* Dashboard Cards Section */}
         <DashboardSection>
           {cards.map((card) => (
             <DashboardCard
@@ -77,15 +81,11 @@ const Dashboard: FC = () => {
           ))}
         </DashboardSection>
 
-        {/* User Stats */}
-        <PageSection title="สถิติผู้ใช้">
-          <UserStats stats={mockStats} />
-        </PageSection>
+        {/* User Stats Section */}
+        <UserStats stats={mockStats} />
 
-        {/* Recent Activity */}
-        <PageSection title="กิจกรรมล่าสุด">
-          <RecentActivity activities={mockActivities} />
-        </PageSection>
+        {/* Recent Activity Section */}
+        <RecentActivity activities={mockActivities} />
 
         {/* Additional Components */}
         <BlurContact />
