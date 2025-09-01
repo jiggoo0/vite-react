@@ -1,4 +1,4 @@
-// src/config/dashboardCards.tsx
+// src/config/dashboardCardsConfig.tsx
 // ==========================
 // Dashboard Cards Configuration
 // ==========================
@@ -32,11 +32,11 @@ export enum DashboardCategory {
 export interface DashboardCard {
   title: string;
   description: string;
-  roles: UserRole[]; // สิทธิ์เข้าถึง
-  icon: React.ElementType; // lucide-react icon component
-  route: string; // path สำหรับ navigation
-  category: DashboardCategory; // หมวดหมู่ของการ์ด
-  realtime?: boolean; // แสดง badge realtime
+  roles: UserRole[];
+  icon: React.ElementType;
+  route: string;
+  category: DashboardCategory;
+  realtime?: boolean;
 }
 
 // --------------------------

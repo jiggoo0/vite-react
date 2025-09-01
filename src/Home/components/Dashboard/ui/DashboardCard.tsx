@@ -1,46 +1,53 @@
 "use client";
 
 import { FC, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 interface DashboardCardProps {
   title: string;
   description: string;
   icon?: React.ElementType;
-  _route?: string; // เปลี่ยนชื่อเป็น _route เพื่อลบ warning
+  route?: string;
   canAccess?: boolean;
   realtime?: boolean;
   children?: ReactNode;
 }
 
-/**
- * DashboardCard
- * -------------
- * Component สำหรับแสดงการ์ดบน Dashboard
- * - ปรับสไตล์ตามสิทธิ์ผู้ใช้
- * - รองรับ children สำหรับ component เสริม
- * - รองรับ realtime แสดง badge หรือ status
- */
 const DashboardCard: FC<DashboardCardProps> = ({
   title,
   description,
   icon: Icon,
-  _route,
+  route,
   canAccess = true,
   realtime = false,
   children,
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (!canAccess || !route) return;
+    navigate(route);
+  };
+
   return (
     <div
-      className={`p-6 rounded-xl shadow-md transition-shadow ${
+      onClick={handleClick}
+      className={clsx(
+        "p-6 rounded-xl shadow-md transition-shadow",
         canAccess
           ? "bg-white hover:shadow-lg cursor-pointer"
           : "bg-gray-100 border border-gray-300 opacity-70 cursor-not-allowed"
-      }`}
+      )}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {Icon && <Icon className={`w-6 h-6 ${canAccess ? "text-gray-800" : "text-gray-400"}`} />}
-          <h2 className={`text-lg font-semibold ${canAccess ? "text-gray-800" : "text-gray-500"}`}>
+          {Icon && (
+            <Icon className={clsx("w-6 h-6", canAccess ? "text-gray-800" : "text-gray-400")} />
+          )}
+          <h2
+            className={clsx("text-lg font-semibold", canAccess ? "text-gray-800" : "text-gray-500")}
+          >
             {title}
           </h2>
         </div>
@@ -51,7 +58,7 @@ const DashboardCard: FC<DashboardCardProps> = ({
         )}
       </div>
 
-      <p className={`mt-2 ${canAccess ? "text-gray-500" : "text-gray-400"}`}>{description}</p>
+      <p className={clsx("mt-2", canAccess ? "text-gray-500" : "text-gray-400")}>{description}</p>
 
       {children && <div className="mt-4">{children}</div>}
 

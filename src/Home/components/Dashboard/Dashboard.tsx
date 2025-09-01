@@ -1,3 +1,4 @@
+// src/Home/components/Dashboard/Dashboard.tsx
 "use client";
 
 import React, { FC, useState, useEffect } from "react";
@@ -10,7 +11,7 @@ import UserStats from "@/Home/components/Dashboard/ui/UserStats";
 import BlurContact from "@/Home/components/Dashboard/common/BlurContact/BlurContact";
 import DocumentDownload from "@/Home/components/Dashboard/common/DocumentDownload/DocumentDownload";
 import { useAuth } from "@/hooks/useAuth";
-import { dashboardCards, UserRole } from "@/config/dashboardCards";
+import { dashboardCards, UserRole } from "@/config/dashboardCardsConfig";
 
 // -------- Mock Data --------
 const mockActivities: Activity[] = [
@@ -37,7 +38,11 @@ const Dashboard: FC = () => {
     setRole((user.role as UserRole) ?? UserRole.User);
   }, [user]);
 
-  const cards = dashboardCards[role] ?? [];
+  const cards =
+    dashboardCards[role]?.map((card) => ({
+      ...card,
+      canAccess: card.roles.includes(role),
+    })) ?? [];
 
   return (
     <main className="min-h-screen bg-gray-50 py-8">
@@ -65,9 +70,9 @@ const Dashboard: FC = () => {
               title={card.title}
               description={card.description}
               icon={card.icon}
-              _route={card.route} // แก้ตรงนี้เป็น _route
+              route={card.route}
               realtime={card.realtime}
-              canAccess={card.roles.includes(role)}
+              canAccess={card.canAccess}
             />
           ))}
         </DashboardSection>

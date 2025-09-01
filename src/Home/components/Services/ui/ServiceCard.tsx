@@ -8,15 +8,18 @@ interface ServiceCardProps {
   service: ServiceType;
 }
 
+// LINE OA ID ของคุณ (ไม่ต้องมี @)
+const lineOAId = "462fqtfc";
+
+// ฟังก์ชันสร้างลิงก์ LINE OA พร้อมข้อความอัตโนมัติ
 const createLineLink = (message: string) =>
-  `https://lin.ee/sOKDUEg?text=${encodeURIComponent(message)}`;
+  `https://lin.ee/${lineOAId}?text=${encodeURIComponent(message)}`;
 
 const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
   const lineMessage = service.lineMessage ?? `สนใจบริการ: ${service.title}`;
   const lineLink = createLineLink(lineMessage);
 
   if (!service.available) {
-    // Coming Soon card
     return (
       <motion.article
         initial={{ opacity: 0, y: 20 }}
@@ -50,7 +53,6 @@ const ServiceCard: FC<ServiceCardProps> = ({ service }) => {
     );
   }
 
-  // Available service card
   return (
     <article
       tabIndex={0}
