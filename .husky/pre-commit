@@ -1,9 +1,4 @@
-#!/bin/sh
-# pre-commit hook for Husky v10+
-# รัน lint-staged เพื่อเช็คไฟล์ที่ staged ก่อน commit
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Exit immediately if a command exits with a non-zero status
-set -e
-
-# Run lint-staged
 pnpm lint-staged
