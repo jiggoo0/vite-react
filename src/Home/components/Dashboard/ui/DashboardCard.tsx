@@ -1,4 +1,3 @@
-// src/Home/components/Dashboard/ui/DashboardCard.tsx
 "use client";
 
 import { FC, ReactNode } from "react";
@@ -6,9 +5,11 @@ import { FC, ReactNode } from "react";
 interface DashboardCardProps {
   title: string;
   description: string;
+  icon?: React.ElementType;
+  _route?: string; // เปลี่ยนชื่อเป็น _route เพื่อลบ warning
+  canAccess?: boolean;
+  realtime?: boolean;
   children?: ReactNode;
-  canAccess?: boolean; // true = มีสิทธิ์, false = ไม่มีสิทธิ์
-  realtime?: boolean; // ใช้สำหรับแสดงสถานะ real-time
 }
 
 /**
@@ -22,22 +23,27 @@ interface DashboardCardProps {
 const DashboardCard: FC<DashboardCardProps> = ({
   title,
   description,
-  children,
+  icon: Icon,
+  _route,
   canAccess = true,
   realtime = false,
+  children,
 }) => {
   return (
     <div
       className={`p-6 rounded-xl shadow-md transition-shadow ${
         canAccess
-          ? "bg-white hover:shadow-lg"
+          ? "bg-white hover:shadow-lg cursor-pointer"
           : "bg-gray-100 border border-gray-300 opacity-70 cursor-not-allowed"
       }`}
     >
       <div className="flex items-center justify-between">
-        <h2 className={`text-lg font-semibold ${canAccess ? "text-gray-800" : "text-gray-500"}`}>
-          {title}
-        </h2>
+        <div className="flex items-center gap-2">
+          {Icon && <Icon className={`w-6 h-6 ${canAccess ? "text-gray-800" : "text-gray-400"}`} />}
+          <h2 className={`text-lg font-semibold ${canAccess ? "text-gray-800" : "text-gray-500"}`}>
+            {title}
+          </h2>
+        </div>
         {realtime && (
           <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">
             Realtime

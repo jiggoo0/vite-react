@@ -1,102 +1,145 @@
-// src/config/dashboardCards.ts
+// src/config/dashboardCards.tsx
 // ==========================
-// Dashboard Cards - Mock Data per Role
-// ใช้ชุดเดียวกันสำหรับทุก role
-// รองรับ icon, route, realtime badge
+// Dashboard Cards Configuration
 // ==========================
 
-export type UserRole = "admin" | "manager" | "user";
+import { Building2, Landmark, CreditCard, Stethoscope, FileText } from "lucide-react";
 
+// --------------------------
+// User Roles (enum)
+// --------------------------
+export enum UserRole {
+  Admin = "admin",
+  Manager = "manager",
+  User = "user",
+}
+
+// --------------------------
+// Dashboard Categories (enum)
+// --------------------------
+export enum DashboardCategory {
+  Registry = "registry",
+  Company = "company",
+  Certificate = "certificate",
+  Statement = "statement",
+  Medical = "medical",
+  Other = "other",
+}
+
+// --------------------------
+// Dashboard Card Interface
+// --------------------------
 export interface DashboardCard {
   title: string;
   description: string;
-  roles?: UserRole[]; // สิทธิ์เข้าถึง
+  roles: UserRole[]; // สิทธิ์เข้าถึง
+  icon: React.ElementType; // lucide-react icon component
+  route: string; // path สำหรับ navigation
+  category: DashboardCategory; // หมวดหมู่ของการ์ด
   realtime?: boolean; // แสดง badge realtime
-  icon?: string; // ชื่อ icon (สำหรับ UI)
-  route?: string; // path สำหรับ navigation
 }
 
-// Base cards
+// --------------------------
+// Base Cards
+// --------------------------
 const baseCards: DashboardCard[] = [
   {
     title: "ทะเบียนพาณิชย์",
     description: "ข้อมูลทะเบียนพาณิชย์ของบริษัท",
-    roles: ["admin", "manager", "user"],
-    icon: "building",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: Building2,
     route: "/registry",
-    realtime: false,
+    category: DashboardCategory.Registry,
+    realtime: true,
   },
   {
     title: "ทะเบียนบริษัท",
     description: "รายละเอียดทะเบียนบริษัท",
-    roles: ["admin", "manager", "user"],
-    icon: "office-building",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: Landmark,
     route: "/company",
-    realtime: false,
+    category: DashboardCategory.Company,
+    realtime: true,
   },
   {
     title: "ออกหนังสือรับรองเงินเดือน",
     description: "พิมพ์เอกสารรับรองเงินเดือน",
-    roles: ["admin", "manager", "user"],
-    icon: "document",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: FileText,
     route: "/salary-certificate",
+    category: DashboardCategory.Certificate,
     realtime: true,
   },
   {
     title: "ออกใบรับรองแพทย์",
     description: "สร้างเอกสารรับรองการรักษาพยาบาล",
-    roles: ["admin", "manager", "user"],
-    icon: "medkit",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: Stethoscope,
     route: "/medical-certificate",
+    category: DashboardCategory.Medical,
     realtime: true,
   },
   {
     title: "Statement KTB",
     description: "ใบแจ้งยอดบัญชี KTB",
-    roles: ["admin", "manager", "user"],
-    icon: "credit-card",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: CreditCard,
     route: "/statement/ktb",
+    category: DashboardCategory.Statement,
+    realtime: false,
   },
   {
     title: "Statement KBANK",
     description: "ใบแจ้งยอดบัญชี KBANK",
-    roles: ["admin", "manager", "user"],
-    icon: "credit-card",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: CreditCard,
     route: "/statement/kbank",
+    category: DashboardCategory.Statement,
+    realtime: false,
   },
   {
     title: "Statement TMB",
     description: "ใบแจ้งยอดบัญชี TMB",
-    roles: ["admin", "manager", "user"],
-    icon: "credit-card",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: CreditCard,
     route: "/statement/tmb",
+    category: DashboardCategory.Statement,
+    realtime: false,
   },
   {
     title: "Statement BBL",
     description: "ใบแจ้งยอดบัญชี BBL",
-    roles: ["admin", "manager", "user"],
-    icon: "credit-card",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: CreditCard,
     route: "/statement/bbl",
+    category: DashboardCategory.Statement,
+    realtime: false,
   },
   {
     title: "Statement GHB",
     description: "ใบแจ้งยอดบัญชี GHB",
-    roles: ["admin", "manager", "user"],
-    icon: "credit-card",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: CreditCard,
     route: "/statement/ghb",
+    category: DashboardCategory.Statement,
+    realtime: false,
   },
   {
     title: "Statement BAY",
     description: "ใบแจ้งยอดบัญชี BAY",
-    roles: ["admin", "manager", "user"],
-    icon: "credit-card",
+    roles: [UserRole.Admin, UserRole.Manager],
+    icon: CreditCard,
     route: "/statement/bay",
+    category: DashboardCategory.Statement,
+    realtime: false,
   },
 ];
 
-// Export สำหรับทุก role
+// --------------------------
+// Export per role
+// --------------------------
 export const dashboardCards: Record<UserRole, DashboardCard[]> = {
-  admin: baseCards,
-  manager: baseCards,
-  user: baseCards,
+  [UserRole.Admin]: baseCards,
+  [UserRole.Manager]: baseCards,
+  [UserRole.User]: baseCards,
 };

@@ -1,48 +1,55 @@
+// src/context/AuthProvider.tsx
 "use client";
 
 import React, { ReactNode, useState, useEffect, useCallback } from "react";
-import { AuthContext, User, UserRole, parseUserFromStorage } from "@/hooks/useAuth";
+import { AuthContext, parseUserFromStorage, User } from "@/hooks/useAuth";
 
+/** 🛡️ AuthProvider
+ * - ครอบ component ด้วย context สำหรับจัดการ authentication
+ * - ให้ `useAuth` ใช้งานได้
+ */
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-/**
- * AuthProvider
- * -------------------------
- * ครอบแอปเพื่อให้ useAuth() ทำงานได้
- * - เก็บ state ของผู้ใช้
- * - ตรวจสอบการยืนยันตัวตน
- * - ฟังก์ชัน logout
- * - ตรวจสอบ role
- */
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // โหลด user จาก localStorage ตอน mount
+  // โหลด user จาก localStorage เมื่อ mount
   useEffect(() => {
     const storedUser = parseUserFromStorage();
     setUser(storedUser);
   }, []);
 
-  const logout = useCallback(() => {
-    setUser(null);
-    localStorage.removeItem("user");
-  }, []);
+  const isAuthenticated = !!user;
 
   const hasRole = useCallback(
-    (roles: UserRole | UserRole[]) => {
+    (roles: User["role"] | User["role"][]) => {
       if (!user) return false;
-      const roleArray = Array.isArray(roles) ? roles : [roles];
-      return roleArray.includes(user.role);
+      if (Array.isArray(roles)) return roles.includes(user.role);
+      return user.role === roles;
     },
     [user]
   );
 
-  const isAuthenticated = Boolean(user);
+  const logout = useCallback(() => {
+    localStorage.removeItem("user");
+    setUser(null);
+  }, []);
+
+  // ✅ เพิ่มฟังก์ชัน updateUser ให้ตรง type
+  const updateUser = useCallback(
+    (data: Partial<User>) => {
+      if (!user) return;
+      const updated = { ...user, ...data };
+      setUser(updated);
+      localStorage.setItem("user", JSON.stringify(updated));
+    },
+    [user]
+  );
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isAuthenticated, hasRole, logout }}>
+    <AuthContext.Provider value={{ user, setUser, isAuthenticated, hasRole, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

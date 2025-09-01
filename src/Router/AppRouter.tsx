@@ -1,9 +1,10 @@
 "use client";
 
 import { FC, Suspense, lazy, ComponentType } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 
 import Layout from "@/Layout/Layout";
+import DashboardLayout from "@/Layout/DashboardLayout";
 import ScrollToTop from "@/utils/common/ScrollToTop";
 import FallbackLoader from "@/utils/common/FallbackLoader";
 import ErrorBoundary from "@/utils/common/ErrorBoundary";
@@ -11,15 +12,15 @@ import ErrorBoundary from "@/utils/common/ErrorBoundary";
 import ProtectedRoute from "@/Router/ProtectedRoute";
 import PublicRoute from "@/Router/PublicRoute";
 
-// ---------- Import Home ตรง ๆ ----------
+// ---------- Pages ----------
 import Home from "@/Home/Home";
-
-// ---------- Lazy-loaded Pages ----------
 const Login = lazy(() => import("@/Home/Login"));
 const AdminTools = lazy(() => import("@/Home/AdminTools"));
 const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
 const Forbidden = lazy(() => import("@/utils/common/403"));
 const Dashboard = lazy(() => import("@/Home/components/Dashboard/Dashboard"));
+const Profile = lazy(() => import("@/Home/Profile"));
+const Settings = lazy(() => import("@/Home/Settings"));
 
 // ---------- Suspense + ErrorBoundary Wrapper ----------
 const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
@@ -35,7 +36,15 @@ const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
   </ErrorBoundary>
 );
 
-// ---------- App Router ----------
+// ---------- Dashboard Routes Config ----------
+const dashboardRoutes = [
+  { path: "user", roles: ["user"] as const, element: Dashboard },
+  { path: "user/profile", roles: ["user"] as const, element: Profile },
+  { path: "user/settings", roles: ["user"] as const, element: Settings },
+  { path: "manager", roles: ["manager"] as const, element: Dashboard },
+  { path: "admin/dashboard", roles: ["admin"] as const, element: Dashboard },
+];
+
 const AppRouter: FC = () => (
   <>
     <ScrollToTop />
@@ -50,40 +59,33 @@ const AppRouter: FC = () => (
         <Route path="form" element={lazyPage(CustomerAssessmentForm)} />
       </Route>
 
-      {/* Protected Routes */}
-      <Route element={<Layout />}>
-        <Route
-          path="user"
-          element={
-            <ProtectedRoute allowedRoles={["user"]}>
-              {lazyPage(Dashboard, { role: "user" as const })}
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="manager"
-          element={
-            <ProtectedRoute allowedRoles={["manager"]}>
-              {lazyPage(Dashboard, { role: "manager" as const })}
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="secret"
-          element={
-            <ProtectedRoute allowedRoles={["user", "manager", "admin"]}>
-              {lazyPage(AdminTools)}
-            </ProtectedRoute>
-          }
-        />
+      {/* Protected Dashboard Routes */}
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={["user", "manager", "admin"]}>
+            <DashboardLayout>
+              <Outlet />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      >
+        {dashboardRoutes.map(({ path, roles, element }) => (
+          <Route
+            key={path}
+            path={path}
+            element={<ProtectedRoute allowedRoles={roles}>{lazyPage(element)}</ProtectedRoute>}
+          />
+        ))}
       </Route>
 
-      {/* Admin Routes */}
+      {/* Admin Exclusive */}
       <Route
         path="admin"
         element={
           <ProtectedRoute allowedRoles={["admin"]}>
-            <Layout />
+            <Layout>
+              <Outlet />
+            </Layout>
           </ProtectedRoute>
         }
       >
@@ -92,7 +94,6 @@ const AppRouter: FC = () => (
           element={<div className="p-6 text-xl font-semibold text-white">🛠️ Admin Dashboard</div>}
         />
         <Route path="secret" element={lazyPage(AdminTools)} />
-        <Route path="dashboard" element={lazyPage(Dashboard, { role: "admin" as const })} />
       </Route>
 
       {/* Fallback */}

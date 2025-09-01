@@ -1,25 +1,20 @@
-// src/context/AuthProvider.tsx
 "use client";
 
-import React, { ReactNode, useState, useEffect, useCallback } from "react";
-import { AuthContext, parseUserFromStorage, User } from "@/hooks/useAuth";
+import React, { ReactNode, useState, useCallback } from "react";
+import { AuthContext, User } from "@/hooks/useAuth";
 
-/** 🛡️ AuthProvider
- * - ครอบ component ด้วย context สำหรับจัดการ authentication
- * - ให้ `useAuth` ใช้งานได้
- */
-interface AuthProviderProps {
+interface ProtectedAuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+/**
+ * ProtectedAuthProvider
+ * ---------------------
+ * Context provider สำหรับผู้ใช้ที่ต้องมี authentication
+ * ให้ useAuth สามารถเรียกใช้งานได้
+ */
+export const ProtectedAuthProvider: React.FC<ProtectedAuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-
-  // โหลด user จาก localStorage เมื่อ mount
-  useEffect(() => {
-    const storedUser = parseUserFromStorage();
-    setUser(storedUser);
-  }, []);
 
   const isAuthenticated = !!user;
 
@@ -27,7 +22,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (roles: User["role"] | User["role"][]) => {
       if (!user) return false;
       if (Array.isArray(roles)) return roles.includes(user.role);
-      return user.role === roles;
+      return roles === user.role;
     },
     [user]
   );
@@ -37,8 +32,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
   }, []);
 
+  /** ฟังก์ชัน updateUser เพื่อแก้ไขข้อมูลผู้ใช้ และเก็บใน localStorage */
+  const updateUser = useCallback(
+    (data: Partial<User>) => {
+      if (!user) return;
+      const updated = { ...user, ...data };
+      setUser(updated);
+      localStorage.setItem("user", JSON.stringify(updated));
+    },
+    [user]
+  );
+
   return (
-    <AuthContext.Provider value={{ user, setUser, isAuthenticated, hasRole, logout }}>
+    <AuthContext.Provider value={{ user, setUser, isAuthenticated, hasRole, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
