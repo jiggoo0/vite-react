@@ -3,23 +3,19 @@
  * Node.js + TypeScript server for Vercel deployment (ESM compatible)
  */
 
-import expressPkg from 'express'; // import default for CommonJS module
-import cors from 'cors';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import { z } from 'zod';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import * as helmet from "helmet";
+import morgan from "morgan";
+import { z } from "zod";
+import path from "path";
+import type { Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from "express";
 
-// Destructure types from express for TypeScript
-const express = expressPkg.default ?? expressPkg;
-type Request = import('express').Request;
-type Response = import('express').Response;
-type NextFunction = import('express').NextFunction;
+// -------------------- ENVIRONMENT -------------------- //
 
-// Load environment variables
 dotenv.config();
 
-// Validate required env vars
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
   VERSION: z.string(),
@@ -32,35 +28,41 @@ const envSchema = z.object({
 
 const env = envSchema.safeParse(process.env);
 if (!env.success) {
-  console.error('Invalid environment variables:', env.error.format());
+  console.error("Invalid environment variables:", env.error.format());
   process.exit(1);
 }
 
+// -------------------- APP SETUP -------------------- //
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+const DIST_PATH = path.join(process.cwd(), "dist");
 
-// Middlewares
-app.use(helmet());
+// -------------------- MIDDLEWARES -------------------- //
+
+app.use(helmet.default()); // ESM compatible
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('combined'));
+app.use(morgan("combined"));
 
-// Async error wrapper
-const asyncHandler = (fn: any) => (req: Request, res: Response, next: NextFunction) =>
-  Promise.resolve(fn(req, res, next)).catch(next);
+// Async route wrapper
+const asyncHandler =
+  (fn: RequestHandler): RequestHandler =>
+  (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
 
-// Health check
-app.get('/api/health', (_req, res) => {
-  res.status(200).json({ status: 'ok', project: process.env.PROJECT_NAME });
+// -------------------- API ROUTES -------------------- //
+
+app.get("/api/health", (_req: Request, res: Response) => {
+  res.status(200).json({ status: "ok", project: process.env.PROJECT_NAME });
 });
 
-// Project info endpoint
-app.get('/api/project', (_req, res) => {
+app.get("/api/project", (_req: Request, res: Response) => {
   res.json({
     name: process.env.PROJECT_NAME,
     version: process.env.VERSION,
-    description: process.env.DESCRIPTION || 'N/A',
+    description: process.env.DESCRIPTION || "N/A",
     github: process.env.GITHUB_URL,
     website: process.env.WEBSITE_URL,
     developer: process.env.DEVELOPER_EMAIL,
@@ -68,27 +70,42 @@ app.get('/api/project', (_req, res) => {
   });
 });
 
-// Echo endpoint
 app.post(
-  '/api/echo',
+  "/api/echo",
   asyncHandler(async (req: Request, res: Response) => {
     res.json({ received: req.body });
   })
 );
 
-// 404 handler
-app.use((_req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+// -------------------- STATIC FILES & SPA -------------------- //
+
+app.use(express.static(DIST_PATH));
+
+// SPA fallback (catch-all for non-API GET requests)
+app.get(/^\/(?!api).*/, (_req: Request, res: Response) => {
+  res.sendFile(path.join(DIST_PATH, "index.html"));
+});
+
+// -------------------- ERROR HANDLING -------------------- //
+
+// 404 for unknown API routes (regex-based)
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(404).json({ error: "API route not found" });
+  }
+  next(); // allow SPA fallback
 });
 
 // Global error handler
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error', message: err.message });
-});
+  res.status(500).json({ error: "Internal Server Error", message: err.message });
+};
+app.use(errorHandler);
 
-// Local server
-if (process.env.NODE_ENV !== 'vercel') {
+// -------------------- SERVER -------------------- //
+
+if (process.env.NODE_ENV !== "vercel") {
   app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 }
 

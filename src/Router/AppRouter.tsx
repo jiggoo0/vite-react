@@ -22,29 +22,36 @@ const Dashboard = lazy(() => import("@/Home/components/Dashboard/Dashboard"));
 const Profile = lazy(() => import("@/Home/Profile"));
 const Settings = lazy(() => import("@/Home/Settings"));
 
-// ---------- Suspense + ErrorBoundary Wrapper ----------
+// ---------- Helper: Suspense + ErrorBoundary ----------
 const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
   Page: ComponentType<P>,
   props?: P,
-  message?: string,
+  loadingMessage?: string,
   errorMessage?: string
 ) => (
   <ErrorBoundary fallbackMessage={errorMessage ?? "เกิดข้อผิดพลาดในหน้า"}>
-    <Suspense fallback={<FallbackLoader message={message ?? "กำลังโหลดหน้า..."} />}>
+    <Suspense fallback={<FallbackLoader message={loadingMessage ?? "กำลังโหลดหน้า..."} />}>
       <Page {...(props ?? ({} as P))} />
     </Suspense>
   </ErrorBoundary>
 );
 
 // ---------- Dashboard Routes Config ----------
-const dashboardRoutes = [
-  { path: "user", roles: ["user"] as const, element: Dashboard },
-  { path: "user/profile", roles: ["user"] as const, element: Profile },
-  { path: "user/settings", roles: ["user"] as const, element: Settings },
-  { path: "manager", roles: ["manager"] as const, element: Dashboard },
-  { path: "admin/dashboard", roles: ["admin"] as const, element: Dashboard },
+interface DashboardRoute {
+  path: string;
+  roles: ("user" | "manager" | "admin")[];
+  element: ComponentType<Record<string, unknown>>; // safer than 'any'
+}
+
+const dashboardRoutes: DashboardRoute[] = [
+  { path: "user", roles: ["user"], element: Dashboard },
+  { path: "user/profile", roles: ["user"], element: Profile },
+  { path: "user/settings", roles: ["user"], element: Settings },
+  { path: "manager", roles: ["manager"], element: Dashboard },
+  { path: "admin/dashboard", roles: ["admin"], element: Dashboard },
 ];
 
+// ---------- App Router ----------
 const AppRouter: FC = () => (
   <>
     <ScrollToTop />
