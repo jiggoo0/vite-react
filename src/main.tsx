@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import RootApp from "@/App/RootApp";
 
-// Radix Themes CSS ต้อง import ก่อน CSS อื่น ๆ
 import "@radix-ui/themes/styles.css";
 import "@/index.css";
 import "@styles/global.css";
@@ -19,7 +18,6 @@ const ensureRootElement = (): HTMLElement => {
 };
 
 const root = ReactDOM.createRoot(ensureRootElement());
-
 root.render(
   <React.StrictMode>
     <RootApp />
@@ -38,8 +36,8 @@ if (import.meta.env.DEV) {
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker
     .register(`${import.meta.env.BASE_URL}sw.js`)
-    .then((registration) => console.log("✅ Service Worker registered:", registration.scope))
-    .catch((error) => console.error("❌ Service Worker registration failed:", error));
+    .then((reg) => console.log("✅ SW registered:", reg.scope))
+    .catch((err) => console.error("❌ SW registration failed:", err));
 }
 
 export {};

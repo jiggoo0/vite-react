@@ -1,10 +1,5 @@
-/**
- * server.ts
- * Node.js + TypeScript server for Vercel deployment (ESM compatible)
- */
-
-import express from "express"; // runtime import
-import type { Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from "express"; // type-only import
+import express from "express";
+import type { Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
@@ -12,10 +7,9 @@ import morgan from "morgan";
 import { z } from "zod";
 import path from "path";
 
-// -------------------- ENVIRONMENT -------------------- //
-
 dotenv.config();
 
+// Validate environment
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
   VERSION: z.string(),
@@ -25,50 +19,40 @@ const envSchema = z.object({
   WEBSITE_URL: z.string().url(),
   VERCEL_PROJECT_ID: z.string(),
 });
-
 const env = envSchema.safeParse(process.env);
 if (!env.success) {
   console.error("Invalid environment variables:", env.error.format());
   process.exit(1);
 }
-
 const config = env.data;
-
-// -------------------- APP SETUP -------------------- //
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DIST_PATH = path.resolve(process.cwd(), "dist");
 
-// -------------------- MIDDLEWARES -------------------- //
-
+// Middlewares
 app.use(
   helmet({
-    contentSecurityPolicy: false, // ปิด CSP สำหรับ Vite HMR / inline scripts
+    contentSecurityPolicy: false,
   })
 );
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
-if (process.env.NODE_ENV !== "production") {
-  app.use(morgan("dev"));
-}
-
-// -------------------- UTILITIES -------------------- //
-
+// Async wrapper
 const asyncHandler =
   (fn: RequestHandler): RequestHandler =>
   (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
-// -------------------- API ROUTES -------------------- //
-
-app.get("/api/health", (_req: Request, res: Response) => {
+// API routes
+app.get("/api/health", (_req, res) => {
   res.status(200).json({ status: "ok", project: config.PROJECT_NAME });
 });
 
-app.get("/api/project", (_req: Request, res: Response) => {
+app.get("/api/project", (_req, res) => {
   res.json({
     name: config.PROJECT_NAME,
     version: config.VERSION,
@@ -82,28 +66,21 @@ app.get("/api/project", (_req: Request, res: Response) => {
 
 app.post(
   "/api/echo",
-  asyncHandler(async (req: Request, res: Response) => {
-    if (process.env.NODE_ENV !== "production") {
-      console.log("Received body:", req.body);
-    }
+  asyncHandler(async (req, res) => {
+    if (process.env.NODE_ENV !== "production") console.log("Received body:", req.body);
     res.json({ received: req.body });
   })
 );
 
-// -------------------- STATIC FILES & SPA -------------------- //
-
+// Serve SPA
 app.use(express.static(DIST_PATH));
-
 app.get(/^\/(?!api).*/, (_req, res) => {
   res.sendFile(path.resolve(DIST_PATH, "index.html"));
 });
 
-// -------------------- ERROR HANDLING -------------------- //
-
+// Error handling
 app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.path.startsWith("/api")) {
-    return res.status(404).json({ error: "API route not found" });
-  }
+  if (req.path.startsWith("/api")) return res.status(404).json({ error: "API route not found" });
   next();
 });
 
@@ -113,11 +90,8 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 };
 app.use(errorHandler);
 
-// -------------------- SERVER -------------------- //
-
 if (process.env.NODE_ENV !== "vercel") {
   app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 }
 
-// Export for Vercel
 export default app;

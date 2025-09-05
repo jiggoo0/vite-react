@@ -16,16 +16,12 @@ const isTermux = process.env.TERMUX_VERSION !== undefined;
 // --- Vite Configuration ---
 export default defineConfig({
   plugins: [
-    react(),           // React + Fast Refresh
-    tsconfigPaths(),   // Resolve TS path aliases
-    VitePWA({          // Progressive Web App support
+    react(), // React + Fast Refresh
+    tsconfigPaths(), // Resolve TS path aliases
+    VitePWA({
+      // Progressive Web App support
       registerType: "autoUpdate",
-      includeAssets: [
-        "favicon.svg",
-        "favicon.ico",
-        "robots.txt",
-        "apple-touch-icon.png",
-      ],
+      includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
         name: "Vite React App",
         short_name: "ViteReact",
@@ -71,7 +67,7 @@ export default defineConfig({
     strictPort: true, // Fail if port is busy
     proxy: {
       "/api": {
-        target: "http://localhost:4000", // Proxy API requests to backend
+        target: "http://localhost:3000", // Proxy API requests to backend
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
