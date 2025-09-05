@@ -19,7 +19,7 @@ const accounts: Account[] = [
   { username: "Addmintest", password: "myub2517", role: "admin" },
   { username: "Usertest", password: "myub25217", role: "user" },
   { username: "Managertest", password: "myub25217", role: "manager" },
-  { username: "JPKYETONKEY244", password: "CODSLOUVPJ307", role: "user" },
+  { username: "parinya", password: "CODSLOUVPJ307", role: "user" },
   { username: "JPKYETONKEY201", password: "CODSLOUVPJ309", role: "user" },
   { username: "JPKYETONKEY222", password: "CODSLOUVPJ537", role: "user" },
   { username: "JPKYETONKEY233", password: "CODSLOUVPJ309", role: "user" },
