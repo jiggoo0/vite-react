@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, lazy } from "react";
+import { ReactNode, ReactElement, lazy, Suspense } from "react";
 import WithBlurIfUser from "@/Home/components/common/WithBlurIfUser";
 import KbankNotificationCard from "@/Home/components/SecretSection/KbankNotificationCard";
 import DriverLicenseForm from "@/Home/AdminTools/DriverLicense/DriverLicenseForm";
@@ -28,7 +28,7 @@ export type EffectiveRole = "admin" | "user" | "manager";
 
 export interface LazyCard {
   title: string;
-  component: ReactNode;
+  component: ReactElement;
   delay: number;
   fallback?: ReactNode;
 }
@@ -40,10 +40,21 @@ interface User {
 
 const BASE_DELAY = 50;
 
-const wrapBlur = (node: ReactNode, isBlurred?: boolean, overlayMessage?: ReactNode) => (
-  <WithBlurIfUser isBlurred={isBlurred} overlayMessage={overlayMessage}>
+const wrapBlur = (
+  node: ReactNode,
+  isBlurred?: boolean,
+  overlayMessage?: ReactNode,
+  key?: string | number
+) => (
+  <WithBlurIfUser key={key} isBlurred={isBlurred} overlayMessage={overlayMessage}>
     {node}
   </WithBlurIfUser>
+);
+
+const withFallback = (node: ReactNode, fallback?: ReactNode) => (
+  <Suspense fallback={fallback || <div className="text-center py-6 text-gray-500">Loading...</div>}>
+    {node}
+  </Suspense>
 );
 
 export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
@@ -71,7 +82,7 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
     {
       title: "Registration Preview",
       component: wrapBlur(
-        <RegistrationPreview {...mockRegistrationData} />,
+        withFallback(<RegistrationPreview {...mockRegistrationData} />),
         shouldBlur,
         "เฉพาะแอดมินเท่านั้น"
       ),
@@ -80,7 +91,7 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
     {
       title: "Salary Certificate",
       component: wrapBlur(
-        <SalaryCertificate data={mockSalaryCertificate} />,
+        withFallback(<SalaryCertificate data={mockSalaryCertificate} />),
         shouldBlur,
         "เฉพาะแอดมินเท่านั้น"
       ),
@@ -89,7 +100,7 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
     {
       title: "Medical Certificate",
       component: wrapBlur(
-        <MedicalCertificate data={mockMedicalCertificate} />,
+        withFallback(<MedicalCertificate data={mockMedicalCertificate} />),
         shouldBlur,
         "เฉพาะแอดมินเท่านั้น"
       ),
@@ -101,9 +112,10 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
         <>
           {kbankMockData.map((item) =>
             wrapBlur(
-              <KbankNotificationCard key={item.id} data={item} />,
+              <KbankNotificationCard data={item} />,
               shouldBlur,
-              "เฉพาะแอดมินเท่านั้น"
+              "เฉพาะแอดมินเท่านั้น",
+              item.id
             )
           )}
         </>
@@ -115,11 +127,11 @@ export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard
   if (isAdminOrManager) {
     baseCards.push({
       title: "Special Branch Certificate",
-      component: <SpecialBranchCertificate />,
-      delay: nextDelay(),
-      fallback: (
+      component: withFallback(
+        <SpecialBranchCertificate />,
         <div className="text-center py-6 text-gray-500">Loading Special Branch Certificate...</div>
       ),
+      delay: nextDelay(),
     });
   }
 

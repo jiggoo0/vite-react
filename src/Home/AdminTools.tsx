@@ -10,6 +10,7 @@ const AdminTools: FC = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  // Redirect unauthenticated users to login
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login", { replace: true });
@@ -18,6 +19,7 @@ const AdminTools: FC = () => {
 
   if (!isAuthenticated || !user) return null;
 
+  // Ensure only known roles are used
   const effectiveRole: EffectiveRole = ["admin", "manager", "user"].includes(user.role)
     ? (user.role as EffectiveRole)
     : "user";
@@ -31,7 +33,7 @@ const AdminTools: FC = () => {
 
   return (
     <main className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="mx-auto max-w-[1200px] space-y-8 px-4 sm:px-6 lg:px-8">
         {lazyCards.map((card) => (
           <PageSection key={card.title} hideTitle>
             <Suspense

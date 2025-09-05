@@ -11,7 +11,7 @@ const Home: FC = () => {
       {homeSections
         .filter((section: HomeSection) => section.enabled)
         .map((section: HomeSection) => {
-          const SectionComponent = section.content; // Type-safe component
+          const SectionComponent = section.content; // Type-safe lazy component
           return (
             <section
               key={section.id}

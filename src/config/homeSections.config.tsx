@@ -1,4 +1,6 @@
 // src/config/homeSections.config.tsx
+"use client";
+
 import { ReactNode, ComponentType, lazy } from "react";
 import Hero from "@/Home/components/Hero/Hero";
 import About from "@/Home/components/About/About";
@@ -13,7 +15,7 @@ import { caseStudies } from "@/data/caseStudies";
 // Lazy-load heavy sections
 const PortfolioGallery = lazy(() => import("@/Home/components/Portfolio/PortfolioGallery"));
 
-// Wrapper for consistent padding
+// Wrapper for consistent padding across sections
 export const SectionWrapper: ComponentType<{ children: ReactNode }> = ({ children }) => (
   <div className="px-6 md:px-12 lg:px-24 py-16">{children}</div>
 );
@@ -24,9 +26,8 @@ export interface HomeSection {
   content: ComponentType;
 }
 
-// Home sections arranged for better flow
+// Ordered sections for the Home page
 export const homeSections: HomeSection[] = [
-  // Hero & Intro
   {
     id: "hero",
     enabled: true,
@@ -45,8 +46,6 @@ export const homeSections: HomeSection[] = [
       </SectionWrapper>
     ),
   },
-
-  // Selling points with guarantee banner
   {
     id: "selling-points",
     enabled: true,
@@ -57,8 +56,6 @@ export const homeSections: HomeSection[] = [
       </SectionWrapper>
     ),
   },
-
-  // Services & Portfolio
   {
     id: "services",
     enabled: true,
@@ -77,8 +74,6 @@ export const homeSections: HomeSection[] = [
       </SectionWrapper>
     ),
   },
-
-  // Case Studies & Testimonials
   {
     id: "case-studies",
     enabled: true,
@@ -97,8 +92,6 @@ export const homeSections: HomeSection[] = [
       </SectionWrapper>
     ),
   },
-
-  // User Board
   {
     id: "user-board",
     enabled: true,

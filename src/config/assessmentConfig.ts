@@ -20,20 +20,80 @@ export interface AssessmentConfig {
 export const defaultConfig: AssessmentConfig = {
   maxDTI: 40, // DTI สูงสุด 40%
   weights: {
-    paymentHistory: 35, // คะแนนเต็มประวัติชำระหนี้
-    debtRatio: 30, // คะแนนเต็มจาก DTI
-    savings: 20, // คะแนนเต็มจากเงินออม / หลักประกัน
-    incomeStability: 15, // คะแนนเต็มจากความเสถียรของรายได้
+    paymentHistory: 35,
+    debtRatio: 30,
+    savings: 20,
+    incomeStability: 15,
   },
-  creditThreshold: 70, // คะแนนขั้นต่ำ 70 ผ่านการอนุมัติ
+  creditThreshold: 70,
 };
 
 /**
- * ตัวอย่างการใช้งาน Config
+ * ApplicantData - ข้อมูลผู้สมัครที่ใช้ในการคำนวณ
+ */
+export interface ApplicantData {
+  paymentHistory: number; // 0–100 (เปอร์เซ็นต์ความตรงต่อเวลา)
+  debtRatio: number; // DTI (%) = หนี้ / รายได้
+  savings: number; // 0–100 (ดัชนีเงินออม/หลักประกัน)
+  incomeStability: number; // 0–100 (ดัชนีเสถียรภาพรายได้)
+}
+
+/**
+ * validateConfig - ตรวจสอบความถูกต้องของ config
+ */
+export const validateConfig = (config: AssessmentConfig): boolean => {
+  const totalWeight = Object.values(config.weights).reduce((a, b) => a + b, 0);
+  return totalWeight === 100;
+};
+
+/**
+ * calculateCreditScore - คำนวณคะแนนเครดิตจากข้อมูลผู้สมัคร
+ */
+export const calculateCreditScore = (
+  data: ApplicantData,
+  config: AssessmentConfig = defaultConfig
+): number => {
+  const { paymentHistory, debtRatio, savings, incomeStability } = data;
+  const { maxDTI, weights } = config;
+
+  // Normalize DTI: ถ้า DTI เกิน maxDTI → ได้ 0 คะแนน
+  const normalizedDTI = debtRatio <= maxDTI ? (1 - debtRatio / maxDTI) * 100 : 0;
+
+  const score =
+    (paymentHistory * weights.paymentHistory) / 100 +
+    (normalizedDTI * weights.debtRatio) / 100 +
+    (savings * weights.savings) / 100 +
+    (incomeStability * weights.incomeStability) / 100;
+
+  return Math.round(score);
+};
+
+/**
+ * assessCreditStatus - ประเมินผลว่าผ่านหรือไม่
+ */
+export const assessCreditStatus = (
+  score: number,
+  threshold: number = defaultConfig.creditThreshold
+): "APPROVED" | "REJECTED" => {
+  return score >= threshold ? "APPROVED" : "REJECTED";
+};
+
+/**
+ * 🔹 Example usage:
  *
- * import { defaultConfig } from "../config/assessmentConfig";
- * import { calculateCreditScore, assessCreditStatus } from "../utils/calculations";
+ * const applicant: ApplicantData = {
+ *   paymentHistory: 80,
+ *   debtRatio: 35,
+ *   savings: 60,
+ *   incomeStability: 70,
+ * };
  *
- * const score = calculateCreditScore(applicantData, defaultConfig);
+ * if (!validateConfig(defaultConfig)) {
+ *   throw new Error("Invalid config: weights must sum to 100");
+ * }
+ *
+ * const score = calculateCreditScore(applicant, defaultConfig);
  * const status = assessCreditStatus(score, defaultConfig.creditThreshold);
+ *
+ * console.log("Score:", score, "Status:", status);
  */

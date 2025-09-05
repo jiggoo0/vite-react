@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, ReactNode, ErrorInfo } from "react";
+import { Component, ReactNode, ReactElement, ErrorInfo } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -25,8 +25,16 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("💥 Uncaught error:", error, info);
+    if (import.meta.env.DEV) {
+      console.error("💥 Uncaught error:", error, info);
+    }
     this.props.onError?.(error, info);
+  }
+
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+    if (prevProps.children !== this.props.children && this.state.hasError) {
+      this.setState({ hasError: false, error: undefined });
+    }
   }
 
   handleReload = () => window.location.reload();
@@ -66,7 +74,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       );
     }
 
-    return children;
+    return children as ReactElement;
   }
 }
 
