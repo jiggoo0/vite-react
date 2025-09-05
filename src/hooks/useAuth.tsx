@@ -1,11 +1,8 @@
-// src/hooks/useAuth.tsx
 "use client";
 
-import { FC, ReactNode, createContext, useContext, useState, useEffect } from "react";
+import { FC, ReactNode, createContext, useContext, useState, useEffect, useCallback } from "react";
 
-// --------------------
-// Types
-// --------------------
+// -------------------- Types --------------------
 export type UserRole = "admin" | "manager" | "user";
 
 export type User = {
@@ -14,8 +11,18 @@ export type User = {
   role: UserRole;
 };
 
-// อ่าน user จาก localStorage
+export type AuthContextType = {
+  user: User | null;
+  isAuthenticated: boolean;
+  setUser: (user: User | null) => void;
+  hasRole: (roles: UserRole | UserRole[]) => boolean;
+  logout: () => void;
+  updateUser: (data: Partial<User>) => void;
+};
+
+// -------------------- Helpers --------------------
 export const parseUserFromStorage = (): User | null => {
+  if (typeof window === "undefined") return null; // SSR safe
   const raw = localStorage.getItem("user");
   if (!raw) return null;
 
@@ -32,66 +39,59 @@ export const parseUserFromStorage = (): User | null => {
   } catch (err) {
     console.error("parseUserFromStorage error:", err);
   }
-
   return null;
 };
 
-// Context type
-export type AuthContextType = {
-  user: User | null;
-  setUser: (user: User | null) => void;
-  isAuthenticated: boolean;
-  hasRole: (roles: UserRole | UserRole[]) => boolean;
-  logout: () => void;
-  updateUser: (data: Partial<User>) => void;
-};
-
-// --------------------
-// Context
-// --------------------
+// -------------------- Context --------------------
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Hook
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
 
-// --------------------
-// Provider
-// --------------------
+// -------------------- Provider --------------------
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(null);
 
   useEffect(() => {
-    const stored = parseUserFromStorage();
-    if (stored) setUser(stored);
+    const storedUser = parseUserFromStorage();
+    if (storedUser) setUserState(storedUser);
+  }, []);
+
+  const setUser = useCallback((u: User | null) => {
+    setUserState(u);
+    if (u) localStorage.setItem("user", JSON.stringify(u));
+    else localStorage.removeItem("user");
   }, []);
 
   const isAuthenticated = !!user;
 
-  const hasRole = (roles: UserRole | UserRole[]): boolean => {
-    if (!user) return false;
-    if (Array.isArray(roles)) return roles.includes(user.role);
-    return roles === user.role;
-  };
+  const hasRole = useCallback(
+    (roles: UserRole | UserRole[]): boolean => {
+      if (!user) return false;
+      return Array.isArray(roles) ? roles.includes(user.role) : roles === user.role;
+    },
+    [user]
+  );
 
-  const logout = (): void => {
+  const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem("user");
-  };
+  }, [setUser]);
 
-  const updateUser = (data: Partial<User>): void => {
-    if (!user) return;
-    const updated = { ...user, ...data };
-    setUser(updated);
-    localStorage.setItem("user", JSON.stringify(updated));
-  };
+  const updateUser = useCallback(
+    (data: Partial<User>) => {
+      if (!user) return;
+      const updated = { ...user, ...data };
+      setUser(updated);
+    },
+    [user, setUser]
+  );
 
   return (
     <AuthContext.Provider value={{ user, setUser, isAuthenticated, hasRole, logout, updateUser }}>
