@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Upload, FileText, Settings, MailCheck, Hash } from "lucide-react"; // ใช้ Hash icon แทนหมายเลขสัญญา
+import { Upload, FileText, Settings, MailCheck, Hash } from "lucide-react";
 
 interface QuickActionsProps {
   onContact?: () => void;
@@ -9,7 +9,7 @@ interface QuickActionsProps {
   onDownload?: () => void;
   onPay?: () => void;
   onVerifyEmail?: () => void;
-  onContractNumber?: () => void; // callback สำหรับหมายเลขสัญญากู้ยืม
+  onContractNumber?: () => void;
 }
 
 // กำหนดปุ่ม Quick Actions ใหม่
@@ -48,6 +48,7 @@ const actions = [
     key: "verify",
     color: "bg-purple-500",
     hover: "hover:bg-purple-600",
+    extraText: "✅ veeto666@gmail.com", // เพิ่มข้อความ email
   },
   {
     label: "หมายเลขสัญญากู้ยืม",
@@ -97,10 +98,11 @@ const QuickActions: FC<QuickActionsProps> = ({
           <button
             key={action.key}
             onClick={() => handleClick(action.key)}
-            className={`flex items-center justify-center gap-2 p-4 rounded-lg text-white font-medium transition ${action.color} ${action.hover} focus:outline-none focus:ring-2 focus:ring-offset-1`}
+            className={`flex flex-col items-center justify-center gap-1 p-4 rounded-lg text-white font-medium transition ${action.color} ${action.hover} focus:outline-none focus:ring-2 focus:ring-offset-1`}
           >
             <Icon className="w-5 h-5" />
             <span>{action.label}</span>
+            {action.extraText && <span className="text-sm">{action.extraText}</span>}
           </button>
         );
       })}
