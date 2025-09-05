@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Upload, FileText, Settings, MailCheck, Hash } from "lucide-react";
+import { Upload, FileText, Settings, MailCheck, Hash, Key } from "lucide-react"; // ใช้ Key icon สำหรับ OTP
 
 interface QuickActionsProps {
   onContact?: () => void;
@@ -10,6 +10,7 @@ interface QuickActionsProps {
   onPay?: () => void;
   onVerifyEmail?: () => void;
   onContractNumber?: () => void;
+  onRequestOTP?: () => void; // callback สำหรับปุ่มรับ OTP
 }
 
 // กำหนดปุ่ม Quick Actions ใหม่
@@ -22,7 +23,7 @@ const actions = [
     hover: "hover:bg-gray-600",
   },
   {
-    label: "ตรวจสอบสถานะ",
+    label: "สอบสถานะ (รอยืนยัน)",
     icon: FileText,
     key: "check",
     color: "bg-green-500",
@@ -48,14 +49,21 @@ const actions = [
     key: "verify",
     color: "bg-purple-500",
     hover: "hover:bg-purple-600",
-    extraText: "✅ veeto666@gmail.com", // เพิ่มข้อความ email
+    extraText: "✅ veeto666@gmail.com",
   },
   {
-    label: "หมายเลขสัญญากู้ยืม",
+    label: "หมายเลขสัญญากู้ยืม (รอยืนยัน)",
     icon: Hash,
     key: "contract",
     color: "bg-yellow-500",
     hover: "hover:bg-yellow-600",
+  },
+  {
+    label: "รับ OTP",
+    icon: Key,
+    key: "otp",
+    color: "bg-indigo-500",
+    hover: "hover:bg-indigo-600",
   },
 ];
 
@@ -66,6 +74,7 @@ const QuickActions: FC<QuickActionsProps> = ({
   onPay,
   onVerifyEmail,
   onContractNumber,
+  onRequestOTP,
 }) => {
   const handleClick = (key: string) => {
     switch (key) {
@@ -86,6 +95,9 @@ const QuickActions: FC<QuickActionsProps> = ({
         break;
       case "contract":
         onContractNumber?.();
+        break;
+      case "otp":
+        onRequestOTP?.();
         break;
     }
   };
