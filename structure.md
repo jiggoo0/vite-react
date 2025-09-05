@@ -1,6 +1,6 @@
 # Project Structure
 
-_Generated at: 2025-08-31 22:00:23_
+_Generated at: 2025-09-05 23:33:51_
 
 ```
 src
@@ -43,6 +43,8 @@ src
 │   ├── Home.tsx
 │   ├── IdCardForm.tsx
 │   ├── Login.tsx
+│   ├── Profile.tsx
+│   ├── Settings.tsx
 │   ├── components
 │   │   ├── About
 │   │   │   ├── About.tsx
@@ -52,6 +54,10 @@ src
 │   │   │       ├── AboutImage.tsx
 │   │   │       ├── AboutQuote.tsx
 │   │   │       └── AboutTitle.tsx
+│   │   ├── CreditAssessmentForm
+│   │   │   ├── CreditAssessmentForm.tsx
+│   │   │   ├── CreditProfileForm.tsx
+│   │   │   └── ResultCard.tsx
 │   │   ├── Dashboard
 │   │   │   ├── Dashboard.tsx
 │   │   │   ├── common
@@ -63,10 +69,10 @@ src
 │   │   │   ├── index.ts
 │   │   │   └── ui
 │   │   │       ├── DashboardCard.tsx
+│   │   │       ├── DashboardGreeting.tsx
 │   │   │       ├── DashboardSection.tsx
 │   │   │       ├── QuickActions.tsx
 │   │   │       ├── RecentActivity.tsx
-│   │   │       ├── TeamOverview.tsx
 │   │   │       └── UserStats.tsx
 │   │   ├── Forms
 │   │   │   ├── FormWrapper.tsx
@@ -116,15 +122,9 @@ src
 │   │   │   ├── TestimonialSlider.tsx
 │   │   │   └── TrustBadge.tsx
 │   │   ├── UserBoard
-│   │   │   ├── BadgeCard.tsx
-│   │   │   ├── MetricCard.tsx
-│   │   │   ├── TrustBadge.tsx
-│   │   │   ├── TrustDashboard.tsx
-│   │   │   ├── TrustDashboardDemo.tsx
-│   │   │   ├── UserBoard.tsx
-│   │   │   ├── motionConfig.ts
-│   │   │   └── types.ts
+│   │   │   └── UserBoard.tsx
 │   │   ├── common
+│   │   │   ├── CTAButtons.tsx
 │   │   │   ├── CardWrapper.tsx
 │   │   │   ├── LazyA4Card.tsx
 │   │   │   ├── LoadingSpinner.tsx
@@ -155,6 +155,7 @@ src
 │       ├── risk.ts
 │       └── userBehavior.ts
 ├── Layout
+│   ├── DashboardLayout.tsx
 │   ├── Layout.tsx
 │   ├── Navbar.tsx
 │   ├── SidebarNav.tsx
@@ -199,13 +200,13 @@ src
 │   ├── logo.webp
 │   └── react.svg
 ├── config
-│   ├── dashboardCards.tsx
+│   ├── assessmentConfig.ts
+│   ├── dashboardCardsConfig.tsx
 │   ├── driverLicenseConfig.tsx
 │   ├── homeSections.config.tsx
 │   ├── idCardConfig.tsx
 │   ├── jpServices.config.tsx
-│   ├── secretCards.config.tsx
-│   └── teamMembers.tsx
+│   └── secretCards.config.tsx
 ├── context
 │   ├── AppProviders.tsx
 │   ├── AuthContext.tsx
@@ -213,6 +214,7 @@ src
 │   └── types.ts
 ├── data
 │   ├── UserTempCodes.ts
+│   ├── applicantData.ts
 │   ├── caseStudies.ts
 │   ├── portfolioItems.ts
 │   ├── testimonialsData.ts
@@ -220,7 +222,7 @@ src
 │   └── users.ts
 ├── env.d.ts
 ├── hooks
-│   ├── useAuth.ts
+│   ├── useAuth.tsx
 │   ├── useProtectedAuth.tsx
 │   └── useTempCodeAuth.ts
 ├── index.css
@@ -231,9 +233,11 @@ src
 │   ├── driverLicense.css
 │   └── global.css
 ├── types
-│   └── IUser.ts
+│   ├── IUser.ts
+│   └── dashboard.ts
 ├── utils
 │   ├── auth.ts
+│   ├── calculations.ts
 │   ├── cn.ts
 │   ├── common
 │   │   ├── 403.tsx

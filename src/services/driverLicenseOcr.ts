@@ -8,7 +8,9 @@ import { z } from "zod";
  * - dob / issueDate / expiryDate: yyyy-mm-dd หรือว่าง
  */
 export const driverLicenseSchema = z.object({
-  idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
+  idNumber: z
+    .string()
+    .regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
   firstName: z.string().min(1, "กรุณากรอกชื่อ"),
   lastName: z.string().min(1, "กรุณากรอกนามสกุล"),
   dob: z
@@ -42,7 +44,7 @@ export async function driverLicenseOcr(_file: File): Promise<DriverLicenseData> 
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Mock data
-  const mockData: DriverLicenseData = {
+  return {
     idNumber: "1234567890123",
     firstName: "สมชาย",
     lastName: "ใจดี",
@@ -50,8 +52,6 @@ export async function driverLicenseOcr(_file: File): Promise<DriverLicenseData> 
     issueDate: "2020-01-01",
     expiryDate: "2030-01-01",
   };
-
-  return mockData;
 }
 
 /**
@@ -65,8 +65,8 @@ export function mapDriverLicenseToForm(data: DriverLicenseData) {
     idNumber: data.idNumber,
     firstName: data.firstName,
     lastName: data.lastName,
-    dob: data.dob || "",
-    issueDate: data.issueDate || "",
-    expiryDate: data.expiryDate || "",
+    dob: data.dob ?? "",
+    issueDate: data.issueDate ?? "",
+    expiryDate: data.expiryDate ?? "",
   };
 }

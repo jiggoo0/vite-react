@@ -1,3 +1,4 @@
+// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -5,18 +6,26 @@ import { VitePWA } from "vite-plugin-pwa";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
 
+// --- Node.js ESM __dirname & __filename fix ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// --- Detect Termux environment ---
 const isTermux = process.env.TERMUX_VERSION !== undefined;
 
+// --- Vite Configuration ---
 export default defineConfig({
   plugins: [
-    react(),
-    tsconfigPaths(),
-    VitePWA({
+    react(),           // React + Fast Refresh
+    tsconfigPaths(),   // Resolve TS path aliases
+    VitePWA({          // Progressive Web App support
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
+      includeAssets: [
+        "favicon.svg",
+        "favicon.ico",
+        "robots.txt",
+        "apple-touch-icon.png",
+      ],
       manifest: {
         name: "Vite React App",
         short_name: "ViteReact",
@@ -32,7 +41,7 @@ export default defineConfig({
           { src: "pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
         ],
       },
-      disable: isTermux,
+      disable: isTermux, // Disable PWA in Termux (dev environment)
     }),
   ],
 
@@ -59,7 +68,14 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-    strictPort: true,
+    strictPort: true, // Fail if port is busy
+    proxy: {
+      "/api": {
+        target: "http://localhost:4000", // Proxy API requests to backend
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 
   build: {
@@ -81,6 +97,6 @@ export default defineConfig({
   cacheDir: "node_modules/.vite",
 
   optimizeDeps: {
-    include: ["react", "react-dom"],
+    include: ["react", "react-dom"], // Pre-bundle dependencies
   },
 });
