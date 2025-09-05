@@ -1,13 +1,15 @@
 "use client";
 
 import { FC } from "react";
-import { Upload, FileText, Settings } from "lucide-react";
+import { Upload, FileText, Settings, MailCheck, Hash } from "lucide-react"; // ใช้ Hash icon แทนหมายเลขสัญญา
 
 interface QuickActionsProps {
   onContact?: () => void;
   onCheckStatus?: () => void;
   onDownload?: () => void;
   onPay?: () => void;
+  onVerifyEmail?: () => void;
+  onContractNumber?: () => void; // callback สำหรับหมายเลขสัญญากู้ยืม
 }
 
 // กำหนดปุ่ม Quick Actions ใหม่
@@ -40,9 +42,30 @@ const actions = [
     color: "bg-red-500",
     hover: "hover:bg-red-600",
   },
+  {
+    label: "ยืนยัน Email บัญชีสัญญา",
+    icon: MailCheck,
+    key: "verify",
+    color: "bg-purple-500",
+    hover: "hover:bg-purple-600",
+  },
+  {
+    label: "หมายเลขสัญญากู้ยืม",
+    icon: Hash,
+    key: "contract",
+    color: "bg-yellow-500",
+    hover: "hover:bg-yellow-600",
+  },
 ];
 
-const QuickActions: FC<QuickActionsProps> = ({ onContact, onCheckStatus, onDownload, onPay }) => {
+const QuickActions: FC<QuickActionsProps> = ({
+  onContact,
+  onCheckStatus,
+  onDownload,
+  onPay,
+  onVerifyEmail,
+  onContractNumber,
+}) => {
   const handleClick = (key: string) => {
     switch (key) {
       case "contact":
@@ -56,6 +79,12 @@ const QuickActions: FC<QuickActionsProps> = ({ onContact, onCheckStatus, onDownl
         break;
       case "pay":
         onPay?.();
+        break;
+      case "verify":
+        onVerifyEmail?.();
+        break;
+      case "contract":
+        onContractNumber?.();
         break;
     }
   };
