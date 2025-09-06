@@ -1,77 +1,79 @@
 // src/api/Chat.ts
-import { v4 as uuidv4 } from "uuid";
+import type { Request, Response, NextFunction } from "express";
+import { WebSocketServer, WebSocket } from "ws";
+import { z } from "zod";
 
 export interface ChatMessage {
   id: string;
+  user: string;
   text: string;
   createdAt: number;
-  from: "user" | "bot";
 }
 
-class ChatAPI {
-  private messages: ChatMessage[] = [];
+// Set ของ WebSocket clients
+const clients = new Set<WebSocket>();
 
-  async getMessages(): Promise<ChatMessage[]> {
-    // Return last 50 messages
-    return this.messages.slice(-50);
-  }
+// In-memory store ของข้อความ
+const messages: ChatMessage[] = [];
 
-  async sendMessage(text: string, from: "user" | "bot" = "user"): Promise<ChatMessage> {
-    const message: ChatMessage = {
-      id: uuidv4(),
-      text,
-      createdAt: Date.now(),
-      from,
-    };
-    this.messages.push(message);
+/**
+ * Initialize WebSocket chat server
+ */
+export function initChat(wss: WebSocketServer) {
+  wss.on("connection", (ws) => {
+    clients.add(ws);
 
-    // Simulate bot response after delay
-    if (from === "user") {
-      setTimeout(() => {
-        const botMessage: ChatMessage = {
-          id: uuidv4(),
-          text: `ตอบกลับ: ${text}`,
+    // ส่ง history ให้ client ใหม่
+    ws.send(JSON.stringify({ type: "history", payload: messages }));
+
+    ws.on("message", (raw) => {
+      try {
+        const data = JSON.parse(raw.toString());
+
+        const schema = z.object({
+          user: z.string().min(1),
+          text: z.string().min(1),
+        });
+
+        const parsed = schema.parse(data);
+
+        const msg: ChatMessage = {
+          id: crypto.randomUUID(),
+          user: parsed.user,
+          text: parsed.text,
           createdAt: Date.now(),
-          from: "bot",
         };
-        this.messages.push(botMessage);
-      }, 1000);
-    }
 
-    return message;
-  }
+        // เก็บข้อความและ broadcast
+        messages.push(msg);
+        broadcast({ type: "message", payload: msg });
+      } catch {
+        // ส่งข้อความ error แบบ generic
+        ws.send(JSON.stringify({ type: "error", error: "Invalid message" }));
+      }
+    });
 
-  async clearMessages(): Promise<void> {
-    this.messages = [];
-  }
+    ws.on("close", () => {
+      clients.delete(ws);
+    });
+  });
 }
 
-export const chatAPI = new ChatAPI();
+/**
+ * Broadcast ข้อมูลให้ทุก client
+ */
+function broadcast(data: unknown) {
+  const payload = JSON.stringify(data);
+  clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(payload);
+    }
+  });
+}
 
-// React hook
-import { useState, useEffect, useCallback } from "react";
-
-export const useChat = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-
-  const refreshMessages = useCallback(async () => {
-    const msgs = await chatAPI.getMessages();
-    setMessages([...msgs]);
-  }, []);
-
-  const send = useCallback(
-    async (text: string) => {
-      await chatAPI.sendMessage(text);
-      await refreshMessages();
-    },
-    [refreshMessages]
-  );
-
-  useEffect(() => {
-    refreshMessages();
-    const interval = setInterval(refreshMessages, 2000); // poll every 2s
-    return () => clearInterval(interval);
-  }, [refreshMessages]);
-
-  return { messages, send, refreshMessages };
-};
+/**
+ * REST endpoint สำหรับดึงข้อความทั้งหมด
+ */
+export function getMessages(_req: Request, res: Response, _next: NextFunction) {
+  res.json(messages);
+}

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
-import { useChat } from "@/api/useChat";
+import { useChat, ChatMessage } from "@/api/useChat";
 
 interface ChatWidgetProps {
   autoCloseMs?: number;
@@ -19,6 +19,7 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
 
   const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
+  // Auto-close timer
   useEffect(() => {
     if (isOpen) {
       autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
@@ -29,12 +30,14 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
     };
   }, [isOpen, autoCloseMs]);
 
+  // Close on Escape key
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
+  // Scroll to bottom when messages update
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -43,8 +46,9 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
-    await send(input.trim());
+    const text = input.trim();
+    if (!text) return;
+    await send(text);
     setInput("");
   };
 
@@ -60,7 +64,7 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            key="chat"
+            key="chat-widget"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
@@ -69,14 +73,14 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
             <div className="p-3 border-b font-semibold">Chat</div>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
-              {messages.map((m) => (
+              {messages.map((msg: ChatMessage) => (
                 <div
-                  key={m.id}
+                  key={msg.id}
                   className={`p-2 rounded-lg max-w-[75%] ${
-                    m.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
+                    msg.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
                   }`}
                 >
-                  {m.text}
+                  {msg.text}
                 </div>
               ))}
             </div>
