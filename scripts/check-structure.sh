@@ -2,7 +2,10 @@
 set -euo pipefail
 
 REPORT="NOTEDEVSEO_SUMMARY.md"
-GREEN="\033[0;32m"; YELLOW="\033[1;33m"; RED="\033[0;31m"; RESET="\033[0m"
+GREEN="\033[0;32m"
+YELLOW="\033[1;33m"
+RED="\033[0;31m"
+RESET="\033[0m"
 term_log() { echo -e "$1"; }
 
 # -----------------------------
@@ -26,7 +29,43 @@ else
 fi
 
 # -----------------------------
-# 2️⃣ Dependencies
+# 2️⃣ Run pnpm checks
+# -----------------------------
+term_log "${YELLOW}🔹 Running pnpm type-check, lint, and alias-check...${RESET}"
+TYPE_CHECK_STATUS="Not run ❌"
+LINT_STATUS="Not run ❌"
+ALIAS_STATUS="Not run ❌"
+
+# Type-check
+if pnpm type-check >/dev/null 2>&1; then
+  TYPE_CHECK_STATUS="✅ type-check passed"
+else
+  TYPE_CHECK_STATUS="❌ type-check failed"
+fi
+
+# Lint
+if pnpm lint >/dev/null 2>&1; then
+  LINT_STATUS="✅ lint passed"
+else
+  LINT_STATUS="❌ lint failed"
+fi
+
+# Alias-check (scripts/alias.ts)
+if [ -f scripts/alias.ts ]; then
+  NODE_VER=$(node -v)
+  TSNODE_VER=$(ts-node -v 2>/dev/null || echo "N/A")
+  OUTPUT=$(node -r ts-node/register scripts/alias.ts --check 2>&1 || true)
+  if echo "$OUTPUT" | grep -q "❌"; then
+    ALIAS_STATUS="❌ alias issues (Node: $NODE_VER, ts-node: $TSNODE_VER)"
+  else
+    ALIAS_STATUS="✅ all imports alias ok (Node: $NODE_VER, ts-node: $TSNODE_VER)"
+  fi
+else
+  ALIAS_STATUS="❌ scripts/alias.ts not found"
+fi
+
+# -----------------------------
+# 3️⃣ Dependencies
 # -----------------------------
 REQUIRED_PKGS=(react react-dom vite tailwindcss daisyui typescript eslint prettier)
 DEP_TABLE="| Dependency | Status | Version |"$'\n'"|------------|--------|---------|"
@@ -45,26 +84,13 @@ else
 fi
 
 # -----------------------------
-# 3️⃣ Config Files
+# 4️⃣ Config Files
 # -----------------------------
 CONFIG_FILES=(tsconfig.json tailwind.config.ts vite.config.ts .eslintrc .prettierrc .gitignore)
 CONFIG_TABLE="| Config File | Status |"$'\n'"|------------|--------|"
 for f in "${CONFIG_FILES[@]}"; do
   [ -f "$f" ] && CONFIG_TABLE+=$'\n'"| $f | ✅ exists |" || CONFIG_TABLE+=$'\n'"| $f | ❌ missing |"
 done
-
-# -----------------------------
-# 4️⃣ Alias Check
-# -----------------------------
-ALIAS_STATUS="Not checked ❌"
-if [ -f scripts/alias.ts ]; then
-  NODE_VER=$(node -v)
-  TSNODE_VER=$(ts-node -v 2>/dev/null || echo "N/A")
-  OUTPUT=$(node -r ts-node/register scripts/alias.ts --check 2>&1 || true)
-  echo "$OUTPUT" | grep -q "❌" \
-    && ALIAS_STATUS="❌ alias issues (Node: $NODE_VER, ts-node: $TSNODE_VER)" \
-    || ALIAS_STATUS="✅ all imports alias ok (Node: $NODE_VER, ts-node: $TSNODE_VER)"
-fi
 
 # -----------------------------
 # 5️⃣ Project Tree
@@ -115,14 +141,16 @@ Date: $NOW
 Branch: $BRANCH  
 Git Status: $GIT_STATUS
 
-## 1️⃣ Dependencies
+## 1️⃣ pnpm Checks
+- $TYPE_CHECK_STATUS
+- $LINT_STATUS
+- $ALIAS_STATUS
+
+## 2️⃣ Dependencies
 $DEP_TABLE
 
-## 2️⃣ Config Files
+## 3️⃣ Config Files
 $CONFIG_TABLE
-
-## 3️⃣ Alias Check
-- $ALIAS_STATUS
 
 ## 4️⃣ Project Tree (src, depth 10)
 \`\`\`

@@ -8,9 +8,7 @@ import { z } from "zod";
  * - dob / issueDate / expiryDate: yyyy-mm-dd หรือว่าง
  */
 export const driverLicenseSchema = z.object({
-  idNumber: z
-    .string()
-    .regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
+  idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
   firstName: z.string().min(1, "กรุณากรอกชื่อ"),
   lastName: z.string().min(1, "กรุณากรอกนามสกุล"),
   dob: z

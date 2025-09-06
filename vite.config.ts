@@ -1,4 +1,3 @@
-// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -10,22 +9,22 @@ import { dirname, resolve } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// --- Detect Termux environment ---
+// --- Environment Detection ---
 const isTermux = process.env.TERMUX_VERSION !== undefined;
+const isProduction = process.env.NODE_ENV === "production";
 
 // --- Vite Configuration ---
 export default defineConfig({
   plugins: [
-    react(), // React + Fast Refresh
-    tsconfigPaths(), // Resolve TS path aliases
+    react(),
+    tsconfigPaths(),
     VitePWA({
-      // Progressive Web App support
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "Vite React App",
-        short_name: "ViteReact",
-        description: "A modern Vite + React + TS + Tailwind App",
+        name: "JP VisoulDocs",
+        short_name: "VisoulDocs",
+        description: "Enterprise-grade document management & dashboard",
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
@@ -37,7 +36,7 @@ export default defineConfig({
           { src: "pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
         ],
       },
-      disable: isTermux, // Disable PWA in Termux (dev environment)
+      disable: !isProduction || isTermux, // Disable in dev or Termux
     }),
   ],
 
@@ -64,10 +63,10 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-    strictPort: true, // Fail if port is busy
+    strictPort: true,
     proxy: {
       "/api": {
-        target: "http://localhost:3000", // Proxy API requests to backend
+        target: process.env.API_URL || "http://localhost:3000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
@@ -88,11 +87,12 @@ export default defineConfig({
         assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
+    manifest: true,
   },
 
   cacheDir: "node_modules/.vite",
 
   optimizeDeps: {
-    include: ["react", "react-dom"], // Pre-bundle dependencies
+    include: ["react", "react-dom"],
   },
 });

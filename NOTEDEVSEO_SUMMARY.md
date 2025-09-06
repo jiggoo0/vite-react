@@ -1,10 +1,16 @@
 # 📊 Project Summary Report
 
-Date: 2025-09-06 05:16:26  
+Date: 2025-09-06 08:10:05  
 Branch: main  
-Git Status: Clean ✅
+Git Status: Uncommitted / untracked changes ❌
 
-## 1️⃣ Dependencies
+## 1️⃣ pnpm Checks
+
+- ✅ type-check passed
+- ✅ lint passed
+- ✅ all imports alias ok (Node: v22.19.0, ts-node: N/A)
+
+## 2️⃣ Dependencies
 
 | Dependency  | Status | Version |
 | ----------- | ------ | ------- |
@@ -17,7 +23,7 @@ Git Status: Clean ✅
 | eslint      | ✅     | ^9.33.0 |
 | prettier    | ✅     | ^3.6.2  |
 
-## 2️⃣ Config Files
+## 3️⃣ Config Files
 
 | Config File        | Status    |
 | ------------------ | --------- |
@@ -27,10 +33,6 @@ Git Status: Clean ✅
 | .eslintrc          | ✅ exists |
 | .prettierrc        | ✅ exists |
 | .gitignore         | ✅ exists |
-
-## 3️⃣ Alias Check
-
-- ✅ all imports alias ok (Node: v22.19.0, ts-node: N/A)
 
 ## 4️⃣ Project Tree (src, depth 10)
 
@@ -225,6 +227,8 @@ src
 ├── animations
 │   └── motionVariants.ts
 ├── api
+│   ├── echo.ts
+│   └── project.ts
 ├── assets
 │   ├── images
 │   │   └── hero-bg.webp
@@ -289,14 +293,14 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-65 directories, 188 files
+65 directories, 190 files
 ```
 
 ## 5️⃣ Project Info
 
 | Item                | Value                                 |
 | ------------------- | ------------------------------------- |
-| Project Name        | vite-react                            |
+| Project Name        | jp-visouldocs                         |
 | Version             | 7.1.1                                 |
 | Description         | N/A                                   |
 | GitHub URL          | https://github.com/jiggoo0/vite-react |
