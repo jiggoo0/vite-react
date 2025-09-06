@@ -2,23 +2,31 @@
 import { pushMessage } from "./messages.ts";
 import { ChatMessage } from "./types.ts";
 
-export function sendMessage(text: string): Promise<ChatMessage> {
-  const message: ChatMessage = {
-    id: Date.now().toString(),
-    text,
+/**
+ * ส่งข้อความจาก user และสร้าง bot reply
+ */
+export async function sendMessage(text: string): Promise<ChatMessage> {
+  const now = Date.now();
+
+  // user message
+  const userMsg: ChatMessage = {
+    id: crypto.randomUUID(),
     sender: "user",
-    timestamp: Date.now(),
+    text,
+    timestamp: now, // ใช้ timestamp ตาม type ของ ChatMessage
   };
-  pushMessage(message);
+  pushMessage(userMsg);
 
-  // ตัวอย่าง bot reply แบบง่าย
-  const botReply: ChatMessage = {
-    id: (Date.now() + 1).toString(),
-    text: "Bot: " + text,
-    sender: "bot",
-    timestamp: Date.now() + 1,
-  };
-  pushMessage(botReply);
+  // bot reply (demo)
+  setTimeout(() => {
+    const botMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      sender: "bot",
+      text: `Bot: คุณพิมพ์ว่า "${text}"`,
+      timestamp: Date.now(),
+    };
+    pushMessage(botMsg);
+  }, 500); // delay 0.5s
 
-  return Promise.resolve(message);
+  return userMsg;
 }

@@ -1,40 +1,28 @@
-// src/api/Chat.ts
-import type { Request, Response, NextFunction } from "express";
 import { WebSocketServer, WebSocket } from "ws";
+import { Request, Response, NextFunction } from "express";
 import { z } from "zod";
 
 export interface ChatMessage {
   id: string;
-  user: string;
+  user: string; // 'user' | 'bot'
   text: string;
   createdAt: number;
 }
 
-// Set ของ WebSocket clients
 const clients = new Set<WebSocket>();
-
-// In-memory store ของข้อความ
 const messages: ChatMessage[] = [];
 
-/**
- * Initialize WebSocket chat server
- */
 export function initChat(wss: WebSocketServer) {
   wss.on("connection", (ws) => {
     clients.add(ws);
 
-    // ส่ง history ให้ client ใหม่
+    // ส่ง history
     ws.send(JSON.stringify({ type: "history", payload: messages }));
 
     ws.on("message", (raw) => {
       try {
         const data = JSON.parse(raw.toString());
-
-        const schema = z.object({
-          user: z.string().min(1),
-          text: z.string().min(1),
-        });
-
+        const schema = z.object({ user: z.string().min(1), text: z.string().min(1) });
         const parsed = schema.parse(data);
 
         const msg: ChatMessage = {
@@ -43,37 +31,47 @@ export function initChat(wss: WebSocketServer) {
           text: parsed.text,
           createdAt: Date.now(),
         };
-
-        // เก็บข้อความและ broadcast
         messages.push(msg);
-        broadcast({ type: "message", payload: msg });
+        broadcast({ type: "message", payload: [msg] });
+
+        // Bot auto-reply
+        if (parsed.user === "user") {
+          setTimeout(() => {
+            const botMsg: ChatMessage = {
+              id: crypto.randomUUID(),
+              user: "bot",
+              text: generateBotReply(parsed.text),
+              createdAt: Date.now(),
+            };
+            messages.push(botMsg);
+            broadcast({ type: "message", payload: [botMsg] });
+          }, 500);
+        }
       } catch {
-        // ส่งข้อความ error แบบ generic
         ws.send(JSON.stringify({ type: "error", error: "Invalid message" }));
       }
     });
 
-    ws.on("close", () => {
-      clients.delete(ws);
-    });
+    ws.on("close", () => clients.delete(ws));
   });
 }
 
-/**
- * Broadcast ข้อมูลให้ทุก client
- */
 function broadcast(data: unknown) {
   const payload = JSON.stringify(data);
   clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(payload);
-    }
+    if (client.readyState === WebSocket.OPEN) client.send(payload);
   });
 }
 
-/**
- * REST endpoint สำหรับดึงข้อความทั้งหมด
- */
 export function getMessages(_req: Request, res: Response, _next: NextFunction) {
   res.json(messages);
+}
+
+function generateBotReply(text: string): string {
+  const lower = text.toLowerCase();
+  if (lower.includes("hi") || lower.includes("hello") || lower.includes("สวัสดี"))
+    return "สวัสดีครับ! 👋";
+  if (lower.includes("ชื่อ")) return "ผมคือ Bot 🤖 ยินดีที่ได้รู้จัก!";
+  if (lower.includes("ขอบคุณ")) return "ยินดีครับ 🙏";
+  return `คุณพิมพ์ว่า: "${text}" ใช่ไหมครับ?`;
 }

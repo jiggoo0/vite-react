@@ -4,26 +4,39 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
-import { useChat, ChatMessage } from "@/api/useChat";
+
+interface ChatMessage {
+  id: string;
+  sender: "user" | "bot";
+  text: string;
+  timestamp: number;
+}
+
+interface WSMessagePayload {
+  id: string;
+  user: "user" | "bot";
+  text: string;
+  createdAt: number;
+}
 
 interface ChatWidgetProps {
   autoCloseMs?: number;
 }
 
 const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
-  const { messages, send } = useChat();
-  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const autoCloseTimer = useRef<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const wsRef = useRef<WebSocket | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const autoCloseTimer = useRef<number | null>(null);
 
   const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  // Auto-close timer
+  // Auto-close chat
   useEffect(() => {
-    if (isOpen) {
-      autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
-    }
+    if (isOpen) autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
     return () => {
       if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current);
       autoCloseTimer.current = null;
@@ -37,7 +50,7 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  // Scroll to bottom when messages update
+  // Auto-scroll on new messages
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -45,10 +58,55 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
     });
   }, [messages]);
 
-  const handleSend = async () => {
+  // WebSocket connection
+  useEffect(() => {
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const ws = new WebSocket(`${protocol}://${window.location.host}`);
+    wsRef.current = ws;
+
+    ws.onopen = () => console.log("✅ WS connected");
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "history" || data.type === "message") {
+          const payload = Array.isArray(data.payload) ? data.payload : [data.payload];
+          const mapped: ChatMessage[] = payload.map((m: WSMessagePayload) => ({
+            id: m.id,
+            sender: m.user === "user" ? "user" : "bot",
+            text: m.text,
+            timestamp: m.createdAt,
+          }));
+          setMessages((prev) => [...prev, ...mapped]);
+        } else if (data.type === "error") {
+          console.error("WS error:", data.error);
+        }
+      } catch (err) {
+        console.error("❌ Failed to parse WS message", err);
+      }
+    };
+
+    ws.onclose = () => console.log("⚡ WS closed");
+    ws.onerror = (err) => console.error("⚡ WS error", err);
+
+    return () => ws.close();
+  }, []);
+
+  // Send message
+  const handleSend = () => {
     const text = input.trim();
     if (!text) return;
-    await send(text);
+
+    const msg: ChatMessage = {
+      id: crypto.randomUUID(),
+      sender: "user",
+      text,
+      timestamp: Date.now(),
+    };
+
+    setMessages((prev) => [...prev, msg]);
+    wsRef.current?.send(JSON.stringify({ user: "user", text }));
     setInput("");
   };
 
@@ -73,14 +131,17 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
             <div className="p-3 border-b font-semibold">Chat</div>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
-              {messages.map((msg: ChatMessage) => (
+              {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`p-2 rounded-lg max-w-[75%] ${
                     msg.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
                   }`}
                 >
-                  {msg.text}
+                  <div>{msg.text}</div>
+                  <div className="text-xs text-gray-400 mt-1">
+                    {new Date(msg.timestamp).toLocaleTimeString()}
+                  </div>
                 </div>
               ))}
             </div>
