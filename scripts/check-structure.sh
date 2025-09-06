@@ -3,16 +3,23 @@ set -euo pipefail
 
 REPORT="NOTEDEVSEO_SUMMARY.md"
 GREEN="\033[0;32m"
-YELLOW="\033[1;33m"
-RED="\033[0;31m"
 RESET="\033[0m"
 
 term_log() { echo -e "$1"; }
 
 # -----------------------------
-# 0️⃣ Load .env if exists
+# 0️⃣ Safe load .env
 # -----------------------------
-[ -f .env ] && export $(grep -v '^#' .env | xargs || true)
+if [ -f .env ]; then
+  # Only parse lines like KEY=VALUE (ignore comments, empty lines, invalid identifiers)
+  while IFS='=' read -r key value; do
+    # Skip comment lines or lines with invalid key
+    [[ "$key" =~ ^#.*$ ]] && continue
+    if [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+      export "$key=$value"
+    fi
+  done < <(grep -v '^\s*$' .env)
+fi
 
 # -----------------------------
 # 1️⃣ Git Status
@@ -90,12 +97,12 @@ fi
 # -----------------------------
 # 6️⃣ Project Info
 # -----------------------------
-GITHUB_URL="https://github.com/jiggoo0/vite-react"
-DEVELOPER_EMAIL="jiggo0@outlook.co.th"
-WEBSITE_URL="https://404notfontjp.vercel.app/"
-VERCEL_ACCOUNT="jiggoos-projects"
-VERCEL_PROJECT_NAME="vite-react"
-VERCEL_PROJECT_ID="prj_MBF9hbw032OzD2gDVkUQ7mvoYA2t"
+GITHUB_URL="${GITHUB_URL:-https://github.com/jiggoo0/vite-react}"
+DEVELOPER_EMAIL="${DEVELOPER_EMAIL:-jiggo0@outlook.co.th}"
+WEBSITE_URL="${WEBSITE_URL:-https://404notfontjp.vercel.app/}"
+VERCEL_ACCOUNT="${VERCEL_ACCOUNT:-jiggoos-projects}"
+VERCEL_PROJECT_NAME="${VERCEL_PROJECT_NAME:-vite-react}"
+VERCEL_PROJECT_ID="${VERCEL_PROJECT_ID:-prj_MBF9hbw032OzD2gDVkUQ7mvoYA2t}"
 
 PKG_NAME=$(jq -r '.name // "vite-react"' package.json 2>/dev/null)
 PKG_VER=$(jq -r '.version // "7.1.1"' package.json 2>/dev/null)
