@@ -22,26 +22,26 @@ home::/data/data/com.termux/files/home/project/src/utils/common/ChatWidget.tsx
 code ตั้งค่าให้แม่นโดยอ้างอิงข้อมูลปัจจุบัน
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
-import { chatAPI, ChatMessage } from "@/api/Chat";
+import { useChat } from "@/api/Chat";
 
 interface ChatWidgetProps {
 autoCloseMs?: number;
 }
 
 const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
+const { messages, send } = useChat();
 const [isOpen, setIsOpen] = useState(false);
-const [messages, setMessages] = useState<ChatMessage[]>([]);
 const [input, setInput] = useState("");
 const autoCloseTimer = useRef<number | null>(null);
-const widgetRef = useRef<HTMLDivElement>(null);
+const scrollRef = useRef<HTMLDivElement>(null);
 
 const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-// Auto-close
+// Auto-close after inactivity
 useEffect(() => {
 if (isOpen) {
 autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
@@ -54,27 +54,29 @@ autoCloseTimer.current = null;
 };
 }, [isOpen, autoCloseMs]);
 
-// Close with Escape
+// Close chat on Escape
 useEffect(() => {
 const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
 window.addEventListener("keydown", handleKey);
 return () => window.removeEventListener("keydown", handleKey);
 }, []);
 
-// Realtime subscription
+// Scroll to bottom when messages update
 useEffect(() => {
-const unsubscribe = chatAPI.subscribe(setMessages);
-return () => unsubscribe();
-}, []);
+scrollRef.current?.scrollTo({
+top: scrollRef.current.scrollHeight,
+behavior: "smooth",
+});
+}, [messages]);
 
 const handleSend = async () => {
 if (!input.trim()) return;
-await chatAPI.sendMessage(input.trim());
+await send(input.trim());
 setInput("");
 };
 
 return (
-<div ref={widgetRef} className="fixed bottom-4 right-4 z-50">
+<div className="fixed bottom-4 right-4 z-50">
 <button
         onClick={toggleChat}
         className="p-3 rounded-full bg-primary text-white shadow-lg hover:scale-105 transition-transform"
@@ -92,20 +94,20 @@ return (
             className="absolute bottom-14 right-0 w-80 bg-base-100 rounded-2xl shadow-2xl border border-base-300 flex flex-col"
           >
             <div className="p-3 border-b font-semibold">Chat</div>
-            <div className="flex-1 overflow-y-auto p-3 space-y-2">
-              {messages.map((m) => (
+
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
+              {messages.map((m: typeof messages[number]) => (
                 <div
                   key={m.id}
                   className={`p-2 rounded-lg max-w-[75%] ${
-                    m.sender === "user"
-                      ? "ml-auto bg-primary text-white"
-                      : "mr-auto bg-base-200"
+                    m.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
                   }`}
                 >
                   {m.text}
                 </div>
               ))}
             </div>
+
             <div className="flex p-2 border-t">
               <input
                 type="text"
@@ -122,6 +124,7 @@ return (
                 ส่ง
               </button>
             </div>
+
             <div className="p-2 border-t">
               <SocialIcons />
             </div>
@@ -134,9 +137,7 @@ return (
 };
 
 export default ChatWidget;
-
 home::/data/data/com.termux/files/home/project/server.ts// server.ts
-// server.ts
 import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -144,15 +145,13 @@ import morgan from "morgan";
 import path from "path";
 import dotenv from "dotenv";
 import { z } from "zod";
-import { chatAPI } from "./src/api/Chat.ts"; // single Chat module
+import { chatAPI } from "./src/api/Chat.ts"; // ระบุไฟล์ .ts ให้ชัดเจน
 
 dotenv.config();
 
 type AppError = Error & { status?: number; code?: string; details?: unknown };
 
-// ============================
 // Logger
-// ============================
 const logger = {
 debug: (msg: string, obj?: unknown) =>
 process.env.NODE_ENV !== "production" ? console.debug(msg, obj ?? "") : undefined,
@@ -160,9 +159,7 @@ info: (msg: string, obj?: unknown) => console.info(msg, obj ?? ""),
 error: (msg: string, obj?: unknown) => console.error(msg, obj ?? ""),
 };
 
-// ============================
-// Environment validation
-// ============================
+// Validate env
 const envSchema = z.object({
 PROJECT_NAME: z.string(),
 VERSION: z.string(),
@@ -172,7 +169,6 @@ DEVELOPER_EMAIL: z.string().email(),
 WEBSITE_URL: z.string().url(),
 VERCEL_PROJECT_ID: z.string(),
 });
-
 const envResult = envSchema.safeParse(process.env);
 if (!envResult.success) {
 console.error("❌ Invalid environment variables:", envResult.error.format());
@@ -181,9 +177,7 @@ process.exit(1);
 type MyEnv = z.infer<typeof envSchema>;
 const AppConfig: { processEnv: MyEnv } = { processEnv: envResult.data };
 
-// ============================
 // Express setup
-// ============================
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DIST_PATH = path.resolve(process.cwd(), "dist");
@@ -200,62 +194,44 @@ next();
 });
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
-// ============================
 // Async wrapper
-// ============================
 const asyncHandler =
 <T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
 (req: Request, res: Response, next: NextFunction) =>
 fn(req, res, next).catch(next);
 
-// ============================
-// API Routes
-// ============================
-
-// Health
+// Routes
 app.get("/api/health", (\_req, res) =>
 res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
 
-// Project info
 app.get("/api/project", asyncHandler(async (\_req, res) => res.json(AppConfig.processEnv)));
 
-// Echo
 app.post("/api/echo", asyncHandler(async (req, res) => res.json({ received: req.body })));
 
 // Chat API
-app.get("/api/Chat/messages", asyncHandler(async (\_req, res) => {
+app.get("/api/chat/messages", asyncHandler(async (\_req, res) => {
 const messages = await chatAPI.getMessages();
 res.json({ messages });
 }));
 
-app.post("/api/Chat/send", asyncHandler(async (req, res) => {
+app.post("/api/chat/send", asyncHandler(async (req, res) => {
 const { text } = req.body;
-if (!text || typeof text !== "string")
-return res.status(400).json({ error: "text is required" });
+if (!text || typeof text !== "string") return res.status(400).json({ error: "text is required" });
 const sent = await chatAPI.sendMessage(text);
 res.json({ sent });
 }));
 
-app.delete("/api/Chat/clear", asyncHandler(async (\_req, res) => {
+app.delete("/api/chat/clear", asyncHandler(async (\_req, res) => {
 await chatAPI.clearMessages();
 res.json({ status: "cleared" });
 }));
 
-app.get("/api/Chat", asyncHandler(async (\_req, res) => {
-const messages = await chatAPI.getMessages();
-res.json({ messages });
-}));
-
-// ============================
 // Serve SPA
-// ============================
 app.use(express.static(DIST_PATH));
 app.get(/^\/(?!api).\*/, (\_req, res) => res.sendFile(path.resolve(DIST_PATH, "index.html")));
 
-// ============================
 // 404 + Global error handler
-// ============================
 app.use((req, res, next) => {
 if (req.path.startsWith("/api")) return res.status(404).json({ error: "API route not found" });
 next();
@@ -277,9 +253,7 @@ details: error.details,
 });
 });
 
-// ============================
 // Start server
-// ============================
 if (process.env.NODE_ENV !== "vercel") {
 app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
 }
@@ -289,87 +263,78 @@ export default app;
 
 home::/data/data/com.termux/files/home/project/src/api/Chat.ts
 // src/api/Chat.ts
+import { useState, useEffect } from "react";
+
 export interface ChatMessage {
 id: string;
-sender: "user" | "bot";
 text: string;
+sender: "user" | "bot";
 timestamp: number;
 }
 
-type Listener = (messages: ChatMessage[]) => void;
+type Callback = (msg: ChatMessage) => void;
 
-// shared store
-const messageStore: ChatMessage[] = [];
-const listeners = new Set<Listener>();
+class ChatAPI {
+private messages: ChatMessage[] = [];
+private subscribers: Callback[] = [];
 
-/\*\*
+async sendMessage(message: string): Promise<ChatMessage> {
+const msg: ChatMessage = {
+id: crypto.randomUUID(),
+text: message,
+sender: "user",
+timestamp: Date.now(),
+};
+this.messages.push(msg);
+this.subscribers.forEach((cb) => cb(msg));
+return msg;
+}
 
-- Broadcast snapshot ไปยังทุก subscriber
-  \*/
-  function notifyAll() {
-  const snapshot = structuredClone(messageStore);
-  for (const cb of listeners) cb(snapshot);
-  }
+subscribe(cb: Callback): () => void {
+this.subscribers.push(cb);
+return () => {
+this.subscribers = this.subscribers.filter((c) => c !== cb);
+};
+}
 
-export const chatAPI = {
-/\*\*
+async getMessages(): Promise<ChatMessage[]> {
+return this.messages;
+}
 
-- ส่งข้อความจาก user + trigger bot mock reply
-  \*/
-  async sendMessage(text: string): Promise<ChatMessage> {
-  const userMsg: ChatMessage = {
-  id: crypto.randomUUID(),
-  sender: "user",
-  text,
-  timestamp: Date.now(),
-  };
-  messageStore.push(userMsg);
-  notifyAll();
+async clearMessages(): Promise<void> {
+this.messages = [];
+}
+}
 
+export const chatAPI = new ChatAPI();
 
-    // mock bot reply (0.8s delay)
-    setTimeout(() => {
-      const botMsg: ChatMessage = {
-        id: crypto.randomUUID(),
-        sender: "bot",
-        text: `🤖 ตอบกลับ: ${text}`,
-        timestamp: Date.now(),
-      };
-      messageStore.push(botMsg);
-      notifyAll();
-    }, 800);
+// ===========================
+// React hook
+// ===========================
+export function useChat() {
+const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-    return userMsg;
+useEffect(() => {
+const loadMessages = async () => {
+const initial = await chatAPI.getMessages();
+setMessages(initial);
+};
+loadMessages();
 
-},
+    const unsubscribe = chatAPI.subscribe((msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
 
-/\*\*
+    return unsubscribe;
 
-- คืนข้อความทั้งหมด
-  \*/
-  async getMessages(): Promise<ChatMessage[]> {
-  return structuredClone(messageStore);
-  },
+}, []);
 
-/\*\*
+const send = async (text: string) => {
+await chatAPI.sendMessage(text);
+};
 
-- ล้างข้อความทั้งหมด
-  \*/
-  async clearMessages(): Promise<void> {
-  messageStore.length = 0; // reset store
-  notifyAll();
-  },
-
-/\*\*
-
-- subscribe realtime messages
-  \*/
-  subscribe(cb: Listener): () => void {
-  listeners.add(cb);
-  cb(structuredClone(messageStore));
-  return () => listeners.delete(cb);
-  },
-  };
+return { messages, send };
+}
 
 ─ api │   ├── Chat │   │   ├── index.ts │   │   ├── messages.ts │   │   ├── send.ts │   │   └── types.ts │   ├── Chat.ts │   ├── echo.ts │   └── project.ts
 

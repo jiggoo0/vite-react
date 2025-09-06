@@ -1,6 +1,6 @@
 # 📊 Project Summary Report
 
-Date: 2025-09-06 14:07:19  
+Date: 2025-09-06 15:24:52  
 Branch: main  
 Git Status: Clean ✅
 
@@ -225,6 +225,11 @@ src
 ├── animations
 │   └── motionVariants.ts
 ├── api
+│   ├── Chat
+│   │   ├── index.ts
+│   │   ├── messages.ts
+│   │   ├── send.ts
+│   │   └── types.ts
 │   ├── Chat.ts
 │   ├── echo.ts
 │   └── project.ts
@@ -293,7 +298,7 @@ src
 │   └── index.ts
 └── vite-env.d.ts
 
-65 directories, 192 files
+66 directories, 196 files
 ```
 
 ## 5️⃣ Project Info
@@ -730,28 +735,22 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
+import { chatAPI, ChatMessage } from "@/api/Chat";
 
 interface ChatWidgetProps {
-autoCloseMs?: number; // เวลาปิดอัตโนมัติ (มิลลิวินาที)
+autoCloseMs?: number;
 }
 
-/\*\*
-
-- 📬 ChatWidget
--
-- - Floating button สำหรับติดต่อผ่านโซเชียล
-- - เปิด/ปิดด้วย click หรือ Escape key
-- - Auto-close หลัง 15 วินาที (ปรับได้)
-- - Smooth animation, responsive, dark mode ready
-    \*/
-    const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const autoCloseTimer = useRef<number | null>(null);
-    const widgetRef = useRef<HTMLDivElement>(null);
+const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
+const [isOpen, setIsOpen] = useState(false);
+const [messages, setMessages] = useState<ChatMessage[]>([]);
+const [input, setInput] = useState("");
+const autoCloseTimer = useRef<number | null>(null);
+const widgetRef = useRef<HTMLDivElement>(null);
 
 const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-// ปิด widget อัตโนมัติหลังเวลา autoCloseMs
+// Auto-close
 useEffect(() => {
 if (isOpen) {
 autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
@@ -764,71 +763,81 @@ autoCloseTimer.current = null;
 };
 }, [isOpen, autoCloseMs]);
 
-// ปิดด้วย Escape key
+// Close with Escape
 useEffect(() => {
-const handleKeyDown = (e: KeyboardEvent) => {
-if (e.key === "Escape") setIsOpen(false);
-};
-window.addEventListener("keydown", handleKeyDown);
-return () => window.removeEventListener("keydown", handleKeyDown);
+const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
+window.addEventListener("keydown", handleKey);
+return () => window.removeEventListener("keydown", handleKey);
 }, []);
 
-// Focus widget เมื่อเปิด
+// Realtime subscription
 useEffect(() => {
-if (isOpen && widgetRef.current) {
-widgetRef.current.focus();
-}
-}, [isOpen]);
+const unsubscribe = chatAPI.subscribe(setMessages);
+return () => unsubscribe();
+}, []);
+
+const handleSend = async () => {
+if (!input.trim()) return;
+await chatAPI.sendMessage(input.trim());
+setInput("");
+};
 
 return (
 
-<div className="fixed bottom-5 right-5 z-[9999]">
-<AnimatePresence>
-{isOpen && (
-<motion.div
-ref={widgetRef}
-tabIndex={-1}
-role="dialog"
-aria-modal="true"
-aria-label="ช่องทางติดต่อ"
-initial={{ opacity: 0, y: 50, scale: 0.95 }}
-animate={{ opacity: 1, y: 0, scale: 1 }}
-exit={{ opacity: 0, y: 50, scale: 0.95 }}
-transition={{ duration: 0.25 }}
-className="w-80 max-w-[90vw] rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 shadow-xl p-5 text-center space-y-4 focus:outline-none" >
-<p className="text-base font-semibold text-gray-800 dark:text-gray-200">
-ติดต่อเราผ่านช่องทางโซเชียล
-</p>
+<div ref={widgetRef} className="fixed bottom-4 right-4 z-50">
+<button
+        onClick={toggleChat}
+        className="p-3 rounded-full bg-primary text-white shadow-lg hover:scale-105 transition-transform"
+      >
+<MessageCircle size={24} />
+</button>
 
-            <SocialIcons />
-
-            <button
-              onClick={toggleChat}
-              type="button"
-              className="w-full rounded-lg bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-zinc-700 transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            >
-              ปิด
-            </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="chat"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="absolute bottom-14 right-0 w-80 bg-base-100 rounded-2xl shadow-2xl border border-base-300 flex flex-col"
+          >
+            <div className="p-3 border-b font-semibold">Chat</div>
+            <div className="flex-1 overflow-y-auto p-3 space-y-2">
+              {messages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`p-2 rounded-lg max-w-[75%] ${
+                    m.sender === "user"
+                      ? "ml-auto bg-primary text-white"
+                      : "mr-auto bg-base-200"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              ))}
+            </div>
+            <div className="flex p-2 border-t">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                className="flex-1 input input-sm input-bordered rounded-l-lg"
+                placeholder="พิมพ์ข้อความ..."
+              />
+              <button
+                onClick={handleSend}
+                className="btn btn-sm btn-primary rounded-l-none"
+              >
+                ส่ง
+              </button>
+            </div>
+            <div className="p-2 border-t">
+              <SocialIcons />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {!isOpen && (
-        <motion.button
-          onClick={toggleChat}
-          type="button"
-          aria-label="เปิดช่องทางติดต่อ"
-          aria-expanded={isOpen}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white dark:bg-primary-dark shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        >
-          <MessageCircle className="w-6 h-6" />
-        </motion.button>
-      )}
     </div>
 
 );
@@ -837,43 +846,32 @@ className="w-80 max-w-[90vw] rounded-2xl bg-white dark:bg-zinc-900 border border
 export default ChatWidget;
 
 home::/data/data/com.termux/files/home/project/server.ts// server.ts
-import express from "express";
+// server.ts
+import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
-import { z } from "zod";
 import dotenv from "dotenv";
+import { z } from "zod";
+import { chatAPI } from "./src/api/Chat.ts"; // single Chat module
 
-// types only
-import type { Request, Response, NextFunction } from "express";
-
-// ============================
-// Load Env
-// ============================
 dotenv.config();
+
+type AppError = Error & { status?: number; code?: string; details?: unknown };
 
 // ============================
 // Logger
 // ============================
 const logger = {
 debug: (msg: string, obj?: unknown) =>
-process.env.NODE_ENV !== "production" ? console.debug(msg, obj || "") : undefined,
-info: (msg: string, obj?: unknown) => console.info(msg, obj || ""),
-error: (msg: string, obj?: unknown) => console.error(msg, obj || ""),
+process.env.NODE_ENV !== "production" ? console.debug(msg, obj ?? "") : undefined,
+info: (msg: string, obj?: unknown) => console.info(msg, obj ?? ""),
+error: (msg: string, obj?: unknown) => console.error(msg, obj ?? ""),
 };
 
 // ============================
-// Custom Error Type
-// ============================
-interface AppError extends Error {
-status?: number;
-code?: string;
-details?: unknown;
-}
-
-// ============================
-// Environment Validation & Custom Env Object
+// Environment validation
 // ============================
 const envSchema = z.object({
 PROJECT_NAME: z.string(),
@@ -886,49 +884,22 @@ VERCEL_PROJECT_ID: z.string(),
 });
 
 const envResult = envSchema.safeParse(process.env);
-
 if (!envResult.success) {
 console.error("❌ Invalid environment variables:", envResult.error.format());
 process.exit(1);
 }
-
-// Type-safe env object
-interface MyEnv {
-PROJECT_NAME: string;
-VERSION: string;
-DESCRIPTION?: string;
-GITHUB_URL: string;
-DEVELOPER_EMAIL: string;
-WEBSITE_URL: string;
-VERCEL_PROJECT_ID: string;
-}
-
-const AppConfig: { processEnv: MyEnv } = {
-processEnv: {
-PROJECT_NAME: envResult.data.PROJECT_NAME,
-VERSION: envResult.data.VERSION,
-DESCRIPTION: envResult.data.DESCRIPTION,
-GITHUB_URL: envResult.data.GITHUB_URL,
-DEVELOPER_EMAIL: envResult.data.DEVELOPER_EMAIL,
-WEBSITE_URL: envResult.data.WEBSITE_URL,
-VERCEL_PROJECT_ID: envResult.data.VERCEL_PROJECT_ID,
-},
-};
+type MyEnv = z.infer<typeof envSchema>;
+const AppConfig: { processEnv: MyEnv } = { processEnv: envResult.data };
 
 // ============================
-// Express App Setup
+// Express setup
 // ============================
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DIST_PATH = path.resolve(process.cwd(), "dist");
 
-// ============================
-// Middlewares
-// ============================
 app.use(
-helmet({
-contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false,
-})
+helmet({ contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false })
 );
 app.use(cors());
 app.use(express.json());
@@ -940,7 +911,7 @@ next();
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 // ============================
-// Async Handler Wrapper
+// Async wrapper
 // ============================
 const asyncHandler =
 <T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
@@ -948,55 +919,58 @@ const asyncHandler =
 fn(req, res, next).catch(next);
 
 // ============================
-// API Handlers
-// ============================
-const getProjectInfo = async (req: Request, res: Response) => {
-res.json({
-name: AppConfig.processEnv.PROJECT_NAME,
-version: AppConfig.processEnv.VERSION,
-description: AppConfig.processEnv.DESCRIPTION || "N/A",
-github: AppConfig.processEnv.GITHUB_URL,
-website: AppConfig.processEnv.WEBSITE_URL,
-developer: AppConfig.processEnv.DEVELOPER_EMAIL,
-vercelProjectId: AppConfig.processEnv.VERCEL_PROJECT_ID,
-});
-};
-
-const echoBody = async (req: Request, res: Response) => {
-logger.debug("Received body:", req.body);
-res.json({ received: req.body });
-};
-
-// ============================
 // API Routes
 // ============================
+
+// Health
 app.get("/api/health", (\_req, res) =>
 res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
-app.get("/api/project", asyncHandler(getProjectInfo));
-app.post("/api/echo", asyncHandler(echoBody));
+
+// Project info
+app.get("/api/project", asyncHandler(async (\_req, res) => res.json(AppConfig.processEnv)));
+
+// Echo
+app.post("/api/echo", asyncHandler(async (req, res) => res.json({ received: req.body })));
+
+// Chat API
+app.get("/api/Chat/messages", asyncHandler(async (\_req, res) => {
+const messages = await chatAPI.getMessages();
+res.json({ messages });
+}));
+
+app.post("/api/Chat/send", asyncHandler(async (req, res) => {
+const { text } = req.body;
+if (!text || typeof text !== "string")
+return res.status(400).json({ error: "text is required" });
+const sent = await chatAPI.sendMessage(text);
+res.json({ sent });
+}));
+
+app.delete("/api/Chat/clear", asyncHandler(async (\_req, res) => {
+await chatAPI.clearMessages();
+res.json({ status: "cleared" });
+}));
+
+app.get("/api/Chat", asyncHandler(async (\_req, res) => {
+const messages = await chatAPI.getMessages();
+res.json({ messages });
+}));
 
 // ============================
 // Serve SPA
 // ============================
 app.use(express.static(DIST_PATH));
-app.get(/^\/(?!api).\*/, (\_req, res) => {
-res.sendFile(path.resolve(DIST_PATH, "index.html"));
-});
+app.get(/^\/(?!api).\*/, (\_req, res) => res.sendFile(path.resolve(DIST_PATH, "index.html")));
 
 // ============================
-// 404 Handler
+// 404 + Global error handler
 // ============================
 app.use((req, res, next) => {
-if (req.path.startsWith("/api")) {
-return res.status(404).json({ error: "API route not found" });
-}
+if (req.path.startsWith("/api")) return res.status(404).json({ error: "API route not found" });
 next();
 });
 
-// ============================
-// Global Error Handler
-// ============================
 app.use((err: unknown, \_req: Request, res: Response, \_next: NextFunction) => {
 const error = err as AppError;
 logger.error("❌ Error caught:", {
@@ -1014,15 +988,99 @@ details: error.details,
 });
 
 // ============================
-// Start Server (Local only, skip on Vercel)
+// Start server
 // ============================
 if (process.env.NODE_ENV !== "vercel") {
 app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
 }
 
-// ✅ Export both AppConfig and app
 export { AppConfig };
 export default app;
+
+home::/data/data/com.termux/files/home/project/src/api/Chat.ts
+// src/api/Chat.ts
+export interface ChatMessage {
+id: string;
+sender: "user" | "bot";
+text: string;
+timestamp: number;
+}
+
+type Listener = (messages: ChatMessage[]) => void;
+
+// shared store
+const messageStore: ChatMessage[] = [];
+const listeners = new Set<Listener>();
+
+/\*\*
+
+- Broadcast snapshot ไปยังทุก subscriber
+  \*/
+  function notifyAll() {
+  const snapshot = structuredClone(messageStore);
+  for (const cb of listeners) cb(snapshot);
+  }
+
+export const chatAPI = {
+/\*\*
+
+- ส่งข้อความจาก user + trigger bot mock reply
+  \*/
+  async sendMessage(text: string): Promise<ChatMessage> {
+  const userMsg: ChatMessage = {
+  id: crypto.randomUUID(),
+  sender: "user",
+  text,
+  timestamp: Date.now(),
+  };
+  messageStore.push(userMsg);
+  notifyAll();
+
+  // mock bot reply (0.8s delay)
+  setTimeout(() => {
+  const botMsg: ChatMessage = {
+  id: crypto.randomUUID(),
+  sender: "bot",
+  text: `🤖 ตอบกลับ: ${text}`,
+  timestamp: Date.now(),
+  };
+  messageStore.push(botMsg);
+  notifyAll();
+  }, 800);
+
+  return userMsg;
+
+},
+
+/\*\*
+
+- คืนข้อความทั้งหมด
+  \*/
+  async getMessages(): Promise<ChatMessage[]> {
+  return structuredClone(messageStore);
+  },
+
+/\*\*
+
+- ล้างข้อความทั้งหมด
+  \*/
+  async clearMessages(): Promise<void> {
+  messageStore.length = 0; // reset store
+  notifyAll();
+  },
+
+/\*\*
+
+- subscribe realtime messages
+  \*/
+  subscribe(cb: Listener): () => void {
+  listeners.add(cb);
+  cb(structuredClone(messageStore));
+  return () => listeners.delete(cb);
+  },
+  };
+
+─ api │   ├── Chat │   │   ├── index.ts │   │   ├── messages.ts │   │   ├── send.ts │   │   └── types.ts │   ├── Chat.ts │   ├── echo.ts │   └── project.ts
 
 ตรวจสอบ Type-safety และ CSS/UX consistency ให้ตรงกับ Tailwind/DaisyUI design
 ให้ โค้ดพร้อมใช้งานทันที โดยไม่ต้องรอ developer ทำ post-processing

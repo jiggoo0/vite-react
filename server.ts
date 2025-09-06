@@ -1,4 +1,3 @@
-// server.ts
 import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -6,15 +5,13 @@ import morgan from "morgan";
 import path from "path";
 import dotenv from "dotenv";
 import { z } from "zod";
-import { chatAPI } from "./src/api/Chat.ts"; // single Chat module
+import { chatAPI } from "./src/api/Chat.ts"; // ระบุไฟล์ .ts ให้ชัดเจน
 
 dotenv.config();
 
 type AppError = Error & { status?: number; code?: string; details?: unknown };
 
-// ============================
 // Logger
-// ============================
 const logger = {
   debug: (msg: string, obj?: unknown) =>
     process.env.NODE_ENV !== "production" ? console.debug(msg, obj ?? "") : undefined,
@@ -22,9 +19,7 @@ const logger = {
   error: (msg: string, obj?: unknown) => console.error(msg, obj ?? ""),
 };
 
-// ============================
-// Environment validation
-// ============================
+// Validate env
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
   VERSION: z.string(),
@@ -34,7 +29,6 @@ const envSchema = z.object({
   WEBSITE_URL: z.string().url(),
   VERCEL_PROJECT_ID: z.string(),
 });
-
 const envResult = envSchema.safeParse(process.env);
 if (!envResult.success) {
   console.error("❌ Invalid environment variables:", envResult.error.format());
@@ -43,9 +37,7 @@ if (!envResult.success) {
 type MyEnv = z.infer<typeof envSchema>;
 const AppConfig: { processEnv: MyEnv } = { processEnv: envResult.data };
 
-// ============================
 // Express setup
-// ============================
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DIST_PATH = path.resolve(process.cwd(), "dist");
@@ -62,30 +54,22 @@ app.use("/api", (_req, res, next) => {
 });
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
-// ============================
 // Async wrapper
-// ============================
 const asyncHandler =
   <T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
   (req: Request, res: Response, next: NextFunction) =>
     fn(req, res, next).catch(next);
 
-// ============================
-// API Routes
-// ============================
-
-// Health
+// Routes
 app.get("/api/health", (_req, res) =>
   res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
 
-// Project info
 app.get(
   "/api/project",
   asyncHandler(async (_req, res) => res.json(AppConfig.processEnv))
 );
 
-// Echo
 app.post(
   "/api/echo",
   asyncHandler(async (req, res) => res.json({ received: req.body }))
@@ -93,7 +77,7 @@ app.post(
 
 // Chat API
 app.get(
-  "/api/Chat/messages",
+  "/api/chat/messages",
   asyncHandler(async (_req, res) => {
     const messages = await chatAPI.getMessages();
     res.json({ messages });
@@ -101,7 +85,7 @@ app.get(
 );
 
 app.post(
-  "/api/Chat/send",
+  "/api/chat/send",
   asyncHandler(async (req, res) => {
     const { text } = req.body;
     if (!text || typeof text !== "string")
@@ -112,30 +96,18 @@ app.post(
 );
 
 app.delete(
-  "/api/Chat/clear",
+  "/api/chat/clear",
   asyncHandler(async (_req, res) => {
     await chatAPI.clearMessages();
     res.json({ status: "cleared" });
   })
 );
 
-app.get(
-  "/api/Chat",
-  asyncHandler(async (_req, res) => {
-    const messages = await chatAPI.getMessages();
-    res.json({ messages });
-  })
-);
-
-// ============================
 // Serve SPA
-// ============================
 app.use(express.static(DIST_PATH));
 app.get(/^\/(?!api).*/, (_req, res) => res.sendFile(path.resolve(DIST_PATH, "index.html")));
 
-// ============================
 // 404 + Global error handler
-// ============================
 app.use((req, res, next) => {
   if (req.path.startsWith("/api")) return res.status(404).json({ error: "API route not found" });
   next();
@@ -157,9 +129,7 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-// ============================
 // Start server
-// ============================
 if (process.env.NODE_ENV !== "vercel") {
   app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
 }

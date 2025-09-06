@@ -10,8 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Environment flags
-const isTermux = process.env.TERMUX_VERSION !== undefined;
+const isTermux = !!process.env.TERMUX_VERSION;
 const isProduction = process.env.NODE_ENV === "production";
+
+// Base API URL (used for dev proxy)
+const VITE_API_URL = process.env.VITE_API_URL || "http://localhost:3000";
 
 export default defineConfig({
   plugins: [
@@ -65,7 +68,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       "/api": {
-        target: process.env.VITE_API_URL || "http://localhost:3000",
+        target: VITE_API_URL,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

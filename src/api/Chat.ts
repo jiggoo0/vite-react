@@ -1,75 +1,72 @@
 // src/api/Chat.ts
+import { useState, useEffect } from "react";
+
 export interface ChatMessage {
   id: string;
-  sender: "user" | "bot";
   text: string;
+  sender: "user" | "bot";
   timestamp: number;
 }
 
-type Listener = (messages: ChatMessage[]) => void;
+type Callback = (msg: ChatMessage) => void;
 
-// shared store
-const messageStore: ChatMessage[] = [];
-const listeners = new Set<Listener>();
+class ChatAPI {
+  private messages: ChatMessage[] = [];
+  private subscribers: Callback[] = [];
 
-/**
- * Broadcast snapshot ไปยังทุก subscriber
- */
-function notifyAll() {
-  const snapshot = structuredClone(messageStore);
-  for (const cb of listeners) cb(snapshot);
-}
-
-export const chatAPI = {
-  /**
-   * ส่งข้อความจาก user + trigger bot mock reply
-   */
-  async sendMessage(text: string): Promise<ChatMessage> {
-    const userMsg: ChatMessage = {
+  async sendMessage(message: string): Promise<ChatMessage> {
+    const msg: ChatMessage = {
       id: crypto.randomUUID(),
+      text: message,
       sender: "user",
-      text,
       timestamp: Date.now(),
     };
-    messageStore.push(userMsg);
-    notifyAll();
+    this.messages.push(msg);
+    this.subscribers.forEach((cb) => cb(msg));
+    return msg;
+  }
 
-    // mock bot reply (0.8s delay)
-    setTimeout(() => {
-      const botMsg: ChatMessage = {
-        id: crypto.randomUUID(),
-        sender: "bot",
-        text: `🤖 ตอบกลับ: ${text}`,
-        timestamp: Date.now(),
-      };
-      messageStore.push(botMsg);
-      notifyAll();
-    }, 800);
+  subscribe(cb: Callback): () => void {
+    this.subscribers.push(cb);
+    return () => {
+      this.subscribers = this.subscribers.filter((c) => c !== cb);
+    };
+  }
 
-    return userMsg;
-  },
-
-  /**
-   * คืนข้อความทั้งหมด
-   */
   async getMessages(): Promise<ChatMessage[]> {
-    return structuredClone(messageStore);
-  },
+    return this.messages;
+  }
 
-  /**
-   * ล้างข้อความทั้งหมด
-   */
   async clearMessages(): Promise<void> {
-    messageStore.length = 0; // reset store
-    notifyAll();
-  },
+    this.messages = [];
+  }
+}
 
-  /**
-   * subscribe realtime messages
-   */
-  subscribe(cb: Listener): () => void {
-    listeners.add(cb);
-    cb(structuredClone(messageStore));
-    return () => listeners.delete(cb);
-  },
-};
+export const chatAPI = new ChatAPI();
+
+// ===========================
+// React hook
+// ===========================
+export function useChat() {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+
+  useEffect(() => {
+    const loadMessages = async () => {
+      const initial = await chatAPI.getMessages();
+      setMessages(initial);
+    };
+    loadMessages();
+
+    const unsubscribe = chatAPI.subscribe((msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const send = async (text: string) => {
+    await chatAPI.sendMessage(text);
+  };
+
+  return { messages, send };
+}
