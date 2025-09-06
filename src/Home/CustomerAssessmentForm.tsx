@@ -15,7 +15,10 @@ const CustomerAssessmentForm: React.FC = () => {
   const [applicant, setApplicant] = useState<ApplicantData>(exampleApplicant);
 
   const dti = useMemo(() => calculateDTI(applicant), [applicant]);
-  const score = useMemo(() => calculateCreditScore(applicant, defaultConfig), [applicant]);
+
+  // คืนค่า object
+  const scoreDetails = useMemo(() => calculateCreditScore(applicant, defaultConfig), [applicant]);
+  const score = scoreDetails.totalScore; // ใช้ totalScore เป็น number
   const status = useMemo(() => assessCreditStatus(score, defaultConfig.creditThreshold), [score]);
 
   const handleProfileSubmit = (data: CreditProfileData) => {
@@ -24,24 +27,23 @@ const CustomerAssessmentForm: React.FC = () => {
   };
 
   const handleDebtChange = (index: number, value: number) => {
-    const newDebts = [...applicant.debts];
-    newDebts[index] = value;
-    setApplicant({ ...applicant, debts: newDebts });
+    setApplicant((prev) => {
+      const newDebts = [...prev.debts];
+      newDebts[index] = value;
+      return { ...prev, debts: newDebts };
+    });
   };
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      {/* แบบฟอร์มข้อมูลลูกค้า */}
       <CreditProfileForm onSubmit={handleProfileSubmit} />
 
-      {/* ข้อความแจ้งเตือน */}
       <div className="p-4 border-l-4 border-red-500 bg-red-50 text-red-700 text-sm">
         <strong>หมายเหตุ:</strong> แบบฟอร์มในการประเมินใช้เทคนิคการคำนวณจาก DTI (Debt-to-Income
         Ratio) ซึ่งเป็นข้อมูลปัจจุบันที่เชื่อถือได้ 100%. ผลลัพธ์ที่คุณเห็นคือผลการประเมินของคุณ
         สิ่งที่เราทำให้คุณประเมินฟรีเพื่อไม่ให้คุณเสียเงินเสียทองกับเรื่องที่ไม่ควรเสีย.
       </div>
 
-      {/* แบบฟอร์มประเมินเครดิต */}
       <div className="p-6 border rounded-lg shadow-md space-y-4 bg-white">
         <h2 className="text-xl font-bold text-center">แบบประเมินความสามารถทางการเงิน</h2>
 
@@ -49,7 +51,7 @@ const CustomerAssessmentForm: React.FC = () => {
           label="รายได้รวม (บาท/เดือน)"
           description="กรอกจำนวนรายได้สุทธิที่ได้รับต่อเดือน เช่น เงินเดือน ค่าคอมมิชชั่น หรือรายได้เสริม"
           value={applicant.income}
-          onChange={(val) => setApplicant({ ...applicant, income: val })}
+          onChange={(val) => setApplicant((prev) => ({ ...prev, income: val }))}
         />
 
         {applicant.debts.map((debt, idx) => (
@@ -66,14 +68,14 @@ const CustomerAssessmentForm: React.FC = () => {
           label="เงินออม / หลักประกัน (บาท)"
           description="ระบุจำนวนเงินออมรวม หรือมูลค่าหลักประกันเพื่อยืนยันความมั่นคงทางการเงิน"
           value={applicant.savings}
-          onChange={(val) => setApplicant({ ...applicant, savings: val })}
+          onChange={(val) => setApplicant((prev) => ({ ...prev, savings: val }))}
         />
 
         <InputField
           label="คะแนนประวัติชำระหนี้ (0-35)"
           description="ประเมินจากประวัติการชำระหนี้ที่ผ่านมา เช่น ชำระตรงเวลา ไม่มีค้างชำระ"
           value={applicant.paymentHistoryScore}
-          onChange={(val) => setApplicant({ ...applicant, paymentHistoryScore: val })}
+          onChange={(val) => setApplicant((prev) => ({ ...prev, paymentHistoryScore: val }))}
           min={0}
           max={35}
         />
@@ -82,15 +84,20 @@ const CustomerAssessmentForm: React.FC = () => {
           label="คะแนนความเสถียรของรายได้ (0-15)"
           description="ประเมินความมั่นคงของรายได้ เช่น งานประจำ ระยะเวลาการทำงาน รายได้คงที่"
           value={applicant.incomeStabilityScore}
-          onChange={(val) => setApplicant({ ...applicant, incomeStabilityScore: val })}
+          onChange={(val) => setApplicant((prev) => ({ ...prev, incomeStabilityScore: val }))}
           min={0}
           max={15}
         />
 
-        <ResultCard dti={dti} score={score} status={status} />
+        <ResultCard
+          dti={dti}
+          score={score} // number
+          status={status}
+          debtScore={scoreDetails.debtScore} // optional ถ้าต้องแสดง
+          savingsScore={scoreDetails.savingsScore} // optional
+        />
       </div>
 
-      {/* แสดงข้อมูล Profile ที่บันทึก */}
       {profileData && (
         <div className="p-4 border rounded-lg shadow-md bg-gray-50">
           <h3 className="font-semibold mb-2">ข้อมูลโปรไฟล์ลูกค้าที่บันทึก</h3>

@@ -1,4 +1,3 @@
-// src/Home/components/CreditAssessmentForm/CreditAssessmentForm.tsx
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -10,30 +9,34 @@ import ResultCard from "./ResultCard";
 const CreditAssessmentForm: React.FC = () => {
   const [applicant, setApplicant] = useState<ApplicantData>(exampleApplicant);
 
-  // คำนวณ DTI และคะแนนเครดิต
+  // Memoized calculations
   const dti = useMemo(() => calculateDTI(applicant), [applicant]);
   const score = useMemo(() => calculateCreditScore(applicant, defaultConfig), [applicant]);
-  const status = useMemo(() => assessCreditStatus(score, defaultConfig.creditThreshold), [score]);
+  const status = useMemo(
+    () => assessCreditStatus(score.totalScore, defaultConfig.creditThreshold),
+    [score]
+  );
 
-  // อัปเดตค่า debts
-  const handleDebtChange = (index: number, value: number) => {
-    const newDebts = [...applicant.debts];
-    newDebts[index] = value;
-    setApplicant({ ...applicant, debts: newDebts });
-  };
+  // Update debts
+  const handleDebtChange = (index: number, value: number) =>
+    setApplicant((prev) => {
+      const newDebts = [...prev.debts];
+      newDebts[index] = value;
+      return { ...prev, debts: newDebts };
+    });
 
   return (
     <div className="p-6 border rounded-lg shadow-md max-w-md mx-auto space-y-4 bg-white">
       <h2 className="text-xl font-bold text-center">Credit Assessment Form</h2>
 
-      {/* รายได้ */}
+      {/* Income */}
       <InputField
         label="รายได้รวม (บาท/เดือน)"
         value={applicant.income}
-        onChange={(val) => setApplicant({ ...applicant, income: val })}
+        onChange={(val) => setApplicant((prev) => ({ ...prev, income: val }))}
       />
 
-      {/* หนี้ */}
+      {/* Debts */}
       {applicant.debts.map((debt, idx) => (
         <InputField
           key={idx}
@@ -43,38 +46,44 @@ const CreditAssessmentForm: React.FC = () => {
         />
       ))}
 
-      {/* เงินออม */}
+      {/* Savings */}
       <InputField
         label="เงินออม / หลักประกัน (บาท)"
         value={applicant.savings}
-        onChange={(val) => setApplicant({ ...applicant, savings: val })}
+        onChange={(val) => setApplicant((prev) => ({ ...prev, savings: val }))}
       />
 
-      {/* คะแนนประวัติชำระหนี้ */}
+      {/* Payment History Score */}
       <InputField
         label="คะแนนประวัติชำระหนี้ (0-35)"
         value={applicant.paymentHistoryScore}
-        onChange={(val) => setApplicant({ ...applicant, paymentHistoryScore: val })}
+        onChange={(val) => setApplicant((prev) => ({ ...prev, paymentHistoryScore: val }))}
         min={0}
         max={35}
       />
 
-      {/* คะแนนความเสถียรของรายได้ */}
+      {/* Income Stability Score */}
       <InputField
         label="คะแนนความเสถียรของรายได้ (0-15)"
         value={applicant.incomeStabilityScore}
-        onChange={(val) => setApplicant({ ...applicant, incomeStabilityScore: val })}
+        onChange={(val) => setApplicant((prev) => ({ ...prev, incomeStabilityScore: val }))}
         min={0}
         max={15}
       />
 
-      {/* แสดงผลลัพธ์ */}
-      <ResultCard dti={dti} score={score} status={status} />
+      {/* Result */}
+      <ResultCard
+        dti={dti}
+        score={score.totalScore} // ใช้ totalScore เท่านั้น
+        debtScore={score.debtScore} // แสดงแยกได้
+        savingsScore={score.savingsScore}
+        status={status}
+      />
     </div>
   );
 };
 
-// Component InputField
+// InputField Component
 interface InputFieldProps {
   label: string;
   value: number;
