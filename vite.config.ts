@@ -9,6 +9,7 @@ import { dirname, resolve } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Environment flags
 const isTermux = process.env.TERMUX_VERSION !== undefined;
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -20,14 +21,14 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "JP VisoulDocs",
+        name: process.env.VITE_APP_NAME || "JP VisoulDocs",
         short_name: "VisoulDocs",
         description: "Enterprise-grade document management & dashboard",
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
-        scope: "/",
-        start_url: "/",
+        scope: process.env.VITE_APP_BASE_URL || "/",
+        start_url: process.env.VITE_APP_BASE_URL || "/",
         icons: [
           { src: "pwa-192x192.png", sizes: "192x192", type: "image/png" },
           { src: "pwa-512x512.png", sizes: "512x512", type: "image/png" },
