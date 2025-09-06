@@ -1,45 +1,39 @@
+// src/utils/common/FallbackLoader.tsx
 "use client";
 
 import { FC } from "react";
 import clsx from "clsx";
 
-interface FallbackLoadingProps {
-  /** 💬 ข้อความที่แสดงบน loader สามารถกำหนดเองได้ */
+interface FallbackLoaderProps {
   message?: string;
-  /** ✨ Optional: เพิ่ม className สำหรับ custom styling */
   className?: string;
-  /** 🔹 ขนาด spinner (px) */
-  size?: number;
+  size?: "sm" | "md" | "lg";
 }
 
-/**
- * ⏳ FallbackLoading
- *
- * Overlay loader สำหรับ React Suspense หรือ async fetch
- * - backdrop + blur + spinner animation
- * - รองรับ accessibility: aria-busy, role="status", aria-live
- * - สามารถปรับข้อความและ custom class
- */
-const FallbackLoading: FC<FallbackLoadingProps> = ({
-  message = "กำลังโหลด...",
+const FallbackLoader: FC<FallbackLoaderProps> = ({
+  message = "กำลังโหลดข้อมูล...",
   className,
-  size = 48,
+  size = "md",
 }) => {
+  const spinnerSizeCls = {
+    sm: "h-6 w-6",
+    md: "h-10 w-10 sm:h-12 sm:w-12",
+    lg: "h-16 w-16 sm:h-20 sm:w-20",
+  };
+
   return (
     <div
       className={clsx(
-        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/80 backdrop-blur-sm transition-opacity duration-300 animate-fadeIn",
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-base-100/70 dark:bg-zinc-900/70 backdrop-blur-sm animate-fadeIn p-4",
         className
       )}
       role="status"
       aria-live="polite"
       aria-busy="true"
     >
-      <div className="flex flex-col items-center gap-4">
-        {/* Spinner */}
+      <div className="flex flex-col items-center gap-4 sm:gap-5">
         <svg
-          className="animate-spin text-primary dark:text-primary-dark"
-          style={{ width: size, height: size }}
+          className={clsx("animate-spin text-primary dark:text-primary-dark", spinnerSizeCls[size])}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -59,9 +53,7 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({
             d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
           />
         </svg>
-
-        {/* Loading Text */}
-        <p className="text-sm text-base-content/70 dark:text-base-content/60 select-none">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 select-none">
           {message}
         </p>
       </div>
@@ -69,4 +61,4 @@ const FallbackLoading: FC<FallbackLoadingProps> = ({
   );
 };
 
-export default FallbackLoading;
+export default FallbackLoader;
