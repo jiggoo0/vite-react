@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-pnpm check
+bash scripts/check-structure.sh
 pnpm lint-staged
