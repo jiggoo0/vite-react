@@ -10,10 +10,10 @@ term_log() { echo -e "$1"; }
 # -----------------------------
 # 0️⃣ Safe load .env
 # -----------------------------
+# Safe load .env
 if [ -f .env ]; then
-  # Only parse lines like KEY=VALUE (ignore comments, empty lines, invalid identifiers)
   while IFS='=' read -r key value; do
-    # Skip comment lines or lines with invalid key
+    # Ignore comments and empty lines
     [[ "$key" =~ ^#.*$ ]] && continue
     if [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
       export "$key=$value"
