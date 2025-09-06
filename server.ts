@@ -1,15 +1,18 @@
 // server.ts
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { z } from "zod";
+import dotenv from "dotenv";
 
-// Import types only
+// types only
 import type { Request, Response, NextFunction } from "express";
 
+// ============================
+// Load Env
+// ============================
 dotenv.config();
 
 // ============================
@@ -89,18 +92,13 @@ app.use(
     contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false,
   })
 );
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Disable caching for API routes
 app.use("/api", (_req, res, next) => {
   res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
   next();
 });
-
-// HTTP request logging for dev
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 // ============================
@@ -137,7 +135,6 @@ const echoBody = async (req: Request, res: Response) => {
 app.get("/api/health", (_req, res) =>
   res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
-
 app.get("/api/project", asyncHandler(getProjectInfo));
 app.post("/api/echo", asyncHandler(echoBody));
 
@@ -170,7 +167,6 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
     code: error.code,
     details: error.details,
   });
-
   res.status(error.status ?? 500).json({
     error: "Internal Server Error",
     message: error.message,
