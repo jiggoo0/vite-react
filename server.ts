@@ -32,7 +32,7 @@ interface AppError extends Error {
 }
 
 // ============================
-// Environment Validation
+// Environment Validation & Custom Env Object
 // ============================
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
@@ -45,11 +45,34 @@ const envSchema = z.object({
 });
 
 const envResult = envSchema.safeParse(process.env);
+
 if (!envResult.success) {
   console.error("❌ Invalid environment variables:", envResult.error.format());
   process.exit(1);
 }
-const config = envResult.data;
+
+// Type-safe env object
+interface MyEnv {
+  PROJECT_NAME: string;
+  VERSION: string;
+  DESCRIPTION?: string;
+  GITHUB_URL: string;
+  DEVELOPER_EMAIL: string;
+  WEBSITE_URL: string;
+  VERCEL_PROJECT_ID: string;
+}
+
+const AppConfig: { processEnv: MyEnv } = {
+  processEnv: {
+    PROJECT_NAME: envResult.data.PROJECT_NAME,
+    VERSION: envResult.data.VERSION,
+    DESCRIPTION: envResult.data.DESCRIPTION,
+    GITHUB_URL: envResult.data.GITHUB_URL,
+    DEVELOPER_EMAIL: envResult.data.DEVELOPER_EMAIL,
+    WEBSITE_URL: envResult.data.WEBSITE_URL,
+    VERCEL_PROJECT_ID: envResult.data.VERCEL_PROJECT_ID,
+  },
+};
 
 // ============================
 // Express App Setup
@@ -93,13 +116,13 @@ const asyncHandler =
 // ============================
 const getProjectInfo = async (req: Request, res: Response) => {
   res.json({
-    name: config.PROJECT_NAME,
-    version: config.VERSION,
-    description: config.DESCRIPTION || "N/A",
-    github: config.GITHUB_URL,
-    website: config.WEBSITE_URL,
-    developer: config.DEVELOPER_EMAIL,
-    vercelProjectId: config.VERCEL_PROJECT_ID,
+    name: AppConfig.processEnv.PROJECT_NAME,
+    version: AppConfig.processEnv.VERSION,
+    description: AppConfig.processEnv.DESCRIPTION || "N/A",
+    github: AppConfig.processEnv.GITHUB_URL,
+    website: AppConfig.processEnv.WEBSITE_URL,
+    developer: AppConfig.processEnv.DEVELOPER_EMAIL,
+    vercelProjectId: AppConfig.processEnv.VERCEL_PROJECT_ID,
   });
 };
 
@@ -112,7 +135,7 @@ const echoBody = async (req: Request, res: Response) => {
 // API Routes
 // ============================
 app.get("/api/health", (_req, res) =>
-  res.status(200).json({ status: "ok", project: config.PROJECT_NAME })
+  res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
 
 app.get("/api/project", asyncHandler(getProjectInfo));
@@ -163,4 +186,6 @@ if (process.env.NODE_ENV !== "vercel") {
   app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
 }
 
+// ✅ Export both AppConfig and app
+export { AppConfig };
 export default app;
