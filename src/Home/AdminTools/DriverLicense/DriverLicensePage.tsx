@@ -8,9 +8,9 @@ import DriverLicensePreviewWithActions from "./DriverLicensePreviewWithActions";
 import PageSection from "@/Home/components/common/PageSection";
 import LazyA4Card from "@/Home/components/common/LazyA4Card";
 
-/**
- * Type ของใบขับขี่
- */
+/** ------------------------------
+ * Type: Driver License Data
+ * ----------------------------- */
 export interface DriverLicenseData {
   fullName: string;
   idNumber: string;
@@ -39,14 +39,14 @@ const DriverLicensePage: FC = () => {
     bloodType: "",
   });
 
-  // redirect ถ้าไม่ authenticated
+  /** Redirect unauthenticated users */
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
-  if (!user) return null;
+  if (!isAuthenticated || !user) return null;
 
   const isBlurred = user.role !== "admin";
 
@@ -57,9 +57,7 @@ const DriverLicensePage: FC = () => {
         <LazyA4Card delay={0}>
           <DriverLicenseForm
             role={user.role}
-            onChange={(data: Partial<DriverLicenseData>) =>
-              setLicenseData((prev) => ({ ...prev, ...data }))
-            }
+            onChange={(data) => setLicenseData((prev) => ({ ...prev, ...data }))}
           />
         </LazyA4Card>
       </PageSection>

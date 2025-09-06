@@ -1,11 +1,13 @@
 // src/services/driverLicenseOcr.ts
 import { z } from "zod";
 
-/**
- * 🔹 Zod Schema สำหรับข้อมูลใบขับขี่
- * - idNumber: ตัวเลข 13 หลัก
- * - firstName / lastName: ต้องมีค่า
- * - dob / issueDate / expiryDate: yyyy-mm-dd หรือว่าง
+/** ------------------------------
+ * Zod Schema for Driver License OCR
+ * -----------------------------
+ * Validates the basic driver license data
+ * - idNumber: 13-digit numeric string
+ * - firstName / lastName: required
+ * - dob / issueDate / expiryDate: yyyy-mm-dd or empty
  */
 export const driverLicenseSchema = z.object({
   idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรต้องเป็นตัวเลข 13 หลัก"),
@@ -28,17 +30,16 @@ export const driverLicenseSchema = z.object({
     .or(z.literal("")),
 });
 
-// 🔹 Export type
+/** Type inferred from schema */
 export type DriverLicenseData = z.infer<typeof driverLicenseSchema>;
 
-/**
- * 🔹 Mock OCR function
- * - แทนที่ด้วย OCR API จริงได้
- * @param _file ไฟล์ภาพใบขับขี่ (ยังไม่ได้ใช้)
- * @returns Promise<DriverLicenseData>
+/** ------------------------------
+ * Mock OCR function
+ * -----------------------------
+ * Replace with a real OCR API call
  */
 export async function driverLicenseOcr(_file: File): Promise<DriverLicenseData> {
-  // Mock delay เลียนแบบเรียก API จริง
+  // Mock delay to simulate API call
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Mock data
@@ -52,19 +53,18 @@ export async function driverLicenseOcr(_file: File): Promise<DriverLicenseData> 
   };
 }
 
-/**
- * 🔹 Mapping OCR result → Form default values
- * - ใช้สำหรับ React Hook Form / Formik
- * @param data DriverLicenseData
- * @returns Object ที่พร้อมเป็น defaultValues ของ form
+/** ------------------------------
+ * Map OCR result to form default values
+ * -----------------------------
+ * Useful for React Hook Form or Formik
  */
 export function mapDriverLicenseToForm(data: DriverLicenseData) {
   return {
     idNumber: data.idNumber,
     firstName: data.firstName,
     lastName: data.lastName,
-    dob: data.dob ?? "",
-    issueDate: data.issueDate ?? "",
-    expiryDate: data.expiryDate ?? "",
+    dob: data.dob || "",
+    issueDate: data.issueDate || "",
+    expiryDate: data.expiryDate || "",
   };
 }

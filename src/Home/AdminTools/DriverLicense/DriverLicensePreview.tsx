@@ -1,48 +1,40 @@
 "use client";
 
-import { FC, memo } from "react";
+import { FC, memo, useCallback } from "react";
 import { exportCardAsPDF, exportCardAsPNG } from "@/utils/exportCard";
-
-/**
- * Type ของใบขับขี่
- */
-export interface DriverLicenseData {
-  fullName: string; // ชื่อ-นามสกุล
-  idNumber: string; // เลขบัตรประชาชน / ใบขับขี่
-  dob: string; // วันเกิด
-  issueDate: string; // วันออกบัตร
-  expiryDate: string; // วันหมดอายุ
-  address: string; // ที่อยู่
-  photo?: string; // URL รูปถ่าย (optional)
-  licenseType: string; // ประเภทใบขับขี่
-  bloodType: string; // หมู่เลือด
-}
-
-export type DriverLicensePreviewData = DriverLicenseData;
+import { driverLicenseFields } from "@/config/driverLicenseConfig";
+import type { DriverLicenseData } from "@/Home/AdminTools/DriverLicense/types/driverLicense";
 
 interface Props {
   data: DriverLicenseData;
   className?: string;
   isBlurred?: boolean;
+  cardId?: string; // allow external control
 }
 
-const DriverLicensePreview: FC<Props> = ({ data, className = "", isBlurred = false }) => {
+const DriverLicensePreview: FC<Props> = ({
+  data,
+  className = "",
+  isBlurred = false,
+  cardId = "driver-license-preview-card",
+}) => {
   const blurClass = isBlurred ? "filter blur-sm" : "";
-  const cardId = "driver-license-preview-card";
 
-  const handleDownloadPNG = async () => {
-    await exportCardAsPNG(cardId, "driver_license.png");
-  };
+  const handleDownloadPNG = useCallback(
+    async () => await exportCardAsPNG(cardId, "driver_license.webp"),
+    [cardId]
+  );
 
-  const handleDownloadPDF = async () => {
-    await exportCardAsPDF(cardId, "driver_license.pdf");
-  };
+  const handleDownloadPDF = useCallback(
+    async () => await exportCardAsPDF(cardId, "driver_license.pdf"),
+    [cardId]
+  );
 
   return (
-    <div className={`${className}`}>
+    <div className={className}>
       <div
         id={cardId}
-        className={`${blurClass} p-4 bg-white shadow rounded-md transition-filter duration-300`}
+        className={`${blurClass} p-4 bg-white shadow rounded-md transition duration-300`}
       >
         <h2 className="text-xl font-semibold mb-2">ตัวอย่างใบขับขี่</h2>
 
@@ -54,30 +46,19 @@ const DriverLicensePreview: FC<Props> = ({ data, className = "", isBlurred = fal
           />
         )}
 
-        <p>
-          <strong>ชื่อ-นามสกุล:</strong> {data.fullName}
-        </p>
-        <p>
-          <strong>เลขบัตร/ใบขับขี่:</strong> {data.idNumber}
-        </p>
-        <p>
-          <strong>วันเกิด:</strong> {data.dob}
-        </p>
-        <p>
-          <strong>วันออกบัตร:</strong> {data.issueDate}
-        </p>
-        <p>
-          <strong>วันหมดอายุ:</strong> {data.expiryDate}
-        </p>
-        <p>
-          <strong>ที่อยู่:</strong> {data.address}
-        </p>
-        <p>
-          <strong>ประเภทใบขับขี่:</strong> {data.licenseType}
-        </p>
-        <p>
-          <strong>หมู่เลือด:</strong> {data.bloodType}
-        </p>
+        <dl className="space-y-1">
+          {driverLicenseFields
+            .filter((f) => f.id !== "photo")
+            .map((field) => {
+              const value = data[field.id as keyof DriverLicenseData];
+              return (
+                <div key={field.id} className="flex gap-2">
+                  <dt className="font-semibold min-w-[120px]">{field.label || field.id}:</dt>
+                  <dd>{value}</dd>
+                </div>
+              );
+            })}
+        </dl>
       </div>
 
       {!isBlurred && (

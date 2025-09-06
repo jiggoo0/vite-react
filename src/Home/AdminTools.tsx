@@ -12,9 +12,7 @@ const AdminTools: FC = () => {
 
   // Redirect unauthenticated users to login
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login", { replace: true });
-    }
+    if (!isAuthenticated) navigate("/login", { replace: true });
   }, [isAuthenticated, navigate]);
 
   if (!isAuthenticated || !user) return null;

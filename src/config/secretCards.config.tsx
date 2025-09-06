@@ -40,23 +40,26 @@ interface User {
 
 const BASE_DELAY = 50;
 
+/** Wrap a component with blur overlay if the user role requires it */
 const wrapBlur = (
   node: ReactNode,
   isBlurred?: boolean,
   overlayMessage?: ReactNode,
   key?: string | number
-) => (
+): ReactElement => (
   <WithBlurIfUser key={key} isBlurred={isBlurred} overlayMessage={overlayMessage}>
     {node}
   </WithBlurIfUser>
 );
 
-const withFallback = (node: ReactNode, fallback?: ReactNode) => (
+/** Wrap a component with Suspense fallback */
+const withFallback = (node: ReactNode, fallback?: ReactNode): ReactElement => (
   <Suspense fallback={fallback || <div className="text-center py-6 text-gray-500">Loading...</div>}>
     {node}
   </Suspense>
 );
 
+/** Generate the list of lazy-loaded cards based on user role */
 export const getLazyCards = (user: User, effectiveRole: EffectiveRole): LazyCard[] => {
   const isAdminOrManager = ["admin", "manager"].includes(effectiveRole);
   const shouldBlur = effectiveRole !== "admin";

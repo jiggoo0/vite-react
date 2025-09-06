@@ -1,12 +1,13 @@
 "use client";
 
 import { FC } from "react";
-import DriverLicensePreview, { DriverLicenseData } from "./DriverLicensePreview";
+import DriverLicensePreview from "./DriverLicensePreview";
+import type { DriverLicenseData } from "@/Home/AdminTools/DriverLicense/types/driverLicense"; // ✅ updated
 
 interface Props {
   className?: string;
   isBlurred?: boolean;
-  data: DriverLicenseData; // ต้องส่งครบทุก field
+  data: DriverLicenseData;
   onEdit?: () => void;
   onDownload?: () => void;
 }

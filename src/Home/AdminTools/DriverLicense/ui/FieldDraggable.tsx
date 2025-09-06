@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 
 interface FieldDraggableProps {
   top: string;
@@ -12,10 +12,10 @@ interface FieldDraggableProps {
 /**
  * FieldDraggable
  * -------------------
- * ทำให้ child component สามารถลากภายใน container ได้
- * - รองรับ mouse + touch
- * - scale ของ parent container ถูกคำนวณ
- * - position เก็บเป็น % เพื่อ responsive
+ * Makes child components draggable within their parent container.
+ * - Supports mouse & touch
+ * - Handles scaled parent container
+ * - Positions are returned in percentages for responsive layout
  */
 const FieldDraggable: React.FC<FieldDraggableProps> = ({
   top,
@@ -25,13 +25,14 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
 }) => {
   const fieldRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
   const scaleRef = useRef(1);
 
+  /** Start dragging */
   const startDrag = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(true);
+    isDraggingRef.current = true;
 
     containerRef.current = fieldRef.current?.parentElement ?? null;
 
@@ -42,11 +43,15 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
     }
   };
 
-  const stopDrag = useCallback(() => setIsDragging(false), []);
+  /** Stop dragging */
+  const stopDrag = useCallback(() => {
+    isDraggingRef.current = false;
+  }, []);
 
+  /** Handle movement during dragging */
   const onDragMove = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!isDragging || !fieldRef.current || !containerRef.current) return;
+      if (!isDraggingRef.current || !fieldRef.current || !containerRef.current) return;
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const fieldRect = fieldRef.current.getBoundingClientRect();
@@ -71,9 +76,10 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
 
       onPositionChange(newTop, newLeft);
     },
-    [isDragging, onPositionChange]
+    [onPositionChange]
   );
 
+  /** Attach and clean up event listeners */
   useEffect(() => {
     window.addEventListener("mousemove", onDragMove, { passive: false });
     window.addEventListener("touchmove", onDragMove, { passive: false });
@@ -95,7 +101,7 @@ const FieldDraggable: React.FC<FieldDraggableProps> = ({
         position: "absolute",
         top,
         left,
-        cursor: isDragging ? "grabbing" : "grab",
+        cursor: isDraggingRef.current ? "grabbing" : "grab",
         touchAction: "none",
         userSelect: "none",
       }}

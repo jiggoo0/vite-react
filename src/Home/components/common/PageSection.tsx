@@ -9,6 +9,8 @@ interface PageSectionProps {
   hideTitle?: boolean;
   className?: string;
   id?: string;
+  /** Optional animation delay for staggered effects */
+  delay?: number;
 }
 
 const PageSection: FC<PageSectionProps> = ({
@@ -17,6 +19,7 @@ const PageSection: FC<PageSectionProps> = ({
   hideTitle = false,
   className = "",
   id,
+  delay = 0,
 }) => {
   return (
     <motion.section
@@ -24,14 +27,13 @@ const PageSection: FC<PageSectionProps> = ({
       className={`w-full bg-white rounded-xl shadow-md p-6 sm:p-8 ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: "easeOut", delay }}
     >
       {!hideTitle && title && (
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
           {title}
         </h2>
       )}
-
       <div className="w-full">{children}</div>
     </motion.section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, memo, ChangeEvent, useState } from "react";
+import { FC, memo, ChangeEvent, useState, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,9 @@ import CardWrapper from "@home/components/common/CardWrapper";
 import WithBlurIfUser from "@home/components/common/WithBlurIfUser";
 import { MOCK_ID_CARD } from "@__mocks__/mockIdCardData";
 
+/** ------------------------------
+ * Zod schema for ID Card form validation
+ * ----------------------------- */
 const IdCardSchema = z.object({
   fullName: z.string().min(1, "กรุณากรอกชื่อ-สกุล"),
   idNumber: z.string().regex(/^\d{13}$/, "เลขบัตรประชาชนต้องมี 13 หลัก"),
@@ -40,6 +43,7 @@ const IdCardForm: FC<Props> = ({ role = "user", onChange }) => {
 
   const watchedData = watch();
 
+  /** Sync form data with parent */
   useEffect(() => {
     onChange?.({
       ...watchedData,
@@ -47,9 +51,11 @@ const IdCardForm: FC<Props> = ({ role = "user", onChange }) => {
     });
   }, [watchedData, imagePreview, onChange]);
 
+  /** Handle file upload and mock OCR auto-fill */
   const handleFileChange = (file: File) => {
     if (!file) return;
     setImagePreview(URL.createObjectURL(file));
+
     setTimeout(() => {
       setValue("fullName", "สมชาย ใจดี");
       setValue("idNumber", "1234567890123");
