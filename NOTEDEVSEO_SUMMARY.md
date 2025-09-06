@@ -1,16 +1,10 @@
 # 📊 Project Summary Report
 
-Date: 2025-09-06 08:22:04  
+Date: 2025-09-06 08:25:16  
 Branch: main  
 Git Status: Uncommitted / untracked changes ❌
 
-## 1️⃣ pnpm Checks
-
-- ✅ type-check passed
-- ✅ lint passed
-- ✅ all imports alias ok (Node: v22.19.0, ts-node: N/A)
-
-## 2️⃣ Dependencies
+## 1️⃣ Dependencies
 
 | Dependency  | Status | Version |
 | ----------- | ------ | ------- |
@@ -23,7 +17,7 @@ Git Status: Uncommitted / untracked changes ❌
 | eslint      | ✅     | ^9.33.0 |
 | prettier    | ✅     | ^3.6.2  |
 
-## 3️⃣ Config Files
+## 2️⃣ Config Files
 
 | Config File        | Status    |
 | ------------------ | --------- |
@@ -33,6 +27,10 @@ Git Status: Uncommitted / untracked changes ❌
 | .eslintrc          | ✅ exists |
 | .prettierrc        | ✅ exists |
 | .gitignore         | ✅ exists |
+
+## 3️⃣ Alias Check
+
+- ✅ all imports alias ok (Node: v22.19.0, ts-node: N/A)
 
 ## 4️⃣ Project Tree (src, depth 10)
 
