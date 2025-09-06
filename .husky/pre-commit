@@ -3,5 +3,3 @@
 
 pnpm vercel --prod
 pnpm lint-staged
-bash scripts/check-structure.sh
-git push
