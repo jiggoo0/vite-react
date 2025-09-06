@@ -20,124 +20,7 @@ AI สามารถ:
 ที่สามารถใช้งาน สนทนาตอบแชท Realtime คู่กับ
 home::/data/data/com.termux/files/home/project/src/utils/common/ChatWidget.tsx
 code ตั้งค่าให้แม่นโดยอ้างอิงข้อมูลปัจจุบัน
-"use client";
-
-import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import SocialIcons from "./SocialIcons";
-import { useChat } from "@/api/Chat";
-
-interface ChatWidgetProps {
-autoCloseMs?: number;
-}
-
-const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
-const { messages, send } = useChat();
-const [isOpen, setIsOpen] = useState(false);
-const [input, setInput] = useState("");
-const autoCloseTimer = useRef<number | null>(null);
-const scrollRef = useRef<HTMLDivElement>(null);
-
-const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
-
-// Auto-close after inactivity
-useEffect(() => {
-if (isOpen) {
-autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
-}
-return () => {
-if (autoCloseTimer.current) {
-clearTimeout(autoCloseTimer.current);
-autoCloseTimer.current = null;
-}
-};
-}, [isOpen, autoCloseMs]);
-
-// Close chat on Escape
-useEffect(() => {
-const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
-window.addEventListener("keydown", handleKey);
-return () => window.removeEventListener("keydown", handleKey);
-}, []);
-
-// Scroll to bottom when messages update
-useEffect(() => {
-scrollRef.current?.scrollTo({
-top: scrollRef.current.scrollHeight,
-behavior: "smooth",
-});
-}, [messages]);
-
-const handleSend = async () => {
-if (!input.trim()) return;
-await send(input.trim());
-setInput("");
-};
-
-return (
-<div className="fixed bottom-4 right-4 z-50">
-<button
-        onClick={toggleChat}
-        className="p-3 rounded-full bg-primary text-white shadow-lg hover:scale-105 transition-transform"
-      >
-<MessageCircle size={24} />
-</button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="chat"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="absolute bottom-14 right-0 w-80 bg-base-100 rounded-2xl shadow-2xl border border-base-300 flex flex-col"
-          >
-            <div className="p-3 border-b font-semibold">Chat</div>
-
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
-              {messages.map((m: typeof messages[number]) => (
-                <div
-                  key={m.id}
-                  className={`p-2 rounded-lg max-w-[75%] ${
-                    m.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
-                  }`}
-                >
-                  {m.text}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex p-2 border-t">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                className="flex-1 input input-sm input-bordered rounded-l-lg"
-                placeholder="พิมพ์ข้อความ..."
-              />
-              <button
-                onClick={handleSend}
-                className="btn btn-sm btn-primary rounded-l-none"
-              >
-                ส่ง
-              </button>
-            </div>
-
-            <div className="p-2 border-t">
-              <SocialIcons />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-
-);
-};
-
-export default ChatWidget;
-home::/data/data/com.termux/files/home/project/server.ts// server.ts
+// server.ts
 import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -145,7 +28,8 @@ import morgan from "morgan";
 import path from "path";
 import dotenv from "dotenv";
 import { z } from "zod";
-import { chatAPI } from "./src/api/Chat.ts"; // ระบุไฟล์ .ts ให้ชัดเจน
+import { chatAPI } from "./src/api/Chat.ts";
+import { WebSocketServer, WebSocket } from "ws";
 
 dotenv.config();
 
@@ -205,27 +89,45 @@ app.get("/api/health", (\_req, res) =>
 res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
 
-app.get("/api/project", asyncHandler(async (\_req, res) => res.json(AppConfig.processEnv)));
+app.get(
+"/api/project",
+asyncHandler(async (\_req, res) => res.json(AppConfig.processEnv))
+);
 
-app.post("/api/echo", asyncHandler(async (req, res) => res.json({ received: req.body })));
+app.post(
+"/api/echo",
+asyncHandler(async (req, res) => res.json({ received: req.body }))
+);
 
 // Chat API
-app.get("/api/chat/messages", asyncHandler(async (\_req, res) => {
+app.get(
+"/api/chat/messages",
+asyncHandler(async (\_req, res) => {
 const messages = await chatAPI.getMessages();
 res.json({ messages });
-}));
+})
+);
 
-app.post("/api/chat/send", asyncHandler(async (req, res) => {
+app.post(
+"/api/chat/send",
+asyncHandler(async (req, res) => {
 const { text } = req.body;
-if (!text || typeof text !== "string") return res.status(400).json({ error: "text is required" });
+if (!text || typeof text !== "string")
+return res.status(400).json({ error: "text is required" });
 const sent = await chatAPI.sendMessage(text);
+broadcastWS({ type: "new_message", payload: sent }); // ส่งผ่าน WebSocket
 res.json({ sent });
-}));
+})
+);
 
-app.delete("/api/chat/clear", asyncHandler(async (\_req, res) => {
+app.delete(
+"/api/chat/clear",
+asyncHandler(async (\_req, res) => {
 await chatAPI.clearMessages();
+broadcastWS({ type: "clear_messages" });
 res.json({ status: "cleared" });
-}));
+})
+);
 
 // Serve SPA
 app.use(express.static(DIST_PATH));
@@ -253,52 +155,249 @@ details: error.details,
 });
 });
 
-// Start server
-if (process.env.NODE_ENV !== "vercel") {
-app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
-}
+// WebSocket setup
+const wss = new WebSocketServer({ noServer: true });
+const clients = new Set<WebSocket>();
 
-export { AppConfig };
+const broadcastWS = (data: unknown) => {
+const msg = JSON.stringify(data);
+clients.forEach((ws) => {
+if (ws.readyState === WebSocket.OPEN) ws.send(msg);
+});
+};
+
+// Integrate WebSocket with Express server
+const server = app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
+
+server.on("upgrade", (request, socket, head) => {
+if (!request.url?.startsWith("/ws")) {
+socket.destroy();
+return;
+}
+wss.handleUpgrade(request, socket, head, (ws) => {
+clients.add(ws);
+ws.on("message", async (msg) => {
+try {
+const data = msg.toString();
+const sent = await chatAPI.sendMessage(data);
+broadcastWS({ type: "new_message", payload: sent });
+} catch (err) {
+logger.error("WebSocket send error", err);
+}
+});
+ws.on("close", () => clients.delete(ws));
+});
+});
+
+export { AppConfig, broadcastWS };
 export default app;
 
-home::/data/data/com.termux/files/home/project/src/api/Chat.ts
+"use client";
+
+import { useState, useRef, useEffect, useCallback } from "react";
+import { MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import SocialIcons from "./SocialIcons";
+import { useChat } from "@/api/useChat";
+
+interface ChatWidgetProps {
+autoCloseMs?: number;
+}
+
+const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
+const { messages, send } = useChat();
+const [isOpen, setIsOpen] = useState(false);
+const [input, setInput] = useState("");
+const autoCloseTimer = useRef<number | null>(null);
+const scrollRef = useRef<HTMLDivElement>(null);
+
+const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
+
+useEffect(() => {
+if (isOpen) {
+autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
+}
+return () => {
+if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current);
+autoCloseTimer.current = null;
+};
+}, [isOpen, autoCloseMs]);
+
+useEffect(() => {
+const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
+window.addEventListener("keydown", handleKey);
+return () => window.removeEventListener("keydown", handleKey);
+}, []);
+
+useEffect(() => {
+scrollRef.current?.scrollTo({
+top: scrollRef.current.scrollHeight,
+behavior: "smooth",
+});
+}, [messages]);
+
+const handleSend = async () => {
+if (!input.trim()) return;
+await send(input.trim());
+setInput("");
+};
+
+return (
+
+<div className="fixed bottom-4 right-4 z-50">
+<button
+        onClick={toggleChat}
+        className="p-3 rounded-full bg-primary text-white shadow-lg hover:scale-105 transition-transform"
+      >
+<MessageCircle size={24} />
+</button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="chat"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="absolute bottom-14 right-0 w-80 bg-base-100 rounded-2xl shadow-2xl border border-base-300 flex flex-col"
+          >
+            <div className="p-3 border-b font-semibold">Chat</div>
+
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
+              {messages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`p-2 rounded-lg max-w-[75%] ${
+                    m.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex p-2 border-t">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                className="flex-1 input input-sm input-bordered rounded-l-lg"
+                placeholder="พิมพ์ข้อความ..."
+              />
+              <button onClick={handleSend} className="btn btn-sm btn-primary rounded-l-none">
+                ส่ง
+              </button>
+            </div>
+
+            <div className="p-2 border-t">
+              <SocialIcons />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+
+);
+};
+
+export default ChatWidget;
+
+import { useState, useEffect, useCallback, useRef } from "react";
+
+export interface ChatMessage {
+id: string;
+sender: "user" | "bot";
+text: string;
+}
+
+interface UseChatReturn {
+messages: ChatMessage[];
+send: (text: string) => Promise<void>;
+}
+
+const WS_URL = "wss://your-websocket-server"; // เปลี่ยนเป็น URL จริง
+
+export const useChat = (): UseChatReturn => {
+const [messages, setMessages] = useState<ChatMessage[]>([]);
+const wsRef = useRef<WebSocket | null>(null);
+
+// Connect to WebSocket
+useEffect(() => {
+const ws = new WebSocket(WS_URL);
+wsRef.current = ws;
+
+    ws.addEventListener("message", (event) => {
+      try {
+        const msg: ChatMessage = JSON.parse(event.data);
+        setMessages((prev) => [...prev, msg]);
+      } catch {
+        console.warn("Invalid message format", event.data);
+      }
+    });
+
+    ws.addEventListener("close", () => console.log("WebSocket closed"));
+    ws.addEventListener("error", (err) => console.error("WebSocket error", err));
+
+    return () => {
+      ws.close();
+    };
+
+}, []);
+
+const send = useCallback(async (text: string) => {
+const msg: ChatMessage = { id: crypto.randomUUID(), sender: "user", text };
+setMessages((prev) => [...prev, msg]);
+if (wsRef.current?.readyState === WebSocket.OPEN) {
+wsRef.current.send(JSON.stringify(msg));
+}
+}, []);
+
+return { messages, send };
+};
+
 // src/api/Chat.ts
-import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export interface ChatMessage {
 id: string;
 text: string;
-sender: "user" | "bot";
-timestamp: number;
+createdAt: number;
+from: "user" | "bot";
 }
-
-type Callback = (msg: ChatMessage) => void;
 
 class ChatAPI {
 private messages: ChatMessage[] = [];
-private subscribers: Callback[] = [];
-
-async sendMessage(message: string): Promise<ChatMessage> {
-const msg: ChatMessage = {
-id: crypto.randomUUID(),
-text: message,
-sender: "user",
-timestamp: Date.now(),
-};
-this.messages.push(msg);
-this.subscribers.forEach((cb) => cb(msg));
-return msg;
-}
-
-subscribe(cb: Callback): () => void {
-this.subscribers.push(cb);
-return () => {
-this.subscribers = this.subscribers.filter((c) => c !== cb);
-};
-}
 
 async getMessages(): Promise<ChatMessage[]> {
-return this.messages;
+// Return last 50 messages
+return this.messages.slice(-50);
+}
+
+async sendMessage(text: string, from: "user" | "bot" = "user"): Promise<ChatMessage> {
+const message: ChatMessage = {
+id: uuidv4(),
+text,
+createdAt: Date.now(),
+from,
+};
+this.messages.push(message);
+
+    // Simulate bot response after delay
+    if (from === "user") {
+      setTimeout(() => {
+        const botMessage: ChatMessage = {
+          id: uuidv4(),
+          text: `ตอบกลับ: ${text}`,
+          createdAt: Date.now(),
+          from: "bot",
+        };
+        this.messages.push(botMessage);
+      }, 1000);
+    }
+
+    return message;
+
 }
 
 async clearMessages(): Promise<void> {
@@ -308,35 +407,36 @@ this.messages = [];
 
 export const chatAPI = new ChatAPI();
 
-// ===========================
 // React hook
-// ===========================
-export function useChat() {
+import { useState, useEffect, useCallback } from "react";
+
+export const useChat = () => {
 const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-useEffect(() => {
-const loadMessages = async () => {
-const initial = await chatAPI.getMessages();
-setMessages(initial);
-};
-loadMessages();
-
-    const unsubscribe = chatAPI.subscribe((msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
-
-    return unsubscribe;
-
+const refreshMessages = useCallback(async () => {
+const msgs = await chatAPI.getMessages();
+setMessages([...msgs]);
 }, []);
 
-const send = async (text: string) => {
+const send = useCallback(
+async (text: string) => {
 await chatAPI.sendMessage(text);
+await refreshMessages();
+},
+[refreshMessages]
+);
+
+useEffect(() => {
+refreshMessages();
+const interval = setInterval(refreshMessages, 2000); // poll every 2s
+return () => clearInterval(interval);
+}, [refreshMessages]);
+
+return { messages, send, refreshMessages };
 };
 
-return { messages, send };
-}
-
 ─ api │   ├── Chat │   │   ├── index.ts │   │   ├── messages.ts │   │   ├── send.ts │   │   └── types.ts │   ├── Chat.ts │   ├── echo.ts │   └── project.ts
+useChat.ts
 
 ตรวจสอบ Type-safety และ CSS/UX consistency ให้ตรงกับ Tailwind/DaisyUI design
 ให้ โค้ดพร้อมใช้งานทันที โดยไม่ต้องรอ developer ทำ post-processing

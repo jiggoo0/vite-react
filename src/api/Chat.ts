@@ -1,40 +1,44 @@
 // src/api/Chat.ts
-import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export interface ChatMessage {
   id: string;
   text: string;
-  sender: "user" | "bot";
-  timestamp: number;
+  createdAt: number;
+  from: "user" | "bot";
 }
-
-type Callback = (msg: ChatMessage) => void;
 
 class ChatAPI {
   private messages: ChatMessage[] = [];
-  private subscribers: Callback[] = [];
-
-  async sendMessage(message: string): Promise<ChatMessage> {
-    const msg: ChatMessage = {
-      id: crypto.randomUUID(),
-      text: message,
-      sender: "user",
-      timestamp: Date.now(),
-    };
-    this.messages.push(msg);
-    this.subscribers.forEach((cb) => cb(msg));
-    return msg;
-  }
-
-  subscribe(cb: Callback): () => void {
-    this.subscribers.push(cb);
-    return () => {
-      this.subscribers = this.subscribers.filter((c) => c !== cb);
-    };
-  }
 
   async getMessages(): Promise<ChatMessage[]> {
-    return this.messages;
+    // Return last 50 messages
+    return this.messages.slice(-50);
+  }
+
+  async sendMessage(text: string, from: "user" | "bot" = "user"): Promise<ChatMessage> {
+    const message: ChatMessage = {
+      id: uuidv4(),
+      text,
+      createdAt: Date.now(),
+      from,
+    };
+    this.messages.push(message);
+
+    // Simulate bot response after delay
+    if (from === "user") {
+      setTimeout(() => {
+        const botMessage: ChatMessage = {
+          id: uuidv4(),
+          text: `ตอบกลับ: ${text}`,
+          createdAt: Date.now(),
+          from: "bot",
+        };
+        this.messages.push(botMessage);
+      }, 1000);
+    }
+
+    return message;
   }
 
   async clearMessages(): Promise<void> {
@@ -44,29 +48,30 @@ class ChatAPI {
 
 export const chatAPI = new ChatAPI();
 
-// ===========================
 // React hook
-// ===========================
-export function useChat() {
+import { useState, useEffect, useCallback } from "react";
+
+export const useChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  useEffect(() => {
-    const loadMessages = async () => {
-      const initial = await chatAPI.getMessages();
-      setMessages(initial);
-    };
-    loadMessages();
-
-    const unsubscribe = chatAPI.subscribe((msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
-
-    return unsubscribe;
+  const refreshMessages = useCallback(async () => {
+    const msgs = await chatAPI.getMessages();
+    setMessages([...msgs]);
   }, []);
 
-  const send = async (text: string) => {
-    await chatAPI.sendMessage(text);
-  };
+  const send = useCallback(
+    async (text: string) => {
+      await chatAPI.sendMessage(text);
+      await refreshMessages();
+    },
+    [refreshMessages]
+  );
 
-  return { messages, send };
-}
+  useEffect(() => {
+    refreshMessages();
+    const interval = setInterval(refreshMessages, 2000); // poll every 2s
+    return () => clearInterval(interval);
+  }, [refreshMessages]);
+
+  return { messages, send, refreshMessages };
+};

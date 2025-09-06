@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
-import { useChat } from "@/api/Chat";
+import { useChat } from "@/api/useChat";
 
 interface ChatWidgetProps {
   autoCloseMs?: number;
@@ -19,27 +19,22 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
 
   const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  // Auto-close after inactivity
   useEffect(() => {
     if (isOpen) {
       autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
     }
     return () => {
-      if (autoCloseTimer.current) {
-        clearTimeout(autoCloseTimer.current);
-        autoCloseTimer.current = null;
-      }
+      if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current);
+      autoCloseTimer.current = null;
     };
   }, [isOpen, autoCloseMs]);
 
-  // Close chat on Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  // Scroll to bottom when messages update
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -74,7 +69,7 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
             <div className="p-3 border-b font-semibold">Chat</div>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
-              {messages.map((m: (typeof messages)[number]) => (
+              {messages.map((m) => (
                 <div
                   key={m.id}
                   className={`p-2 rounded-lg max-w-[75%] ${

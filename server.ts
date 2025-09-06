@@ -1,3 +1,4 @@
+// server.ts
 import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -5,7 +6,8 @@ import morgan from "morgan";
 import path from "path";
 import dotenv from "dotenv";
 import { z } from "zod";
-import { chatAPI } from "./src/api/Chat.ts"; // ระบุไฟล์ .ts ให้ชัดเจน
+import { chatAPI } from "./src/api/Chat.ts";
+import { WebSocketServer, WebSocket } from "ws";
 
 dotenv.config();
 
@@ -91,6 +93,7 @@ app.post(
     if (!text || typeof text !== "string")
       return res.status(400).json({ error: "text is required" });
     const sent = await chatAPI.sendMessage(text);
+    broadcastWS({ type: "new_message", payload: sent }); // ส่งผ่าน WebSocket
     res.json({ sent });
   })
 );
@@ -99,6 +102,7 @@ app.delete(
   "/api/chat/clear",
   asyncHandler(async (_req, res) => {
     await chatAPI.clearMessages();
+    broadcastWS({ type: "clear_messages" });
     res.json({ status: "cleared" });
   })
 );
@@ -129,10 +133,39 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-// Start server
-if (process.env.NODE_ENV !== "vercel") {
-  app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
-}
+// WebSocket setup
+const wss = new WebSocketServer({ noServer: true });
+const clients = new Set<WebSocket>();
 
-export { AppConfig };
+const broadcastWS = (data: unknown) => {
+  const msg = JSON.stringify(data);
+  clients.forEach((ws) => {
+    if (ws.readyState === WebSocket.OPEN) ws.send(msg);
+  });
+};
+
+// Integrate WebSocket with Express server
+const server = app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
+
+server.on("upgrade", (request, socket, head) => {
+  if (!request.url?.startsWith("/ws")) {
+    socket.destroy();
+    return;
+  }
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    clients.add(ws);
+    ws.on("message", async (msg) => {
+      try {
+        const data = msg.toString();
+        const sent = await chatAPI.sendMessage(data);
+        broadcastWS({ type: "new_message", payload: sent });
+      } catch (err) {
+        logger.error("WebSocket send error", err);
+      }
+    });
+    ws.on("close", () => clients.delete(ws));
+  });
+});
+
+export { AppConfig, broadcastWS };
 export default app;

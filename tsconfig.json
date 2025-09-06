@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "moduleResolution": "Node",
     "strict": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
+    "useDefineForClassFields": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "baseUrl": "./src",
@@ -33,9 +35,7 @@
     },
     "outDir": "./dist",
     "rootDir": "./",
-    "useDefineForClassFields": true,
-    "types": ["vite/client", "node"],
-    "allowImportingTsExtensions": true
+    "types": ["vite/client", "node"]
   },
   "include": ["src", "server.ts"],
   "exclude": ["node_modules", "dist"]

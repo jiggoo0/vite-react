@@ -9,12 +9,12 @@ import { dirname, resolve } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Environment flags
-const isTermux = !!process.env.TERMUX_VERSION;
+// Env flags
+const isTermux = Boolean(process.env.TERMUX_VERSION);
 const isProduction = process.env.NODE_ENV === "production";
 
-// Base API URL (used for dev proxy)
-const VITE_API_URL = process.env.VITE_API_URL || "http://localhost:3000";
+// Base API URL
+const VITE_API_URL: string = process.env.VITE_API_URL || "http://localhost:3000";
 
 export default defineConfig({
   plugins: [
@@ -35,7 +35,12 @@ export default defineConfig({
         icons: [
           { src: "pwa-192x192.png", sizes: "192x192", type: "image/png" },
           { src: "pwa-512x512.png", sizes: "512x512", type: "image/png" },
-          { src: "pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+          {
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable",
+          },
         ],
       },
       disable: !isProduction || isTermux,
@@ -80,8 +85,8 @@ export default defineConfig({
     target: "esnext",
     sourcemap: true,
     minify: "esbuild",
-    chunkSizeWarningLimit: 2000,
     cssCodeSplit: true,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         entryFileNames: "assets/[name]-[hash].js",
