@@ -7,13 +7,13 @@ import morgan from "morgan";
 import path from "path";
 import { z } from "zod";
 
-// Import types only (no runtime import)
+// Import types only
 import type { Request, Response, NextFunction } from "express";
 
 dotenv.config();
 
 // ============================
-// Logger (console-based, simple)
+// Logger
 // ============================
 const logger = {
   debug: (msg: string, obj?: unknown) =>
@@ -32,7 +32,7 @@ interface AppError extends Error {
 }
 
 // ============================
-// Validate environment variables
+// Environment Validation
 // ============================
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
@@ -44,15 +44,15 @@ const envSchema = z.object({
   VERCEL_PROJECT_ID: z.string(),
 });
 
-const env = envSchema.safeParse(process.env);
-if (!env.success) {
-  console.error("Invalid environment variables:", env.error.format());
+const envResult = envSchema.safeParse(process.env);
+if (!envResult.success) {
+  console.error("❌ Invalid environment variables:", envResult.error.format());
   process.exit(1);
 }
-const config = env.data;
+const config = envResult.data;
 
 // ============================
-// Express Setup
+// Express App Setup
 // ============================
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -71,13 +71,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Prevent caching API responses
+// Disable caching for API routes
 app.use("/api", (_req, res, next) => {
   res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
   next();
 });
 
-// Logging
+// HTTP request logging for dev
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 // ============================
@@ -85,9 +85,8 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 // ============================
 const asyncHandler =
   <T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
-  (req: Request, res: Response, next: NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) =>
     fn(req, res, next).catch(next);
-  };
 
 // ============================
 // API Handlers
@@ -112,9 +111,9 @@ const echoBody = async (req: Request, res: Response) => {
 // ============================
 // API Routes
 // ============================
-app.get("/api/health", (_req, res) => {
-  res.status(200).json({ status: "ok", project: config.PROJECT_NAME });
-});
+app.get("/api/health", (_req, res) =>
+  res.status(200).json({ status: "ok", project: config.PROJECT_NAME })
+);
 
 app.get("/api/project", asyncHandler(getProjectInfo));
 app.post("/api/echo", asyncHandler(echoBody));
@@ -142,25 +141,26 @@ app.use((req, res, next) => {
 // ============================
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   const error = err as AppError;
-  logger.error("Error caught:", {
+  logger.error("❌ Error caught:", {
     message: error.message,
     stack: error.stack,
     code: error.code,
     details: error.details,
   });
-  res.status(error.status || 500).json({
+
+  res.status(error.status ?? 500).json({
     error: "Internal Server Error",
     message: error.message,
-    code: error.code || undefined,
-    details: error.details || undefined,
+    code: error.code,
+    details: error.details,
   });
 });
 
 // ============================
-// Start Server (if not on Vercel)
+// Start Server (Local only, skip on Vercel)
 // ============================
 if (process.env.NODE_ENV !== "vercel") {
-  app.listen(PORT, () => logger.info(`Server running at http://localhost:${PORT}`));
+  app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
 }
 
 export default app;
