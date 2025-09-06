@@ -1,41 +1,29 @@
 // server.ts
-import express from "express";
+import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
-import { z } from "zod";
 import dotenv from "dotenv";
+import { z } from "zod";
+import { chatAPI } from "./src/api/Chat.ts"; // single Chat module
 
-// types only
-import type { Request, Response, NextFunction } from "express";
-
-// ============================
-// Load Env
-// ============================
 dotenv.config();
+
+type AppError = Error & { status?: number; code?: string; details?: unknown };
 
 // ============================
 // Logger
 // ============================
 const logger = {
   debug: (msg: string, obj?: unknown) =>
-    process.env.NODE_ENV !== "production" ? console.debug(msg, obj || "") : undefined,
-  info: (msg: string, obj?: unknown) => console.info(msg, obj || ""),
-  error: (msg: string, obj?: unknown) => console.error(msg, obj || ""),
+    process.env.NODE_ENV !== "production" ? console.debug(msg, obj ?? "") : undefined,
+  info: (msg: string, obj?: unknown) => console.info(msg, obj ?? ""),
+  error: (msg: string, obj?: unknown) => console.error(msg, obj ?? ""),
 };
 
 // ============================
-// Custom Error Type
-// ============================
-interface AppError extends Error {
-  status?: number;
-  code?: string;
-  details?: unknown;
-}
-
-// ============================
-// Environment Validation & Custom Env Object
+// Environment validation
 // ============================
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
@@ -48,49 +36,22 @@ const envSchema = z.object({
 });
 
 const envResult = envSchema.safeParse(process.env);
-
 if (!envResult.success) {
   console.error("❌ Invalid environment variables:", envResult.error.format());
   process.exit(1);
 }
-
-// Type-safe env object
-interface MyEnv {
-  PROJECT_NAME: string;
-  VERSION: string;
-  DESCRIPTION?: string;
-  GITHUB_URL: string;
-  DEVELOPER_EMAIL: string;
-  WEBSITE_URL: string;
-  VERCEL_PROJECT_ID: string;
-}
-
-const AppConfig: { processEnv: MyEnv } = {
-  processEnv: {
-    PROJECT_NAME: envResult.data.PROJECT_NAME,
-    VERSION: envResult.data.VERSION,
-    DESCRIPTION: envResult.data.DESCRIPTION,
-    GITHUB_URL: envResult.data.GITHUB_URL,
-    DEVELOPER_EMAIL: envResult.data.DEVELOPER_EMAIL,
-    WEBSITE_URL: envResult.data.WEBSITE_URL,
-    VERCEL_PROJECT_ID: envResult.data.VERCEL_PROJECT_ID,
-  },
-};
+type MyEnv = z.infer<typeof envSchema>;
+const AppConfig: { processEnv: MyEnv } = { processEnv: envResult.data };
 
 // ============================
-// Express App Setup
+// Express setup
 // ============================
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DIST_PATH = path.resolve(process.cwd(), "dist");
 
-// ============================
-// Middlewares
-// ============================
 app.use(
-  helmet({
-    contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false,
-  })
+  helmet({ contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false })
 );
 app.use(cors());
 app.use(express.json());
@@ -102,7 +63,7 @@ app.use("/api", (_req, res, next) => {
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 // ============================
-// Async Handler Wrapper
+// Async wrapper
 // ============================
 const asyncHandler =
   <T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
@@ -110,55 +71,76 @@ const asyncHandler =
     fn(req, res, next).catch(next);
 
 // ============================
-// API Handlers
-// ============================
-const getProjectInfo = async (req: Request, res: Response) => {
-  res.json({
-    name: AppConfig.processEnv.PROJECT_NAME,
-    version: AppConfig.processEnv.VERSION,
-    description: AppConfig.processEnv.DESCRIPTION || "N/A",
-    github: AppConfig.processEnv.GITHUB_URL,
-    website: AppConfig.processEnv.WEBSITE_URL,
-    developer: AppConfig.processEnv.DEVELOPER_EMAIL,
-    vercelProjectId: AppConfig.processEnv.VERCEL_PROJECT_ID,
-  });
-};
-
-const echoBody = async (req: Request, res: Response) => {
-  logger.debug("Received body:", req.body);
-  res.json({ received: req.body });
-};
-
-// ============================
 // API Routes
 // ============================
+
+// Health
 app.get("/api/health", (_req, res) =>
   res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
 );
-app.get("/api/project", asyncHandler(getProjectInfo));
-app.post("/api/echo", asyncHandler(echoBody));
+
+// Project info
+app.get(
+  "/api/project",
+  asyncHandler(async (_req, res) => res.json(AppConfig.processEnv))
+);
+
+// Echo
+app.post(
+  "/api/echo",
+  asyncHandler(async (req, res) => res.json({ received: req.body }))
+);
+
+// Chat API
+app.get(
+  "/api/Chat/messages",
+  asyncHandler(async (_req, res) => {
+    const messages = await chatAPI.getMessages();
+    res.json({ messages });
+  })
+);
+
+app.post(
+  "/api/Chat/send",
+  asyncHandler(async (req, res) => {
+    const { text } = req.body;
+    if (!text || typeof text !== "string")
+      return res.status(400).json({ error: "text is required" });
+    const sent = await chatAPI.sendMessage(text);
+    res.json({ sent });
+  })
+);
+
+app.delete(
+  "/api/Chat/clear",
+  asyncHandler(async (_req, res) => {
+    await chatAPI.clearMessages();
+    res.json({ status: "cleared" });
+  })
+);
+
+app.get(
+  "/api/Chat",
+  asyncHandler(async (_req, res) => {
+    const messages = await chatAPI.getMessages();
+    res.json({ messages });
+  })
+);
 
 // ============================
 // Serve SPA
 // ============================
 app.use(express.static(DIST_PATH));
-app.get(/^\/(?!api).*/, (_req, res) => {
-  res.sendFile(path.resolve(DIST_PATH, "index.html"));
-});
+app.get(/^\/(?!api).*/, (_req, res) => res.sendFile(path.resolve(DIST_PATH, "index.html")));
 
 // ============================
-// 404 Handler
+// 404 + Global error handler
 // ============================
 app.use((req, res, next) => {
-  if (req.path.startsWith("/api")) {
-    return res.status(404).json({ error: "API route not found" });
-  }
+  if (req.path.startsWith("/api")) return res.status(404).json({ error: "API route not found" });
   next();
 });
 
-// ============================
-// Global Error Handler
-// ============================
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   const error = err as AppError;
   logger.error("❌ Error caught:", {
@@ -176,12 +158,11 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // ============================
-// Start Server (Local only, skip on Vercel)
+// Start server
 // ============================
 if (process.env.NODE_ENV !== "vercel") {
   app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
 }
 
-// ✅ Export both AppConfig and app
 export { AppConfig };
 export default app;

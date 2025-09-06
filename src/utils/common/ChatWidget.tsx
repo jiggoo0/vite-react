@@ -4,27 +4,22 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
+import { chatAPI, ChatMessage } from "@/api/Chat";
 
 interface ChatWidgetProps {
-  autoCloseMs?: number; // เวลาปิดอัตโนมัติ (มิลลิวินาที)
+  autoCloseMs?: number;
 }
 
-/**
- * 📬 ChatWidget
- *
- * - Floating button สำหรับติดต่อผ่านโซเชียล
- * - เปิด/ปิดด้วย click หรือ Escape key
- * - Auto-close หลัง 15 วินาที (ปรับได้)
- * - Smooth animation, responsive, dark mode ready
- */
 const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
   const autoCloseTimer = useRef<number | null>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  // ปิด widget อัตโนมัติหลังเวลา autoCloseMs
+  // Auto-close
   useEffect(() => {
     if (isOpen) {
       autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
@@ -37,71 +32,75 @@ const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
     };
   }, [isOpen, autoCloseMs]);
 
-  // ปิดด้วย Escape key
+  // Close with Escape
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  // Focus widget เมื่อเปิด
+  // Realtime subscription
   useEffect(() => {
-    if (isOpen && widgetRef.current) {
-      widgetRef.current.focus();
-    }
-  }, [isOpen]);
+    const unsubscribe = chatAPI.subscribe(setMessages);
+    return () => unsubscribe();
+  }, []);
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+    await chatAPI.sendMessage(input.trim());
+    setInput("");
+  };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[9999]">
+    <div ref={widgetRef} className="fixed bottom-4 right-4 z-50">
+      <button
+        onClick={toggleChat}
+        className="p-3 rounded-full bg-primary text-white shadow-lg hover:scale-105 transition-transform"
+      >
+        <MessageCircle size={24} />
+      </button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            ref={widgetRef}
-            tabIndex={-1}
-            role="dialog"
-            aria-modal="true"
-            aria-label="ช่องทางติดต่อ"
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.95 }}
-            transition={{ duration: 0.25 }}
-            className="w-80 max-w-[90vw] rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 shadow-xl p-5 text-center space-y-4 focus:outline-none"
+            key="chat"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="absolute bottom-14 right-0 w-80 bg-base-100 rounded-2xl shadow-2xl border border-base-300 flex flex-col"
           >
-            <p className="text-base font-semibold text-gray-800 dark:text-gray-200">
-              ติดต่อเราผ่านช่องทางโซเชียล
-            </p>
-
-            <SocialIcons />
-
-            <button
-              onClick={toggleChat}
-              type="button"
-              className="w-full rounded-lg bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-zinc-700 transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            >
-              ปิด
-            </button>
+            <div className="p-3 border-b font-semibold">Chat</div>
+            <div className="flex-1 overflow-y-auto p-3 space-y-2">
+              {messages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`p-2 rounded-lg max-w-[75%] ${
+                    m.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              ))}
+            </div>
+            <div className="flex p-2 border-t">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                className="flex-1 input input-sm input-bordered rounded-l-lg"
+                placeholder="พิมพ์ข้อความ..."
+              />
+              <button onClick={handleSend} className="btn btn-sm btn-primary rounded-l-none">
+                ส่ง
+              </button>
+            </div>
+            <div className="p-2 border-t">
+              <SocialIcons />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {!isOpen && (
-        <motion.button
-          onClick={toggleChat}
-          type="button"
-          aria-label="เปิดช่องทางติดต่อ"
-          aria-expanded={isOpen}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white dark:bg-primary-dark shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        >
-          <MessageCircle className="w-6 h-6" />
-        </motion.button>
-      )}
     </div>
   );
 };

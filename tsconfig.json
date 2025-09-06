@@ -34,7 +34,8 @@
     "outDir": "./dist",
     "rootDir": "./",
     "useDefineForClassFields": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "allowImportingTsExtensions": true
   },
   "include": ["src", "server.ts"],
   "exclude": ["node_modules", "dist"]

@@ -1,4 +1,4 @@
-// src/api/Chat.ts
+// src/api/Chat/index.ts
 export interface ChatMessage {
   id: string;
   sender: "user" | "bot";
@@ -8,7 +8,7 @@ export interface ChatMessage {
 
 type Listener = (messages: ChatMessage[]) => void;
 
-// shared store
+// shared store + listeners
 const messageStore: ChatMessage[] = [];
 const listeners = new Set<Listener>();
 
@@ -20,9 +20,13 @@ function notifyAll() {
   for (const cb of listeners) cb(snapshot);
 }
 
+/**
+ * Chat API
+ * - encapsulate store + listeners
+ */
 export const chatAPI = {
   /**
-   * ส่งข้อความจาก user + trigger bot mock reply
+   * ส่งข้อความจาก user + mock bot reply
    */
   async sendMessage(text: string): Promise<ChatMessage> {
     const userMsg: ChatMessage = {
@@ -34,7 +38,7 @@ export const chatAPI = {
     messageStore.push(userMsg);
     notifyAll();
 
-    // mock bot reply (0.8s delay)
+    // mock bot reply (delay 0.8s)
     setTimeout(() => {
       const botMsg: ChatMessage = {
         id: crypto.randomUUID(),
@@ -60,7 +64,7 @@ export const chatAPI = {
    * ล้างข้อความทั้งหมด
    */
   async clearMessages(): Promise<void> {
-    messageStore.length = 0; // reset store
+    messageStore.length = 0;
     notifyAll();
   },
 
