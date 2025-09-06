@@ -1,5 +1,5 @@
-import express from "express"; // <-- default import
-import type { Request, Response, NextFunction } from "express"; // <-- types only
+// server.ts
+import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
@@ -7,9 +7,14 @@ import morgan from "morgan";
 import path from "path";
 import { z } from "zod";
 
+// Import types only (no runtime import)
+import type { Request, Response, NextFunction } from "express";
+
 dotenv.config();
 
-// --- Logger ---
+// ============================
+// Logger (console-based, simple)
+// ============================
 const logger = {
   debug: (msg: string, obj?: unknown) =>
     process.env.NODE_ENV !== "production" ? console.debug(msg, obj || "") : undefined,
@@ -17,14 +22,18 @@ const logger = {
   error: (msg: string, obj?: unknown) => console.error(msg, obj || ""),
 };
 
-// --- Custom Error Type ---
+// ============================
+// Custom Error Type
+// ============================
 interface AppError extends Error {
   status?: number;
   code?: string;
   details?: unknown;
 }
 
-// --- Env Validation ---
+// ============================
+// Validate environment variables
+// ============================
 const envSchema = z.object({
   PROJECT_NAME: z.string(),
   VERSION: z.string(),
@@ -42,30 +51,47 @@ if (!env.success) {
 }
 const config = env.data;
 
-// --- Express Setup ---
+// ============================
+// Express Setup
+// ============================
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DIST_PATH = path.resolve(process.cwd(), "dist");
 
-// --- Middlewares ---
+// ============================
+// Middlewares
+// ============================
 app.use(
   helmet({
     contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false,
   })
 );
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Prevent caching API responses
+app.use("/api", (_req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+  next();
+});
+
+// Logging
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
-// --- Async wrapper ---
+// ============================
+// Async Handler Wrapper
+// ============================
 const asyncHandler =
   <T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
   (req: Request, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next);
   };
 
-// --- Handlers ---
+// ============================
+// API Handlers
+// ============================
 const getProjectInfo = async (req: Request, res: Response) => {
   res.json({
     name: config.PROJECT_NAME,
@@ -83,20 +109,27 @@ const echoBody = async (req: Request, res: Response) => {
   res.json({ received: req.body });
 };
 
-// --- API Routes ---
+// ============================
+// API Routes
+// ============================
 app.get("/api/health", (_req, res) => {
   res.status(200).json({ status: "ok", project: config.PROJECT_NAME });
 });
+
 app.get("/api/project", asyncHandler(getProjectInfo));
 app.post("/api/echo", asyncHandler(echoBody));
 
-// --- Serve SPA ---
+// ============================
+// Serve SPA
+// ============================
 app.use(express.static(DIST_PATH));
 app.get(/^\/(?!api).*/, (_req, res) => {
   res.sendFile(path.resolve(DIST_PATH, "index.html"));
 });
 
-// --- 404 Handler ---
+// ============================
+// 404 Handler
+// ============================
 app.use((req, res, next) => {
   if (req.path.startsWith("/api")) {
     return res.status(404).json({ error: "API route not found" });
@@ -104,7 +137,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- Global Error Handler ---
+// ============================
+// Global Error Handler
+// ============================
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   const error = err as AppError;
   logger.error("Error caught:", {
@@ -121,7 +156,9 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-// --- Start Server ---
+// ============================
+// Start Server (if not on Vercel)
+// ============================
 if (process.env.NODE_ENV !== "vercel") {
   app.listen(PORT, () => logger.info(`Server running at http://localhost:${PORT}`));
 }
