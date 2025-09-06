@@ -16,6 +16,7 @@ AI สามารถ:
 ตรวจสอบ dependencies, config files, alias, project info, project tree
 สร้างสรุปรายงาน Markdown อัตโนมัติ (เหมือนสคริปต์ NOTEDEVSEO_SUMMARY.md)
 ตั้งค่าไฟล์ต่าง ๆ ตรวจสอบให้ใช้งานได้ถูกต้อง
+
 ตรวจสอบ Type-safety และ CSS/UX consistency ให้ตรงกับ Tailwind/DaisyUI design
 ให้ โค้ดพร้อมใช้งานทันที โดยไม่ต้องรอ developer ทำ post-processing
 AI มี ศักยภาพสูงพอ สำหรับงานนี้
