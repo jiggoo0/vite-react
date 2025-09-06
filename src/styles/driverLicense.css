@@ -7,7 +7,7 @@
    Tailwind-first, flat, neutral, enterprise-ready
 ============================== */
 
-/* Container */
+/* Card Container */
 .driver-license-card {
   @apply w-full max-w-[850px] mx-auto p-6 rounded-md shadow bg-base-100 text-base flex flex-col gap-3 font-sans leading-relaxed;
 }
@@ -17,9 +17,9 @@
   @apply flex justify-between items-center font-semibold text-base border-b border-base-300 pb-2 mb-3;
 }
 
-/* Fields */
+/* Field Row */
 .driver-license-field {
-  @apply flex justify-between text-sm py-1;
+  @apply flex justify-between items-center text-sm py-1;
 }
 
 .driver-license-field label {
@@ -41,12 +41,27 @@
 }
 
 /* ==============================
+   Responsive Adjustments
+============================== */
+@media (max-width: 640px) {
+  .driver-license-card {
+    @apply p-4 max-w-full;
+  }
+  .driver-license-photo {
+    @apply w-[100px] h-[125px];
+  }
+}
+
+/* ==============================
    Print Styles
 ============================== */
 @media print {
   .driver-license-card {
     @apply border border-base-300 shadow-none;
     page-break-inside: avoid;
+  }
+  .driver-license-photo {
+    @apply border-none;
   }
 }
 
@@ -59,6 +74,10 @@
 
 .dark .driver-license-field label {
   @apply text-gray-400;
+}
+
+.dark .driver-license-field .value {
+  @apply text-gray-100;
 }
 
 .dark .driver-license-photo {

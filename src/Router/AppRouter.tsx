@@ -14,6 +14,7 @@ import PublicRoute from "@/Router/PublicRoute";
 
 // ---------- Pages ----------
 import Home from "@/Home/Home";
+
 const Login = lazy(() => import("@/Home/Login"));
 const AdminTools = lazy(() => import("@/Home/AdminTools"));
 const CustomerAssessmentForm = lazy(() => import("@/Home/CustomerAssessmentForm"));
@@ -22,7 +23,7 @@ const Dashboard = lazy(() => import("@/Home/components/Dashboard/Dashboard"));
 const Profile = lazy(() => import("@/Home/Profile"));
 const Settings = lazy(() => import("@/Home/Settings"));
 
-// ---------- Helper: Suspense + ErrorBoundary ----------
+// ---------- Helper: Lazy Load + ErrorBoundary ----------
 const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
   Page: ComponentType<P>,
   props?: P,
@@ -39,8 +40,8 @@ const lazyPage = <P extends Record<string, unknown> = Record<string, unknown>>(
 // ---------- Dashboard Routes Config ----------
 interface DashboardRoute {
   path: string;
-  roles: ("user" | "manager" | "admin")[];
-  element: ComponentType<Record<string, unknown>>; // safer than 'any'
+  roles: Array<"user" | "manager" | "admin">;
+  element: ComponentType<Record<string, unknown>>;
 }
 
 const dashboardRoutes: DashboardRoute[] = [
@@ -55,6 +56,7 @@ const dashboardRoutes: DashboardRoute[] = [
 const AppRouter: FC = () => (
   <>
     <ScrollToTop />
+
     <Routes>
       {/* Public Routes */}
       <Route element={<Layout />}>
@@ -85,7 +87,7 @@ const AppRouter: FC = () => (
         ))}
       </Route>
 
-      {/* Admin Exclusive */}
+      {/* Admin Exclusive Routes */}
       <Route
         path="admin"
         element={
@@ -103,7 +105,7 @@ const AppRouter: FC = () => (
         <Route path="secret" element={lazyPage(AdminTools)} />
       </Route>
 
-      {/* Fallback */}
+      {/* Fallback Route */}
       <Route path="*" element={lazyPage(Forbidden, {}, "กำลังโหลดหน้า 403...")} />
     </Routes>
   </>

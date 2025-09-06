@@ -2,7 +2,7 @@
 "use client";
 
 import { ReactNode, useState, useEffect, useCallback } from "react";
-import { ThemeContext } from "./ThemeContext";
+import { ThemeContext, ThemeContextType } from "./ThemeContext";
 import type { ThemeMode } from "./types";
 
 /** 🧩 Props ของ ThemeProvider */
@@ -14,7 +14,7 @@ interface ThemeProviderProps {
 /**
  * 🎨 ThemeProvider Component
  *
- * - รองรับ "light", "dark", "system", "business"
+ * - รองรับ theme: "light" | "dark" | "system" | "business"
  * - Sync กับ DOM และ localStorage
  * - ปลอดภัย ไม่ทำให้หน้าจอขาว
  */
@@ -29,7 +29,7 @@ const ThemeProvider = ({ children, defaultTheme = "light" }: ThemeProviderProps)
     }
   });
 
-  /** 🔹 Resolve system theme */
+  /** 🔹 Resolve system theme ("light" | "dark") */
   const resolveTheme = useCallback((mode: ThemeMode): "light" | "dark" => {
     if (mode === "system" && typeof window !== "undefined") {
       return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -43,8 +43,6 @@ const ThemeProvider = ({ children, defaultTheme = "light" }: ThemeProviderProps)
       if (typeof document === "undefined") return;
 
       const root = document.documentElement;
-
-      // สำหรับ business ให้ใช้ class 'business' แต่ resolvedTheme สำหรับ CSS variables
       const resolvedTheme: "light" | "dark" =
         newTheme === "business" ? "light" : resolveTheme(newTheme);
 
@@ -52,17 +50,12 @@ const ThemeProvider = ({ children, defaultTheme = "light" }: ThemeProviderProps)
       root.classList.remove("light", "dark", "business");
       root.classList.add(newTheme);
 
-      // DaisyUI / Tailwind dataset
+      // Sync DaisyUI / Tailwind dataset
       root.dataset.theme = newTheme;
 
-      // Set CSS variable fallback สำหรับ bg/text
-      if (resolvedTheme === "dark") {
-        root.style.backgroundColor = "#1f2937";
-        root.style.color = "#f3f4f6";
-      } else {
-        root.style.backgroundColor = "#ffffff";
-        root.style.color = "#111827";
-      }
+      // Fallback background/text
+      root.style.backgroundColor = resolvedTheme === "dark" ? "#1f2937" : "#ffffff";
+      root.style.color = resolvedTheme === "dark" ? "#f3f4f6" : "#111827";
 
       try {
         localStorage.setItem("app-theme", newTheme);
@@ -73,12 +66,14 @@ const ThemeProvider = ({ children, defaultTheme = "light" }: ThemeProviderProps)
     [resolveTheme]
   );
 
-  // Apply theme on mount และเมื่อ theme เปลี่ยน
+  /** Apply theme on mount & when theme changes */
   useEffect(() => {
     applyTheme(theme);
   }, [theme, applyTheme]);
 
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
+  const contextValue: ThemeContextType = { theme, setTheme };
+
+  return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;
 };
 
 export default ThemeProvider;

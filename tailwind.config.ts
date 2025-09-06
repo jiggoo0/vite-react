@@ -11,20 +11,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Primary palette
         primary: "var(--color-primary, #3b82f6)",
         "primary-hover": "var(--color-primary-hover, #2563eb)",
         "primary-disabled": "var(--color-primary-disabled, #6b7280)",
         "primary-content": "var(--color-primary-content, #ffffff)",
 
+        // Secondary & accent
         secondary: "var(--color-secondary, #4b5563)",
         accent: "var(--color-accent, #6b7280)",
         neutral: "var(--color-neutral, #f3f4f6)",
 
+        // Feedback colors
         info: "var(--color-info, #0ea5e9)",
         success: "var(--color-success, #22c55e)",
         warning: "var(--color-warning, #f59e0b)",
         error: "var(--color-error, #ef4444)",
 
+        // Background & text
         bg: "var(--color-bg, #ffffff)",
         "bg-light": "var(--color-bg-light, #f9fafb)",
         text: "var(--color-text, #111827)",

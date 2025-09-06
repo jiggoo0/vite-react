@@ -1,3 +1,4 @@
+// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -5,15 +6,12 @@ import { VitePWA } from "vite-plugin-pwa";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
 
-// --- Node.js ESM __dirname & __filename fix ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// --- Environment Detection ---
 const isTermux = process.env.TERMUX_VERSION !== undefined;
 const isProduction = process.env.NODE_ENV === "production";
 
-// --- Vite Configuration ---
 export default defineConfig({
   plugins: [
     react(),
@@ -36,7 +34,7 @@ export default defineConfig({
           { src: "pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
         ],
       },
-      disable: !isProduction || isTermux, // Disable in dev or Termux
+      disable: !isProduction || isTermux,
     }),
   ],
 
@@ -66,7 +64,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       "/api": {
-        target: process.env.API_URL || "http://localhost:3000",
+        target: process.env.VITE_API_URL || "http://localhost:3000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
