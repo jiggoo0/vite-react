@@ -1,8 +1,8 @@
 # 📊 Project Summary Report
 
-Date: 2025-09-06 17:20:42  
+Date: 2025-09-06 18:28:21  
 Branch: main  
-Git Status: Clean ✅
+Git Status: Uncommitted / untracked changes ❌
 
 ## 1️⃣ Dependencies
 
@@ -729,178 +729,85 @@ AI สามารถ:
 คำสั่งสร้าง home::/data/data/com.termux/files/home/project/src/api/Chat.ts
 ที่สามารถใช้งาน สนทนาตอบแชท Realtime คู่กับ
 home::/data/data/com.termux/files/home/project/src/utils/common/ChatWidget.tsx
-code ตั้งค่าให้แม่นโดยอ้างอิงข้อมูลปัจจุบัน
-// server.ts
-import express, { type Request, type Response, type NextFunction } from "express";
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "morgan";
-import path from "path";
-import dotenv from "dotenv";
-import { z } from "zod";
-import { chatAPI } from "./src/api/Chat.ts";
+code ตั้งค่าให้แม่นโดยอ้างอิงข้อมูลปัจจุบันimport
 import { WebSocketServer, WebSocket } from "ws";
+import { Request, Response, NextFunction } from "express";
+import { z } from "zod";
 
-dotenv.config();
-
-type AppError = Error & { status?: number; code?: string; details?: unknown };
-
-// Logger
-const logger = {
-debug: (msg: string, obj?: unknown) =>
-process.env.NODE_ENV !== "production" ? console.debug(msg, obj ?? "") : undefined,
-info: (msg: string, obj?: unknown) => console.info(msg, obj ?? ""),
-error: (msg: string, obj?: unknown) => console.error(msg, obj ?? ""),
-};
-
-// Validate env
-const envSchema = z.object({
-PROJECT_NAME: z.string(),
-VERSION: z.string(),
-DESCRIPTION: z.string().optional(),
-GITHUB_URL: z.string().url(),
-DEVELOPER_EMAIL: z.string().email(),
-WEBSITE_URL: z.string().url(),
-VERCEL_PROJECT_ID: z.string(),
-});
-const envResult = envSchema.safeParse(process.env);
-if (!envResult.success) {
-console.error("❌ Invalid environment variables:", envResult.error.format());
-process.exit(1);
+export interface ChatMessage {
+id: string;
+user: string; // 'user' | 'bot'
+text: string;
+createdAt: number;
 }
-type MyEnv = z.infer<typeof envSchema>;
-const AppConfig: { processEnv: MyEnv } = { processEnv: envResult.data };
 
-// Express setup
-const app = express();
-const PORT = Number(process.env.PORT) || 3000;
-const DIST_PATH = path.resolve(process.cwd(), "dist");
-
-app.use(
-helmet({ contentSecurityPolicy: process.env.NODE_ENV === "production" ? undefined : false })
-);
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use("/api", (\_req, res, next) => {
-res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
-next();
-});
-if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
-
-// Async wrapper
-const asyncHandler =
-<T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
-(req: Request, res: Response, next: NextFunction) =>
-fn(req, res, next).catch(next);
-
-// Routes
-app.get("/api/health", (\_req, res) =>
-res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
-);
-
-app.get(
-"/api/project",
-asyncHandler(async (\_req, res) => res.json(AppConfig.processEnv))
-);
-
-app.post(
-"/api/echo",
-asyncHandler(async (req, res) => res.json({ received: req.body }))
-);
-
-// Chat API
-app.get(
-"/api/chat/messages",
-asyncHandler(async (\_req, res) => {
-const messages = await chatAPI.getMessages();
-res.json({ messages });
-})
-);
-
-app.post(
-"/api/chat/send",
-asyncHandler(async (req, res) => {
-const { text } = req.body;
-if (!text || typeof text !== "string")
-return res.status(400).json({ error: "text is required" });
-const sent = await chatAPI.sendMessage(text);
-broadcastWS({ type: "new_message", payload: sent }); // ส่งผ่าน WebSocket
-res.json({ sent });
-})
-);
-
-app.delete(
-"/api/chat/clear",
-asyncHandler(async (\_req, res) => {
-await chatAPI.clearMessages();
-broadcastWS({ type: "clear_messages" });
-res.json({ status: "cleared" });
-})
-);
-
-// Serve SPA
-app.use(express.static(DIST_PATH));
-app.get(/^\/(?!api).\*/, (\_req, res) => res.sendFile(path.resolve(DIST_PATH, "index.html")));
-
-// 404 + Global error handler
-app.use((req, res, next) => {
-if (req.path.startsWith("/api")) return res.status(404).json({ error: "API route not found" });
-next();
-});
-
-app.use((err: unknown, \_req: Request, res: Response, \_next: NextFunction) => {
-const error = err as AppError;
-logger.error("❌ Error caught:", {
-message: error.message,
-stack: error.stack,
-code: error.code,
-details: error.details,
-});
-res.status(error.status ?? 500).json({
-error: "Internal Server Error",
-message: error.message,
-code: error.code,
-details: error.details,
-});
-});
-
-// WebSocket setup
-const wss = new WebSocketServer({ noServer: true });
 const clients = new Set<WebSocket>();
+const messages: ChatMessage[] = [];
 
-const broadcastWS = (data: unknown) => {
-const msg = JSON.stringify(data);
-clients.forEach((ws) => {
-if (ws.readyState === WebSocket.OPEN) ws.send(msg);
-});
-};
-
-// Integrate WebSocket with Express server
-const server = app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
-
-server.on("upgrade", (request, socket, head) => {
-if (!request.url?.startsWith("/ws")) {
-socket.destroy();
-return;
-}
-wss.handleUpgrade(request, socket, head, (ws) => {
+export function initChat(wss: WebSocketServer) {
+wss.on("connection", (ws) => {
 clients.add(ws);
-ws.on("message", async (msg) => {
-try {
-const data = msg.toString();
-const sent = await chatAPI.sendMessage(data);
-broadcastWS({ type: "new_message", payload: sent });
-} catch (err) {
-logger.error("WebSocket send error", err);
-}
-});
-ws.on("close", () => clients.delete(ws));
-});
-});
 
-export { AppConfig, broadcastWS };
-export default app;
+    // ส่ง history
+    ws.send(JSON.stringify({ type: "history", payload: messages }));
+
+    ws.on("message", (raw) => {
+      try {
+        const data = JSON.parse(raw.toString());
+        const schema = z.object({ user: z.string().min(1), text: z.string().min(1) });
+        const parsed = schema.parse(data);
+
+        const msg: ChatMessage = {
+          id: crypto.randomUUID(),
+          user: parsed.user,
+          text: parsed.text,
+          createdAt: Date.now(),
+        };
+        messages.push(msg);
+        broadcast({ type: "message", payload: [msg] });
+
+        // Bot auto-reply
+        if (parsed.user === "user") {
+          setTimeout(() => {
+            const botMsg: ChatMessage = {
+              id: crypto.randomUUID(),
+              user: "bot",
+              text: generateBotReply(parsed.text),
+              createdAt: Date.now(),
+            };
+            messages.push(botMsg);
+            broadcast({ type: "message", payload: [botMsg] });
+          }, 500);
+        }
+      } catch {
+        ws.send(JSON.stringify({ type: "error", error: "Invalid message" }));
+      }
+    });
+
+    ws.on("close", () => clients.delete(ws));
+
+});
+}
+
+function broadcast(data: unknown) {
+const payload = JSON.stringify(data);
+clients.forEach((client) => {
+if (client.readyState === WebSocket.OPEN) client.send(payload);
+});
+}
+
+export function getMessages(\_req: Request, res: Response, \_next: NextFunction) {
+res.json(messages);
+}
+
+function generateBotReply(text: string): string {
+const lower = text.toLowerCase();
+if (lower.includes("hi") || lower.includes("hello") || lower.includes("สวัสดี"))
+return "สวัสดีครับ! 👋";
+if (lower.includes("ชื่อ")) return "ผมคือ Bot 🤖 ยินดีที่ได้รู้จัก!";
+if (lower.includes("ขอบคุณ")) return "ยินดีครับ 🙏";
+return `คุณพิมพ์ว่า: "${text}" ใช่ไหมครับ?`;
+}
 
 "use client";
 
@@ -908,37 +815,53 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialIcons from "./SocialIcons";
-import { useChat } from "@/api/useChat";
+
+interface ChatMessage {
+id: string;
+sender: "user" | "bot";
+text: string;
+timestamp: number;
+}
+
+interface WSMessagePayload {
+id: string;
+user: "user" | "bot";
+text: string;
+createdAt: number;
+}
 
 interface ChatWidgetProps {
 autoCloseMs?: number;
 }
 
 const ChatWidget = ({ autoCloseMs = 15000 }: ChatWidgetProps) => {
-const { messages, send } = useChat();
-const [isOpen, setIsOpen] = useState(false);
+const [messages, setMessages] = useState<ChatMessage[]>([]);
 const [input, setInput] = useState("");
-const autoCloseTimer = useRef<number | null>(null);
+const [isOpen, setIsOpen] = useState(false);
+
+const wsRef = useRef<WebSocket | null>(null);
 const scrollRef = useRef<HTMLDivElement>(null);
+const autoCloseTimer = useRef<number | null>(null);
 
 const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
+// Auto-close chat
 useEffect(() => {
-if (isOpen) {
-autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
-}
+if (isOpen) autoCloseTimer.current = window.setTimeout(() => setIsOpen(false), autoCloseMs);
 return () => {
 if (autoCloseTimer.current) clearTimeout(autoCloseTimer.current);
 autoCloseTimer.current = null;
 };
 }, [isOpen, autoCloseMs]);
 
+// Close on Escape key
 useEffect(() => {
 const handleKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
 window.addEventListener("keydown", handleKey);
 return () => window.removeEventListener("keydown", handleKey);
 }, []);
 
+// Auto-scroll on new messages
 useEffect(() => {
 scrollRef.current?.scrollTo({
 top: scrollRef.current.scrollHeight,
@@ -946,14 +869,61 @@ behavior: "smooth",
 });
 }, [messages]);
 
-const handleSend = async () => {
-if (!input.trim()) return;
-await send(input.trim());
-setInput("");
+// WebSocket connection
+useEffect(() => {
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+const ws = new WebSocket(`${protocol}://${window.location.host}`);
+wsRef.current = ws;
+
+    ws.onopen = () => console.log("✅ WS connected");
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "history" || data.type === "message") {
+          const payload = Array.isArray(data.payload) ? data.payload : [data.payload];
+          const mapped: ChatMessage[] = payload.map((m: WSMessagePayload) => ({
+            id: m.id,
+            sender: m.user === "user" ? "user" : "bot",
+            text: m.text,
+            timestamp: m.createdAt,
+          }));
+          setMessages((prev) => [...prev, ...mapped]);
+        } else if (data.type === "error") {
+          console.error("WS error:", data.error);
+        }
+      } catch (err) {
+        console.error("❌ Failed to parse WS message", err);
+      }
+    };
+
+    ws.onclose = () => console.log("⚡ WS closed");
+    ws.onerror = (err) => console.error("⚡ WS error", err);
+
+    return () => ws.close();
+
+}, []);
+
+// Send message
+const handleSend = () => {
+const text = input.trim();
+if (!text) return;
+
+    const msg: ChatMessage = {
+      id: crypto.randomUUID(),
+      sender: "user",
+      text,
+      timestamp: Date.now(),
+    };
+
+    setMessages((prev) => [...prev, msg]);
+    wsRef.current?.send(JSON.stringify({ user: "user", text }));
+    setInput("");
+
 };
 
 return (
-
 <div className="fixed bottom-4 right-4 z-50">
 <button
         onClick={toggleChat}
@@ -965,7 +935,7 @@ return (
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            key="chat"
+            key="chat-widget"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
@@ -974,14 +944,17 @@ return (
             <div className="p-3 border-b font-semibold">Chat</div>
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2">
-              {messages.map((m) => (
+              {messages.map((msg) => (
                 <div
-                  key={m.id}
+                  key={msg.id}
                   className={`p-2 rounded-lg max-w-[75%] ${
-                    m.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
+                    msg.sender === "user" ? "ml-auto bg-primary text-white" : "mr-auto bg-base-200"
                   }`}
                 >
-                  {m.text}
+                  <div>{msg.text}</div>
+                  <div className="text-xs text-gray-400 mt-1">
+                    {new Date(msg.timestamp).toLocaleTimeString()}
+                  </div>
                 </div>
               ))}
             </div>
@@ -1013,137 +986,285 @@ return (
 
 export default ChatWidget;
 
-import { useState, useEffect, useCallback, useRef } from "react";
+// src/api/useChat.ts
+import { useEffect, useState, useRef, useCallback } from "react";
 
 export interface ChatMessage {
 id: string;
 sender: "user" | "bot";
 text: string;
+timestamp: number; // ใช้ timestamp แทน createdAt
 }
 
-interface UseChatReturn {
-messages: ChatMessage[];
-send: (text: string) => Promise<void>;
+interface WSChatMessage {
+id: string;
+user: string;
+text: string;
+timestamp: number;
 }
 
-const WS_URL = "wss://your-websocket-server"; // เปลี่ยนเป็น URL จริง
+interface WSMessageEvent {
+type: "history" | "message" | "error";
+payload: WSChatMessage | WSChatMessage[];
+error?: string;
+}
 
-export const useChat = (): UseChatReturn => {
+function mapPayloadToMessages(payload: WSChatMessage | WSChatMessage[]): ChatMessage[] {
+const arr = Array.isArray(payload) ? payload : [payload];
+return arr.map((m) => ({
+id: m.id,
+sender: m.user === "user" ? "user" : "bot",
+text: m.text,
+timestamp: m.timestamp,
+}));
+}
+
+export function useChat() {
 const [messages, setMessages] = useState<ChatMessage[]>([]);
 const wsRef = useRef<WebSocket | null>(null);
 
-// Connect to WebSocket
+// Connect WebSocket
 useEffect(() => {
-const ws = new WebSocket(WS_URL);
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+const ws = new WebSocket(`${protocol}://${window.location.host}`);
 wsRef.current = ws;
 
-    ws.addEventListener("message", (event) => {
+    ws.onmessage = (event: MessageEvent) => {
       try {
-        const msg: ChatMessage = JSON.parse(event.data);
-        setMessages((prev) => [...prev, msg]);
-      } catch {
-        console.warn("Invalid message format", event.data);
+        const data: WSMessageEvent = JSON.parse(event.data);
+
+        switch (data.type) {
+          case "history":
+            setMessages(mapPayloadToMessages(data.payload));
+            break;
+          case "message":
+            setMessages((prev) => [...prev, ...mapPayloadToMessages(data.payload)]);
+            break;
+          case "error":
+            console.error("WS error:", data.error);
+            break;
+        }
+      } catch (err) {
+        console.error("Failed to parse WS message", err);
       }
-    });
-
-    ws.addEventListener("close", () => console.log("WebSocket closed"));
-    ws.addEventListener("error", (err) => console.error("WebSocket error", err));
-
-    return () => {
-      ws.close();
     };
+
+    ws.onclose = () => console.log("Chat WS closed");
+    ws.onerror = (e) => console.error("Chat WS error", e);
+
+    return () => ws.close();
 
 }, []);
 
 const send = useCallback(async (text: string) => {
-const msg: ChatMessage = { id: crypto.randomUUID(), sender: "user", text };
-setMessages((prev) => [...prev, msg]);
-if (wsRef.current?.readyState === WebSocket.OPEN) {
-wsRef.current.send(JSON.stringify(msg));
-}
+const cleanText = text.trim();
+if (!cleanText) return;
+
+    const tempMsg: ChatMessage = {
+      id: crypto.randomUUID(),
+      sender: "user",
+      text: cleanText,
+      timestamp: Date.now(),
+    };
+    setMessages((prev) => [...prev, tempMsg]);
+
+    try {
+      wsRef.current?.send(JSON.stringify({ user: "user", text: cleanText }));
+    } catch {
+      await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user: "user", text: cleanText }),
+      });
+    }
+
 }, []);
 
 return { messages, send };
+}
+
+// server.ts
+import express from "express";
+import type { Request, Response, NextFunction } from "express";
+import { WebSocketServer } from "ws";
+import path from "path";
+import helmet from "helmet";
+import cors from "cors";
+import morgan from "morgan";
+import { z } from "zod";
+import { initChat, getMessages } from "./src/api/Chat.ts";
+import "dotenv/config";
+
+// -------- Config & Env --------
+const envSchema = z.object({
+PROJECT_NAME: z.string(),
+VERSION: z.string(),
+DESCRIPTION: z.string().optional(),
+GITHUB_URL: z.string().url(),
+DEVELOPER_EMAIL: z.string().email(),
+WEBSITE_URL: z.string().url(),
+VERCEL_PROJECT_ID: z.string(),
+PORT: z.string().optional(),
+NODE_ENV: z.string().optional(),
+});
+
+const envResult = envSchema.safeParse(process.env);
+if (!envResult.success) {
+console.error("❌ Invalid environment variables:", envResult.error.format());
+process.exit(1);
+}
+
+type MyEnv = z.infer<typeof envSchema>;
+const AppConfig: { processEnv: MyEnv } = { processEnv: envResult.data };
+
+// -------- Express setup --------
+const app = express();
+const PORT = Number(AppConfig.processEnv.PORT ?? 3000);
+const DIST_PATH = path.resolve(process.cwd(), "dist");
+
+app.use(
+helmet({
+contentSecurityPolicy: AppConfig.processEnv.NODE_ENV === "production" ? undefined : false,
+})
+);
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+if (AppConfig.processEnv.NODE_ENV !== "production") app.use(morgan("dev"));
+
+// -------- Logger --------
+const logger = {
+debug: (msg: string, obj?: unknown) =>
+AppConfig.processEnv.NODE_ENV !== "production" ? console.debug(msg, obj ?? "") : undefined,
+info: (msg: string, obj?: unknown) => console.info(msg, obj ?? ""),
+error: (msg: string, obj?: unknown) => console.error(msg, obj ?? ""),
 };
 
-// src/api/Chat.ts
-import { v4 as uuidv4 } from "uuid";
+// -------- Async wrapper --------
+const asyncHandler =
+<T>(fn: (req: Request, res: Response, next: NextFunction) => Promise<T>) =>
+(req: Request, res: Response, next: NextFunction) =>
+fn(req, res, next).catch(next);
+
+// -------- REST routes --------
+app.get("/api/health", (\_req, res) =>
+res.status(200).json({ status: "ok", project: AppConfig.processEnv.PROJECT_NAME })
+);
+
+app.get(
+"/api/project",
+asyncHandler(async (\_req, res) => res.json(AppConfig.processEnv))
+);
+
+app.post(
+"/api/echo",
+asyncHandler(async (req, res) => res.json({ received: req.body }))
+);
+
+// Chat REST endpoint
+app.get("/api/messages", getMessages);
+
+// -------- Serve SPA --------
+app.use(express.static(DIST_PATH));
+app.get(/^\/(?!api).\*/, (\_req, res) => res.sendFile(path.resolve(DIST_PATH, "index.html")));
+
+// -------- WebSocket setup --------
+const server = app.listen(PORT, () => logger.info(`🚀 Server running at http://localhost:${PORT}`));
+
+const wss = new WebSocketServer({ server });
+initChat(wss);
+
+// -------- Global error handler --------
+app.use((err: unknown, \_req: Request, res: Response, \_next: NextFunction) => {
+const error = err as { message?: string };
+logger.error("❌ Error caught:", error.message ?? err);
+res.status(500).json({
+error: "Internal Server Error",
+message: error.message ?? "Unknown error",
+});
+});
+
+export { AppConfig };
+export default app;
+
+import { WebSocketServer, WebSocket } from "ws";
+import { Request, Response, NextFunction } from "express";
+import { z } from "zod";
 
 export interface ChatMessage {
 id: string;
+user: string; // 'user' | 'bot'
 text: string;
 createdAt: number;
-from: "user" | "bot";
 }
 
-class ChatAPI {
-private messages: ChatMessage[] = [];
+const clients = new Set<WebSocket>();
+const messages: ChatMessage[] = [];
 
-async getMessages(): Promise<ChatMessage[]> {
-// Return last 50 messages
-return this.messages.slice(-50);
-}
+export function initChat(wss: WebSocketServer) {
+wss.on("connection", (ws) => {
+clients.add(ws);
 
-async sendMessage(text: string, from: "user" | "bot" = "user"): Promise<ChatMessage> {
-const message: ChatMessage = {
-id: uuidv4(),
-text,
-createdAt: Date.now(),
-from,
-};
-this.messages.push(message);
+    // ส่ง history
+    ws.send(JSON.stringify({ type: "history", payload: messages }));
 
-    // Simulate bot response after delay
-    if (from === "user") {
-      setTimeout(() => {
-        const botMessage: ChatMessage = {
-          id: uuidv4(),
-          text: `ตอบกลับ: ${text}`,
+    ws.on("message", (raw) => {
+      try {
+        const data = JSON.parse(raw.toString());
+        const schema = z.object({ user: z.string().min(1), text: z.string().min(1) });
+        const parsed = schema.parse(data);
+
+        const msg: ChatMessage = {
+          id: crypto.randomUUID(),
+          user: parsed.user,
+          text: parsed.text,
           createdAt: Date.now(),
-          from: "bot",
         };
-        this.messages.push(botMessage);
-      }, 1000);
-    }
+        messages.push(msg);
+        broadcast({ type: "message", payload: [msg] });
 
-    return message;
+        // Bot auto-reply
+        if (parsed.user === "user") {
+          setTimeout(() => {
+            const botMsg: ChatMessage = {
+              id: crypto.randomUUID(),
+              user: "bot",
+              text: generateBotReply(parsed.text),
+              createdAt: Date.now(),
+            };
+            messages.push(botMsg);
+            broadcast({ type: "message", payload: [botMsg] });
+          }, 500);
+        }
+      } catch {
+        ws.send(JSON.stringify({ type: "error", error: "Invalid message" }));
+      }
+    });
 
+    ws.on("close", () => clients.delete(ws));
+
+});
 }
 
-async clearMessages(): Promise<void> {
-this.messages = [];
+function broadcast(data: unknown) {
+const payload = JSON.stringify(data);
+clients.forEach((client) => {
+if (client.readyState === WebSocket.OPEN) client.send(payload);
+});
 }
+
+export function getMessages(\_req: Request, res: Response, \_next: NextFunction) {
+res.json(messages);
 }
 
-export const chatAPI = new ChatAPI();
-
-// React hook
-import { useState, useEffect, useCallback } from "react";
-
-export const useChat = () => {
-const [messages, setMessages] = useState<ChatMessage[]>([]);
-
-const refreshMessages = useCallback(async () => {
-const msgs = await chatAPI.getMessages();
-setMessages([...msgs]);
-}, []);
-
-const send = useCallback(
-async (text: string) => {
-await chatAPI.sendMessage(text);
-await refreshMessages();
-},
-[refreshMessages]
-);
-
-useEffect(() => {
-refreshMessages();
-const interval = setInterval(refreshMessages, 2000); // poll every 2s
-return () => clearInterval(interval);
-}, [refreshMessages]);
-
-return { messages, send, refreshMessages };
-};
+function generateBotReply(text: string): string {
+const lower = text.toLowerCase();
+if (lower.includes("hi") || lower.includes("hello") || lower.includes("สวัสดี"))
+return "สวัสดีครับ! 👋";
+if (lower.includes("ชื่อ")) return "ผมคือ Bot 🤖 ยินดีที่ได้รู้จัก!";
+if (lower.includes("ขอบคุณ")) return "ยินดีครับ 🙏";
+return `คุณพิมพ์ว่า: "${text}" ใช่ไหมครับ?`;
+}
 
 ─ api │   ├── Chat │   │   ├── index.ts │   │   ├── messages.ts │   │   ├── send.ts │   │   └── types.ts │   ├── Chat.ts │   ├── echo.ts │   └── project.ts
 useChat.ts
