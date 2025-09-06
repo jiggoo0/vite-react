@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+pnpm vercel --prod
 pnpm lint-staged
 bash scripts/check-structure.sh
+git push
